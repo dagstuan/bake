@@ -292,3 +292,65 @@ export type AllSanitySchemaTypes =
   | SanityAssetSourceData
   | SanityImageMetadata;
 export declare const internalGroqTypeReferenceTo: unique symbol;
+// Source: ./src/sanity/lib/queries.ts
+// Variable: recipesQuery
+// Query: *[_type == "recipe"][0..12]{  _id, title, slug}
+export type RecipesQueryResult = Array<{
+  _id: string;
+  title: string | null;
+  slug: Slug | null;
+}>;
+// Variable: recipeQuery
+// Query: *[_type == "recipe" && slug.current == $slug][0]{    title,    ingredients[]->{      _id,      "ingredient": ingredient->{        name,        type,      },      amount,      unit    },    servings,    instructions[]{      ...,      _type == "block" => {        ...,        children[]{          ...,          _type == "recipeIngredientReference" => {            ...,            "ingredient": @.ingredient->{              "name": ingredient->.name,              unit,              amount,            },          }        }      }    }}
+export type RecipeQueryResult = {
+  title: string | null;
+  ingredients: Array<{
+    _id: string;
+    ingredient: {
+      name: string | null;
+      type: "dry" | "other" | "wet" | null;
+    } | null;
+    amount: number | null;
+    unit: "dl" | "g" | "kg" | "l" | "ml" | "tbsp" | null;
+  }> | null;
+  servings: number | null;
+  instructions: Array<{
+    children: Array<
+      | {
+          _key: string;
+          _type: "recipeIngredientReference";
+          ingredient: {
+            name: string | null;
+            unit: "dl" | "g" | "kg" | "l" | "ml" | "tbsp" | null;
+            amount: number | null;
+          } | null;
+          percentage?: number;
+        }
+      | {
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }
+    > | null;
+    style?: "blockquote" | "h2" | "h3" | "h4" | "normal";
+    listItem?: "bullet";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }> | null;
+} | null;
+
+// Query TypeMap
+import "@sanity/client";
+declare module "@sanity/client" {
+  interface SanityQueries {
+    '*[_type == "recipe"][0..12]{\n  _id, title, slug\n}': RecipesQueryResult;
+    '*[_type == "recipe" && slug.current == $slug][0]{\n    title,\n    ingredients[]->{\n      _id,\n      "ingredient": ingredient->{\n        name,\n        type,\n      },\n      amount,\n      unit\n    },\n    servings,\n    instructions[]{\n      ...,\n      _type == "block" => {\n        ...,\n        children[]{\n          ...,\n          _type == "recipeIngredientReference" => {\n            ...,\n            "ingredient": @.ingredient->{\n              "name": ingredient->.name,\n              unit,\n              amount,\n            },\n          }\n        }\n      }\n    }\n}': RecipeQueryResult;
+  }
+}
