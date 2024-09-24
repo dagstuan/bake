@@ -293,12 +293,43 @@ export type AllSanitySchemaTypes =
   | SanityImageMetadata;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./src/sanity/lib/queries.ts
-// Variable: recipesQuery
-// Query: *[_type == "recipe"][0..12]{  _id, title, slug}
-export type RecipesQueryResult = Array<{
+// Variable: frontPageRecipesQuery
+// Query: *[_type == "recipe"][0...3]{  _id, title, slug, mainImage}
+export type FrontPageRecipesQueryResult = Array<{
   _id: string;
   title: string | null;
   slug: Slug | null;
+  mainImage: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  } | null;
+}>;
+// Variable: allRecipesQuery
+// Query: *[_type == "recipe"]{  _id, title, slug, mainImage}
+export type AllRecipesQueryResult = Array<{
+  _id: string;
+  title: string | null;
+  slug: Slug | null;
+  mainImage: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  } | null;
 }>;
 // Variable: recipeQuery
 // Query: *[_type == "recipe" && slug.current == $slug][0]{    title,    ingredients[]->{      _id,      "ingredient": ingredient->{        name,        type,      },      percent,    },    baseDryIngredients,    servings,    instructions[]{      ...,      _type == "block" => {        ...,        children[]{          ...,          _type == "recipeIngredientReference" => {            ...,            "ingredient": @.ingredient->{              "name": ingredient->.name,              percent,            },          }        }      }    }}
@@ -349,7 +380,8 @@ export type RecipeQueryResult = {
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    '*[_type == "recipe"][0..12]{\n  _id, title, slug\n}': RecipesQueryResult;
+    '*[_type == "recipe"][0...3]{\n  _id, title, slug, mainImage\n}': FrontPageRecipesQueryResult;
+    '*[_type == "recipe"]{\n  _id, title, slug, mainImage\n}': AllRecipesQueryResult;
     '*[_type == "recipe" && slug.current == $slug][0]{\n    title,\n    ingredients[]->{\n      _id,\n      "ingredient": ingredient->{\n        name,\n        type,\n      },\n      percent,\n    },\n    baseDryIngredients,\n    servings,\n    instructions[]{\n      ...,\n      _type == "block" => {\n        ...,\n        children[]{\n          ...,\n          _type == "recipeIngredientReference" => {\n            ...,\n            "ingredient": @.ingredient->{\n              "name": ingredient->.name,\n              percent,\n            },\n          }\n        }\n      }\n    }\n}': RecipeQueryResult;
   }
 }

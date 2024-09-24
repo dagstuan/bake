@@ -4,12 +4,12 @@ import { QueryParams } from "next-sanity";
 import { notFound } from "next/navigation";
 
 import { client, sanityFetch } from "@/sanity/lib/client";
-import { recipeQuery, recipesQuery } from "@/sanity/lib/queries";
-import { Recipe } from "@/components/Recipe";
+import { recipeQuery, allRecipesQuery } from "@/sanity/lib/queries";
+import { Recipe } from "@/components/Recipe/Recipe";
 
 export async function generateStaticParams() {
   const recipes = await client.fetch(
-    recipesQuery,
+    allRecipesQuery,
     {},
     { perspective: "published" },
   );

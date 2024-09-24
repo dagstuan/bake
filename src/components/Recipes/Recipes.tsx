@@ -1,13 +1,13 @@
-import { RecipesQueryResult } from "../../sanity.types";
+import { AllRecipesQueryResult } from "../../../sanity.types";
 
 type RecipesProps = {
-  recipes: RecipesQueryResult;
+  recipes: AllRecipesQueryResult;
 };
 
 export const Recipes = ({ recipes }: RecipesProps) => {
   return (
-    <main>
-      <ul className="container mx-auto grid grid-cols-1 divide-y divide-blue-100">
+    <main className="min-h-screen">
+      <div className="container mx-auto grid grid-cols-1 divide-y divide-blue-100">
         {recipes.map((recipe) => (
           <li key={recipe._id}>
             <a
@@ -18,7 +18,7 @@ export const Recipes = ({ recipes }: RecipesProps) => {
             </a>
           </li>
         ))}
-      </ul>
+      </div>
     </main>
   );
 };

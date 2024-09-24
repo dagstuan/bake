@@ -3,6 +3,7 @@ import { draftMode } from "next/headers";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { Nav } from "@/components/Nav/Nav";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -28,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="no">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-zinc-50 text-black`}
       >
         {draftMode().isEnabled && (
           <a
@@ -38,6 +39,7 @@ export default function RootLayout({
             Disable preview mode
           </a>
         )}
+        <Nav />
         {children}
         {draftMode().isEnabled && <VisualEditing />}
       </body>

@@ -1,11 +1,12 @@
 "use client";
 
-import { RecipeQueryResult } from "../../sanity.types";
+import { RecipeQueryResult } from "../../../sanity.types";
 import Link from "next/link";
 import { useState } from "react";
 import { RecipeIngredientReferenceResult } from "./RecipeIngredientReference";
 import { recipeIngredientReferenceType } from "@/sanity/schemaTypes/recipeIngredientReference";
 import { PortableText } from "./PortableText";
+import { Input } from "../ui/input";
 
 type RecipeProps = {
   recipe: RecipeQueryResult;
@@ -37,12 +38,13 @@ export const Recipe = ({ recipe }: RecipeProps) => {
       ) : null} */}
       <div>
         Servings:{" "}
-        <input
+        <Input
           type="number"
           value={currentServings}
           onChange={(evt) => setCurrentServings(Number(evt.target.value))}
         />
       </div>
+
       <div>Sum dry: {currentSumDryIngredients}</div>
       {ingredients ? (
         <table>

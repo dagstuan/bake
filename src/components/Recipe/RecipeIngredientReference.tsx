@@ -1,5 +1,5 @@
 import { ArrayElement } from "@/utils/tsUtils";
-import { RecipeQueryResult } from "../../sanity.types";
+import { RecipeQueryResult } from "../../../sanity.types";
 
 type RecipeIngredientReferenceResult = Extract<
   ArrayElement<
