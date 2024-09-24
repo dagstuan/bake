@@ -13,9 +13,9 @@ export const recipeQuery =
         name,
         type,
       },
-      amount,
-      unit
+      percent,
     },
+    baseDryIngredients,
     servings,
     instructions[]{
       ...,
@@ -27,8 +27,7 @@ export const recipeQuery =
             ...,
             "ingredient": @.ingredient->{
               "name": ingredient->.name,
-              unit,
-              amount,
+              percent,
             },
           }
         }

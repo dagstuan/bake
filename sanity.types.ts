@@ -91,8 +91,7 @@ export type RecipeIngredient = {
     _weak?: boolean;
     [internalGroqTypeReferenceTo]?: "ingredient";
   };
-  amount?: number;
-  unit?: "g" | "kg" | "dl" | "ml" | "l" | "tbsp";
+  percent?: number;
 };
 
 export type Ingredient = {
@@ -132,6 +131,7 @@ export type Recipe = {
     _key: string;
     [internalGroqTypeReferenceTo]?: "category";
   }>;
+  baseDryIngredients?: number;
   servings?: number;
   ingredients?: Array<{
     _ref: string;
@@ -301,7 +301,7 @@ export type RecipesQueryResult = Array<{
   slug: Slug | null;
 }>;
 // Variable: recipeQuery
-// Query: *[_type == "recipe" && slug.current == $slug][0]{    title,    ingredients[]->{      _id,      "ingredient": ingredient->{        name,        type,      },      amount,      unit    },    servings,    instructions[]{      ...,      _type == "block" => {        ...,        children[]{          ...,          _type == "recipeIngredientReference" => {            ...,            "ingredient": @.ingredient->{              "name": ingredient->.name,              unit,              amount,            },          }        }      }    }}
+// Query: *[_type == "recipe" && slug.current == $slug][0]{    title,    ingredients[]->{      _id,      "ingredient": ingredient->{        name,        type,      },      percent,    },    baseDryIngredients,    servings,    instructions[]{      ...,      _type == "block" => {        ...,        children[]{          ...,          _type == "recipeIngredientReference" => {            ...,            "ingredient": @.ingredient->{              "name": ingredient->.name,              percent,            },          }        }      }    }}
 export type RecipeQueryResult = {
   title: string | null;
   ingredients: Array<{
@@ -310,9 +310,9 @@ export type RecipeQueryResult = {
       name: string | null;
       type: "dry" | "other" | "wet" | null;
     } | null;
-    amount: number | null;
-    unit: "dl" | "g" | "kg" | "l" | "ml" | "tbsp" | null;
+    percent: number | null;
   }> | null;
+  baseDryIngredients: number | null;
   servings: number | null;
   instructions: Array<{
     children: Array<
@@ -321,8 +321,7 @@ export type RecipeQueryResult = {
           _type: "recipeIngredientReference";
           ingredient: {
             name: string | null;
-            unit: "dl" | "g" | "kg" | "l" | "ml" | "tbsp" | null;
-            amount: number | null;
+            percent: number | null;
           } | null;
           percentage?: number;
         }
@@ -351,6 +350,6 @@ import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     '*[_type == "recipe"][0..12]{\n  _id, title, slug\n}': RecipesQueryResult;
-    '*[_type == "recipe" && slug.current == $slug][0]{\n    title,\n    ingredients[]->{\n      _id,\n      "ingredient": ingredient->{\n        name,\n        type,\n      },\n      amount,\n      unit\n    },\n    servings,\n    instructions[]{\n      ...,\n      _type == "block" => {\n        ...,\n        children[]{\n          ...,\n          _type == "recipeIngredientReference" => {\n            ...,\n            "ingredient": @.ingredient->{\n              "name": ingredient->.name,\n              unit,\n              amount,\n            },\n          }\n        }\n      }\n    }\n}': RecipeQueryResult;
+    '*[_type == "recipe" && slug.current == $slug][0]{\n    title,\n    ingredients[]->{\n      _id,\n      "ingredient": ingredient->{\n        name,\n        type,\n      },\n      percent,\n    },\n    baseDryIngredients,\n    servings,\n    instructions[]{\n      ...,\n      _type == "block" => {\n        ...,\n        children[]{\n          ...,\n          _type == "recipeIngredientReference" => {\n            ...,\n            "ingredient": @.ingredient->{\n              "name": ingredient->.name,\n              percent,\n            },\n          }\n        }\n      }\n    }\n}': RecipeQueryResult;
   }
 }

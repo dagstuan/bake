@@ -12,7 +12,8 @@ type RecipeProps = {
 };
 
 export const Recipe = ({ recipe }: RecipeProps) => {
-  const { title, servings, instructions, ingredients } = recipe ?? {};
+  const { title, servings, baseDryIngredients, instructions, ingredients } =
+    recipe ?? {};
 
   const initialServings = servings ?? 0;
 
@@ -20,12 +21,7 @@ export const Recipe = ({ recipe }: RecipeProps) => {
 
   const servingsPercent = currentServings / initialServings;
 
-  const sumDryIngredients = (ingredients ?? []).reduce((acc, ingredient) => {
-    if (ingredient.ingredient?.type === "dry") {
-      return acc + (ingredient.amount ?? 0);
-    }
-    return acc;
-  }, 0);
+  const currentSumDryIngredients = (baseDryIngredients ?? 0) * servingsPercent;
 
   return (
     <main className="container mx-auto prose prose-lg p-4">
@@ -47,29 +43,28 @@ export const Recipe = ({ recipe }: RecipeProps) => {
           onChange={(evt) => setCurrentServings(Number(evt.target.value))}
         />
       </div>
-      <div>Sum dry: {sumDryIngredients}</div>
+      <div>Sum dry: {currentSumDryIngredients}</div>
       {ingredients ? (
         <table>
           <thead>
             <tr>
               <th>Ingredient</th>
-              <th>Amount</th>
               <th>Percent</th>
+              <th>Amount</th>
             </tr>
           </thead>
           <tbody>
-            {ingredients.map(({ _id, ingredient, amount, unit }) => {
+            {ingredients.map(({ _id, ingredient, percent }) => {
               const { name } = ingredient ?? {};
-              const nonNullAmount = amount ?? 0;
+              const percentNum = percent ?? 0;
 
               return (
                 <tr key={_id}>
                   <td>{name}</td>
+                  <td>{percent}%</td>
                   <td>
-                    {nonNullAmount * servingsPercent}
-                    {unit}
+                    {(currentSumDryIngredients * (percentNum / 100)).toFixed()}g
                   </td>
-                  <td>{(nonNullAmount / sumDryIngredients) * 100}%</td>
                 </tr>
               );
             })}
@@ -83,7 +78,7 @@ export const Recipe = ({ recipe }: RecipeProps) => {
             [recipeIngredientReferenceType.name]: ({ value }) => (
               <RecipeIngredientReferenceResult
                 value={value}
-                servingsPercent={servingsPercent}
+                sumDryIngredients={currentSumDryIngredients}
               />
             ),
           }}

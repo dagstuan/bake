@@ -44,8 +44,14 @@ export const recipeType = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: "baseDryIngredients",
+      type: "number",
+      description: "The sum of all dry ingredients in grams",
+      initialValue: 1000,
+    }),
+    defineField({
       name: "servings",
-      description: "The amount of servings this recipe is for",
+      description: "The amount of servings the base dry ingredients make",
       type: "number",
       validation: (rule) => rule.required(),
     }),
@@ -57,9 +63,17 @@ export const recipeType = defineType({
           type: "reference",
           to: { type: "recipeIngredient" },
           options: {
-            filter: "_type == $type && count(*[references(^._id)]) == 0",
-            filterParams: {
-              type: "recipeIngredient",
+            filter: ({ document }) => {
+              return {
+                filter: `_type == $type
+                  && count(*[references(^._id) && !(_id in [$nonDraftDocumentId, $documentId])]) == 0
+                  && !(_id in *[_id == $documentId].ingredients[]._ref)`,
+                params: {
+                  type: "recipeIngredient",
+                  documentId: document._id,
+                  nonDraftDocumentId: document._id.replace(/^drafts\./, ""),
+                },
+              };
             },
           },
         }),

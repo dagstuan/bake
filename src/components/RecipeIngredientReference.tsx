@@ -12,23 +12,25 @@ type RecipeIngredientReferenceResult = Extract<
 
 type RecipeIngredientReferenceResultProps = {
   value: RecipeIngredientReferenceResult;
-  servingsPercent: number;
+  sumDryIngredients: number;
 };
 
 export const RecipeIngredientReferenceResult = ({
   value,
-  servingsPercent,
+  sumDryIngredients,
 }: RecipeIngredientReferenceResultProps) => {
-  if (!value || !value.ingredient?.amount || !value.percentage) {
+  if (!value || !value.ingredient?.percent || !value.percentage) {
     return null;
   }
 
-  const amount = value.ingredient.amount * servingsPercent;
+  const amount =
+    sumDryIngredients *
+    (value.ingredient.percent / 100) *
+    (value.percentage / 100);
 
   return (
     <span>
-      {amount * (value.percentage / 100)}
-      {value.ingredient.unit} {value.ingredient.name}
+      {amount.toFixed(0)}g {value.ingredient.name}
     </span>
   );
 };

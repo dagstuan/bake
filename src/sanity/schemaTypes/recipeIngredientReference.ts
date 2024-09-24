@@ -60,19 +60,18 @@ export const recipeIngredientReferenceType = defineType({
   preview: {
     select: {
       ingredientName: "ingredient.ingredient.name",
-      ingredientAmount: "ingredient.amount",
-      ingredientUnit: "ingredient.unit",
+      ingredientPercent: "ingredient.percent",
       percentage: "percentage",
     },
-    prepare({ ingredientName, ingredientAmount, ingredientUnit, percentage }) {
+    prepare({ ingredientName, ingredientPercent, percentage }) {
       if (!ingredientName) {
         return { title: "Unknown ingredient" };
       }
 
-      const shownAmount = ingredientAmount * (percentage / 100);
+      const shownAmount = ingredientPercent * (percentage / 100);
 
       return {
-        title: `${shownAmount}${ingredientUnit} ${ingredientName}`,
+        title: `${shownAmount.toFixed(2)}% ${ingredientName}`,
       };
     },
   },

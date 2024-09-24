@@ -8,24 +8,8 @@ const fields = [
     validation: (rule) => rule.required(),
   }),
   defineField({
-    name: "amount",
+    name: "percent",
     type: "number",
-    validation: (rule) => rule.required(),
-  }),
-  defineField({
-    name: "unit",
-    type: "string",
-    options: {
-      list: [
-        { title: "g", value: "g" },
-        { title: "kg", value: "kg" },
-        { title: "dl", value: "dl" },
-        { title: "ml", value: "ml" },
-        { title: "l", value: "l" },
-        { title: "tbsp", value: "tbsp" },
-      ],
-    },
-    initialValue: "g",
     validation: (rule) => rule.required(),
   }),
 ];
@@ -38,13 +22,11 @@ export const recipeIngredientType = defineType({
   preview: {
     select: {
       ingredientName: "ingredient.name",
-      amount: "amount",
-      unit: "unit",
       percent: "percent",
     },
-    prepare({ ingredientName, amount, unit }) {
+    prepare({ ingredientName, percent }) {
       return {
-        title: `${amount}${unit} ${ingredientName}`,
+        title: `${percent}% ${ingredientName}`,
       };
     },
   },

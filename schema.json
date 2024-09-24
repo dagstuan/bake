@@ -443,43 +443,10 @@
         },
         "optional": true
       },
-      "amount": {
+      "percent": {
         "type": "objectAttribute",
         "value": {
           "type": "number"
-        },
-        "optional": true
-      },
-      "unit": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "union",
-          "of": [
-            {
-              "type": "string",
-              "value": "g"
-            },
-            {
-              "type": "string",
-              "value": "kg"
-            },
-            {
-              "type": "string",
-              "value": "dl"
-            },
-            {
-              "type": "string",
-              "value": "ml"
-            },
-            {
-              "type": "string",
-              "value": "l"
-            },
-            {
-              "type": "string",
-              "value": "tbsp"
-            }
-          ]
         },
         "optional": true
       }
@@ -710,6 +677,13 @@
               }
             }
           }
+        },
+        "optional": true
+      },
+      "baseDryIngredients": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "number"
         },
         "optional": true
       },
