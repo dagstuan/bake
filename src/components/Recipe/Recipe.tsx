@@ -36,6 +36,9 @@ export const Recipe = ({ recipe }: RecipeProps) => {
   const initialServings = servings ?? 0;
 
   const [currentServings, setCurrentServings] = useState(initialServings);
+  const [inputValue, setInputValue] = useState<string | number>(
+    currentServings,
+  );
 
   const servingsPercent = currentServings / initialServings;
 
@@ -62,9 +65,28 @@ export const Recipe = ({ recipe }: RecipeProps) => {
             <Input
               id="servings"
               type="number"
+              min={0}
+              max={999}
               className="w-20"
-              value={currentServings}
-              onChange={(evt) => setCurrentServings(Number(evt.target.value))}
+              value={inputValue}
+              onChange={(evt) => {
+                setInputValue(evt.target.value);
+
+                const numberValue = Number(evt.target.value);
+                if (numberValue > 0) {
+                  setCurrentServings(numberValue);
+                }
+              }}
+              onBlur={(evt) => {
+                if (evt.target.value === "") {
+                  setInputValue(currentServings);
+                }
+
+                const numberValue = Number(evt.target.value);
+                if (numberValue > 0) {
+                  setCurrentServings(numberValue);
+                }
+              }}
             />
           </div>
 
