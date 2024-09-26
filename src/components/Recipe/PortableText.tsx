@@ -3,6 +3,7 @@ import { ComponentProps } from "react";
 import { TypographyH2 } from "../Typography/TypographyH2";
 import { TypographyH3 } from "../Typography/TypographyH3";
 import { TypographyP } from "../Typography/TypographyP";
+import { TypographyLink } from "../Typography/TypographyLink";
 
 type SanityPortableTextProps = ComponentProps<typeof SanityPortableText>;
 
@@ -14,6 +15,17 @@ export type PortableTextProps = {
 };
 
 const components: Components = {
+  marks: {
+    link: ({ value, children }) => {
+      const { href } = value;
+
+      return (
+        <TypographyLink href={href} type="external">
+          {children}
+        </TypographyLink>
+      );
+    },
+  },
   block: {
     normal: ({ children }) => <TypographyP>{children}</TypographyP>,
     h2: ({ children }) => <TypographyH2>{children}</TypographyH2>,
