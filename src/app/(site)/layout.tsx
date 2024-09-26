@@ -29,11 +29,11 @@ export default function RootLayout({
   return (
     <html lang="no">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-zinc-50 text-black`}
+        className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-zinc-50 text-black antialiased`}
       >
         {draftMode().isEnabled && (
           <a
-            className="fixed right-0 bottom-0 bg-blue-500 text-white p-4 m-4"
+            className="fixed bottom-0 right-0 m-4 bg-blue-500 p-4 text-white"
             href="/api/draft-mode/disable"
           >
             Disable preview mode

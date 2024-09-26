@@ -12,6 +12,13 @@ const fields = [
     type: "number",
     validation: (rule) => rule.required(),
   }),
+  defineField({
+    name: "unit",
+    type: "string",
+    options: {
+      list: ["g", "dl", "ts", "ss", "stk", "egg"],
+    },
+  }),
 ];
 
 export const recipeIngredientType = defineType({

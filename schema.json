@@ -449,6 +449,39 @@
           "type": "number"
         },
         "optional": true
+      },
+      "unit": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "union",
+          "of": [
+            {
+              "type": "string",
+              "value": "g"
+            },
+            {
+              "type": "string",
+              "value": "dl"
+            },
+            {
+              "type": "string",
+              "value": "ts"
+            },
+            {
+              "type": "string",
+              "value": "ss"
+            },
+            {
+              "type": "string",
+              "value": "stk"
+            },
+            {
+              "type": "string",
+              "value": "egg"
+            }
+          ]
+        },
+        "optional": true
       }
     }
   },

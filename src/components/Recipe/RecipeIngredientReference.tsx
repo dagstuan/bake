@@ -1,5 +1,6 @@
 import { ArrayElement } from "@/utils/tsUtils";
 import { RecipeQueryResult } from "../../../sanity.types";
+import { Badge } from "../ui/badge";
 
 type RecipeIngredientReferenceResult = Extract<
   ArrayElement<
@@ -23,14 +24,16 @@ export const RecipeIngredientReferenceResult = ({
     return null;
   }
 
+  const unit = value.ingredient.unit ?? "g";
+
   const amount =
     sumDryIngredients *
     (value.ingredient.percent / 100) *
     (value.percentage / 100);
 
   return (
-    <span>
-      {amount.toFixed(0)}g {value.ingredient.name}
-    </span>
+    <Badge variant="default">
+      {parseFloat(amount.toFixed(1))} {unit} {value.ingredient.name}
+    </Badge>
   );
 };

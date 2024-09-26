@@ -1,3 +1,5 @@
+import { TypographyH1 } from "@/components/Typography/TypographyH1";
+import { TypographyH2 } from "@/components/Typography/TypographyH2";
 import { sanityFetch } from "@/sanity/lib/client";
 import { frontPageRecipesQuery } from "@/sanity/lib/queries";
 import { urlForImage } from "@/sanity/lib/utils";
@@ -10,21 +12,21 @@ export default async function Home() {
   });
 
   return (
-    <main className="mt-16 sm:mt-35 pl-5 pr-5 flex flex-col gap-20 items-center">
-      <div className="mx-auto max-w-3xl sm:text-center flex flex-col gap-3">
-        <h1 className="text-7xl font-bold">Bake 🍞</h1>
+    <main className="sm:mt-35 mt-16 flex flex-col items-center gap-20 pl-5 pr-5">
+      <div className="mx-auto flex max-w-3xl flex-col gap-3 sm:text-center">
+        <TypographyH1>Bake 🍞</TypographyH1>
         <p className="text-2xl">Lettleste oppskrifter som skalerer.</p>
       </div>
 
-      <div className="max-w-6xl w-full">
-        <h2 className="text-4xl font-bold mt-8">Oppskrifter</h2>
+      <div className="w-full max-w-6xl">
+        <TypographyH2>Oppskrifter</TypographyH2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-8">
+        <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
           {recipes.map((recipe) => (
             <Link
               href={`/oppskrifter/${recipe.slug?.current}`}
               key={recipe._id}
-              className="bg-white rounded-lg shadow-sm flex flex-col justify-between"
+              className="flex flex-col justify-between rounded-lg bg-white shadow-sm"
             >
               {recipe.mainImage ? (
                 <Image
@@ -37,10 +39,10 @@ export default async function Home() {
                       .url() ?? ""
                   }
                   alt={recipe.mainImage?.alt ?? "Recipe"}
-                  className="rounded-t-lg w-full h-48 object-cover"
+                  className="h-48 w-full rounded-t-lg object-cover"
                 />
               ) : (
-                <div className="w-full flex justify-center items-center flex-grow text-8xl">
+                <div className="flex w-full flex-grow items-center justify-center text-8xl">
                   🍞
                 </div>
               )}
