@@ -1,4 +1,5 @@
-import { Recipes } from "@/components/Recipes/Recipes";
+import { RecipesGrid } from "@/components/RecipesGrid/RecipesGrid";
+import { TypographyH1 } from "@/components/Typography/TypographyH1";
 import { sanityFetch } from "@/sanity/lib/client";
 import { allRecipesQuery } from "@/sanity/lib/queries";
 
@@ -7,5 +8,13 @@ export default async function Home() {
     query: allRecipesQuery,
   });
 
-  return <Recipes recipes={recipes} />;
+  return (
+    <div className="mb-10 mt-8 flex justify-center">
+      <div className="w-full max-w-6xl">
+        <TypographyH1>Alle oppskrifter</TypographyH1>
+
+        <RecipesGrid recipes={recipes} />
+      </div>
+    </div>
+  );
 }

@@ -295,7 +295,7 @@ export type AllSanitySchemaTypes =
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./src/sanity/lib/queries.ts
 // Variable: frontPageRecipesQuery
-// Query: *[_type == "recipe"][0...3]{  _id, title, slug, mainImage}
+// Query: *[_type == "recipe"][0...6]{  _id, title, slug, mainImage}
 export type FrontPageRecipesQueryResult = Array<{
   _id: string;
   title: string | null;
@@ -395,7 +395,7 @@ export type RecipeQueryResult = {
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    '*[_type == "recipe"][0...3]{\n  _id, title, slug, mainImage\n}': FrontPageRecipesQueryResult;
+    '*[_type == "recipe"][0...6]{\n  _id, title, slug, mainImage\n}': FrontPageRecipesQueryResult;
     '*[_type == "recipe"]{\n  _id, title, slug, mainImage\n}': AllRecipesQueryResult;
     '*[_type == "recipe" && slug.current == $slug][0]{\n    title,\n    mainImage,\n    ingredients[]->{\n      _id,\n      "ingredient": ingredient->{\n        name,\n        type,\n      },\n      unit,\n      percent,\n    },\n    baseDryIngredients,\n    servings,\n    instructions[]{\n      ...,\n      _type == "block" => {\n        ...,\n        children[]{\n          ...,\n          _type == "recipeIngredientReference" => {\n            ...,\n            "ingredient": @.ingredient->{\n              "name": ingredient->.name,\n              percent,\n              unit,\n            },\n          }\n        }\n      }\n    }\n}': RecipeQueryResult;
   }

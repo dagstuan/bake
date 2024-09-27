@@ -1,6 +1,6 @@
 import { defineQuery } from "next-sanity";
 
-export const frontPageRecipesQuery = defineQuery(`*[_type == "recipe"][0...3]{
+export const frontPageRecipesQuery = defineQuery(`*[_type == "recipe"][0...6]{
   _id, title, slug, mainImage
 }`);
 

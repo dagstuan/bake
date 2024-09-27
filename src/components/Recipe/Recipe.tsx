@@ -18,6 +18,11 @@ import {
 } from "../ui/table";
 import { Label } from "../ui/label";
 import { TypographyH1 } from "../Typography/TypographyH1";
+import { Button } from "../ui/button";
+import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
+
+const minServings = 1;
+const maxServings = 999;
 
 type RecipeProps = {
   recipe: RecipeQueryResult;
@@ -45,7 +50,7 @@ export const Recipe = ({ recipe }: RecipeProps) => {
   const currentSumDryIngredients = (baseDryIngredients ?? 0) * servingsPercent;
 
   return (
-    <main className="prose prose-lg container mx-auto flex max-w-6xl flex-col gap-8 p-4 pt-12">
+    <main className="prose prose-lg container mx-auto mb-10 flex max-w-6xl flex-col gap-8 p-4 pt-12">
       {title ? (
         <TypographyH1 className="mb-12 text-center">{title}</TypographyH1>
       ) : null}
@@ -61,33 +66,69 @@ export const Recipe = ({ recipe }: RecipeProps) => {
       <div className="grid grid-cols-1 gap-10 p-4 sm:grid-cols-12 sm:gap-4">
         <div className="col-span-full flex flex-col gap-4 sm:col-span-4">
           <div>
-            <Label htmlFor="servings">Servings</Label>
-            <Input
-              id="servings"
-              type="number"
-              min={0}
-              max={999}
-              className="w-20"
-              value={inputValue}
-              onChange={(evt) => {
-                setInputValue(evt.target.value);
+            <Label htmlFor="servings">Antall</Label>
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                type="button"
+                onClick={() => {
+                  if (currentServings > minServings) {
+                    const newValue = currentServings - 1;
+                    setInputValue(newValue);
+                    setCurrentServings(newValue);
+                  }
+                }}
+              >
+                <MinusIcon />
+              </Button>
+              <Input
+                id="servings"
+                type="number"
+                min={minServings}
+                max={maxServings}
+                className="w-20"
+                value={inputValue}
+                onChange={(evt) => {
+                  setInputValue(evt.target.value);
 
-                const numberValue = Number(evt.target.value);
-                if (numberValue > 0) {
-                  setCurrentServings(numberValue);
-                }
-              }}
-              onBlur={(evt) => {
-                if (evt.target.value === "") {
-                  setInputValue(currentServings);
-                }
+                  const numberValue = Number(evt.target.value);
+                  if (
+                    numberValue >= minServings &&
+                    numberValue <= maxServings
+                  ) {
+                    setCurrentServings(numberValue);
+                  }
+                }}
+                onBlur={(evt) => {
+                  if (evt.target.value === "") {
+                    setInputValue(currentServings);
+                  }
 
-                const numberValue = Number(evt.target.value);
-                if (numberValue > 0) {
-                  setCurrentServings(numberValue);
-                }
-              }}
-            />
+                  const numberValue = Number(evt.target.value);
+                  if (
+                    numberValue >= minServings &&
+                    numberValue <= maxServings
+                  ) {
+                    setCurrentServings(numberValue);
+                  } else {
+                    setInputValue(currentServings);
+                  }
+                }}
+              />
+              <Button
+                variant="outline"
+                type="button"
+                onClick={() => {
+                  if (currentServings < maxServings) {
+                    const newValue = currentServings + 1;
+                    setInputValue(newValue);
+                    setCurrentServings(newValue);
+                  }
+                }}
+              >
+                <PlusIcon />
+              </Button>
+            </div>
           </div>
 
           {ingredients ? (
