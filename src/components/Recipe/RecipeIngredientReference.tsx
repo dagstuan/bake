@@ -1,6 +1,7 @@
 import { Button } from "../ui/button";
 import { Check, Square } from "lucide-react";
 import { RecipeIngredientReference } from "./types";
+import { cn } from "@/lib/utils";
 
 type RecipeIngredientReferenceResultProps = {
   value: RecipeIngredientReference;
@@ -34,7 +35,9 @@ export const RecipeIngredientReferenceResult = ({
   return (
     <Button
       variant="outline"
-      className={`align-center inline-flex h-7 gap-1 bg-muted px-2 ${completed ? "bg-green-100 hover:bg-green-200" : ""}`}
+      className={cn(`align-center inline-flex h-7 gap-1 bg-muted px-2`, {
+        ["bg-green-100 hover:bg-green-200"]: completed,
+      })}
       onClick={() => toggleCompleted(value.ingredient!._id, value._key)}
     >
       {parseFloat(amount.toFixed(1))} {unit} {value.ingredient.name}

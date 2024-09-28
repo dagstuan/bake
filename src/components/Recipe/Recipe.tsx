@@ -23,6 +23,7 @@ import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
 import { RecipeIngredientReference } from "./types";
 import { CheckIcon } from "lucide-react";
 import { TypographyP } from "../Typography/TypographyP";
+import { cn } from "@/lib/utils";
 
 const minServings = 1;
 const maxServings = 999;
@@ -162,7 +163,7 @@ export const Recipe = ({ recipe }: RecipeProps) => {
                 type="number"
                 min={minServings}
                 max={maxServings}
-                className="w-20"
+                className="w-13 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                 value={inputValue}
                 onChange={(evt) => {
                   setInputValue(evt.target.value);
@@ -221,16 +222,25 @@ export const Recipe = ({ recipe }: RecipeProps) => {
                   const { name } = ingredient ?? {};
                   const percentNum = percent ?? 0;
                   const unitStr = unit ?? "g";
+                  const isComplete = isIngredientComplete(_id);
 
                   return (
                     <TableRow key={_id}>
-                      <TableCell className="flex items-center gap-2">
+                      <TableCell
+                        className={cn(`flex items-center gap-2`, {
+                          ["text-green-800"]: isComplete,
+                        })}
+                      >
                         {name}
-                        {isIngredientComplete(_id) && (
+                        {isComplete ? (
                           <CheckIcon strokeWidth={1} size={16} />
+                        ) : (
+                          <div style={{ width: "16px", height: "16px" }} />
                         )}
                       </TableCell>
-                      <TableCell>{percent?.toFixed(2)}%</TableCell>
+                      <TableCell>
+                        {parseFloat(percent?.toFixed(1) ?? "0")}%
+                      </TableCell>
                       <TableCell>
                         {parseFloat(
                           (
