@@ -134,7 +134,7 @@ export const Recipe = ({ recipe }: RecipeProps) => {
       {mainImage?.asset?._ref ? (
         <Image
           className="w-full rounded-lg"
-          src={urlFor(mainImage?.asset?._ref).width(1000).height(400).url()}
+          src={urlFor(mainImage.asset._ref).width(1000).height(400).url()}
           width={1000}
           height={400}
           alt={title || ""}

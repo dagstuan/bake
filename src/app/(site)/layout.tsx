@@ -17,8 +17,19 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Bake",
+  title: {
+    default: "Bake",
+    template: "%s | Bake",
+  },
   description: "Lettleste, skalerbare oppskrifter",
+  openGraph: {
+    locale: "no_NO",
+    type: "website",
+    url: "https://bake.dagstuan.com",
+    siteName: "Bake",
+    title: "Bake",
+    description: "Lettleste, skalerbare oppskrifter",
+  },
 };
 
 export default function RootLayout({

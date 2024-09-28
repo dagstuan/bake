@@ -6,6 +6,8 @@ import { notFound } from "next/navigation";
 import { client, sanityFetch } from "@/sanity/lib/client";
 import { recipeQuery, allRecipesQuery } from "@/sanity/lib/queries";
 import { Recipe } from "@/components/Recipe/Recipe";
+import { Metadata, ResolvingMetadata } from "next";
+import { urlFor } from "@/sanity/lib/image";
 
 export async function generateStaticParams() {
   const recipes = await client.fetch(
@@ -19,11 +21,44 @@ export async function generateStaticParams() {
   }));
 }
 
+type Props = {
+  params: { slug: string };
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const recipe = await sanityFetch({
+    query: recipeQuery,
+    params,
+  });
+
+  if (recipe) {
+    const { title, mainImage } = recipe;
+
+    return {
+      title,
+      openGraph: {
+        images: mainImage?.asset?._ref
+          ? [
+              {
+                url: urlFor(mainImage.asset._ref).width(800).height(600).url(),
+                width: 800,
+                height: 600,
+              },
+            ]
+          : [],
+      },
+    };
+  }
+
+  return {};
+}
+
 export default async function Page({ params }: { params: QueryParams }) {
   const recipe = await sanityFetch({
     query: recipeQuery,
     params,
   });
+
   if (!recipe) {
     return notFound();
   }
