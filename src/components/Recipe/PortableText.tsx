@@ -12,6 +12,7 @@ type Components = NonNullable<SanityPortableTextProps["components"]>;
 export type PortableTextProps = {
   value: SanityPortableTextProps["value"];
   types: Components["types"];
+  block?: Components["block"];
 };
 
 const components: Components = {
@@ -31,15 +32,20 @@ const components: Components = {
     h2: ({ children }) => <TypographyH2>{children}</TypographyH2>,
     h3: ({ children }) => <TypographyH3>{children}</TypographyH3>,
   },
-};
+} as const;
 
 export const PortableText = (props: PortableTextProps) => {
-  const { types } = props;
+  const { types, block = {} } = props;
+
+  const blockObj = { ...components.block, ...block };
 
   return (
     <SanityPortableText
       {...props}
-      components={{ ...components, types: { ...components.types, ...types } }}
+      components={{
+        types: { ...components.types, ...types },
+        block: blockObj,
+      }}
     />
   );
 };

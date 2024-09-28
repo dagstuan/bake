@@ -32,6 +32,7 @@ export const recipeQuery =
           _type == "recipeIngredientReference" => {
             ...,
             "ingredient": @.ingredient->{
+              _id,
               "name": ingredient->.name,
               percent,
               unit,

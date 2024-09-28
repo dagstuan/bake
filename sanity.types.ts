@@ -333,7 +333,7 @@ export type AllRecipesQueryResult = Array<{
   } | null;
 }>;
 // Variable: recipeQuery
-// Query: *[_type == "recipe" && slug.current == $slug][0]{    title,    mainImage,    ingredients[]->{      _id,      "ingredient": ingredient->{        name,        type,      },      unit,      percent,    },    baseDryIngredients,    servings,    instructions[]{      ...,      _type == "block" => {        ...,        children[]{          ...,          _type == "recipeIngredientReference" => {            ...,            "ingredient": @.ingredient->{              "name": ingredient->.name,              percent,              unit,            },          }        }      }    }}
+// Query: *[_type == "recipe" && slug.current == $slug][0]{    title,    mainImage,    ingredients[]->{      _id,      "ingredient": ingredient->{        name,        type,      },      unit,      percent,    },    baseDryIngredients,    servings,    instructions[]{      ...,      _type == "block" => {        ...,        children[]{          ...,          _type == "recipeIngredientReference" => {            ...,            "ingredient": @.ingredient->{              _id,              "name": ingredient->.name,              percent,              unit,            },          }        }      }    }}
 export type RecipeQueryResult = {
   title: string | null;
   mainImage: {
@@ -365,6 +365,7 @@ export type RecipeQueryResult = {
           _key: string;
           _type: "recipeIngredientReference";
           ingredient: {
+            _id: string;
             name: string | null;
             percent: number | null;
             unit: "dl" | "egg" | "g" | "ss" | "stk" | "ts" | null;
@@ -397,6 +398,6 @@ declare module "@sanity/client" {
   interface SanityQueries {
     '*[_type == "recipe"][0...6]{\n  _id, title, slug, mainImage\n}': FrontPageRecipesQueryResult;
     '*[_type == "recipe"]{\n  _id, title, slug, mainImage\n}': AllRecipesQueryResult;
-    '*[_type == "recipe" && slug.current == $slug][0]{\n    title,\n    mainImage,\n    ingredients[]->{\n      _id,\n      "ingredient": ingredient->{\n        name,\n        type,\n      },\n      unit,\n      percent,\n    },\n    baseDryIngredients,\n    servings,\n    instructions[]{\n      ...,\n      _type == "block" => {\n        ...,\n        children[]{\n          ...,\n          _type == "recipeIngredientReference" => {\n            ...,\n            "ingredient": @.ingredient->{\n              "name": ingredient->.name,\n              percent,\n              unit,\n            },\n          }\n        }\n      }\n    }\n}': RecipeQueryResult;
+    '*[_type == "recipe" && slug.current == $slug][0]{\n    title,\n    mainImage,\n    ingredients[]->{\n      _id,\n      "ingredient": ingredient->{\n        name,\n        type,\n      },\n      unit,\n      percent,\n    },\n    baseDryIngredients,\n    servings,\n    instructions[]{\n      ...,\n      _type == "block" => {\n        ...,\n        children[]{\n          ...,\n          _type == "recipeIngredientReference" => {\n            ...,\n            "ingredient": @.ingredient->{\n              _id,\n              "name": ingredient->.name,\n              percent,\n              unit,\n            },\n          }\n        }\n      }\n    }\n}': RecipeQueryResult;
   }
 }

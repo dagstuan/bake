@@ -1,26 +1,26 @@
-import { ArrayElement } from "@/utils/tsUtils";
-import { RecipeQueryResult } from "../../../sanity.types";
-import { Badge } from "../ui/badge";
-
-type RecipeIngredientReferenceResult = Extract<
-  ArrayElement<
-    NonNullable<
-      ArrayElement<NonNullable<RecipeQueryResult>["instructions"]>["children"]
-    >
-  >,
-  { _type: "recipeIngredientReference" }
->;
+import { Button } from "../ui/button";
+import { Check, Square } from "lucide-react";
+import { RecipeIngredientReference } from "./types";
 
 type RecipeIngredientReferenceResultProps = {
-  value: RecipeIngredientReferenceResult;
+  value: RecipeIngredientReference;
   sumDryIngredients: number;
+  completed: boolean;
+  toggleCompleted: (ingredientId: string, key: string) => void;
 };
 
 export const RecipeIngredientReferenceResult = ({
   value,
   sumDryIngredients,
+  completed,
+  toggleCompleted,
 }: RecipeIngredientReferenceResultProps) => {
-  if (!value || !value.ingredient?.percent || !value.percentage) {
+  if (
+    !value ||
+    !value.ingredient ||
+    !value.ingredient?.percent ||
+    !value.percentage
+  ) {
     return null;
   }
 
@@ -32,8 +32,17 @@ export const RecipeIngredientReferenceResult = ({
     (value.percentage / 100);
 
   return (
-    <Badge variant="default">
+    <Button
+      variant="outline"
+      className={`align-center inline-flex h-7 gap-1 bg-muted px-2 ${completed ? "bg-green-100 hover:bg-green-200" : ""}`}
+      onClick={() => toggleCompleted(value.ingredient!._id, value._key)}
+    >
       {parseFloat(amount.toFixed(1))} {unit} {value.ingredient.name}
-    </Badge>
+      {completed ? (
+        <Check strokeWidth={1} size={16} />
+      ) : (
+        <Square strokeWidth={1} size={16} />
+      )}
+    </Button>
   );
 };

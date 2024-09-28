@@ -20,12 +20,25 @@ import { Label } from "../ui/label";
 import { TypographyH1 } from "../Typography/TypographyH1";
 import { Button } from "../ui/button";
 import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
+import { RecipeIngredientReference } from "./types";
+import { CheckIcon } from "lucide-react";
+import { TypographyP } from "../Typography/TypographyP";
 
 const minServings = 1;
 const maxServings = 999;
 
 type RecipeProps = {
   recipe: RecipeQueryResult;
+};
+
+type RecipeIngredientReferenceState = {
+  completed: boolean;
+};
+
+type IngredientsState = {
+  [ingredientId: string]: {
+    [recipeIngredientKey: string]: RecipeIngredientReferenceState;
+  };
 };
 
 export const Recipe = ({ recipe }: RecipeProps) => {
@@ -37,6 +50,69 @@ export const Recipe = ({ recipe }: RecipeProps) => {
     instructions,
     ingredients,
   } = recipe ?? {};
+
+  const [ingredientsState, setIngredientsState] = useState(
+    instructions?.reduce<IngredientsState>((acc, curr) => {
+      const currRecipeInstructions =
+        curr.children?.filter((x) => x._type === "recipeIngredientReference") ??
+        [];
+
+      currRecipeInstructions.map((recipeInstruction) => {
+        const recipeId = recipeInstruction.ingredient?._id;
+
+        if (recipeId) {
+          if (!(recipeId in acc)) {
+            acc[recipeId] = {};
+          }
+
+          const recipeInstructionKey = recipeInstruction._key;
+          acc[recipeId][recipeInstructionKey] = {
+            completed: false,
+          };
+        }
+      });
+
+      return acc;
+    }, {}) ?? {},
+  );
+
+  const toggleIngredientReference = (ingredientId: string, key: string) => {
+    const currentIngredient = ingredientsState[ingredientId];
+    const currentKeyStatus = currentIngredient[key]?.completed ?? false;
+
+    const updatedIngredient = {
+      ...currentIngredient,
+      [key]: {
+        completed: !currentKeyStatus,
+      },
+    };
+
+    const newState = {
+      ...ingredientsState,
+      [ingredientId]: updatedIngredient,
+    };
+
+    setIngredientsState(newState);
+  };
+
+  const isIngredientComplete = (ingredientId: string) => {
+    const ingredient = ingredientsState[ingredientId];
+
+    if (!ingredient) {
+      return false;
+    }
+
+    return Object.values(ingredient).every((x) => x.completed);
+  };
+
+  const isIngredientRefComplete = (
+    ingredientId: string,
+    ingredientRefKey: string,
+  ) => {
+    return (
+      ingredientsState[ingredientId]?.[ingredientRefKey]?.completed ?? false
+    );
+  };
 
   const initialServings = servings ?? 0;
 
@@ -131,7 +207,7 @@ export const Recipe = ({ recipe }: RecipeProps) => {
             </div>
           </div>
 
-          {ingredients ? (
+          {ingredientsState ? (
             <Table>
               <TableHeader>
                 <TableRow>
@@ -141,14 +217,19 @@ export const Recipe = ({ recipe }: RecipeProps) => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {ingredients.map(({ _id, ingredient, percent, unit }) => {
+                {ingredients?.map(({ _id, ingredient, percent, unit }) => {
                   const { name } = ingredient ?? {};
                   const percentNum = percent ?? 0;
                   const unitStr = unit ?? "g";
 
                   return (
                     <TableRow key={_id}>
-                      <TableCell>{name}</TableCell>
+                      <TableCell className="flex items-center gap-2">
+                        {name}
+                        {isIngredientComplete(_id) && (
+                          <CheckIcon strokeWidth={1} size={16} />
+                        )}
+                      </TableCell>
                       <TableCell>{percent?.toFixed(2)}%</TableCell>
                       <TableCell>
                         {parseFloat(
@@ -166,15 +247,33 @@ export const Recipe = ({ recipe }: RecipeProps) => {
             </Table>
           ) : null}
         </div>
-        <div className="col-span-full sm:col-span-8">
+        <div className="col-span-full align-baseline sm:col-span-8">
           {instructions ? (
             <PortableText
               value={instructions}
+              block={{
+                normal: ({ children }) => (
+                  <TypographyP className="leading-8">{children}</TypographyP>
+                ),
+              }}
               types={{
-                [recipeIngredientReferenceType.name]: ({ value }) => (
+                [recipeIngredientReferenceType.name]: ({
+                  value,
+                }: {
+                  value: RecipeIngredientReference;
+                }) => (
                   <RecipeIngredientReferenceResult
                     value={value}
+                    completed={
+                      value.ingredient?._id && value._key
+                        ? isIngredientRefComplete(
+                            value.ingredient._id,
+                            value._key,
+                          )
+                        : false
+                    }
                     sumDryIngredients={currentSumDryIngredients}
+                    toggleCompleted={toggleIngredientReference}
                   />
                 ),
               }}
