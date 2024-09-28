@@ -6,7 +6,7 @@ import { notFound } from "next/navigation";
 import { client, sanityFetch } from "@/sanity/lib/client";
 import { recipeQuery, allRecipesQuery } from "@/sanity/lib/queries";
 import { Recipe } from "@/components/Recipe/Recipe";
-import { Metadata, ResolvingMetadata } from "next";
+import { Metadata } from "next";
 import { urlFor } from "@/sanity/lib/image";
 
 export async function generateStaticParams() {

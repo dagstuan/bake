@@ -42,6 +42,40 @@ type IngredientsState = {
   };
 };
 
+type Instructions = NonNullable<RecipeQueryResult>["instructions"];
+
+const calcInitialIngredientsState = (
+  instructions: Instructions | null | undefined,
+): IngredientsState => {
+  if (!instructions) {
+    return {};
+  }
+
+  return instructions.reduce<IngredientsState>((state, instruction) => {
+    const ingredientReferences = instruction.children?.filter(
+      (x) => x._type === "recipeIngredientReference",
+    );
+
+    ingredientReferences?.forEach((recipeInstruction) => {
+      const ingredientId = recipeInstruction.ingredient?._id;
+      if (!ingredientId) {
+        return;
+      }
+
+      if (!state[ingredientId]) {
+        state[ingredientId] = {};
+      }
+
+      const recipeInstructionKey = recipeInstruction._key;
+      state[ingredientId][recipeInstructionKey] = {
+        completed: false,
+      };
+    });
+
+    return state;
+  }, {});
+};
+
 export const Recipe = ({ recipe }: RecipeProps) => {
   const {
     title,
@@ -53,28 +87,7 @@ export const Recipe = ({ recipe }: RecipeProps) => {
   } = recipe ?? {};
 
   const [ingredientsState, setIngredientsState] = useState(
-    instructions?.reduce<IngredientsState>((acc, curr) => {
-      const currRecipeInstructions =
-        curr.children?.filter((x) => x._type === "recipeIngredientReference") ??
-        [];
-
-      currRecipeInstructions.map((recipeInstruction) => {
-        const recipeId = recipeInstruction.ingredient?._id;
-
-        if (recipeId) {
-          if (!(recipeId in acc)) {
-            acc[recipeId] = {};
-          }
-
-          const recipeInstructionKey = recipeInstruction._key;
-          acc[recipeId][recipeInstructionKey] = {
-            completed: false,
-          };
-        }
-      });
-
-      return acc;
-    }, {}) ?? {},
+    calcInitialIngredientsState(instructions),
   );
 
   const toggleIngredientReference = (ingredientId: string, key: string) => {
@@ -122,6 +135,12 @@ export const Recipe = ({ recipe }: RecipeProps) => {
     currentServings,
   );
 
+  const reset = () => {
+    setCurrentServings(initialServings);
+    setInputValue(initialServings);
+    setIngredientsState(calcInitialIngredientsState(instructions));
+  };
+
   const servingsPercent = currentServings / initialServings;
 
   const currentSumDryIngredients = (baseDryIngredients ?? 0) * servingsPercent;
@@ -142,70 +161,75 @@ export const Recipe = ({ recipe }: RecipeProps) => {
       ) : null}
       <div className="grid grid-cols-1 gap-10 p-4 sm:grid-cols-12 sm:gap-4">
         <div className="col-span-full flex flex-col gap-4 sm:col-span-4">
-          <div>
-            <Label htmlFor="servings">Antall</Label>
-            <div className="flex gap-2">
-              <Button
-                variant="outline"
-                type="button"
-                onClick={() => {
-                  if (currentServings > minServings) {
-                    const newValue = currentServings - 1;
-                    setInputValue(newValue);
-                    setCurrentServings(newValue);
-                  }
-                }}
-              >
-                <MinusIcon />
-              </Button>
-              <Input
-                id="servings"
-                type="number"
-                min={minServings}
-                max={maxServings}
-                className="w-13 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-                value={inputValue}
-                onChange={(evt) => {
-                  setInputValue(evt.target.value);
+          <div className="flex items-end justify-between">
+            <div>
+              <Label htmlFor="servings">Antall</Label>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  type="button"
+                  onClick={() => {
+                    if (currentServings > minServings) {
+                      const newValue = currentServings - 1;
+                      setInputValue(newValue);
+                      setCurrentServings(newValue);
+                    }
+                  }}
+                >
+                  <MinusIcon />
+                </Button>
+                <Input
+                  id="servings"
+                  type="number"
+                  min={minServings}
+                  max={maxServings}
+                  className="w-13 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                  value={inputValue}
+                  onChange={(evt) => {
+                    setInputValue(evt.target.value);
 
-                  const numberValue = Number(evt.target.value);
-                  if (
-                    numberValue >= minServings &&
-                    numberValue <= maxServings
-                  ) {
-                    setCurrentServings(numberValue);
-                  }
-                }}
-                onBlur={(evt) => {
-                  if (evt.target.value === "") {
-                    setInputValue(currentServings);
-                  }
+                    const numberValue = Number(evt.target.value);
+                    if (
+                      numberValue >= minServings &&
+                      numberValue <= maxServings
+                    ) {
+                      setCurrentServings(numberValue);
+                    }
+                  }}
+                  onBlur={(evt) => {
+                    if (evt.target.value === "") {
+                      setInputValue(currentServings);
+                    }
 
-                  const numberValue = Number(evt.target.value);
-                  if (
-                    numberValue >= minServings &&
-                    numberValue <= maxServings
-                  ) {
-                    setCurrentServings(numberValue);
-                  } else {
-                    setInputValue(currentServings);
-                  }
-                }}
-              />
-              <Button
-                variant="outline"
-                type="button"
-                onClick={() => {
-                  if (currentServings < maxServings) {
-                    const newValue = currentServings + 1;
-                    setInputValue(newValue);
-                    setCurrentServings(newValue);
-                  }
-                }}
-              >
-                <PlusIcon />
-              </Button>
+                    const numberValue = Number(evt.target.value);
+                    if (
+                      numberValue >= minServings &&
+                      numberValue <= maxServings
+                    ) {
+                      setCurrentServings(numberValue);
+                    } else {
+                      setInputValue(currentServings);
+                    }
+                  }}
+                />
+                <Button
+                  variant="outline"
+                  type="button"
+                  onClick={() => {
+                    if (currentServings < maxServings) {
+                      const newValue = currentServings + 1;
+                      setInputValue(newValue);
+                      setCurrentServings(newValue);
+                    }
+                  }}
+                >
+                  <PlusIcon />
+                </Button>
+              </div>
             </div>
+            <Button type="button" variant="default" onClick={reset}>
+              Tilbakestill
+            </Button>
           </div>
 
           {ingredientsState ? (
