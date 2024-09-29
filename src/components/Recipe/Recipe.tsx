@@ -24,6 +24,7 @@ import { RecipeIngredientReference } from "./types";
 import { CheckIcon } from "lucide-react";
 import { TypographyP } from "../Typography/TypographyP";
 import { cn } from "@/lib/utils";
+import { WakeLockToggle } from "./WakeLockToggle";
 
 const minServings = 1;
 const maxServings = 999;
@@ -157,10 +158,12 @@ export const Recipe = ({ recipe }: RecipeProps) => {
           width={1000}
           height={400}
           alt={title || ""}
+          priority={true}
         />
       ) : null}
       <div className="grid grid-cols-1 gap-10 p-4 sm:grid-cols-12 sm:gap-4">
         <div className="col-span-full flex flex-col gap-4 sm:col-span-4">
+          <WakeLockToggle />
           <div className="flex items-end justify-between">
             <div>
               <Label htmlFor="servings">Antall</Label>
