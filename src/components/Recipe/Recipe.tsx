@@ -147,9 +147,9 @@ export const Recipe = ({ recipe }: RecipeProps) => {
   const currentSumDryIngredients = (baseDryIngredients ?? 0) * servingsPercent;
 
   return (
-    <main className="prose prose-lg container mx-auto mb-10 flex max-w-6xl flex-col gap-8 p-4 pt-12">
+    <main className="prose prose-lg container mx-auto mb-10 flex max-w-6xl flex-col gap-8 p-6 pt-8 sm:pt-12">
       {title ? (
-        <TypographyH1 className="mb-12 text-center">{title}</TypographyH1>
+        <TypographyH1 className="text-center sm:mb-12">{title}</TypographyH1>
       ) : null}
       {mainImage?.asset?._ref ? (
         <Image
@@ -161,7 +161,7 @@ export const Recipe = ({ recipe }: RecipeProps) => {
           priority={true}
         />
       ) : null}
-      <div className="grid grid-cols-1 gap-10 p-4 sm:grid-cols-12 sm:gap-4">
+      <div className="grid grid-cols-1 gap-10 sm:grid-cols-12 sm:gap-4">
         <div className="col-span-full flex flex-col gap-4 sm:col-span-4">
           <WakeLockToggle />
           <div className="flex items-end justify-between">

@@ -10,7 +10,7 @@ export default async function Home() {
   });
 
   return (
-    <main className="sm:mt-35 mb-10 mt-16 flex flex-col items-center gap-20 pl-5 pr-5">
+    <main className="sm:mt-35 mb-10 mt-8 flex flex-col items-center gap-10 px-6 sm:mt-16 sm:gap-20">
       <div className="mx-auto flex max-w-3xl flex-col gap-3 sm:text-center">
         <TypographyH1>Bake 🍞</TypographyH1>
         <p className="text-2xl">Lettleste oppskrifter som skalerer.</p>
