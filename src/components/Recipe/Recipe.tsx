@@ -143,7 +143,7 @@ export const Recipe = ({ recipe }: RecipeProps) => {
                           {parseFloat(percent?.toFixed(1) ?? "0")}%
                         </TableCell>
                         <TableCell>
-                          {amount} {unit}
+                          {parseFloat(amount.toFixed(2))} {unit}
                         </TableCell>
                       </TableRow>
                     );
