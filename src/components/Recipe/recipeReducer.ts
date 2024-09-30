@@ -26,6 +26,7 @@ export type RecipeState = {
   servings: number;
   ingredientsCompletion: IngredientsCompletionState;
   ingredients: RecipeIngredientsState;
+  yieldPerServing: number;
 };
 
 export const calcInitialIngredientsCompletionState = (
@@ -129,13 +130,21 @@ export const calcInitialState = (recipe: RecipeQueryResult): RecipeState => {
   const initialServingsNum = servings ?? 1;
   const initialDryIngredients = baseDryIngredients ?? 1000;
 
+  const ingredientsState = calcInitialRecipeIngredientsState(
+    initialDryIngredients,
+    ingredients,
+  );
+
+  const totalYield = ingredientsState.reduce(
+    (acc, curr) => acc + curr.amount,
+    0,
+  );
+
   return {
     servings: initialServingsNum,
     ingredientsCompletion: calcInitialIngredientsCompletionState(instructions),
-    ingredients: calcInitialRecipeIngredientsState(
-      initialDryIngredients,
-      ingredients,
-    ),
+    ingredients: ingredientsState,
+    yieldPerServing: totalYield / initialServingsNum,
   };
 };
 

@@ -47,9 +47,7 @@ export const RecipeEditorContent = (props: RecipeEditorContentProps) => {
 
     const changePercent = newServings / servings;
     const updatedIngredients = ingredients.map((ingredient) => {
-      const updatedAmount = parseFloat(
-        (ingredient.amount * changePercent).toFixed(2),
-      );
+      const updatedAmount = ingredient.amount * changePercent;
 
       return { ...ingredient, amount: updatedAmount };
     });
@@ -93,7 +91,7 @@ export const RecipeEditorContent = (props: RecipeEditorContentProps) => {
     );
 
     const updatedServings = updatedTotalYield / yieldPerServing;
-    setServings(parseFloat(updatedServings.toFixed(2)));
+    setServings(updatedServings);
     setIngredients(updatedIngredients);
   };
 
@@ -118,7 +116,7 @@ export const RecipeEditorContent = (props: RecipeEditorContentProps) => {
             </Button>
             <DeferredNumberInput
               id="servings"
-              value={servings}
+              value={parseFloat(servings.toFixed(2))}
               onChange={handleServingsChange}
               className="w-20"
             />
@@ -145,13 +143,13 @@ export const RecipeEditorContent = (props: RecipeEditorContentProps) => {
                 <div className="flex items-center gap-2">
                   <DeferredNumberInput
                     id={`ingredient-${index}`}
-                    value={ingredient.amount}
+                    className="w-24"
+                    value={parseFloat(ingredient.amount.toFixed(2))}
                     min={0.00001}
                     max={100000}
                     onChange={(newValue) =>
                       handleIngredientChange(ingredient.ingredientId, newValue)
                     }
-                    className="w-24"
                   />
                   {ingredient.unit}
                 </div>

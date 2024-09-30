@@ -33,11 +33,10 @@ type RecipeProps = {
 export const Recipe = ({ recipe }: RecipeProps) => {
   const { title, mainImage, instructions } = recipe ?? {};
 
-  const [{ ingredients, ingredientsCompletion, servings }, dispatch] =
-    useReducer(recipeReducer, calcInitialState(recipe));
-
-  const totalYield = ingredients?.reduce((acc, curr) => acc + curr.amount, 0);
-  const yieldPerServing = totalYield / servings;
+  const [
+    { ingredients, ingredientsCompletion, servings, yieldPerServing },
+    dispatch,
+  ] = useReducer(recipeReducer, calcInitialState(recipe));
 
   const isIngredientComplete = (ingredientId: string) => {
     const ingredient = ingredientsCompletion[ingredientId];
@@ -108,7 +107,8 @@ export const Recipe = ({ recipe }: RecipeProps) => {
           </div>
 
           <TypographyP className="!mt-0">
-            Antall: <span className="font-bold">{servings}</span>
+            Antall:{" "}
+            <span className="font-bold">{parseFloat(servings.toFixed(2))}</span>
           </TypographyP>
 
           {ingredients ? (
