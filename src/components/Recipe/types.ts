@@ -9,3 +9,6 @@ export type RecipeIngredientReference = Extract<
   >,
   { _type: "recipeIngredientReference" }
 >;
+
+export type RecipeInstructions = NonNullable<RecipeQueryResult>["instructions"];
+export type RecipeIngredients = NonNullable<RecipeQueryResult>["ingredients"];

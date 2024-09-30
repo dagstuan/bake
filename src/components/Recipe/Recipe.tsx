@@ -1,11 +1,10 @@
 "use client";
 
 import { RecipeQueryResult } from "../../../sanity.types";
-import { useState } from "react";
+import { useReducer } from "react";
 import { RecipeIngredientReferenceResult } from "./RecipeIngredientReference";
 import { recipeIngredientReferenceType } from "@/sanity/schemaTypes/recipeIngredientReference";
 import { PortableText } from "./PortableText";
-import { Input } from "../ui/input";
 import Image from "next/image";
 import { urlFor } from "@/sanity/lib/image";
 import {
@@ -16,102 +15,29 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
-import { Label } from "../ui/label";
 import { TypographyH1 } from "../Typography/TypographyH1";
 import { Button } from "../ui/button";
-import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
 import { RecipeIngredientReference } from "./types";
 import { CheckIcon } from "lucide-react";
 import { TypographyP } from "../Typography/TypographyP";
 import { cn } from "@/lib/utils";
 import { WakeLockToggle } from "./WakeLockToggle";
-
-const minServings = 1;
-const maxServings = 999;
+import { calcSumDryIngredients } from "./utils";
+import { calcInitialState, recipeReducer } from "./recipeReducer";
+import { RecipeEditor } from "./RecipeEditor";
 
 type RecipeProps = {
   recipe: RecipeQueryResult;
 };
 
-type RecipeIngredientReferenceState = {
-  completed: boolean;
-};
-
-type IngredientsState = {
-  [ingredientId: string]: {
-    [recipeIngredientKey: string]: RecipeIngredientReferenceState;
-  };
-};
-
-type Instructions = NonNullable<RecipeQueryResult>["instructions"];
-
-const calcInitialIngredientsState = (
-  instructions: Instructions | null | undefined,
-): IngredientsState => {
-  if (!instructions) {
-    return {};
-  }
-
-  return instructions.reduce<IngredientsState>((state, instruction) => {
-    const ingredientReferences = instruction.children?.filter(
-      (x) => x._type === "recipeIngredientReference",
-    );
-
-    ingredientReferences?.forEach((recipeInstruction) => {
-      const ingredientId = recipeInstruction.ingredient?._id;
-      if (!ingredientId) {
-        return;
-      }
-
-      if (!state[ingredientId]) {
-        state[ingredientId] = {};
-      }
-
-      const recipeInstructionKey = recipeInstruction._key;
-      state[ingredientId][recipeInstructionKey] = {
-        completed: false,
-      };
-    });
-
-    return state;
-  }, {});
-};
-
 export const Recipe = ({ recipe }: RecipeProps) => {
-  const {
-    title,
-    mainImage,
-    servings,
-    baseDryIngredients,
-    instructions,
-    ingredients,
-  } = recipe ?? {};
+  const { title, mainImage, instructions, baseDryIngredients } = recipe ?? {};
 
-  const [ingredientsState, setIngredientsState] = useState(
-    calcInitialIngredientsState(instructions),
-  );
-
-  const toggleIngredientReference = (ingredientId: string, key: string) => {
-    const currentIngredient = ingredientsState[ingredientId];
-    const currentKeyStatus = currentIngredient[key]?.completed ?? false;
-
-    const updatedIngredient = {
-      ...currentIngredient,
-      [key]: {
-        completed: !currentKeyStatus,
-      },
-    };
-
-    const newState = {
-      ...ingredientsState,
-      [ingredientId]: updatedIngredient,
-    };
-
-    setIngredientsState(newState);
-  };
+  const [{ ingredients, ingredientsCompletion, servings }, dispatch] =
+    useReducer(recipeReducer, calcInitialState(recipe));
 
   const isIngredientComplete = (ingredientId: string) => {
-    const ingredient = ingredientsState[ingredientId];
+    const ingredient = ingredientsCompletion[ingredientId];
 
     if (!ingredient) {
       return false;
@@ -125,33 +51,26 @@ export const Recipe = ({ recipe }: RecipeProps) => {
     ingredientRefKey: string,
   ) => {
     return (
-      ingredientsState[ingredientId]?.[ingredientRefKey]?.completed ?? false
+      ingredientsCompletion[ingredientId]?.[ingredientRefKey]?.completed ??
+      false
     );
   };
 
-  const initialServings = servings ?? 0;
-
-  const [currentServings, setCurrentServings] = useState(initialServings);
-  const [inputValue, setInputValue] = useState<string | number>(
-    currentServings,
-  );
-
   const reset = () => {
-    setCurrentServings(initialServings);
-    setInputValue(initialServings);
-    setIngredientsState(calcInitialIngredientsState(instructions));
+    dispatch({
+      type: "reset",
+      payload: calcInitialState(recipe),
+    });
   };
 
-  const servingsPercent = currentServings / initialServings;
-
-  const currentSumDryIngredients = (baseDryIngredients ?? 0) * servingsPercent;
+  const sumDryIngredients = calcSumDryIngredients(ingredients);
 
   return (
     <main className="prose prose-lg container mx-auto mb-10 flex max-w-6xl flex-col gap-8 p-6 pt-8 sm:pt-12">
       {title ? (
         <TypographyH1 className="text-center sm:mb-12">{title}</TypographyH1>
       ) : null}
-      {mainImage?.asset?._ref ? (
+      {mainImage?.asset?._ref && (
         <Image
           className="w-full rounded-lg"
           src={urlFor(mainImage.asset._ref).width(1000).height(400).url()}
@@ -160,82 +79,36 @@ export const Recipe = ({ recipe }: RecipeProps) => {
           alt={title || ""}
           priority={true}
         />
-      ) : null}
+      )}
       <div className="grid grid-cols-1 gap-10 sm:grid-cols-12 sm:gap-4">
         <div className="col-span-full flex flex-col gap-4 sm:col-span-4">
           <WakeLockToggle />
+
           <div className="flex items-end justify-between">
-            <div>
-              <Label htmlFor="servings">Antall</Label>
-              <div className="flex gap-2">
-                <Button
-                  variant="outline"
-                  type="button"
-                  onClick={() => {
-                    if (currentServings > minServings) {
-                      const newValue = currentServings - 1;
-                      setInputValue(newValue);
-                      setCurrentServings(newValue);
-                    }
-                  }}
-                >
-                  <MinusIcon />
-                </Button>
-                <Input
-                  id="servings"
-                  type="number"
-                  min={minServings}
-                  max={maxServings}
-                  className="w-13 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-                  value={inputValue}
-                  onChange={(evt) => {
-                    setInputValue(evt.target.value);
-
-                    const numberValue = Number(evt.target.value);
-                    if (
-                      numberValue >= minServings &&
-                      numberValue <= maxServings
-                    ) {
-                      setCurrentServings(numberValue);
-                    }
-                  }}
-                  onBlur={(evt) => {
-                    if (evt.target.value === "") {
-                      setInputValue(currentServings);
-                    }
-
-                    const numberValue = Number(evt.target.value);
-                    if (
-                      numberValue >= minServings &&
-                      numberValue <= maxServings
-                    ) {
-                      setCurrentServings(numberValue);
-                    } else {
-                      setInputValue(currentServings);
-                    }
-                  }}
-                />
-                <Button
-                  variant="outline"
-                  type="button"
-                  onClick={() => {
-                    if (currentServings < maxServings) {
-                      const newValue = currentServings + 1;
-                      setInputValue(newValue);
-                      setCurrentServings(newValue);
-                    }
-                  }}
-                >
-                  <PlusIcon />
-                </Button>
-              </div>
-            </div>
+            <RecipeEditor
+              servings={servings}
+              baseDryIngredients={baseDryIngredients ?? 1000}
+              ingredients={ingredients}
+              onSubmit={(newServings, newIngredients) =>
+                dispatch({
+                  type: "onRecipeChange",
+                  payload: {
+                    servings: newServings,
+                    ingredients: newIngredients,
+                  },
+                })
+              }
+            />
             <Button type="button" variant="default" onClick={reset}>
               Tilbakestill
             </Button>
           </div>
 
-          {ingredientsState ? (
+          <TypographyP className="!mt-0">
+            Antall: <span className="font-bold">{servings}</span>
+          </TypographyP>
+
+          {ingredients ? (
             <Table>
               <TableHeader>
                 <TableRow>
@@ -245,41 +118,34 @@ export const Recipe = ({ recipe }: RecipeProps) => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {ingredients?.map(({ _id, ingredient, percent, unit }) => {
-                  const { name } = ingredient ?? {};
-                  const percentNum = percent ?? 0;
-                  const unitStr = unit ?? "g";
-                  const isComplete = isIngredientComplete(_id);
+                {ingredients.map(
+                  ({ ingredientId, name, percent, amount, unit }) => {
+                    const isComplete = isIngredientComplete(ingredientId);
 
-                  return (
-                    <TableRow key={_id}>
-                      <TableCell
-                        className={cn(`flex items-center gap-2`, {
-                          ["text-green-800"]: isComplete,
-                        })}
-                      >
-                        {name}
-                        {isComplete ? (
-                          <CheckIcon strokeWidth={1} size={16} />
-                        ) : (
-                          <div style={{ width: "16px", height: "16px" }} />
-                        )}
-                      </TableCell>
-                      <TableCell>
-                        {parseFloat(percent?.toFixed(1) ?? "0")}%
-                      </TableCell>
-                      <TableCell>
-                        {parseFloat(
-                          (
-                            currentSumDryIngredients *
-                            (percentNum / 100)
-                          ).toFixed(1),
-                        )}{" "}
-                        {unitStr}
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
+                    return (
+                      <TableRow key={ingredientId}>
+                        <TableCell
+                          className={cn(`flex items-center gap-2`, {
+                            ["text-green-800"]: isComplete,
+                          })}
+                        >
+                          {name}
+                          {isComplete ? (
+                            <CheckIcon strokeWidth={1} size={16} />
+                          ) : (
+                            <div style={{ width: "16px", height: "16px" }} />
+                          )}
+                        </TableCell>
+                        <TableCell>
+                          {parseFloat(percent?.toFixed(1) ?? "0")}%
+                        </TableCell>
+                        <TableCell>
+                          {amount} {unit}
+                        </TableCell>
+                      </TableRow>
+                    );
+                  },
+                )}
               </TableBody>
             </Table>
           ) : null}
@@ -309,8 +175,19 @@ export const Recipe = ({ recipe }: RecipeProps) => {
                           )
                         : false
                     }
-                    sumDryIngredients={currentSumDryIngredients}
-                    toggleCompleted={toggleIngredientReference}
+                    sumDryIngredients={sumDryIngredients}
+                    toggleCompleted={(
+                      ingredientId: string,
+                      ingredientReferenceKey: string,
+                    ) =>
+                      dispatch({
+                        type: "onIngredientReferenceCompletionChange",
+                        payload: {
+                          ingredientId,
+                          ingredientReferenceKey,
+                        },
+                      })
+                    }
                   />
                 ),
               }}
