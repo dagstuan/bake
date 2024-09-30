@@ -18,16 +18,16 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: {
-    default: "Bake",
-    template: "%s | Bake",
+    default: "Bak&del",
+    template: "%s | Bak&del",
   },
   description: "Lettleste, skalerbare oppskrifter",
   openGraph: {
     locale: "no_NO",
     type: "website",
-    url: "https://bake.dagstuan.com",
-    siteName: "Bake",
-    title: "Bake",
+    url: "https://www.bakdel.no",
+    siteName: "Bak&del",
+    title: "Bak&del",
     description: "Lettleste, skalerbare oppskrifter",
   },
 };
