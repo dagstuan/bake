@@ -31,10 +31,13 @@ type RecipeProps = {
 };
 
 export const Recipe = ({ recipe }: RecipeProps) => {
-  const { title, mainImage, instructions, baseDryIngredients } = recipe ?? {};
+  const { title, mainImage, instructions } = recipe ?? {};
 
   const [{ ingredients, ingredientsCompletion, servings }, dispatch] =
     useReducer(recipeReducer, calcInitialState(recipe));
+
+  const totalYield = ingredients?.reduce((acc, curr) => acc + curr.amount, 0);
+  const yieldPerServing = totalYield / servings;
 
   const isIngredientComplete = (ingredientId: string) => {
     const ingredient = ingredientsCompletion[ingredientId];
@@ -87,7 +90,7 @@ export const Recipe = ({ recipe }: RecipeProps) => {
           <div className="flex items-end justify-between">
             <RecipeEditor
               servings={servings}
-              baseDryIngredients={baseDryIngredients ?? 1000}
+              yieldPerServing={yieldPerServing}
               ingredients={ingredients}
               onSubmit={(newServings, newIngredients) =>
                 dispatch({

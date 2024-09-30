@@ -19,7 +19,7 @@ import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
 
 type RecipeEditorContentProps = {
   servings: number;
-  baseDryIngredients: number;
+  yieldPerServing: number;
   ingredients: RecipeIngredientsState;
   onSubmit: (servings: number, ingredients: RecipeIngredientsState) => void;
 };
@@ -28,7 +28,7 @@ export const RecipeEditorContent = (props: RecipeEditorContentProps) => {
   const {
     servings: initialServings,
     ingredients: initialIngredients,
-    baseDryIngredients,
+    yieldPerServing,
     onSubmit,
   } = props;
 
@@ -87,20 +87,13 @@ export const RecipeEditorContent = (props: RecipeEditorContentProps) => {
       return { ...ingredient, amount: updatedAmount };
     });
 
-    const updatedSumDryIngredients = updatedIngredients.reduce((acc, curr) => {
-      if (curr.type === "dry") {
-        return acc + curr.amount;
-      }
-
-      return acc;
-    }, 0);
-
-    const changePercent = updatedSumDryIngredients / baseDryIngredients;
-    const updatedServings = parseFloat(
-      (initialServings * changePercent).toFixed(2),
+    const updatedTotalYield = updatedIngredients.reduce(
+      (acc, curr) => acc + curr.amount,
+      0,
     );
 
-    setServings(updatedServings);
+    const updatedServings = updatedTotalYield / yieldPerServing;
+    setServings(parseFloat(updatedServings.toFixed(2)));
     setIngredients(updatedIngredients);
   };
 
@@ -153,6 +146,8 @@ export const RecipeEditorContent = (props: RecipeEditorContentProps) => {
                   <DeferredNumberInput
                     id={`ingredient-${index}`}
                     value={ingredient.amount}
+                    min={0.00001}
+                    max={100000}
                     onChange={(newValue) =>
                       handleIngredientChange(ingredient.ingredientId, newValue)
                     }
