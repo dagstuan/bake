@@ -1,4 +1,13 @@
-import { createContext, useContext, useReducer } from "react";
+"use client";
+
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+} from "react";
 import {
   calcInitialState,
   RecipeAction,
@@ -6,6 +15,7 @@ import {
   RecipeState,
 } from "./recipeReducer";
 import { RecipeQueryResult } from "../../../sanity.types";
+import useSessionStorage from "@/hooks/useLocalStorage";
 
 type RecipeContextState = RecipeState & {
   dispatch: React.Dispatch<RecipeAction>;
@@ -22,18 +32,44 @@ export const RecipeContextProvider = ({
   recipe,
   children,
 }: RecipeContextProviderProps): JSX.Element => {
-  const [
-    { ingredients, ingredientsCompletion, servings, yieldPerServing },
-    dispatch,
-  ] = useReducer(recipeReducer, calcInitialState(recipe));
+  const hasInitializedStorage = useRef(false);
+  const [isClient, setIsClient] = useState(false);
+  const initialState = calcInitialState(recipe);
+
+  const [sessionStorageValue, setSessionStorageValue] = useSessionStorage(
+    `recipe-${recipe?._id ?? "unknown"}`,
+    initialState,
+  );
+
+  const [state, dispatch] = useReducer(recipeReducer, sessionStorageValue);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (isClient && !hasInitializedStorage.current) {
+      hasInitializedStorage.current = true;
+      if (sessionStorageValue !== state) {
+        dispatch({ type: "reset", payload: sessionStorageValue });
+      }
+    }
+  }, [isClient, sessionStorageValue, state]);
+
+  useEffect(() => {
+    if (
+      isClient &&
+      hasInitializedStorage.current &&
+      sessionStorageValue !== state
+    ) {
+      setSessionStorageValue(state);
+    }
+  }, [isClient, state, sessionStorageValue]);
 
   return (
     <RecipeContext.Provider
       value={{
-        ingredients,
-        ingredientsCompletion,
-        servings,
-        yieldPerServing,
+        ...state,
         dispatch,
       }}
     >

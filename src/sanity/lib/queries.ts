@@ -10,6 +10,7 @@ export const allRecipesQuery = defineQuery(`*[_type == "recipe"]{
 
 export const recipeQuery =
   defineQuery(`*[_type == "recipe" && slug.current == $slug][0]{
+    _id,
     title,
     mainImage,
     ingredients[]->{

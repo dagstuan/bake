@@ -5,7 +5,7 @@ import { calcIngredientAmount } from "./utils";
 export const minServings = 1;
 export const maxServings = 999;
 
-type IngredientsCompletionState = {
+export type IngredientsCompletionState = {
   [ingredientId: string]: {
     [recipeIngredientKey: string]: {
       completed: boolean;
