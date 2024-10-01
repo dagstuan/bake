@@ -64,6 +64,19 @@ export const calcInitialIngredientsCompletionState = (
   );
 };
 
+export const isIngredientComplete = (
+  ingredientsCompletion: IngredientsCompletionState,
+  ingredientId: string,
+) => {
+  const ingredient = ingredientsCompletion[ingredientId];
+
+  if (!ingredient) {
+    return false;
+  }
+
+  return Object.values(ingredient).every((x) => x.completed);
+};
+
 const resetIngredientsCompletionState = (
   ingredientsCompletionState: IngredientsCompletionState,
 ): IngredientsCompletionState => {
@@ -106,7 +119,7 @@ const calcInitialRecipeIngredientsState = (
   );
 };
 
-type RecipeAction =
+export type RecipeAction =
   | {
       type: "onIngredientReferenceCompletionChange";
       payload: {

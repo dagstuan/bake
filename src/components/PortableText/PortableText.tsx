@@ -1,5 +1,5 @@
 import { PortableText as SanityPortableText } from "next-sanity";
-import { ComponentProps } from "react";
+import { ComponentProps, useMemo } from "react";
 import { TypographyH2 } from "../Typography/TypographyH2";
 import { TypographyH3 } from "../Typography/TypographyH3";
 import { TypographyP } from "../Typography/TypographyP";
@@ -38,8 +38,8 @@ const components: Components = {
 export const PortableText = (props: PortableTextProps) => {
   const { types, block, marks } = props;
 
-  const blockObj = { ...components.block, ...block };
-  const marksObj = { ...components.marks, ...marks };
+  const blockObj = useMemo(() => ({ ...components.block, ...block }), [block]);
+  const marksObj = useMemo(() => ({ ...components.marks, ...marks }), [marks]);
 
   return (
     <SanityPortableText
