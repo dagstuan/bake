@@ -46,11 +46,11 @@ const block: ComponentProps<typeof PortableText>["block"] = {
 };
 
 type RecipeContentProps = {
-  recipe: RecipeQueryResult;
+  recipe: NonNullable<RecipeQueryResult>;
 };
 
 export const RecipeContent = ({ recipe }: RecipeContentProps) => {
-  const { title, mainImage, instructions } = recipe ?? {};
+  const { title, mainImage, instructions } = recipe;
 
   const {
     ingredients,

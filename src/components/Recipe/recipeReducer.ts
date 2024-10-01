@@ -149,9 +149,10 @@ export type RecipeAction =
     }
   | { type: "reset"; payload: RecipeState };
 
-export const calcInitialState = (recipe: RecipeQueryResult): RecipeState => {
-  const { servings, instructions, ingredients, baseDryIngredients } =
-    recipe ?? {};
+export const calcInitialState = (
+  recipe: NonNullable<RecipeQueryResult>,
+): RecipeState => {
+  const { servings, instructions, ingredients, baseDryIngredients } = recipe;
 
   const initialServingsNum = servings ?? 1;
   const initialDryIngredients = baseDryIngredients ?? 1000;

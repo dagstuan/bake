@@ -26,7 +26,7 @@ const RecipeContext = createContext<RecipeContextState | null>(null);
 
 export type RecipeContextProviderProps = {
   children: React.ReactNode;
-  recipe: RecipeQueryResult;
+  recipe: NonNullable<RecipeQueryResult>;
 };
 
 const useReducerWithSessionStorage = (
