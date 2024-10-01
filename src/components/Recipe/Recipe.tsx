@@ -86,7 +86,7 @@ export const Recipe = ({ recipe }: RecipeProps) => {
         <div className="col-span-full flex flex-col gap-4 sm:col-span-4">
           <WakeLockToggle />
 
-          <div className="flex items-end justify-between">
+          <div className="flex gap-2">
             <RecipeEditor
               servings={servings}
               yieldPerServing={yieldPerServing}
@@ -102,7 +102,7 @@ export const Recipe = ({ recipe }: RecipeProps) => {
               }
               onReset={reset}
             />
-            <Button type="button" variant="default" onClick={reset}>
+            <Button type="button" variant="outline" onClick={reset}>
               Tilbakestill
             </Button>
           </div>

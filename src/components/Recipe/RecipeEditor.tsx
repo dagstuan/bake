@@ -26,7 +26,7 @@ export const RecipeEditor = ({ onChange, ...rest }: RecipeEditorProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline">Rediger oppskrift</Button>
+        <Button variant="default">Rediger oppskrift</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <RecipeEditorContent
