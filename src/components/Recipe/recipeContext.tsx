@@ -63,7 +63,7 @@ const useReducerWithSessionStorage = (
     ) {
       setSessionStorageValue(state);
     }
-  }, [isClient, state, sessionStorageValue]);
+  }, [isClient, state, sessionStorageValue, setSessionStorageValue]);
 
   return [state, dispatch];
 };
