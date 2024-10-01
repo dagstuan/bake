@@ -1,4 +1,4 @@
-import { RecipeQueryResult } from "../../../sanity.types";
+import { Ingredient, RecipeQueryResult } from "../../../sanity.types";
 import { RecipeIngredients, RecipeInstructions } from "./types";
 import { calcIngredientAmount } from "./utils";
 
@@ -19,6 +19,7 @@ type RecipeIngredientType = {
   percent: number;
   amount: number;
   unit: string;
+  type: NonNullable<Ingredient["type"]>;
 };
 
 export type RecipeIngredientsState = Array<RecipeIngredientType>;
@@ -107,7 +108,14 @@ const calcInitialRecipeIngredientsState = (
       ?.map((ingredientRef): RecipeIngredientType | null => {
         const { _id, ingredient, percent, unit } = ingredientRef ?? {};
 
-        if (!_id || !ingredient || !ingredient.name || !percent || !unit) {
+        if (
+          !_id ||
+          !ingredient ||
+          !ingredient.name ||
+          !ingredient.type ||
+          !percent ||
+          !unit
+        ) {
           return null;
         }
 
@@ -117,6 +125,7 @@ const calcInitialRecipeIngredientsState = (
           percent: percent,
           amount: calcIngredientAmount(percent, baseDryIngredients),
           unit: unit,
+          type: ingredient.type,
         };
       })
       .filter((r) => r != null) ?? []

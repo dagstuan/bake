@@ -2,6 +2,7 @@
 
 import {
   createContext,
+  Dispatch,
   useContext,
   useEffect,
   useReducer,
@@ -28,20 +29,18 @@ export type RecipeContextProviderProps = {
   recipe: RecipeQueryResult;
 };
 
-export const RecipeContextProvider = ({
-  recipe,
-  children,
-}: RecipeContextProviderProps): JSX.Element => {
-  const hasInitializedStorage = useRef(false);
+const useReducerWithSessionStorage = (
+  key: string,
+  reducer: typeof recipeReducer,
+  initialState: RecipeState,
+): [RecipeState, Dispatch<RecipeAction>] => {
   const [isClient, setIsClient] = useState(false);
-  const initialState = calcInitialState(recipe);
-
+  const hasInitializedStorage = useRef(false);
+  const [state, dispatch] = useReducer(reducer, initialState);
   const [sessionStorageValue, setSessionStorageValue] = useSessionStorage(
-    `recipe-${recipe?._id ?? "unknown"}`,
+    key,
     initialState,
   );
-
-  const [state, dispatch] = useReducer(recipeReducer, sessionStorageValue);
 
   useEffect(() => {
     setIsClient(true);
@@ -65,6 +64,19 @@ export const RecipeContextProvider = ({
       setSessionStorageValue(state);
     }
   }, [isClient, state, sessionStorageValue]);
+
+  return [state, dispatch];
+};
+
+export const RecipeContextProvider = ({
+  recipe,
+  children,
+}: RecipeContextProviderProps): JSX.Element => {
+  const [state, dispatch] = useReducerWithSessionStorage(
+    `recipe-${recipe?._id ?? "unknown"}`,
+    recipeReducer,
+    calcInitialState(recipe),
+  );
 
   return (
     <RecipeContext.Provider
