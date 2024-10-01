@@ -1,10 +1,12 @@
 import { defineQuery } from "next-sanity";
 
-export const frontPageRecipesQuery = defineQuery(`*[_type == "recipe"][0...6]{
+export const frontPageRecipesQuery =
+  defineQuery(`*[_type == "recipe"]|order(_createdAt desc)[0...6]{
   _id, title, slug, mainImage
 }`);
 
-export const allRecipesQuery = defineQuery(`*[_type == "recipe"]{
+export const allRecipesQuery =
+  defineQuery(`*[_type == "recipe"]|order(_createdAt desc){
   _id, title, slug, mainImage
 }`);
 
