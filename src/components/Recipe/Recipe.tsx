@@ -91,7 +91,7 @@ export const Recipe = ({ recipe }: RecipeProps) => {
               servings={servings}
               yieldPerServing={yieldPerServing}
               ingredients={ingredients}
-              onSubmit={(newServings, newIngredients) =>
+              onChange={(newServings, newIngredients) =>
                 dispatch({
                   type: "onRecipeChange",
                   payload: {
@@ -100,6 +100,7 @@ export const Recipe = ({ recipe }: RecipeProps) => {
                   },
                 })
               }
+              onReset={reset}
             />
             <Button type="button" variant="default" onClick={reset}>
               Tilbakestill

@@ -21,19 +21,14 @@ type RecipeEditorContentProps = {
   servings: number;
   yieldPerServing: number;
   ingredients: RecipeIngredientsState;
-  onSubmit: (servings: number, ingredients: RecipeIngredientsState) => void;
+  onChange: (servings: number, ingredients: RecipeIngredientsState) => void;
+  onSave: (servings: number, ingredients: RecipeIngredientsState) => void;
+  onReset: () => void;
 };
 
 export const RecipeEditorContent = (props: RecipeEditorContentProps) => {
-  const {
-    servings: initialServings,
-    ingredients: initialIngredients,
-    yieldPerServing,
-    onSubmit,
-  } = props;
-
-  const [servings, setServings] = useState(initialServings);
-  const [ingredients, setIngredients] = useState(initialIngredients);
+  const { servings, ingredients, yieldPerServing, onChange, onSave, onReset } =
+    props;
 
   const handleServingsChange = (newServings: number) => {
     if (
@@ -52,8 +47,7 @@ export const RecipeEditorContent = (props: RecipeEditorContentProps) => {
       return { ...ingredient, amount: updatedAmount };
     });
 
-    setServings(newServings);
-    setIngredients(updatedIngredients);
+    onChange(newServings, updatedIngredients);
   };
 
   const handleIngredientChange = (ingredientId: string, newAmount: number) => {
@@ -91,8 +85,7 @@ export const RecipeEditorContent = (props: RecipeEditorContentProps) => {
     );
 
     const updatedServings = updatedTotalYield / yieldPerServing;
-    setServings(updatedServings);
-    setIngredients(updatedIngredients);
+    onChange(updatedServings, updatedIngredients);
   };
 
   return (
@@ -110,7 +103,7 @@ export const RecipeEditorContent = (props: RecipeEditorContentProps) => {
             <Button
               variant="outline"
               type="button"
-              onClick={() => handleServingsChange(servings - 1)}
+              onClick={() => handleServingsChange(Math.ceil(servings - 1))}
             >
               <MinusIcon />
             </Button>
@@ -123,7 +116,7 @@ export const RecipeEditorContent = (props: RecipeEditorContentProps) => {
             <Button
               variant="outline"
               type="button"
-              onClick={() => handleServingsChange(servings + 1)}
+              onClick={() => handleServingsChange(Math.floor(servings + 1))}
             >
               <PlusIcon />
             </Button>
@@ -159,7 +152,10 @@ export const RecipeEditorContent = (props: RecipeEditorContentProps) => {
         </div>
       </div>
       <DialogFooter>
-        <Button type="submit" onClick={() => onSubmit(servings, ingredients)}>
+        <Button type="button" variant="outline" onClick={onReset}>
+          Tilbakestill
+        </Button>
+        <Button type="submit" onClick={() => onSave(servings, ingredients)}>
           Lagre
         </Button>
       </DialogFooter>

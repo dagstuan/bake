@@ -4,19 +4,23 @@ import { ComponentProps, useState } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
 import { RecipeEditorContent } from "./RecipeEditorContent";
+import { OmitStrict } from "@/utils/types";
 import { RecipeIngredientsState } from "./recipeReducer";
 
-type RecipeEditorProps = ComponentProps<typeof RecipeEditorContent>;
+type RecipeEditorProps = OmitStrict<
+  ComponentProps<typeof RecipeEditorContent>,
+  "onSave"
+>;
 
-export const RecipeEditor = ({ onSubmit, ...rest }: RecipeEditorProps) => {
+export const RecipeEditor = ({ onChange, ...rest }: RecipeEditorProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleSubmit = (
+  const handleSave = (
     servings: number,
     ingredients: RecipeIngredientsState,
   ) => {
     setIsOpen(false);
-    onSubmit(servings, ingredients);
+    onChange(servings, ingredients);
   };
 
   return (
@@ -25,7 +29,11 @@ export const RecipeEditor = ({ onSubmit, ...rest }: RecipeEditorProps) => {
         <Button variant="outline">Rediger oppskrift</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
-        <RecipeEditorContent {...rest} onSubmit={handleSubmit} />
+        <RecipeEditorContent
+          {...rest}
+          onChange={onChange}
+          onSave={handleSave}
+        />
       </DialogContent>
     </Dialog>
   );
