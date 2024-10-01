@@ -4,9 +4,10 @@ import { RecipeIngredientReference } from "./types";
 import { cn } from "@/lib/utils";
 import { useRecipeContext } from "./recipeContext";
 import { calcSumDryIngredients } from "./utils";
+import { formatAmount } from "@/utils/recipeUtils";
 
 type RecipeIngredientReferenceResultProps = {
-  value: RecipeIngredientReference;
+  value: NonNullable<RecipeIngredientReference>;
 };
 
 export const RecipeIngredientReferenceResult = ({
@@ -14,12 +15,7 @@ export const RecipeIngredientReferenceResult = ({
 }: RecipeIngredientReferenceResultProps) => {
   const { ingredients, ingredientsCompletion, dispatch } = useRecipeContext();
 
-  if (
-    !value ||
-    !value.ingredient ||
-    !value.ingredient?.percent ||
-    !value.percentage
-  ) {
+  if (!value.ingredient || !value.ingredient?.percent || !value.percentage) {
     return null;
   }
 
@@ -52,7 +48,7 @@ export const RecipeIngredientReferenceResult = ({
         })
       }
     >
-      {parseFloat(amount.toFixed(1))} {unit} {value.ingredient.name}
+      {formatAmount(amount)} {unit} {value.ingredient.name}
       {completed ? (
         <Check strokeWidth={1} size={16} />
       ) : (

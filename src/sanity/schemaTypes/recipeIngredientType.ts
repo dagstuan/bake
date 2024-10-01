@@ -1,3 +1,4 @@
+import { formatAmount } from "@/utils/recipeUtils";
 import { defineField, defineType } from "sanity";
 
 const fields = [
@@ -33,7 +34,7 @@ export const recipeIngredientType = defineType({
     },
     prepare({ ingredientName, percent }) {
       return {
-        title: `${percent}% ${ingredientName}`,
+        title: `${formatAmount(percent)}% ${ingredientName}`,
       };
     },
   },

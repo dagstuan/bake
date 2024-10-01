@@ -25,13 +25,18 @@ import { recipeIngredientReferenceType } from "@/sanity/schemaTypes/recipeIngred
 import { RecipeIngredientReference } from "./types";
 import { ComponentProps } from "react";
 import { PortableText } from "../PortableText/PortableText";
+import { formatAmount } from "@/utils/recipeUtils";
 
 const types: ComponentProps<typeof PortableText>["types"] = {
   [recipeIngredientReferenceType.name]: ({
     value,
   }: {
-    value: RecipeIngredientReference;
-  }) => <RecipeIngredientReferenceResult value={value} />,
+    value: RecipeIngredientReference | null | undefined;
+  }) => {
+    if (!value) return null;
+
+    return <RecipeIngredientReferenceResult value={value} />;
+  },
 };
 
 const block: ComponentProps<typeof PortableText>["block"] = {
@@ -103,8 +108,7 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
           </div>
 
           <TypographyP className="!mt-0">
-            Antall:{" "}
-            <span className="font-bold">{parseFloat(servings.toFixed(2))}</span>
+            Antall: <span className="font-bold">{formatAmount(servings)}</span>
           </TypographyP>
 
           {ingredients ? (
@@ -138,11 +142,9 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
                             <div style={{ width: "16px", height: "16px" }} />
                           )}
                         </TableCell>
+                        <TableCell>{formatAmount(percent, 1)}%</TableCell>
                         <TableCell>
-                          {parseFloat(percent?.toFixed(1) ?? "0")}%
-                        </TableCell>
-                        <TableCell>
-                          {parseFloat(amount.toFixed(2))} {unit}
+                          {formatAmount(amount)} {unit}
                         </TableCell>
                       </TableRow>
                     );

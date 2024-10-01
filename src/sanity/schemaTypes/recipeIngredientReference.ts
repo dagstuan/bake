@@ -1,5 +1,6 @@
 import { defineType, Reference } from "sanity";
 import { Recipe } from "../../../sanity.types";
+import { formatAmount } from "@/utils/recipeUtils";
 
 export const recipeIngredientReferenceType = defineType({
   name: "recipeIngredientReference",
@@ -71,7 +72,7 @@ export const recipeIngredientReferenceType = defineType({
       const shownAmount = ingredientPercent * (percentage / 100);
 
       return {
-        title: `${shownAmount.toFixed(2)}% ${ingredientName}`,
+        title: `${formatAmount(shownAmount)}% ${ingredientName}`,
       };
     },
   },

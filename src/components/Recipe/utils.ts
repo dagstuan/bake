@@ -3,9 +3,11 @@ import { RecipeIngredientsState } from "./recipeReducer";
 export const calcIngredientAmount = (
   percent: number,
   sumDryIngredients: number,
-) => parseFloat((sumDryIngredients * (percent / 100)).toFixed(1));
+): number => sumDryIngredients * (percent / 100);
 
-export const calcSumDryIngredients = (ingredients: RecipeIngredientsState) =>
+export const calcSumDryIngredients = (
+  ingredients: RecipeIngredientsState,
+): number =>
   ingredients
     .filter((i) => i.type === "dry")
     .reduce((acc, curr) => acc + curr.amount, 0);

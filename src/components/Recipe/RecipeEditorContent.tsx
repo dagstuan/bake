@@ -16,6 +16,7 @@ import {
 import { DeferredNumberInput } from "./DeferredNumberInput";
 import { Label } from "../ui/label";
 import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
+import { formatAmount } from "@/utils/recipeUtils";
 
 type RecipeEditorContentProps = {
   servings: number;
@@ -70,11 +71,8 @@ export const RecipeEditorContent = (props: RecipeEditorContentProps) => {
         return { ...ingredient, amount: newAmount };
       }
 
-      const updatedAmount = parseFloat(
-        ((ingredient.percent / updatedIngredientPercent) * newAmount).toFixed(
-          2,
-        ),
-      );
+      const updatedAmount =
+        (ingredient.percent / updatedIngredientPercent) * newAmount;
 
       return { ...ingredient, amount: updatedAmount };
     });
@@ -109,7 +107,7 @@ export const RecipeEditorContent = (props: RecipeEditorContentProps) => {
             </Button>
             <DeferredNumberInput
               id="servings"
-              value={parseFloat(servings.toFixed(2))}
+              value={parseFloat(formatAmount(servings))}
               onChange={handleServingsChange}
               className="w-20"
             />
@@ -137,7 +135,7 @@ export const RecipeEditorContent = (props: RecipeEditorContentProps) => {
                   <DeferredNumberInput
                     id={`ingredient-${index}`}
                     className="w-24"
-                    value={parseFloat(ingredient.amount.toFixed(2))}
+                    value={parseFloat(formatAmount(ingredient.amount))}
                     min={0.00001}
                     max={100000}
                     onChange={(newValue) =>
