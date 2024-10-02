@@ -50,7 +50,7 @@ export const RecipeEditor = ({ onReset }: RecipeEditorProps) => {
       <DialogTrigger asChild>
         <Button variant="default">Rediger oppskrift</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="my-10 sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle>Rediger oppskrift</DialogTitle>
           <DialogDescription>
