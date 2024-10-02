@@ -61,7 +61,6 @@ export const DeferredNumberInput = ({
       value={inputValue}
       onChange={handleChange}
       onBlur={handleBlur}
-      onFocus={(evt) => evt.target.select()}
     />
   );
 };
