@@ -1,4 +1,8 @@
-export const SquareIcon = () => {
+import { SVGProps } from "react";
+
+type SquareIconProps = SVGProps<SVGSVGElement>;
+
+export const SquareIcon = (props: SquareIconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -10,6 +14,7 @@ export const SquareIcon = () => {
       strokeWidth="1"
       strokeLinecap="round"
       strokeLinejoin="round"
+      {...props}
     >
       <rect width="18" height="18" x="3" y="3" rx="2" />
     </svg>

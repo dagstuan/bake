@@ -10,7 +10,7 @@ type RecipesGridProps = {
 
 export const RecipesGrid = ({ recipes }: RecipesGridProps) => {
   return (
-    <div className="mt-8 grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
+    <div className="mt-6 grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
       {recipes.map((recipe) => (
         <Link
           href={`/oppskrifter/${recipe.slug?.current}`}

@@ -1,4 +1,8 @@
-export const CheckIcon = () => {
+import { SVGProps } from "react";
+
+type CheckIconProps = SVGProps<SVGSVGElement>;
+
+export const CheckIcon = (props: CheckIconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -10,6 +14,7 @@ export const CheckIcon = () => {
       strokeWidth="1"
       strokeLinecap="round"
       strokeLinejoin="round"
+      {...props}
     >
       <path d="M20 6 9 17l-5-5" />
     </svg>

@@ -12,7 +12,7 @@ export default async function Home() {
   });
 
   return (
-    <main className="sm:mt-35 mt-8 flex flex-col gap-10 px-6 sm:mt-16 sm:items-center sm:gap-20">
+    <main className="sm:mt-35 mt-8 flex flex-col gap-10 px-6 sm:mt-16 sm:items-center sm:gap-16">
       <div className="flex max-w-3xl flex-col gap-3 sm:text-center">
         <TypographyH1>
           Bak<span className="text-4xl font-extralight text-gray-400">&</span>

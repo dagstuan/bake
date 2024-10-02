@@ -26,6 +26,7 @@ import { ComponentProps } from "react";
 import { PortableText } from "../PortableText/PortableText";
 import { formatAmount } from "@/utils/recipeUtils";
 import { CheckIcon } from "../icons/CheckIcon";
+import { SquareIcon } from "../icons/SquareIcon";
 
 const types: ComponentProps<typeof PortableText>["types"] = {
   [recipeIngredientReferenceType.name]: ({
@@ -66,7 +67,7 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
     <main className="px-6">
       <div className="prose-lg prose container mx-auto flex max-w-6xl flex-col gap-8 pt-8 sm:pt-12">
         {title ? (
-          <TypographyH1 className="text-center sm:mb-12">{title}</TypographyH1>
+          <TypographyH1 className="text-center sm:mb-8">{title}</TypographyH1>
         ) : null}
         {mainImage?.asset?._ref && (
           <Image
@@ -78,7 +79,7 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
             priority={true}
           />
         )}
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-4">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-8">
           <div className="col-span-full flex flex-col gap-4 md:col-span-4">
             <WakeLockToggle />
 
@@ -98,7 +99,10 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Ingrediens</TableHead>
+                    <TableHead className="flex items-center gap-2">
+                      <SquareIcon />
+                      Ingrediens
+                    </TableHead>
                     <TableHead>Prosent</TableHead>
                     <TableHead>Mengde</TableHead>
                   </TableRow>
@@ -115,15 +119,22 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
                         <TableRow key={ingredientId}>
                           <TableCell
                             className={cn(`flex items-center gap-2`, {
-                              ["text-green-800"]: isComplete,
+                              ["text-green-900"]: isComplete,
                             })}
                           >
-                            {name}
                             {isComplete ? (
-                              <CheckIcon />
+                              <div className="rounded-sm bg-green-500 p-[1px]">
+                                <CheckIcon
+                                  className="text-white"
+                                  width={14}
+                                  height={14}
+                                  strokeWidth={2}
+                                />
+                              </div>
                             ) : (
-                              <div style={{ width: "16px", height: "16px" }} />
+                              <div className="size-[16px]" />
                             )}
+                            {name}
                           </TableCell>
                           <TableCell>{formatAmount(percent, 1)}%</TableCell>
                           <TableCell>
