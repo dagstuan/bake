@@ -153,10 +153,14 @@ export type RecipeAction =
       };
     }
   | {
-      type: "onRecipeChange";
+      type: "onServingsChange";
+      payload: number;
+    }
+  | {
+      type: "onIngredientChange";
       payload: {
-        servings: number;
-        ingredients: RecipeIngredientsState;
+        ingredientId: string;
+        newAmount: number;
       };
     }
   | { type: "reset"; payload: RecipeState };
@@ -215,16 +219,81 @@ export const recipeReducer = (
         },
       };
     }
-    case "onRecipeChange":
+    case "onServingsChange": {
+      const newServings = action.payload;
+
+      if (
+        newServings === 0 ||
+        isNaN(newServings) ||
+        newServings < minServings ||
+        newServings >= maxServings
+      ) {
+        return state;
+      }
+
+      const changePercent = newServings / state.servings;
+      const updatedIngredients = state.ingredients.map((ingredient) => {
+        const updatedAmount = ingredient.amount * changePercent;
+        return { ...ingredient, amount: updatedAmount };
+      });
+
       return {
         ...state,
         ingredientsCompletion: resetIngredientsCompletionState(
           state.ingredientsCompletion,
         ),
-        servings: action.payload.servings,
-        ingredients: action.payload.ingredients,
-        sumDryIngredients: calcSumDryIngredients(action.payload.ingredients),
+        servings: newServings,
+        ingredients: updatedIngredients,
+        sumDryIngredients: calcSumDryIngredients(updatedIngredients),
+        yieldPerServing: state.yieldPerServing,
       };
+    }
+    case "onIngredientChange": {
+      const { newAmount, ingredientId } = action.payload;
+
+      if (newAmount === 0 || isNaN(newAmount)) {
+        return state;
+      }
+
+      const ingredientToUpdate = state.ingredients.find(
+        (ingredient) => ingredient.ingredientId === ingredientId,
+      );
+
+      if (!ingredientToUpdate) {
+        return state;
+      }
+
+      const { percent: updatedIngredientPercent } = ingredientToUpdate;
+
+      const updatedIngredients = state.ingredients.map((ingredient) => {
+        if (ingredient.ingredientId === ingredientId) {
+          return { ...ingredient, amount: newAmount };
+        }
+
+        const updatedAmount =
+          (ingredient.percent / updatedIngredientPercent) * newAmount;
+
+        return { ...ingredient, amount: updatedAmount };
+      });
+
+      const updatedTotalYield = updatedIngredients.reduce(
+        (acc, curr) => acc + curr.amount,
+        0,
+      );
+
+      const updatedServings = updatedTotalYield / state.yieldPerServing;
+
+      return {
+        ...state,
+        ingredientsCompletion: resetIngredientsCompletionState(
+          state.ingredientsCompletion,
+        ),
+        servings: updatedServings,
+        ingredients: updatedIngredients,
+        sumDryIngredients: calcSumDryIngredients(updatedIngredients),
+        yieldPerServing: state.yieldPerServing,
+      };
+    }
     case "reset":
       return action.payload;
     default:

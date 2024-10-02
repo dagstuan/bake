@@ -1,9 +1,10 @@
 import { Button } from "../ui/button";
-import { Check, Square } from "lucide-react";
 import { RecipeIngredientReference } from "./types";
 import { cn } from "@/lib/utils";
 import { useRecipeContext } from "./recipeContext";
 import { formatAmount } from "@/utils/recipeUtils";
+import { CheckIcon } from "../icons/CheckIcon";
+import { SquareIcon } from "../icons/SquareIcon";
 
 type RecipeIngredientReferenceResultProps = {
   value: NonNullable<RecipeIngredientReference>;
@@ -47,11 +48,7 @@ export const RecipeIngredientReferenceResult = ({
       }
     >
       {formatAmount(amount)} {unit} {value.ingredient.name}
-      {completed ? (
-        <Check strokeWidth={1} size={16} />
-      ) : (
-        <Square strokeWidth={1} size={16} />
-      )}
+      {completed ? <CheckIcon /> : <SquareIcon />}
     </Button>
   );
 };

@@ -13,7 +13,6 @@ import {
 } from "../ui/table";
 import { TypographyH1 } from "../Typography/TypographyH1";
 import { Button } from "../ui/button";
-import { CheckIcon } from "lucide-react";
 import { TypographyP } from "../Typography/TypographyP";
 import { cn } from "@/lib/utils";
 import { WakeLockToggle } from "./WakeLockToggle";
@@ -26,6 +25,7 @@ import { RecipeIngredientReference } from "./types";
 import { ComponentProps } from "react";
 import { PortableText } from "../PortableText/PortableText";
 import { formatAmount } from "@/utils/recipeUtils";
+import { CheckIcon } from "../icons/CheckIcon";
 
 const types: ComponentProps<typeof PortableText>["types"] = {
   [recipeIngredientReferenceType.name]: ({
@@ -52,13 +52,8 @@ type RecipeContentProps = {
 export const RecipeContent = ({ recipe }: RecipeContentProps) => {
   const { title, mainImage, instructions } = recipe;
 
-  const {
-    ingredients,
-    ingredientsCompletion,
-    servings,
-    yieldPerServing,
-    dispatch,
-  } = useRecipeContext();
+  const { ingredients, ingredientsCompletion, servings, dispatch } =
+    useRecipeContext();
 
   const reset = () => {
     dispatch({
@@ -88,21 +83,7 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
             <WakeLockToggle />
 
             <div className="flex flex-wrap gap-2">
-              <RecipeEditor
-                servings={servings}
-                yieldPerServing={yieldPerServing}
-                ingredients={ingredients}
-                onChange={(newServings, newIngredients) =>
-                  dispatch({
-                    type: "onRecipeChange",
-                    payload: {
-                      servings: newServings,
-                      ingredients: newIngredients,
-                    },
-                  })
-                }
-                onReset={reset}
-              />
+              <RecipeEditor onReset={reset} />
               <Button type="button" variant="outline" onClick={reset}>
                 Tilbakestill
               </Button>
@@ -139,7 +120,7 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
                           >
                             {name}
                             {isComplete ? (
-                              <CheckIcon strokeWidth={1} size={16} />
+                              <CheckIcon />
                             ) : (
                               <div style={{ width: "16px", height: "16px" }} />
                             )}
