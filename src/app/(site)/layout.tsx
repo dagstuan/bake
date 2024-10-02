@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/react";
 import { VisualEditing } from "next-sanity";
 import { draftMode } from "next/headers";
 import type { Metadata } from "next";
@@ -53,6 +54,7 @@ export default function RootLayout({
         <Nav />
         {children}
         {draftMode().isEnabled && <VisualEditing />}
+        <Analytics />
       </body>
     </html>
   );
