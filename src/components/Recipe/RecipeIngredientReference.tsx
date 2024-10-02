@@ -3,7 +3,6 @@ import { Check, Square } from "lucide-react";
 import { RecipeIngredientReference } from "./types";
 import { cn } from "@/lib/utils";
 import { useRecipeContext } from "./recipeContext";
-import { calcSumDryIngredients } from "./utils";
 import { formatAmount } from "@/utils/recipeUtils";
 
 type RecipeIngredientReferenceResultProps = {
@@ -13,13 +12,12 @@ type RecipeIngredientReferenceResultProps = {
 export const RecipeIngredientReferenceResult = ({
   value,
 }: RecipeIngredientReferenceResultProps) => {
-  const { ingredients, ingredientsCompletion, dispatch } = useRecipeContext();
+  const { sumDryIngredients, ingredientsCompletion, dispatch } =
+    useRecipeContext();
 
   if (!value.ingredient || !value.ingredient?.percent || !value.percentage) {
     return null;
   }
-
-  const sumDryIngredients = calcSumDryIngredients(ingredients);
 
   const unit = value.ingredient.unit ?? "g";
 

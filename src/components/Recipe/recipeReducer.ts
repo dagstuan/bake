@@ -1,6 +1,5 @@
 import { Ingredient, RecipeQueryResult } from "../../../sanity.types";
 import { RecipeIngredients, RecipeInstructions } from "./types";
-import { calcIngredientAmount } from "./utils";
 
 export const minServings = 1;
 export const maxServings = 999;
@@ -28,8 +27,21 @@ export type RecipeState = {
   servings: number;
   ingredientsCompletion: IngredientsCompletionState;
   ingredients: RecipeIngredientsState;
+  sumDryIngredients: number;
   yieldPerServing: number;
 };
+
+export const calcIngredientAmount = (
+  percent: number,
+  sumDryIngredients: number,
+): number => sumDryIngredients * (percent / 100);
+
+export const calcSumDryIngredients = (
+  ingredients: RecipeIngredientsState,
+): number =>
+  ingredients
+    .filter((i) => i.type === "dry")
+    .reduce((acc, curr) => acc + curr.amount, 0);
 
 export const calcInitialIngredientsCompletionState = (
   instructions: RecipeInstructions | null | undefined,
@@ -171,6 +183,7 @@ export const calcInitialState = (
     servings: initialServingsNum,
     ingredientsCompletion: calcInitialIngredientsCompletionState(instructions),
     ingredients: ingredientsState,
+    sumDryIngredients: calcSumDryIngredients(ingredientsState),
     yieldPerServing: totalYield / initialServingsNum,
   };
 };
@@ -205,11 +218,12 @@ export const recipeReducer = (
     case "onRecipeChange":
       return {
         ...state,
-        servings: action.payload.servings,
-        ingredients: action.payload.ingredients,
         ingredientsCompletion: resetIngredientsCompletionState(
           state.ingredientsCompletion,
         ),
+        servings: action.payload.servings,
+        ingredients: action.payload.ingredients,
+        sumDryIngredients: calcSumDryIngredients(action.payload.ingredients),
       };
     case "reset":
       return action.payload;
