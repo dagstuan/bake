@@ -14,7 +14,7 @@ export default async function Home() {
   });
 
   return (
-    <div className="mb-10 mt-8 flex justify-center px-6">
+    <div className="mt-8 flex justify-center px-6">
       <div className="w-full max-w-6xl">
         <TypographyH1>Alle oppskrifter</TypographyH1>
 

@@ -1,8 +1,10 @@
 import { RecipesGrid } from "@/components/RecipesGrid/RecipesGrid";
 import { TypographyH1 } from "@/components/Typography/TypographyH1";
 import { TypographyH2 } from "@/components/Typography/TypographyH2";
+import { TypographyLink } from "@/components/Typography/TypographyLink";
 import { sanityFetch } from "@/sanity/lib/client";
 import { frontPageRecipesQuery } from "@/sanity/lib/queries";
+import { ArrowRightIcon } from "@radix-ui/react-icons";
 
 export default async function Home() {
   const recipes = await sanityFetch({
@@ -10,8 +12,8 @@ export default async function Home() {
   });
 
   return (
-    <main className="sm:mt-35 mb-10 mt-8 flex flex-col items-center gap-10 px-6 sm:mt-16 sm:gap-20">
-      <div className="mx-auto flex max-w-3xl flex-col gap-3 sm:text-center">
+    <main className="sm:mt-35 mt-8 flex flex-col gap-10 px-6 sm:mt-16 sm:items-center sm:gap-20">
+      <div className="flex max-w-3xl flex-col gap-3 sm:text-center">
         <TypographyH1>
           Bak<span className="text-4xl font-extralight text-gray-400">&</span>
           del 🍞
@@ -22,7 +24,16 @@ export default async function Home() {
       <div className="w-full max-w-6xl">
         <TypographyH2>Oppskrifter</TypographyH2>
 
-        <RecipesGrid recipes={recipes} />
+        <div className="flex flex-col gap-4">
+          <RecipesGrid recipes={recipes} />
+          <TypographyLink
+            href="/oppskrifter"
+            type="internal"
+            className="flex items-center gap-1 self-end"
+          >
+            Se alle oppskrifter <ArrowRightIcon />
+          </TypographyLink>
+        </div>
       </div>
     </main>
   );

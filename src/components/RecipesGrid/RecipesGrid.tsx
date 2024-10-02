@@ -2,6 +2,7 @@ import { urlForImage } from "@/sanity/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { FrontPageRecipesQueryResult } from "../../../sanity.types";
+import { Card } from "../ui/card";
 
 type RecipesGridProps = {
   recipes: FrontPageRecipesQueryResult;
@@ -14,27 +15,31 @@ export const RecipesGrid = ({ recipes }: RecipesGridProps) => {
         <Link
           href={`/oppskrifter/${recipe.slug?.current}`}
           key={recipe._id}
-          className="flex flex-col justify-between rounded-lg bg-white shadow-sm"
+          className="flex flex-col justify-between"
         >
-          {recipe.mainImage ? (
-            <Image
-              width={1000}
-              height={1000}
-              src={
-                urlForImage(recipe.mainImage)?.height(1000).width(1000).url() ??
-                ""
-              }
-              alt={recipe.mainImage?.alt ?? "Recipe"}
-              className="h-48 w-full rounded-t-lg object-cover"
-            />
-          ) : (
-            <div className="flex w-full flex-grow items-center justify-center text-8xl">
-              🍞
+          <Card className="transition-shadow hover:shadow-md">
+            {recipe.mainImage ? (
+              <Image
+                width={1000}
+                height={1000}
+                src={
+                  urlForImage(recipe.mainImage)
+                    ?.height(1000)
+                    .width(1000)
+                    .url() ?? ""
+                }
+                alt={recipe.mainImage?.alt ?? "Recipe"}
+                className="h-48 w-full rounded-t-lg object-cover"
+              />
+            ) : (
+              <div className="flex w-full flex-grow items-center justify-center text-8xl">
+                🍞
+              </div>
+            )}
+            <div className="p-4">
+              <h2 className="text-xl font-semibold">{recipe.title}</h2>
             </div>
-          )}
-          <div className="p-4">
-            <h2 className="text-2xl font-bold">{recipe.title}</h2>
-          </div>
+          </Card>
         </Link>
       ))}
     </div>
