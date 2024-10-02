@@ -42,7 +42,7 @@ const types: ComponentProps<typeof PortableText>["types"] = {
 
 const block: ComponentProps<typeof PortableText>["block"] = {
   normal: ({ children }) => (
-    <TypographyP className="leading-8">{children}</TypographyP>
+    <TypographyP className="leading-7">{children}</TypographyP>
   ),
 };
 
