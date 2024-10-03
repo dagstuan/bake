@@ -27,6 +27,8 @@ import { PortableText } from "../PortableText/PortableText";
 import { formatAmount } from "@/utils/recipeUtils";
 import { CheckIcon } from "../icons/CheckIcon";
 import { SquareIcon } from "../icons/SquareIcon";
+import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
+import { InfoCircledIcon } from "@radix-ui/react-icons";
 
 const types: ComponentProps<typeof PortableText>["types"] = {
   [recipeIngredientReferenceType.name]: ({
@@ -51,7 +53,7 @@ type RecipeContentProps = {
 };
 
 export const RecipeContent = ({ recipe }: RecipeContentProps) => {
-  const { title, mainImage, instructions } = recipe;
+  const { title, mainImage, instructions, servings: initialServings } = recipe;
 
   const { ingredients, ingredientsCompletion, servings, dispatch } =
     useRecipeContext();
@@ -63,9 +65,11 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
     });
   };
 
+  const scaleFactor = 100 * (servings / (initialServings ?? 1));
+
   return (
     <main className="px-6">
-      <div className="prose-lg prose container mx-auto flex max-w-6xl flex-col gap-8 pt-8 sm:pt-12">
+      <div className="prose-lg prose container mx-auto flex max-w-5xl flex-col gap-8 pt-8 sm:pt-12">
         {title ? (
           <TypographyH1 className="text-center sm:mb-8">{title}</TypographyH1>
         ) : null}
@@ -149,6 +153,19 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
             ) : null}
           </div>
           <div className="col-span-full align-baseline md:col-span-8">
+            {scaleFactor !== 100 && (
+              <Alert>
+                <InfoCircledIcon />
+                <AlertTitle>Skalert oppskrift</AlertTitle>
+                <AlertDescription>
+                  Denne oppskriften er skalert {formatAmount(scaleFactor, 0)}% i
+                  forhold til original oppskrift. Ta kontakt hvis oppskriften
+                  ikke gir mening eller noen av ingrediensene ikke blir riktig
+                  skalert.
+                </AlertDescription>
+              </Alert>
+            )}
+
             {instructions ? (
               <PortableText value={instructions} block={block} types={types} />
             ) : null}
