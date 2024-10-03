@@ -24,6 +24,7 @@ type RecipeIngredientType = {
 export type RecipeIngredientsState = Array<RecipeIngredientType>;
 
 export type RecipeState = {
+  initialServings: number;
   servings: number;
   ingredientsCompletion: IngredientsCompletionState;
   ingredients: RecipeIngredientsState;
@@ -176,6 +177,7 @@ export const calcInitialState = (
   );
 
   return {
+    initialServings: initialServingsNum,
     servings: initialServingsNum,
     ingredientsCompletion: calcInitialIngredientsCompletionState(instructions),
     ingredients: ingredientsState,

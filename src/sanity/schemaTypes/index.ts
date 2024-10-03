@@ -6,6 +6,7 @@ import { recipeType } from "./recipeType";
 import { ingredientType } from "./ingredientType";
 import { recipeIngredientType } from "./recipeIngredientType";
 import { recipeIngredientReferenceType } from "./recipeIngredientReference";
+import { scalableRecipeNumberType } from "./scalableRecipeNumberType";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -15,5 +16,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     ingredientType,
     recipeIngredientType,
     recipeIngredientReferenceType,
+    scalableRecipeNumberType,
   ],
 };

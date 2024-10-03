@@ -34,7 +34,7 @@ export const recipeIngredientType = defineType({
     },
     prepare({ ingredientName, percent }) {
       return {
-        title: `${formatAmount(percent)}% ${ingredientName}`,
+        title: `${ingredientName} (${formatAmount(percent)}%)`,
       };
     },
   },

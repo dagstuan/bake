@@ -21,13 +21,18 @@ import { useRecipeContext } from "./recipeContext";
 import { calcInitialState, isIngredientComplete } from "./recipeReducer";
 import { RecipeIngredientReferenceResult } from "./RecipeIngredientReference";
 import { recipeIngredientReferenceType } from "@/sanity/schemaTypes/recipeIngredientReference";
-import { RecipeIngredientReference } from "./types";
+import {
+  RecipeIngredientReference,
+  ScalableRecipeNumber as ScalableRecipeNumberType,
+} from "./types";
 import { ComponentProps } from "react";
 import { PortableText } from "../PortableText/PortableText";
 import { formatAmount } from "@/utils/recipeUtils";
 import { CheckIcon } from "../icons/CheckIcon";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
+import { scalableRecipeNumberType } from "@/sanity/schemaTypes/scalableRecipeNumberType";
+import { ScalableRecipeNumber } from "./ScalableRecipeNumber";
 
 const RecipeCheckIcon = (props: { className?: string }) => (
   <div className={cn("rounded-sm bg-green-500 p-[1px]", props.className)}>
@@ -45,6 +50,15 @@ const types: ComponentProps<typeof PortableText>["types"] = {
 
     return <RecipeIngredientReferenceResult value={value} />;
   },
+  [scalableRecipeNumberType.name]: ({
+    value,
+  }: {
+    value: ScalableRecipeNumberType | null | undefined;
+  }) => {
+    if (!value) return null;
+
+    return <ScalableRecipeNumber value={value} />;
+  },
 };
 
 const block: ComponentProps<typeof PortableText>["block"] = {
@@ -58,10 +72,15 @@ type RecipeContentProps = {
 };
 
 export const RecipeContent = ({ recipe }: RecipeContentProps) => {
-  const { title, mainImage, instructions, servings: initialServings } = recipe;
+  const { title, mainImage, instructions } = recipe;
 
-  const { ingredients, ingredientsCompletion, servings, dispatch } =
-    useRecipeContext();
+  const {
+    ingredients,
+    ingredientsCompletion,
+    servings,
+    initialServings,
+    dispatch,
+  } = useRecipeContext();
 
   const reset = () => {
     dispatch({
@@ -70,7 +89,7 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
     });
   };
 
-  const scaleFactor = 100 * (servings / (initialServings ?? 1));
+  const scaleFactor = 100 * (servings / initialServings);
 
   const allIngredientsComplete = Object.values(ingredientsCompletion).every(
     (c) => Object.values(c).every((c) => c.completed),

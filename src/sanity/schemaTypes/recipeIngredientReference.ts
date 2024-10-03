@@ -72,7 +72,7 @@ export const recipeIngredientReferenceType = defineType({
       const shownAmount = ingredientPercent * (percentage / 100);
 
       return {
-        title: `${formatAmount(shownAmount)}% ${ingredientName}`,
+        title: `${ingredientName} (${formatAmount(shownAmount)}%)`,
       };
     },
   },

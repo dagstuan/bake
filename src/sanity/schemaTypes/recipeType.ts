@@ -5,6 +5,8 @@ import {
   baseBlockMarks,
   baseBlockStyles,
 } from "./blockContentType";
+import { recipeIngredientReferenceType } from "./recipeIngredientReference";
+import { scalableRecipeNumberType } from "./scalableRecipeNumberType";
 
 export const recipeType = defineType({
   name: "recipe",
@@ -46,12 +48,12 @@ export const recipeType = defineType({
     defineField({
       name: "baseDryIngredients",
       type: "number",
-      description: "The sum of all dry ingredients in grams",
+      description: "The sum of all base ingredients in grams",
       initialValue: 1000,
     }),
     defineField({
       name: "servings",
-      description: "The amount of servings the base dry ingredients make",
+      description: "The amount of servings the base ingredients make",
       type: "number",
       validation: (rule) => rule.required(),
     }),
@@ -90,7 +92,10 @@ export const recipeType = defineType({
           styles: baseBlockStyles,
           lists: baseBlockLists,
           marks: baseBlockMarks,
-          of: [{ type: "recipeIngredientReference" }],
+          of: [
+            { type: recipeIngredientReferenceType.name },
+            { type: scalableRecipeNumberType.name },
+          ],
         },
       ],
     }),
