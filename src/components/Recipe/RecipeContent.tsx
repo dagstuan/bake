@@ -26,9 +26,14 @@ import { ComponentProps } from "react";
 import { PortableText } from "../PortableText/PortableText";
 import { formatAmount } from "@/utils/recipeUtils";
 import { CheckIcon } from "../icons/CheckIcon";
-import { SquareIcon } from "../icons/SquareIcon";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
+
+const RecipeCheckIcon = (props: { className?: string }) => (
+  <div className={cn("rounded-sm bg-green-500 p-[1px]", props.className)}>
+    <CheckIcon className="text-white" width={14} height={14} strokeWidth={2} />
+  </div>
+);
 
 const types: ComponentProps<typeof PortableText>["types"] = {
   [recipeIngredientReferenceType.name]: ({
@@ -67,6 +72,10 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
 
   const scaleFactor = 100 * (servings / (initialServings ?? 1));
 
+  const allIngredientsComplete = Object.values(ingredientsCompletion).every(
+    (c) => Object.values(c).every((c) => c.completed),
+  );
+
   return (
     <main className="px-6">
       <div className="prose-lg prose container mx-auto flex max-w-5xl flex-col gap-8 pt-8 sm:pt-12">
@@ -104,7 +113,11 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
                 <TableHeader>
                   <TableRow>
                     <TableHead className="flex items-center gap-2">
-                      <SquareIcon />
+                      <RecipeCheckIcon
+                        className={cn({
+                          ["bg-muted-foreground"]: !allIngredientsComplete,
+                        })}
+                      />
                       Ingrediens
                     </TableHead>
                     <TableHead>Prosent</TableHead>
@@ -127,14 +140,7 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
                             })}
                           >
                             {isComplete ? (
-                              <div className="rounded-sm bg-green-500 p-[1px]">
-                                <CheckIcon
-                                  className="text-white"
-                                  width={14}
-                                  height={14}
-                                  strokeWidth={2}
-                                />
-                              </div>
+                              <RecipeCheckIcon />
                             ) : (
                               <div className="size-[16px]" />
                             )}
