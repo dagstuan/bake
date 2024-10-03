@@ -42,7 +42,7 @@ export default function RootLayout({
   return (
     <html lang="no">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} min-h-screen bg-zinc-50 text-black antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col bg-zinc-50 text-black antialiased`}
       >
         {draftMode().isEnabled && (
           <a
@@ -53,7 +53,7 @@ export default function RootLayout({
           </a>
         )}
         <Nav />
-        {children}
+        <div className="flex-1">{children}</div>
         <Footer />
         {draftMode().isEnabled && <VisualEditing />}
         <Analytics />
