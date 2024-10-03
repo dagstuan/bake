@@ -34,9 +34,12 @@ export const RecipeIngredientReferenceResult = ({
   return (
     <Button
       variant="outline"
-      className={cn(`align-center inline-flex h-6 gap-1 bg-muted px-2`, {
-        ["bg-green-100 hover:bg-green-200"]: completed,
-      })}
+      className={cn(
+        `align-center inline-flex h-auto gap-1 bg-muted px-2 py-0`,
+        {
+          ["bg-green-100 hover:bg-green-200"]: completed,
+        },
+      )}
       onClick={() =>
         dispatch({
           type: "onIngredientReferenceCompletionChange",

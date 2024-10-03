@@ -71,6 +71,7 @@ export type Geopoint = {
 export type ScalableRecipeNumber = {
   _type: "scalableRecipeNumber";
   number?: number;
+  suffix?: string;
 };
 
 export type RecipeIngredientReference = {
@@ -396,6 +397,7 @@ export type RecipeQueryResult = {
           _key: string;
           _type: "scalableRecipeNumber";
           number?: number;
+          suffix?: string;
         }
       | {
           marks?: Array<string>;

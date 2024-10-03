@@ -344,6 +344,13 @@
             "type": "number"
           },
           "optional": true
+        },
+        "suffix": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string"
+          },
+          "optional": true
         }
       }
     }

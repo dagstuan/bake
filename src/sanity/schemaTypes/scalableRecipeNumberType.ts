@@ -10,10 +10,20 @@ export const scalableRecipeNumberType = defineType({
       type: "number",
       validation: (rule) => rule.required(),
     }),
+    defineField({
+      name: "suffix",
+      type: "string",
+    }),
   ],
   preview: {
     select: {
       title: "number",
+      suffix: "suffix",
+    },
+    prepare({ title, suffix }) {
+      return {
+        title: `${title}${suffix ? ` ${suffix}` : ""}`,
+      };
     },
   },
 });
