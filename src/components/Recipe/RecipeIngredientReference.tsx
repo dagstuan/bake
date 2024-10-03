@@ -13,23 +13,23 @@ type RecipeIngredientReferenceResultProps = {
 export const RecipeIngredientReferenceResult = ({
   value,
 }: RecipeIngredientReferenceResultProps) => {
-  const { sumDryIngredients, ingredientsCompletion, dispatch } =
-    useRecipeContext();
+  const { ingredients, ingredientsCompletion, dispatch } = useRecipeContext();
 
-  if (!value.ingredient || !value.ingredient?.percent || !value.percentage) {
+  if (
+    !value.ingredient ||
+    !value.ingredient._id ||
+    !value.ingredient.percent ||
+    !value.percentage
+  ) {
     return null;
   }
 
-  const unit = value.ingredient.unit ?? "g";
+  const { _id, name, unit } = value.ingredient;
 
-  const amount =
-    sumDryIngredients *
-    (value.ingredient.percent / 100) *
-    (value.percentage / 100);
+  const ingredientState = ingredients.find((i) => i.ingredientId === _id);
 
   const completed =
-    ingredientsCompletion[value.ingredient._id]?.[value._key]?.completed ??
-    false;
+    ingredientsCompletion[_id]?.[value._key]?.completed ?? false;
 
   return (
     <Button
@@ -41,13 +41,13 @@ export const RecipeIngredientReferenceResult = ({
         dispatch({
           type: "onIngredientReferenceCompletionChange",
           payload: {
-            ingredientId: value.ingredient!._id,
+            ingredientId: _id,
             ingredientReferenceKey: value._key,
           },
         })
       }
     >
-      {formatAmount(amount)} {unit} {value.ingredient.name}
+      {formatAmount(ingredientState?.amount)} {unit} {name}
       {completed ? <CheckIcon /> : <SquareIcon />}
     </Button>
   );

@@ -27,21 +27,13 @@ export type RecipeState = {
   servings: number;
   ingredientsCompletion: IngredientsCompletionState;
   ingredients: RecipeIngredientsState;
-  sumDryIngredients: number;
   yieldPerServing: number;
 };
 
 export const calcIngredientAmount = (
   percent: number,
-  sumDryIngredients: number,
-): number => sumDryIngredients * (percent / 100);
-
-export const calcSumDryIngredients = (
-  ingredients: RecipeIngredientsState,
-): number =>
-  ingredients
-    .filter((i) => i.type === "dry")
-    .reduce((acc, curr) => acc + curr.amount, 0);
+  baseIngredientsAmount: number,
+): number => baseIngredientsAmount * (percent / 100);
 
 export const calcInitialIngredientsCompletionState = (
   instructions: RecipeInstructions | null | undefined,
@@ -187,7 +179,6 @@ export const calcInitialState = (
     servings: initialServingsNum,
     ingredientsCompletion: calcInitialIngredientsCompletionState(instructions),
     ingredients: ingredientsState,
-    sumDryIngredients: calcSumDryIngredients(ingredientsState),
     yieldPerServing: totalYield / initialServingsNum,
   };
 };
@@ -244,7 +235,6 @@ export const recipeReducer = (
         ),
         servings: newServings,
         ingredients: updatedIngredients,
-        sumDryIngredients: calcSumDryIngredients(updatedIngredients),
         yieldPerServing: state.yieldPerServing,
       };
     }
@@ -290,7 +280,6 @@ export const recipeReducer = (
         ),
         servings: updatedServings,
         ingredients: updatedIngredients,
-        sumDryIngredients: calcSumDryIngredients(updatedIngredients),
         yieldPerServing: state.yieldPerServing,
       };
     }
