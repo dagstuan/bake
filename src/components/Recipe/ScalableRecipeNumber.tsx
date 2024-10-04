@@ -11,7 +11,7 @@ export const ScalableRecipeNumber = (props: ScalableRecipeNumberProps) => {
   const { servings, initialServings } = useRecipeContext();
 
   return (
-    <span className="inline-block rounded-md border bg-muted px-2 py-0 text-sm font-medium">
+    <span className="inline-block rounded-md bg-muted px-2 text-sm font-medium leading-6">
       {number * (servings / initialServings)}
       {suffix && ` ${suffix}`}
     </span>
