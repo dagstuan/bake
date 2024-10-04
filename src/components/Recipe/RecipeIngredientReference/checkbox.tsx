@@ -13,7 +13,7 @@ const RecipeIngredientReferenceCheckbox = React.forwardRef<
   <CheckboxPrimitive.Root
     ref={ref}
     className={cn(
-      "peer flex h-[14px] w-[14px] shrink-0 items-center justify-center rounded-[2px] border border-primary shadow focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:border-green-500 data-[state=checked]:bg-green-500 data-[state=checked]:text-primary-foreground",
+      "peer flex h-[14px] w-[14px] shrink-0 items-center justify-center rounded-[2px] border border-primary shadow-sm focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:border-green-600 data-[state=checked]:bg-green-600 data-[state=checked]:text-primary-foreground",
       className,
     )}
     {...props}
