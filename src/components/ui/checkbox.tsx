@@ -20,7 +20,9 @@ const Checkbox = React.forwardRef<
     {...props}
   >
     <CheckboxPrimitive.Indicator
-      className={cn("flex h-[15px] w-[15px] justify-center text-current")}
+      className={cn(
+        "flex h-[15px] w-[15px] items-center justify-center text-current",
+      )}
     >
       {checked === "indeterminate" && (
         <DividerHorizontalIcon className="h-3 w-3" />
