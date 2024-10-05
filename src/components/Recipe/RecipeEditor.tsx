@@ -55,7 +55,7 @@ export const RecipeEditor = ({ onReset }: RecipeEditorProps) => {
           <DialogTitle>Rediger oppskrift</DialogTitle>
           <DialogDescription>
             Her kan du redigere oppskriften. Du kan enten velge å skalere hele
-            oppskriften ved å endre på "Antall", eller skalere en
+            oppskriften ved å endre på &quot;Antall&quot;, eller skalere en
             enkeltingrediens ved å bruke feltene nedenfor. Hvis du skalerer med
             en enkeltingrediens vil resten av ingrediensene oppdatere seg til å
             passe.
