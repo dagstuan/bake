@@ -36,7 +36,7 @@ export const RecipeIngredientReferenceResult = ({
     <>
       <span
         className={cn(
-          "inline-flex h-auto items-center justify-center gap-1 rounded-md bg-muted pr-2 align-middle leading-6 focus-within:bg-accent focus-within:ring-1 focus-within:ring-ring hover:cursor-pointer hover:bg-accent hover:text-accent-foreground",
+          "inline-flex h-auto items-center justify-center gap-1 rounded-md bg-muted pr-2 align-baseline leading-6 focus-within:bg-accent focus-within:ring-1 focus-within:ring-ring hover:cursor-pointer hover:bg-accent hover:text-accent-foreground",
           {
             ["bg-muted-foreground text-muted focus-within:bg-stone-600 focus-within:ring-green-900 hover:bg-muted-foreground hover:text-muted"]:
               completed,
