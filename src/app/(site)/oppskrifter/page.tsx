@@ -14,9 +14,9 @@ export default async function Home() {
   });
 
   return (
-    <div className="mt-8 flex justify-center px-6">
-      <div className="w-full max-w-6xl">
-        <TypographyH1>Alle oppskrifter</TypographyH1>
+    <div className="mt-8 flex justify-center px-6 sm:mt-16">
+      <div className="w-full max-w-6xl text-center">
+        <TypographyH1 className="mb-10">Alle oppskrifter</TypographyH1>
 
         <RecipesGrid recipes={recipes} />
       </div>

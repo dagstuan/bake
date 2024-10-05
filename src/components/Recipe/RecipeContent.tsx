@@ -97,7 +97,7 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
 
   return (
     <main className="px-6">
-      <div className="prose-lg prose container mx-auto flex max-w-5xl flex-col gap-8 pt-8 sm:pt-12">
+      <div className="prose-lg prose container mx-auto flex max-w-5xl flex-col gap-8 pt-10 sm:pt-16">
         {title ? (
           <TypographyH1 className="text-center sm:mb-8">{title}</TypographyH1>
         ) : null}
