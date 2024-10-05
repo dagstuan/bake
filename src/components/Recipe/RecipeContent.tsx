@@ -14,7 +14,6 @@ import {
 import { TypographyH1 } from "../Typography/TypographyH1";
 import { Button } from "../ui/button";
 import { TypographyP } from "../Typography/TypographyP";
-import { cn } from "@/lib/utils";
 import { WakeLockToggle } from "./WakeLockToggle";
 import { RecipeEditor } from "./RecipeEditor";
 import { useRecipeContext } from "./recipeContext";
@@ -28,17 +27,12 @@ import {
 import { ComponentProps } from "react";
 import { PortableText } from "../PortableText/PortableText";
 import { formatAmount } from "@/utils/recipeUtils";
-import { CheckIcon } from "../icons/CheckIcon";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
 import { scalableRecipeNumberType } from "@/sanity/schemaTypes/scalableRecipeNumberType";
 import { ScalableRecipeNumber } from "./ScalableRecipeNumber";
-
-const RecipeCheckIcon = (props: { className?: string }) => (
-  <div className={cn("rounded-sm bg-green-500 p-[1px]", props.className)}>
-    <CheckIcon className="text-white" width={14} height={14} strokeWidth={2} />
-  </div>
-);
+import { Checkbox } from "../ui/checkbox";
+import { Label } from "../ui/label";
 
 const types: ComponentProps<typeof PortableText>["types"] = {
   [recipeIngredientReferenceType.name]: ({
@@ -91,8 +85,14 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
 
   const scaleFactor = 100 * (servings / initialServings);
 
-  const allIngredientsComplete = Object.values(ingredientsCompletion).every(
-    (c) => Object.values(c).every((c) => c.completed),
+  const ingredientsCompletionValues = Object.values(ingredientsCompletion);
+
+  const anyIngredientsComplete = ingredientsCompletionValues.some((c) =>
+    Object.values(c).some((c) => c.completed),
+  );
+
+  const allIngredientsComplete = ingredientsCompletionValues.every((c) =>
+    Object.values(c).every((c) => c.completed),
   );
 
   return (
@@ -131,14 +131,29 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead className="flex items-center gap-2">
-                      <RecipeCheckIcon
-                        className={cn({
-                          ["bg-muted-foreground"]: !allIngredientsComplete,
-                        })}
+                    <TableHead className="inline-flex items-center">
+                      <Checkbox
+                        checked={
+                          anyIngredientsComplete && !allIngredientsComplete
+                            ? "indeterminate"
+                            : allIngredientsComplete
+                        }
+                        onCheckedChange={(checked) => {
+                          if (checked === "indeterminate") {
+                            dispatch({
+                              type: "onAllIngredientsCompletionChange",
+                              payload: true,
+                            });
+                          } else {
+                            dispatch({
+                              type: "onAllIngredientsCompletionChange",
+                              payload: checked,
+                            });
+                          }
+                        }}
                       />
-                      Ingrediens
                     </TableHead>
+                    <TableHead>Ingrediens</TableHead>
                     <TableHead>Prosent</TableHead>
                     <TableHead>Mengde</TableHead>
                   </TableRow>
@@ -151,19 +166,34 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
                         ingredientId,
                       );
 
+                      const checkboxId = `ingredient-${ingredientId}-complete`;
+
                       return (
                         <TableRow key={ingredientId}>
-                          <TableCell
-                            className={cn(`flex items-center gap-2`, {
-                              ["text-green-900"]: isComplete,
-                            })}
-                          >
-                            {isComplete ? (
-                              <RecipeCheckIcon />
-                            ) : (
-                              <div className="size-[16px]" />
-                            )}
-                            {name}
+                          <TableCell className="flex items-center">
+                            <Checkbox
+                              id={checkboxId}
+                              checked={isComplete}
+                              onCheckedChange={(checked) => {
+                                if (checked === "indeterminate") return;
+
+                                dispatch({
+                                  type: "onIngredientCompletionChange",
+                                  payload: {
+                                    ingredientId,
+                                    completed: checked,
+                                  },
+                                });
+                              }}
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Label
+                              htmlFor={checkboxId}
+                              className="hover:cursor-pointer"
+                            >
+                              {name}
+                            </Label>
                           </TableCell>
                           <TableCell>{formatAmount(percent, 1)}%</TableCell>
                           <TableCell>

@@ -86,6 +86,7 @@ export const isIngredientComplete = (
 
 const resetIngredientsCompletionState = (
   ingredientsCompletionState: IngredientsCompletionState,
+  completed: boolean,
 ): IngredientsCompletionState => {
   return Object.entries(
     ingredientsCompletionState,
@@ -94,7 +95,7 @@ const resetIngredientsCompletionState = (
       state[ingredientId] = Object.entries(ingredientCompletion).reduce<{
         [recipeIngredientKey: string]: { completed: boolean };
       }>((ingredientState, [recipeIngredientKey]) => {
-        ingredientState[recipeIngredientKey] = { completed: false };
+        ingredientState[recipeIngredientKey] = { completed };
         return ingredientState;
       }, {});
 
@@ -144,6 +145,17 @@ export type RecipeAction =
         ingredientId: string;
         ingredientReferenceKey: string;
       };
+    }
+  | {
+      type: "onIngredientCompletionChange";
+      payload: {
+        ingredientId: string;
+        completed: boolean;
+      };
+    }
+  | {
+      type: "onAllIngredientsCompletionChange";
+      payload: boolean;
     }
   | {
       type: "onServingsChange";
@@ -212,6 +224,37 @@ export const recipeReducer = (
         },
       };
     }
+    case "onIngredientCompletionChange": {
+      const { ingredientId, completed } = action.payload;
+
+      const updatedIngredient = Object.entries(
+        state.ingredientsCompletion[ingredientId],
+      ).reduce<{
+        [recipeIngredientKey: string]: { completed: boolean };
+      }>((ingredientState, [recipeIngredientKey]) => {
+        ingredientState[recipeIngredientKey] = { completed: completed };
+        return ingredientState;
+      }, {});
+
+      return {
+        ...state,
+        ingredientsCompletion: {
+          ...state.ingredientsCompletion,
+          [ingredientId]: updatedIngredient,
+        },
+      };
+    }
+    case "onAllIngredientsCompletionChange": {
+      const completed = action.payload;
+
+      return {
+        ...state,
+        ingredientsCompletion: resetIngredientsCompletionState(
+          state.ingredientsCompletion,
+          completed,
+        ),
+      };
+    }
     case "onServingsChange": {
       const newServings = action.payload;
 
@@ -234,6 +277,7 @@ export const recipeReducer = (
         ...state,
         ingredientsCompletion: resetIngredientsCompletionState(
           state.ingredientsCompletion,
+          false,
         ),
         servings: newServings,
         ingredients: updatedIngredients,
@@ -279,6 +323,7 @@ export const recipeReducer = (
         ...state,
         ingredientsCompletion: resetIngredientsCompletionState(
           state.ingredientsCompletion,
+          false,
         ),
         servings: updatedServings,
         ingredients: updatedIngredients,
