@@ -34,13 +34,11 @@ import { ScalableRecipeNumber } from "./ScalableRecipeNumber";
 import { Checkbox } from "../ui/checkbox";
 import { Label } from "../ui/label";
 import { Duration } from "./Duration";
-import { ChefHatIcon } from "../icons/ChefHatIcon";
 import { CookingPotIcon } from "../icons/CookingPotIcon";
 import { CakeSliceIcon } from "../icons/CakeSliceIcon";
 import { Badge } from "../ui/badge";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { TypographyH3 } from "../Typography/TypographyH3";
-import { TypographyH2 } from "../Typography/TypographyH2";
 
 const types: ComponentProps<typeof PortableText>["types"] = {
   [recipeIngredientReferenceType.name]: ({

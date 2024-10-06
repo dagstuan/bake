@@ -4,27 +4,12 @@ import { ReactNode } from "react";
 import { Duration as DurationType, TimeValue } from "../../../sanity.types";
 import { Badge } from "../ui/badge";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
-import { capitalize, exhaustiveMatchingGuard } from "@/utils/tsUtils";
+import { capitalize } from "@/utils/tsUtils";
 
 type DurationProps = {
   icon: ReactNode;
   duration: DurationType;
   tooltip: string;
-};
-
-const formatType = (type: NonNullable<TimeValue["type"]>): string => {
-  switch (type) {
-    case "hours":
-      return "timer";
-    case "minutes":
-      return "minutter";
-    case "seconds":
-      return "sekunder";
-    case "days":
-      return "dager";
-    default:
-      return exhaustiveMatchingGuard(type);
-  }
 };
 
 const formatTimeValue = (value: TimeValue): string => {

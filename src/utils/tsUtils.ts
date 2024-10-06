@@ -1,4 +1,4 @@
-export const exhaustiveMatchingGuard = (value: never) => {
+export const exhaustiveMatchingGuard = (_: never) => {
   throw new Error("exhaustive matching error");
 };
 
