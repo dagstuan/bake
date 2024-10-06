@@ -24,6 +24,8 @@ export const recipeQuery =
       unit,
       percent,
     },
+    activeTime,
+    totalTime,
     baseDryIngredients,
     servings,
     instructions[]{

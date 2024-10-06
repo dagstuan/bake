@@ -6,6 +6,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { Nav } from "@/components/Nav/Nav";
 import { Footer } from "@/components/Footer/Footer";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -44,19 +45,21 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col bg-zinc-50 text-black antialiased`}
       >
-        {draftMode().isEnabled && (
-          <a
-            className="fixed bottom-0 right-0 m-4 bg-blue-500 p-4 text-white"
-            href="/api/draft-mode/disable"
-          >
-            Disable preview mode
-          </a>
-        )}
-        <Nav />
-        <div className="flex-1">{children}</div>
-        <Footer />
-        {draftMode().isEnabled && <VisualEditing />}
-        <Analytics />
+        <TooltipProvider delayDuration={400}>
+          {draftMode().isEnabled && (
+            <a
+              className="fixed bottom-0 right-0 m-4 bg-blue-500 p-4 text-white"
+              href="/api/draft-mode/disable"
+            >
+              Disable preview mode
+            </a>
+          )}
+          <Nav />
+          <div className="flex-1">{children}</div>
+          <Footer />
+          {draftMode().isEnabled && <VisualEditing />}
+          <Analytics />
+        </TooltipProvider>
       </body>
     </html>
   );

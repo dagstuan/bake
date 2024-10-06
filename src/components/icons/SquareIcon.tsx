@@ -1,8 +1,6 @@
-import { SVGProps } from "react";
+import { IconProps } from "./types";
 
-type SquareIconProps = SVGProps<SVGSVGElement>;
-
-export const SquareIcon = (props: SquareIconProps) => {
+export const SquareIcon = (props: IconProps) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
