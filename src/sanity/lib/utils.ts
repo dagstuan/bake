@@ -2,7 +2,7 @@ import createImageUrlBuilder from "@sanity/image-url";
 
 import { dataset, projectId } from "../env";
 import { FrontPageRecipesQueryResult } from "../../../sanity.types";
-import { ArrayElement } from "@/utils/tsUtils";
+import { ArrayElement } from "@/utils/types";
 
 type ImageReference = ArrayElement<FrontPageRecipesQueryResult>["mainImage"];
 

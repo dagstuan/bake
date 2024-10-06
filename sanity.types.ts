@@ -68,6 +68,12 @@ export type Geopoint = {
   alt?: number;
 };
 
+export type TimeValue = {
+  _type: "timeValue";
+  time?: number;
+  type?: "hours" | "minutes" | "seconds" | "days";
+};
+
 export type ScalableRecipeNumber = {
   _type: "scalableRecipeNumber";
   number?: number;
@@ -138,6 +144,8 @@ export type Recipe = {
     _key: string;
     [internalGroqTypeReferenceTo]?: "category";
   }>;
+  activeTime?: Duration;
+  totalTime?: Duration;
   baseDryIngredients?: number;
   servings?: number;
   ingredients?: Array<{
@@ -173,6 +181,12 @@ export type Recipe = {
     _type: "block";
     _key: string;
   }>;
+};
+
+export type Duration = {
+  _type: "duration";
+  start?: TimeValue;
+  end?: TimeValue;
 };
 
 export type Category = {
@@ -298,11 +312,13 @@ export type AllSanitySchemaTypes =
   | SanityImageDimensions
   | SanityFileAsset
   | Geopoint
+  | TimeValue
   | ScalableRecipeNumber
   | RecipeIngredientReference
   | RecipeIngredient
   | Ingredient
   | Recipe
+  | Duration
   | Category
   | BlockContent
   | SanityImageCrop
@@ -353,7 +369,7 @@ export type AllRecipesQueryResult = Array<{
   } | null;
 }>;
 // Variable: recipeQuery
-// Query: *[_type == "recipe" && slug.current == $slug][0]{    _id,    title,    mainImage,    ingredients[]->{      _id,      "ingredient": ingredient->{        name,        type,      },      unit,      percent,    },    baseDryIngredients,    servings,    instructions[]{      ...,      _type == "block" => {        ...,        children[]{          ...,          _type == "recipeIngredientReference" => {            ...,            "ingredient": @.ingredient->{              _id,              "name": ingredient->.name,              percent,              unit,            },          }        }      }    }}
+// Query: *[_type == "recipe" && slug.current == $slug][0]{    _id,    title,    mainImage,    ingredients[]->{      _id,      "ingredient": ingredient->{        name,        type,      },      unit,      percent,    },    activeTime,    totalTime,    baseDryIngredients,    servings,    instructions[]{      ...,      _type == "block" => {        ...,        children[]{          ...,          _type == "recipeIngredientReference" => {            ...,            "ingredient": @.ingredient->{              _id,              "name": ingredient->.name,              percent,              unit,            },          }        }      }    }}
 export type RecipeQueryResult = {
   _id: string;
   title: string | null;
@@ -378,6 +394,8 @@ export type RecipeQueryResult = {
     unit: "dl" | "egg" | "g" | "ss" | "stk" | "ts" | null;
     percent: number | null;
   }> | null;
+  activeTime: Duration | null;
+  totalTime: Duration | null;
   baseDryIngredients: number | null;
   servings: number | null;
   instructions: Array<{
@@ -425,6 +443,6 @@ declare module "@sanity/client" {
   interface SanityQueries {
     '*[_type == "recipe"]|order(_createdAt desc)[0...6]{\n  _id, title, slug, mainImage\n}': FrontPageRecipesQueryResult;
     '*[_type == "recipe"]|order(_createdAt desc){\n  _id, title, slug, mainImage\n}': AllRecipesQueryResult;
-    '*[_type == "recipe" && slug.current == $slug][0]{\n    _id,\n    title,\n    mainImage,\n    ingredients[]->{\n      _id,\n      "ingredient": ingredient->{\n        name,\n        type,\n      },\n      unit,\n      percent,\n    },\n    baseDryIngredients,\n    servings,\n    instructions[]{\n      ...,\n      _type == "block" => {\n        ...,\n        children[]{\n          ...,\n          _type == "recipeIngredientReference" => {\n            ...,\n            "ingredient": @.ingredient->{\n              _id,\n              "name": ingredient->.name,\n              percent,\n              unit,\n            },\n          }\n        }\n      }\n    }\n}': RecipeQueryResult;
+    '*[_type == "recipe" && slug.current == $slug][0]{\n    _id,\n    title,\n    mainImage,\n    ingredients[]->{\n      _id,\n      "ingredient": ingredient->{\n        name,\n        type,\n      },\n      unit,\n      percent,\n    },\n    activeTime,\n    totalTime,\n    baseDryIngredients,\n    servings,\n    instructions[]{\n      ...,\n      _type == "block" => {\n        ...,\n        children[]{\n          ...,\n          _type == "recipeIngredientReference" => {\n            ...,\n            "ingredient": @.ingredient->{\n              _id,\n              "name": ingredient->.name,\n              percent,\n              unit,\n            },\n          }\n        }\n      }\n    }\n}': RecipeQueryResult;
   }
 }

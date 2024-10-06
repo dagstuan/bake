@@ -46,8 +46,19 @@ export const recipeType = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: "activeTime",
+      type: "duration",
+      title: "Active time",
+    }),
+    defineField({
+      name: "totalTime",
+      type: "duration",
+      title: "Total time",
+    }),
+    defineField({
       name: "baseDryIngredients",
       type: "number",
+      title: "Sum base ingredients",
       description: "The sum of all base ingredients in grams",
       initialValue: 1000,
     }),

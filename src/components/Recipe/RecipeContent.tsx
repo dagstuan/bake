@@ -28,11 +28,19 @@ import { ComponentProps } from "react";
 import { PortableText } from "../PortableText/PortableText";
 import { formatAmount } from "@/utils/recipeUtils";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
-import { InfoCircledIcon } from "@radix-ui/react-icons";
+import { ClockIcon, InfoCircledIcon } from "@radix-ui/react-icons";
 import { scalableRecipeNumberType } from "@/sanity/schemaTypes/scalableRecipeNumberType";
 import { ScalableRecipeNumber } from "./ScalableRecipeNumber";
 import { Checkbox } from "../ui/checkbox";
 import { Label } from "../ui/label";
+import { Duration } from "./Duration";
+import { ChefHatIcon } from "../icons/ChefHatIcon";
+import { CookingPotIcon } from "../icons/CookingPotIcon";
+import { CakeSliceIcon } from "../icons/CakeSliceIcon";
+import { Badge } from "../ui/badge";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { TypographyH3 } from "../Typography/TypographyH3";
+import { TypographyH2 } from "../Typography/TypographyH2";
 
 const types: ComponentProps<typeof PortableText>["types"] = {
   [recipeIngredientReferenceType.name]: ({
@@ -66,7 +74,7 @@ type RecipeContentProps = {
 };
 
 export const RecipeContent = ({ recipe }: RecipeContentProps) => {
-  const { title, mainImage, instructions } = recipe;
+  const { title, mainImage, instructions, activeTime, totalTime } = recipe;
 
   const {
     ingredients,
@@ -112,100 +120,134 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
           />
         )}
         <div className="grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-8">
-          <div className="col-span-full flex flex-col gap-4 md:col-span-4">
-            <WakeLockToggle />
+          <div className="col-span-full flex flex-col gap-6 md:col-span-4 md:gap-8">
+            <div className="flex flex-col gap-4">
+              <WakeLockToggle />
 
-            <div className="flex flex-wrap gap-2">
-              <RecipeEditor onReset={reset} />
-              <Button type="button" variant="outline" onClick={reset}>
-                Tilbakestill
-              </Button>
+              <div className="flex flex-wrap gap-2">
+                <RecipeEditor onReset={reset} />
+                <Button type="button" variant="outline" onClick={reset}>
+                  Tilbakestill
+                </Button>
+              </div>
+
+              <div className="flex flex-col flex-wrap items-start gap-2">
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Badge
+                      variant="outline"
+                      className="flex items-center gap-2"
+                    >
+                      <CakeSliceIcon />
+                      Antall: {formatAmount(servings)}
+                    </Badge>
+                  </TooltipTrigger>
+                  <TooltipContent side="bottom">
+                    Antall porsjoner du får.
+                  </TooltipContent>
+                </Tooltip>
+
+                {activeTime && (
+                  <Duration
+                    duration={activeTime}
+                    icon={<CookingPotIcon />}
+                    tooltip="Aktiv tidsbruk"
+                  />
+                )}
+
+                {totalTime && (
+                  <Duration
+                    duration={totalTime}
+                    icon={<ClockIcon />}
+                    tooltip="Total tidsbruk"
+                  />
+                )}
+              </div>
             </div>
 
-            <TypographyP className="!mt-0">
-              Antall:{" "}
-              <span className="font-bold">{formatAmount(servings)}</span>
-            </TypographyP>
+            <div className="flex flex-col gap-2">
+              <TypographyH3>Ingredienser</TypographyH3>
 
-            {ingredients ? (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="inline-flex items-center">
-                      <Checkbox
-                        checked={
-                          anyIngredientsComplete && !allIngredientsComplete
-                            ? "indeterminate"
-                            : allIngredientsComplete
-                        }
-                        onCheckedChange={(checked) => {
-                          if (checked === "indeterminate") {
-                            dispatch({
-                              type: "onAllIngredientsCompletionChange",
-                              payload: true,
-                            });
-                          } else {
-                            dispatch({
-                              type: "onAllIngredientsCompletionChange",
-                              payload: checked,
-                            });
+              {ingredients ? (
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="inline-flex items-center">
+                        <Checkbox
+                          checked={
+                            anyIngredientsComplete && !allIngredientsComplete
+                              ? "indeterminate"
+                              : allIngredientsComplete
                           }
-                        }}
-                      />
-                    </TableHead>
-                    <TableHead>Ingrediens</TableHead>
-                    <TableHead>Prosent</TableHead>
-                    <TableHead>Mengde</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {ingredients.map(
-                    ({ ingredientId, name, percent, amount, unit }) => {
-                      const isComplete = isIngredientComplete(
-                        ingredientsCompletion,
-                        ingredientId,
-                      );
+                          onCheckedChange={(checked) => {
+                            if (checked === "indeterminate") {
+                              dispatch({
+                                type: "onAllIngredientsCompletionChange",
+                                payload: true,
+                              });
+                            } else {
+                              dispatch({
+                                type: "onAllIngredientsCompletionChange",
+                                payload: checked,
+                              });
+                            }
+                          }}
+                        />
+                      </TableHead>
+                      <TableHead>Ingrediens</TableHead>
+                      <TableHead>Prosent</TableHead>
+                      <TableHead>Mengde</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {ingredients.map(
+                      ({ ingredientId, name, percent, amount, unit }) => {
+                        const isComplete = isIngredientComplete(
+                          ingredientsCompletion,
+                          ingredientId,
+                        );
 
-                      const checkboxId = `ingredient-${ingredientId}-complete`;
+                        const checkboxId = `ingredient-${ingredientId}-complete`;
 
-                      return (
-                        <TableRow key={ingredientId}>
-                          <TableCell className="flex items-center">
-                            <Checkbox
-                              id={checkboxId}
-                              checked={isComplete}
-                              onCheckedChange={(checked) => {
-                                if (checked === "indeterminate") return;
+                        return (
+                          <TableRow key={ingredientId}>
+                            <TableCell className="flex items-center">
+                              <Checkbox
+                                id={checkboxId}
+                                checked={isComplete}
+                                onCheckedChange={(checked) => {
+                                  if (checked === "indeterminate") return;
 
-                                dispatch({
-                                  type: "onIngredientCompletionChange",
-                                  payload: {
-                                    ingredientId,
-                                    completed: checked,
-                                  },
-                                });
-                              }}
-                            />
-                          </TableCell>
-                          <TableCell>
-                            <Label
-                              htmlFor={checkboxId}
-                              className="hover:cursor-pointer"
-                            >
-                              {name}
-                            </Label>
-                          </TableCell>
-                          <TableCell>{formatAmount(percent, 1)}%</TableCell>
-                          <TableCell>
-                            {formatAmount(amount)} {unit}
-                          </TableCell>
-                        </TableRow>
-                      );
-                    },
-                  )}
-                </TableBody>
-              </Table>
-            ) : null}
+                                  dispatch({
+                                    type: "onIngredientCompletionChange",
+                                    payload: {
+                                      ingredientId,
+                                      completed: checked,
+                                    },
+                                  });
+                                }}
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Label
+                                htmlFor={checkboxId}
+                                className="hover:cursor-pointer"
+                              >
+                                {name}
+                              </Label>
+                            </TableCell>
+                            <TableCell>{formatAmount(percent, 1)}%</TableCell>
+                            <TableCell>
+                              {formatAmount(amount)} {unit}
+                            </TableCell>
+                          </TableRow>
+                        );
+                      },
+                    )}
+                  </TableBody>
+                </Table>
+              ) : null}
+            </div>
           </div>
           <div className="col-span-full align-baseline md:col-span-8">
             {scaleFactor !== 100 && (

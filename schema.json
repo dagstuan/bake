@@ -326,6 +326,54 @@
     }
   },
   {
+    "name": "timeValue",
+    "type": "type",
+    "value": {
+      "type": "object",
+      "attributes": {
+        "_type": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string",
+            "value": "timeValue"
+          }
+        },
+        "time": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "number"
+          },
+          "optional": true
+        },
+        "type": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "union",
+            "of": [
+              {
+                "type": "string",
+                "value": "hours"
+              },
+              {
+                "type": "string",
+                "value": "minutes"
+              },
+              {
+                "type": "string",
+                "value": "seconds"
+              },
+              {
+                "type": "string",
+                "value": "days"
+              }
+            ]
+          },
+          "optional": true
+        }
+      }
+    }
+  },
+  {
     "name": "scalableRecipeNumber",
     "type": "type",
     "value": {
@@ -743,6 +791,22 @@
         },
         "optional": true
       },
+      "activeTime": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "inline",
+          "name": "duration"
+        },
+        "optional": true
+      },
+      "totalTime": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "inline",
+          "name": "duration"
+        },
+        "optional": true
+      },
       "baseDryIngredients": {
         "type": "objectAttribute",
         "value": {
@@ -998,6 +1062,38 @@
           }
         },
         "optional": true
+      }
+    }
+  },
+  {
+    "name": "duration",
+    "type": "type",
+    "value": {
+      "type": "object",
+      "attributes": {
+        "_type": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string",
+            "value": "duration"
+          }
+        },
+        "start": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "inline",
+            "name": "timeValue"
+          },
+          "optional": true
+        },
+        "end": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "inline",
+            "name": "timeValue"
+          },
+          "optional": true
+        }
       }
     }
   },
