@@ -33,7 +33,7 @@ const formatTimeValue = (value: TimeValue): string => {
 const formatDurationType = (duration: DurationType): string => {
   const { start, end } = duration;
 
-  if (start && end) {
+  if (start?.time && end?.time) {
     if (start.type === end.type) {
       return `${start.time}-${formatTimeValue(end)}`;
     }
