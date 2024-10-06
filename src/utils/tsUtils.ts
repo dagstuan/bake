@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const exhaustiveMatchingGuard = (_: never) => {
   throw new Error("exhaustive matching error");
 };
