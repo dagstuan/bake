@@ -8,6 +8,7 @@ import { capitalize } from "@/utils/tsUtils";
 
 type DurationProps = {
   icon: ReactNode;
+  title: string;
   duration: DurationType;
   tooltip: string;
 };
@@ -49,7 +50,7 @@ const formatDurationType = (duration: DurationType): string => {
 };
 
 export const Duration = (props: DurationProps) => {
-  const { icon, duration, tooltip } = props;
+  const { icon, duration, tooltip, title } = props;
 
   if (!duration || (!duration.start && !duration.end)) {
     return null;
@@ -60,7 +61,7 @@ export const Duration = (props: DurationProps) => {
       <TooltipTrigger>
         <Badge variant="outline" className="flex items-center gap-2">
           {icon}
-          {formatDurationType(duration)}
+          {title} {formatDurationType(duration)}
         </Badge>
       </TooltipTrigger>
       <TooltipContent side="bottom">{tooltip}</TooltipContent>

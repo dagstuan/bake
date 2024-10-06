@@ -149,7 +149,8 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
                   <Duration
                     duration={activeTime}
                     icon={<CookingPotIcon />}
-                    tooltip="Aktiv tidsbruk"
+                    title="Aktiv tid:"
+                    tooltip="Aktiv tidsbruk som kreves for å lage oppskriften."
                   />
                 )}
 
@@ -157,7 +158,8 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
                   <Duration
                     duration={totalTime}
                     icon={<ClockIcon />}
-                    tooltip="Total tidsbruk"
+                    title="Total tid:"
+                    tooltip="Total tidsbruk fra du starter til retten er ferdig."
                   />
                 )}
               </div>
