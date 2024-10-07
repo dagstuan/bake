@@ -47,3 +47,8 @@ export const recipeQuery =
       }
     }
 }`);
+
+export const pageSlugQuery = defineQuery(`*[_id == $pageId][0]{
+  _type,
+  "slug": slug.current,
+}`);

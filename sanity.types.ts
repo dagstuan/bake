@@ -436,6 +436,38 @@ export type RecipeQueryResult = {
     _key: string;
   }> | null;
 } | null;
+// Variable: pageSlugQuery
+// Query: *[_id == $pageId][0]{  _type,  "slug": slug.current,}
+export type PageSlugQueryResult =
+  | {
+      _type: "category";
+      slug: string | null;
+    }
+  | {
+      _type: "ingredient";
+      slug: null;
+    }
+  | {
+      _type: "media.tag";
+      slug: null;
+    }
+  | {
+      _type: "recipe";
+      slug: string | null;
+    }
+  | {
+      _type: "recipeIngredient";
+      slug: null;
+    }
+  | {
+      _type: "sanity.fileAsset";
+      slug: null;
+    }
+  | {
+      _type: "sanity.imageAsset";
+      slug: null;
+    }
+  | null;
 
 // Query TypeMap
 import "@sanity/client";
@@ -444,5 +476,6 @@ declare module "@sanity/client" {
     '*[_type == "recipe"]|order(_createdAt desc)[0...6]{\n  _id, title, slug, mainImage\n}': FrontPageRecipesQueryResult;
     '*[_type == "recipe"]|order(_createdAt desc){\n  _id, title, slug, mainImage\n}': AllRecipesQueryResult;
     '*[_type == "recipe" && slug.current == $slug][0]{\n    _id,\n    title,\n    mainImage,\n    ingredients[]->{\n      _id,\n      "ingredient": ingredient->{\n        name,\n        type,\n      },\n      unit,\n      percent,\n    },\n    activeTime,\n    totalTime,\n    baseDryIngredients,\n    servings,\n    instructions[]{\n      ...,\n      _type == "block" => {\n        ...,\n        children[]{\n          ...,\n          _type == "recipeIngredientReference" => {\n            ...,\n            "ingredient": @.ingredient->{\n              _id,\n              "name": ingredient->.name,\n              percent,\n              unit,\n            },\n          }\n        }\n      }\n    }\n}': RecipeQueryResult;
+    '*[_id == $pageId][0]{\n  _type,\n  "slug": slug.current,\n}': PageSlugQueryResult;
   }
 }

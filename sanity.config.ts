@@ -11,24 +11,32 @@ import { presentationTool } from "sanity/presentation";
 import { media } from "sanity-plugin-media";
 
 // Go to https://www.sanity.io/docs/api-versioning to learn how API versioning works
-import { apiVersion, dataset, projectId } from "./src/sanity/env";
+import {
+  apiVersion,
+  dataset,
+  draftModeRoute,
+  projectId,
+} from "./src/sanity/env";
 import { schema } from "./src/sanity/schemaTypes";
-import { structure } from "./src/sanity/structure";
+import { structure } from "./src/sanity/structure/structure";
 import { resolve } from "@/sanity/presentation/resolve";
+import { resolvePagePreviewUrl } from "@/sanity/lib/resolveProductionUrl";
+import { defaultDocumentNode } from "@/sanity/structure/defaultDocumentNode";
 
 export default defineConfig({
+  title: "Bakdel studio",
   basePath: "/studio",
   projectId,
   dataset,
   // Add and edit the content schema in the './sanity/schemaTypes' folder
   schema,
   plugins: [
-    structureTool({ structure }),
+    structureTool({ structure, defaultDocumentNode }),
     presentationTool({
       resolve,
       previewUrl: {
         previewMode: {
-          enable: "/api/draft-mode/enable",
+          enable: draftModeRoute,
         },
       },
     }),
@@ -37,4 +45,7 @@ export default defineConfig({
     // https://www.sanity.io/docs/the-vision-plugin
     visionTool({ defaultApiVersion: apiVersion }),
   ],
+  document: {
+    productionUrl: resolvePagePreviewUrl,
+  },
 });
