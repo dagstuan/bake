@@ -195,55 +195,51 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
                         />
                       </TableHead>
                       <TableHead>Ingrediens</TableHead>
-                      <TableHead>Prosent</TableHead>
                       <TableHead>Mengde</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {ingredients.map(
-                      ({ ingredientId, name, percent, amount, unit }) => {
-                        const isComplete = isIngredientComplete(
-                          ingredientsCompletion,
-                          ingredientId,
-                        );
+                    {ingredients.map(({ ingredientId, name, amount, unit }) => {
+                      const isComplete = isIngredientComplete(
+                        ingredientsCompletion,
+                        ingredientId,
+                      );
 
-                        const checkboxId = `ingredient-${ingredientId}-complete`;
+                      const checkboxId = `ingredient-${ingredientId}-complete`;
 
-                        return (
-                          <TableRow key={ingredientId}>
-                            <TableCell className="flex items-center">
-                              <Checkbox
-                                id={checkboxId}
-                                checked={isComplete}
-                                onCheckedChange={(checked) => {
-                                  if (checked === "indeterminate") return;
+                      return (
+                        <TableRow key={ingredientId}>
+                          <TableCell className="flex items-center">
+                            <Checkbox
+                              id={checkboxId}
+                              checked={isComplete}
+                              onCheckedChange={(checked) => {
+                                if (checked === "indeterminate") return;
 
-                                  dispatch({
-                                    type: "onIngredientCompletionChange",
-                                    payload: {
-                                      ingredientId,
-                                      completed: checked,
-                                    },
-                                  });
-                                }}
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <Label
-                                htmlFor={checkboxId}
-                                className="hover:cursor-pointer"
-                              >
-                                {name}
-                              </Label>
-                            </TableCell>
-                            <TableCell>{formatAmount(percent, 1)}%</TableCell>
-                            <TableCell>
-                              {formatAmount(amount)} {unit}
-                            </TableCell>
-                          </TableRow>
-                        );
-                      },
-                    )}
+                                dispatch({
+                                  type: "onIngredientCompletionChange",
+                                  payload: {
+                                    ingredientId,
+                                    completed: checked,
+                                  },
+                                });
+                              }}
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Label
+                              htmlFor={checkboxId}
+                              className="hover:cursor-pointer"
+                            >
+                              {name}
+                            </Label>
+                          </TableCell>
+                          <TableCell>
+                            {formatAmount(amount)} {unit}
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
                   </TableBody>
                 </Table>
               ) : null}

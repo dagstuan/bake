@@ -11,7 +11,9 @@ export const Footer = () => {
       <div className="container mx-auto max-w-6xl">
         <div className="flex flex-col items-center justify-between md:flex-row">
           <div className="mb-4 md:mb-0">
-            <p className="text-sm text-muted-foreground">Laget av Dag Stuan</p>
+            <p className="text-base text-muted-foreground">
+              Laget av Dag Stuan
+            </p>
           </div>
           <div className="flex items-center space-x-4">
             <Link

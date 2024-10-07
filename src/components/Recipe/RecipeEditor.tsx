@@ -50,7 +50,7 @@ export const RecipeEditor = ({ onReset }: RecipeEditorProps) => {
       <DialogTrigger asChild>
         <Button variant="default">Rediger oppskrift</Button>
       </DialogTrigger>
-      <DialogContent className="my-10 sm:max-w-[425px]">
+      <DialogContent className="my-10 sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>Rediger oppskrift</DialogTitle>
           <DialogDescription>
@@ -94,10 +94,7 @@ export const RecipeEditor = ({ onReset }: RecipeEditorProps) => {
             <div className="grid grid-cols-[max-content_1fr] items-center gap-4">
               {ingredients.map((ingredient, index) => (
                 <Fragment key={index}>
-                  <Label
-                    htmlFor={`ingredient-${index}`}
-                    className="text-right text-sm"
-                  >
+                  <Label htmlFor={`ingredient-${index}`} className="text-right">
                     {ingredient.name}
                   </Label>
                   <div className="flex items-center gap-2">

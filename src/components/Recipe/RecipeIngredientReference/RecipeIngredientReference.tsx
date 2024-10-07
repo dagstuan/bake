@@ -45,7 +45,7 @@ export const RecipeIngredientReferenceResult = ({
       >
         <Label
           htmlFor={checkboxId}
-          className="pl mr-[calc(-14px_-_0.5rem_-_0.25rem)] flex-1 pl-2 pr-[calc(14px_+_0.5rem_+_0.25rem)] text-sm font-medium leading-6 hover:cursor-pointer"
+          className="pl mr-[calc(-14px_-_0.5rem_-_0.25rem)] flex-1 pl-2 pr-[calc(14px_+_0.5rem_+_0.25rem)] text-base font-normal leading-6 hover:cursor-pointer"
         >
           {formatAmount(ingredientState?.amount)} {unit} {name}
         </Label>
