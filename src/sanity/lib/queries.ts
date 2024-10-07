@@ -1,13 +1,41 @@
 import { defineQuery } from "next-sanity";
 
-export const frontPageRecipesQuery =
-  defineQuery(`*[_type == "recipe"]|order(_createdAt desc)[0...6]{
+const baseRecipesQuery = /* groq */ `_type == "recipe"`;
+const recipesSearchMatchQuery = /* groq */ `(pt::text(instructions) match $searchQuery || title match $searchQuery)`;
+const recipesCategoryFilterQuery = /* groq */ `count((categories[]->slug.current)[@ in $categories]) > 0`;
+const recipesScoreQuery = /* groq */ `score(pt::text(instructions) match $searchQuery, boost(title match $searchQuery, 3))`;
+const recipesOrderQuery = /* groq */ `order(_createdAt desc)`;
+const allRecipesFields = /* groq */ `
   _id, title, slug, mainImage
+`;
+
+export const frontPageRecipesQuery =
+  defineQuery(`*[${baseRecipesQuery}]|${recipesOrderQuery}[0...6]{
+  ${allRecipesFields}
 }`);
 
 export const allRecipesQuery =
-  defineQuery(`*[_type == "recipe"]|order(_createdAt desc){
-  _id, title, slug, mainImage
+  defineQuery(`*[${baseRecipesQuery}]|${recipesOrderQuery}{
+  ${allRecipesFields}
+}`);
+
+export const recipesSearchQuery = defineQuery(`*[
+    ${baseRecipesQuery} &&
+    ${recipesSearchMatchQuery}]
+    |${recipesScoreQuery}|${recipesOrderQuery}{
+      ${allRecipesFields}
+    }`);
+
+export const recipesSearchWithCategoriesQuery = defineQuery(`*[
+  ${baseRecipesQuery} &&
+  ${recipesSearchMatchQuery} &&
+  ${recipesCategoryFilterQuery}]
+  |${recipesScoreQuery}|${recipesOrderQuery}{
+    ${allRecipesFields}
+  }`);
+
+export const allCategoriesQuery = defineQuery(`*[_type == "category"]{
+  _id, title, "slug": slug.current,
 }`);
 
 export const recipeQuery =

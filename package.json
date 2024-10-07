@@ -38,7 +38,8 @@
     "server-only": "^0.0.1",
     "styled-components": "^6.1.13",
     "tailwind-merge": "^2.5.3",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "use-debounce": "^10.0.3"
   },
   "devDependencies": {
     "@types/node": "^22.7.4",
