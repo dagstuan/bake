@@ -209,22 +209,24 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
 
                       return (
                         <TableRow key={ingredientId}>
-                          <TableCell className="flex items-center">
-                            <Checkbox
-                              id={checkboxId}
-                              checked={isComplete}
-                              onCheckedChange={(checked) => {
-                                if (checked === "indeterminate") return;
+                          <TableCell>
+                            <div>
+                              <Checkbox
+                                id={checkboxId}
+                                checked={isComplete}
+                                onCheckedChange={(checked) => {
+                                  if (checked === "indeterminate") return;
 
-                                dispatch({
-                                  type: "onIngredientCompletionChange",
-                                  payload: {
-                                    ingredientId,
-                                    completed: checked,
-                                  },
-                                });
-                              }}
-                            />
+                                  dispatch({
+                                    type: "onIngredientCompletionChange",
+                                    payload: {
+                                      ingredientId,
+                                      completed: checked,
+                                    },
+                                  });
+                                }}
+                              />
+                            </div>
                           </TableCell>
                           <TableCell>
                             <Label
