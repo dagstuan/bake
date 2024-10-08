@@ -8,7 +8,7 @@ import { useDebouncedCallback } from "use-debounce";
 import { useState } from "react";
 import { Button } from "../ui/button";
 
-export const categoriesQueryParam = "categories";
+export const categoryQueryParam = "category";
 export const searchQueryParam = "query";
 
 type RecipesFiltersProps = {
@@ -22,20 +22,17 @@ export const RecipesFilters = (props: RecipesFiltersProps) => {
   const pathname = usePathname();
   const { replace } = useRouter();
 
-  const categoriesQuery =
-    searchParams.get(categoriesQueryParam)?.split(",") ?? [];
+  const categoryQuery = searchParams.get(categoryQueryParam);
 
   const toggleCategory = (category: string) => {
     const params = new URLSearchParams(searchParams);
 
-    const newCategories = categoriesQuery.includes(category)
-      ? categoriesQuery.filter((t) => t !== category)
-      : [...categoriesQuery, category];
+    const newCategory = categoryQuery === category ? "" : category;
 
-    if (newCategories.length > 0) {
-      params.set(categoriesQueryParam, newCategories.sort().join(","));
+    if (newCategory.length > 0) {
+      params.set(categoryQueryParam, category);
     } else {
-      params.delete(categoriesQueryParam);
+      params.delete(categoryQueryParam);
     }
     replace(`${pathname}?${params.toString()}`, { scroll: false });
   };
@@ -94,7 +91,7 @@ export const RecipesFilters = (props: RecipesFiltersProps) => {
 
           return (
             <Button
-              variant={categoriesQuery.includes(slug) ? "default" : "outline"}
+              variant={categoryQuery === slug ? "default" : "outline"}
               onClick={() => toggleCategory(slug)}
               key={_id}
             >

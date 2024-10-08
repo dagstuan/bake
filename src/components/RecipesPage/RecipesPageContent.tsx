@@ -10,22 +10,22 @@ import { Nullable } from "@/utils/types";
 
 type RecipesPageContentProps = {
   query: Nullable<string>;
-  categories: Nullable<Array<string>>;
+  category: Nullable<string>;
 };
 
 const fetchRecipes = async (
   searchQuery: Nullable<string>,
-  categories: Nullable<Array<string>>,
+  category: Nullable<string>,
 ): Promise<RecipesSearchQueryResult> => {
-  if (searchQuery || categories) {
+  if (searchQuery || category) {
     return await sanityFetch({
       query:
-        (categories?.length ?? 0) > 0
+        (category?.length ?? 0) > 0
           ? recipesSearchWithCategoriesQuery
           : recipesSearchQuery,
       params: {
         searchQuery: searchQuery ? `*${searchQuery}*` : "*",
-        categories: categories ? categories : [],
+        categories: category ? [category] : [],
       },
     });
   }
@@ -37,9 +37,9 @@ const fetchRecipes = async (
 
 export const RecipesPageContent = async ({
   query,
-  categories,
+  category,
 }: RecipesPageContentProps) => {
-  const recipes = await fetchRecipes(query, categories);
+  const recipes = await fetchRecipes(query, category);
 
   return <RecipesGrid recipes={recipes} />;
 };

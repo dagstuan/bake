@@ -1,6 +1,6 @@
 import { RecipesGridSkeleton } from "@/components/RecipesGrid/RecipesGridSkeleton";
 import {
-  categoriesQueryParam,
+  categoryQueryParam,
   RecipesFilters,
   searchQueryParam,
 } from "@/components/RecipesPage/RecipesFilters";
@@ -20,11 +20,11 @@ export default async function Page({
 }: {
   searchParams?: {
     [searchQueryParam]?: string;
-    [categoriesQueryParam]?: string;
+    [categoryQueryParam]?: string;
   };
 }) {
   const query = searchParams?.query;
-  const categoriesQuery = searchParams?.categories?.split(",");
+  const categoryQuery = searchParams?.category;
 
   const categories = await sanityFetch({
     query: allCategoriesQuery,
@@ -38,7 +38,7 @@ export default async function Page({
         <RecipesFilters categories={categories} />
 
         <Suspense key={query} fallback={<RecipesGridSkeleton />}>
-          <RecipesPageContent query={query} categories={categoriesQuery} />
+          <RecipesPageContent query={query} category={categoryQuery} />
         </Suspense>
       </div>
     </div>
