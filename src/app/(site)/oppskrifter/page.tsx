@@ -1,24 +1,45 @@
-import { RecipesGrid } from "@/components/RecipesGrid/RecipesGrid";
+import { RecipesGridSkeleton } from "@/components/RecipesGrid/RecipesGridSkeleton";
+import {
+  categoriesQueryParam,
+  RecipesFilters,
+  searchQueryParam,
+} from "@/components/RecipesPage/RecipesFilters";
+import { RecipesPageContent } from "@/components/RecipesPage/RecipesPageContent";
 import { TypographyH1 } from "@/components/Typography/TypographyH1";
 import { sanityFetch } from "@/sanity/lib/client";
-import { allRecipesQuery } from "@/sanity/lib/queries";
+import { allCategoriesQuery } from "@/sanity/lib/queries";
 import { Metadata } from "next/types";
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
   title: "Alle oppskrifter",
 };
 
-export default async function Home() {
-  const recipes = await sanityFetch({
-    query: allRecipesQuery,
+export default async function Page({
+  searchParams,
+}: {
+  searchParams?: {
+    [searchQueryParam]?: string;
+    [categoriesQueryParam]?: string;
+  };
+}) {
+  const query = searchParams?.query;
+  const categoriesQuery = searchParams?.categories?.split(",");
+
+  const categories = await sanityFetch({
+    query: allCategoriesQuery,
   });
 
   return (
-    <div className="mt-8 flex justify-center px-6 sm:mt-16">
-      <div className="w-full max-w-6xl text-center">
-        <TypographyH1 className="mb-10">Alle oppskrifter</TypographyH1>
+    <div className="mx-auto flex justify-center">
+      <div className="mx-8 mt-8 flex max-w-6xl flex-1 flex-col justify-center gap-12 sm:mt-16">
+        <TypographyH1 className="mx-auto">Alle oppskrifter</TypographyH1>
 
-        <RecipesGrid recipes={recipes} />
+        <RecipesFilters categories={categories} />
+
+        <Suspense key={query} fallback={<RecipesGridSkeleton />}>
+          <RecipesPageContent query={query} categories={categoriesQuery} />
+        </Suspense>
       </div>
     </div>
   );

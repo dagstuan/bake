@@ -1,16 +1,22 @@
 import { urlForImage } from "@/sanity/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
-import { FrontPageRecipesQueryResult } from "../../../sanity.types";
+import { AllRecipesQueryResult } from "../../../sanity.types";
 import { Card } from "../ui/card";
+import { RecipesGridWrapper } from "./RecipesGridWrapper";
+import { NoRecipes } from "./NoRecipes";
 
 type RecipesGridProps = {
-  recipes: FrontPageRecipesQueryResult;
+  recipes: AllRecipesQueryResult;
 };
 
 export const RecipesGrid = ({ recipes }: RecipesGridProps) => {
+  if (recipes.length === 0) {
+    return <NoRecipes />;
+  }
+
   return (
-    <div className="mt-6 grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3">
+    <RecipesGridWrapper>
       {recipes.map((recipe) => (
         <Link
           href={`/oppskrifter/${recipe.slug?.current}`}
@@ -42,6 +48,6 @@ export const RecipesGrid = ({ recipes }: RecipesGridProps) => {
           </Card>
         </Link>
       ))}
-    </div>
+    </RecipesGridWrapper>
   );
 };
