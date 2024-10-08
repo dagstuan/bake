@@ -60,7 +60,7 @@ export const RecipesFilters = (props: RecipesFiltersProps) => {
   };
 
   return (
-    <div className="flex w-full flex-col items-center gap-6">
+    <div className="flex w-full flex-col items-center gap-4 sm:gap-6">
       <div className="mx-auto w-full max-w-3xl">
         <div className="relative">
           <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 transform text-gray-500" />
@@ -84,7 +84,7 @@ export const RecipesFilters = (props: RecipesFiltersProps) => {
           )}
         </div>
       </div>
-      <div className="flex gap-4">
+      <div className="flex max-w-full gap-2 overflow-y-auto sm:gap-4">
         {categories.map((category) => {
           const { _id, title, slug } = category;
 
