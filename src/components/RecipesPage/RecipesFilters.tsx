@@ -84,7 +84,7 @@ export const RecipesFilters = (props: RecipesFiltersProps) => {
           )}
         </div>
       </div>
-      <div className="flex max-w-full gap-2 overflow-y-auto sm:gap-4">
+      <div className="-mb-2 flex max-w-full gap-2 overflow-y-auto pb-2 sm:mb-0 sm:gap-4 sm:pb-0">
         {categories.map((category) => {
           const { _id, title, slug } = category;
 
