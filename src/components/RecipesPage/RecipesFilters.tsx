@@ -5,7 +5,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Input } from "../ui/input";
 import { AllCategoriesQueryResult } from "../../../sanity.types";
 import { useDebouncedCallback } from "use-debounce";
-import { useState } from "react";
+import { startTransition, useState } from "react";
 import { Button } from "../ui/button";
 
 export const categoryQueryParam = "category";
@@ -34,7 +34,9 @@ export const RecipesFilters = (props: RecipesFiltersProps) => {
     } else {
       params.delete(categoryQueryParam);
     }
-    replace(`${pathname}?${params.toString()}`, { scroll: false });
+    startTransition(() => {
+      replace(`${pathname}?${params.toString()}`, { scroll: false });
+    });
   };
 
   const handleSearch = useDebouncedCallback((term: string) => {
@@ -44,7 +46,10 @@ export const RecipesFilters = (props: RecipesFiltersProps) => {
     } else {
       params.delete(searchQueryParam);
     }
-    replace(`${pathname}?${params.toString()}`, { scroll: false });
+
+    startTransition(() => {
+      replace(`${pathname}?${params.toString()}`, { scroll: false });
+    });
   }, 300);
 
   const [inputValue, setInputValue] = useState(
