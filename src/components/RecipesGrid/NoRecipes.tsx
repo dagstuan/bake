@@ -4,7 +4,7 @@ import { TypographyP } from "../Typography/TypographyP";
 
 export const NoRecipes = () => {
   return (
-    <div className="py-8 text-center">
+    <div className="pt-8 text-center">
       <HeartCrackIcon className="mx-auto h-12 w-12 text-gray-400" />
       <TypographyH2 className="text-gray-900">
         Ingen oppskrifter funnet!

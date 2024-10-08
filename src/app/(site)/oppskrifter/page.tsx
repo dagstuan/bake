@@ -31,8 +31,8 @@ export default async function Page({
   });
 
   return (
-    <div className="mx-auto flex justify-center">
-      <div className="mx-8 mt-8 flex max-w-6xl flex-1 flex-col justify-center gap-12 sm:mt-16">
+    <div className="px-6">
+      <div className="mx-auto mt-8 flex max-w-6xl flex-1 flex-col justify-center gap-12 sm:mt-16">
         <TypographyH1 className="mx-auto">Alle oppskrifter</TypographyH1>
 
         <RecipesFilters categories={categories} />
