@@ -3,8 +3,9 @@ import { defineQuery } from "next-sanity";
 const baseRecipesQuery = /* groq */ `_type == "recipe"`;
 const recipesSearchMatchQuery = /* groq */ `(pt::text(instructions) match $searchQuery || title match $searchQuery)`;
 const recipesCategoryFilterQuery = /* groq */ `count((categories[]->slug.current)[@ in $categories]) > 0`;
-const recipesScoreQuery = /* groq */ `score(pt::text(instructions) match $searchQuery, boost(title match $searchQuery, 6))`;
-const recipesOrderQuery = /* groq */ `order(_createdAt desc)`;
+const recipesScoreQuery = /* groq */ `score(pt::text(instructions) match $searchQuery, boost(title match $searchQuery, 3))`;
+const recipesScoreOrderQuery = /* groq */ `order(_score desc)`;
+const recipesCreatedAtOrderQuery = /* groq */ `order(_createdAt desc)`;
 const allRecipesFields = /* groq */ `
   _id,
   title,
@@ -21,20 +22,26 @@ const allRecipesFields = /* groq */ `
   }
 `;
 
-export const frontPageRecipesQuery =
-  defineQuery(`*[${baseRecipesQuery}]|${recipesOrderQuery}[0...6]{
-  ${allRecipesFields}
-}`);
+export const frontPageRecipesQuery = defineQuery(`*[${baseRecipesQuery}]
+  |${recipesCreatedAtOrderQuery}
+  [0...6]
+  {
+    ${allRecipesFields}
+  }`);
 
-export const allRecipesQuery =
-  defineQuery(`*[${baseRecipesQuery}]|${recipesOrderQuery}{
-  ${allRecipesFields}
-}`);
+export const allRecipesQuery = defineQuery(`*[${baseRecipesQuery}]
+  |${recipesCreatedAtOrderQuery}
+  {
+    ${allRecipesFields}
+  }`);
 
 export const recipesSearchQuery = defineQuery(`*[
     ${baseRecipesQuery} &&
     ${recipesSearchMatchQuery}]
-    |${recipesScoreQuery}|${recipesOrderQuery}{
+    |${recipesCreatedAtOrderQuery}
+    |${recipesScoreQuery}
+    |${recipesScoreOrderQuery}
+    {
       ${allRecipesFields}
     }`);
 
@@ -42,7 +49,10 @@ export const recipesSearchWithCategoriesQuery =
   defineQuery(`*[${baseRecipesQuery} &&
   ${recipesSearchMatchQuery} &&
   ${recipesCategoryFilterQuery}]
-  |${recipesScoreQuery}|${recipesOrderQuery}{
+  |${recipesCreatedAtOrderQuery}
+  |${recipesScoreQuery}
+  |${recipesScoreOrderQuery}
+  {
     ${allRecipesFields}
   }`);
 
