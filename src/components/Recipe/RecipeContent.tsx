@@ -111,7 +111,7 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
           <Image
             className="w-full rounded-lg"
             src={
-              urlForImage(mainImage.asset._id)?.width(1000).height(400).url() ??
+              urlForImage(mainImage.asset._id)?.width(1200).height(400).url() ??
               ""
             }
             width={1200}

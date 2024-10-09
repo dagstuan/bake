@@ -25,6 +25,8 @@ export const Image = ({ alt, blurDataURL, ...props }: ImageProps) => {
         })}
         alt={alt}
         onLoad={() => setIsLoaded(true)}
+        placeholder={blurDataURL ? "blur" : undefined}
+        blurDataURL={blurDataURL}
       />
     </div>
   );
