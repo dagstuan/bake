@@ -42,6 +42,7 @@ export const RecipesGrid = ({ recipes }: RecipesGridProps) => {
                   blurDataURL={
                     recipe.mainImage?.asset?.metadata?.lqip ?? undefined
                   }
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
               ) : (
                 <div className="flex w-full flex-grow items-center justify-center text-8xl">

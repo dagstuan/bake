@@ -119,6 +119,7 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
             alt={mainImage.alt ?? title ?? "Recipe"}
             priority={true}
             blurDataURL={mainImage?.asset?.metadata?.lqip ?? undefined}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 70vw"
           />
         )}
         <div className="grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-8">
