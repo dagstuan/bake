@@ -16,10 +16,5 @@ export const urlForImage = (
     return undefined;
   }
 
-  return imageBuilder
-    ?.image(imageId)
-    .auto("format")
-    .dpr(2)
-    .fit("min")
-    .quality(80);
+  return imageBuilder?.image(imageId).auto("format").dpr(2).fit("min");
 };
