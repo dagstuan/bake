@@ -2,7 +2,6 @@
 
 import { RecipeQueryResult } from "../../../sanity.types";
 import Image from "next/image";
-import { urlFor } from "@/sanity/lib/image";
 import {
   Table,
   TableBody,
@@ -39,6 +38,7 @@ import { CakeSliceIcon } from "../icons/CakeSliceIcon";
 import { Badge } from "../ui/badge";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { TypographyH3 } from "../Typography/TypographyH3";
+import { urlForImage } from "@/sanity/lib/utils";
 
 const types: ComponentProps<typeof PortableText>["types"] = {
   [recipeIngredientReferenceType.name]: ({
@@ -107,14 +107,19 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
         {title ? (
           <TypographyH1 className="text-center sm:mb-8">{title}</TypographyH1>
         ) : null}
-        {mainImage?.asset?._ref && (
+        {mainImage?.asset?._id && (
           <Image
             className="w-full rounded-lg"
-            src={urlFor(mainImage.asset._ref).width(2000).height(800).url()}
+            src={
+              urlForImage(mainImage.asset._id)?.width(1000).height(400).url() ??
+              ""
+            }
             width={1000}
             height={400}
-            alt={title || ""}
+            alt={mainImage.alt ?? title ?? "Recipe"}
             priority={true}
+            placeholder="blur"
+            blurDataURL={mainImage?.asset?.metadata?.lqip ?? undefined}
           />
         )}
         <div className="grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-8">

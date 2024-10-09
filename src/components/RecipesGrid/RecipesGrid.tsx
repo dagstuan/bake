@@ -17,37 +17,44 @@ export const RecipesGrid = ({ recipes }: RecipesGridProps) => {
 
   return (
     <RecipesGridWrapper>
-      {recipes.map((recipe) => (
-        <Link
-          href={`/oppskrifter/${recipe.slug?.current}`}
-          key={recipe._id}
-          className="flex flex-col justify-between"
-        >
-          <Card className="transition-shadow hover:shadow-md">
-            {recipe.mainImage ? (
-              <Image
-                width={1000}
-                height={1000}
-                src={
-                  urlForImage(recipe.mainImage)
-                    ?.height(1000)
-                    .width(1000)
-                    .url() ?? ""
-                }
-                alt={recipe.mainImage?.alt ?? "Recipe"}
-                className="h-48 w-full rounded-t-lg object-cover"
-              />
-            ) : (
-              <div className="flex w-full flex-grow items-center justify-center text-8xl">
-                🍞
+      {recipes.map((recipe) => {
+        return (
+          <Link
+            href={`/oppskrifter/${recipe.slug?.current}`}
+            key={recipe._id}
+            className="flex flex-col justify-between"
+          >
+            <Card className="transition-shadow hover:shadow-md">
+              {recipe.mainImage ? (
+                <Image
+                  width={500}
+                  height={300}
+                  src={
+                    urlForImage(recipe.mainImage.asset?._id)
+                      ?.width(500)
+                      .height(300)
+                      .fit("clip")
+                      .url() ?? ""
+                  }
+                  alt={recipe.mainImage?.alt ?? "Recipe"}
+                  className="aspect-video h-48 w-full rounded-t-lg object-cover"
+                  placeholder="blur"
+                  blurDataURL={
+                    recipe.mainImage?.asset?.metadata?.lqip ?? undefined
+                  }
+                />
+              ) : (
+                <div className="flex w-full flex-grow items-center justify-center text-8xl">
+                  🍞
+                </div>
+              )}
+              <div className="p-4">
+                <h2 className="text-xl font-semibold">{recipe.title}</h2>
               </div>
-            )}
-            <div className="p-4">
-              <h2 className="text-xl font-semibold">{recipe.title}</h2>
-            </div>
-          </Card>
-        </Link>
-      ))}
+            </Card>
+          </Link>
+        );
+      })}
     </RecipesGridWrapper>
   );
 };

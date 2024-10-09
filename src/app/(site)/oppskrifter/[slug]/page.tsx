@@ -7,7 +7,7 @@ import { client, sanityFetch } from "@/sanity/lib/client";
 import { recipeQuery, allRecipesQuery } from "@/sanity/lib/queries";
 import { Recipe } from "@/components/Recipe/Recipe";
 import { Metadata } from "next";
-import { urlFor } from "@/sanity/lib/image";
+import { urlForImage } from "@/sanity/lib/utils";
 
 export async function generateStaticParams() {
   const recipes = await client.fetch(
@@ -37,10 +37,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return {
       title,
       openGraph: {
-        images: mainImage?.asset?._ref
+        images: mainImage?.asset?._id
           ? [
               {
-                url: urlFor(mainImage.asset._ref).width(800).height(600).url(),
+                url:
+                  urlForImage(mainImage.asset._id)
+                    ?.width(800)
+                    .height(600)
+                    .dpr(1)
+                    .url() ?? "",
                 width: 800,
                 height: 600,
               },

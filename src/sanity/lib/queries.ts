@@ -6,7 +6,19 @@ const recipesCategoryFilterQuery = /* groq */ `count((categories[]->slug.current
 const recipesScoreQuery = /* groq */ `score(pt::text(instructions) match $searchQuery, boost(title match $searchQuery, 3))`;
 const recipesOrderQuery = /* groq */ `order(_createdAt desc)`;
 const allRecipesFields = /* groq */ `
-  _id, title, slug, mainImage
+  _id,
+  title,
+  slug,
+  mainImage {
+    alt,
+    asset->{
+      _id,
+      metadata {
+        ...,
+        lqip
+      }
+    },
+  }
 `;
 
 export const frontPageRecipesQuery =
@@ -26,8 +38,8 @@ export const recipesSearchQuery = defineQuery(`*[
       ${allRecipesFields}
     }`);
 
-export const recipesSearchWithCategoriesQuery = defineQuery(`*[
-  ${baseRecipesQuery} &&
+export const recipesSearchWithCategoriesQuery =
+  defineQuery(`*[${baseRecipesQuery} &&
   ${recipesSearchMatchQuery} &&
   ${recipesCategoryFilterQuery}]
   |${recipesScoreQuery}|${recipesOrderQuery}{
@@ -42,7 +54,16 @@ export const recipeQuery =
   defineQuery(`*[_type == "recipe" && slug.current == $slug][0]{
     _id,
     title,
-    mainImage,
+    mainImage {
+      alt,
+      asset->{
+        _id,
+        metadata {
+          ...,
+          lqip
+        }
+      },
+    },
     ingredients[]->{
       _id,
       "ingredient": ingredient->{
