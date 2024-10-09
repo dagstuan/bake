@@ -17,7 +17,7 @@ export const RecipesGrid = ({ recipes }: RecipesGridProps) => {
 
   return (
     <RecipesGridWrapper>
-      {recipes.map((recipe) => {
+      {recipes.map((recipe, i) => {
         return (
           <Link
             href={`/oppskrifter/${recipe.slug?.current}`}
@@ -36,6 +36,7 @@ export const RecipesGrid = ({ recipes }: RecipesGridProps) => {
                       .fit("clip")
                       .url() ?? ""
                   }
+                  priority={i <= 3}
                   alt={recipe.mainImage?.alt ?? "Recipe"}
                   className="aspect-video h-48 w-full rounded-t-lg object-cover"
                   blurDataURL={
