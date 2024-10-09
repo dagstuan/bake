@@ -115,7 +115,7 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
               ""
             }
             width={1200}
-            height={500}
+            height={400}
             alt={mainImage.alt ?? title ?? "Recipe"}
             priority={true}
             blurDataURL={mainImage?.asset?.metadata?.lqip ?? undefined}
