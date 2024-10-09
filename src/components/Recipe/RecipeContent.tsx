@@ -111,11 +111,11 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
           <Image
             className="w-full rounded-lg"
             src={
-              urlForImage(mainImage.asset._id)?.width(1200).height(400).url() ??
+              urlForImage(mainImage.asset._id)?.width(1200).height(500).url() ??
               ""
             }
             width={1200}
-            height={400}
+            height={500}
             alt={mainImage.alt ?? title ?? "Recipe"}
             priority={true}
             blurDataURL={mainImage?.asset?.metadata?.lqip ?? undefined}
