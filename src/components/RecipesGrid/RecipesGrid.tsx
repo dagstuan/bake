@@ -1,10 +1,10 @@
 import { urlForImage } from "@/sanity/lib/utils";
-import Image from "next/image";
 import Link from "next/link";
 import { AllRecipesQueryResult } from "../../../sanity.types";
 import { Card } from "../ui/card";
 import { RecipesGridWrapper } from "./RecipesGridWrapper";
 import { NoRecipes } from "./NoRecipes";
+import { Image } from "../Image/Image";
 
 type RecipesGridProps = {
   recipes: AllRecipesQueryResult;
@@ -38,7 +38,6 @@ export const RecipesGrid = ({ recipes }: RecipesGridProps) => {
                   }
                   alt={recipe.mainImage?.alt ?? "Recipe"}
                   className="aspect-video h-48 w-full rounded-t-lg object-cover"
-                  placeholder="blur"
                   blurDataURL={
                     recipe.mainImage?.asset?.metadata?.lqip ?? undefined
                   }

@@ -1,7 +1,6 @@
 "use client";
 
 import { RecipeQueryResult } from "../../../sanity.types";
-import Image from "next/image";
 import {
   Table,
   TableBody,
@@ -39,6 +38,7 @@ import { Badge } from "../ui/badge";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { TypographyH3 } from "../Typography/TypographyH3";
 import { urlForImage } from "@/sanity/lib/utils";
+import { Image } from "../Image/Image";
 
 const types: ComponentProps<typeof PortableText>["types"] = {
   [recipeIngredientReferenceType.name]: ({
@@ -114,11 +114,10 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
               urlForImage(mainImage.asset._id)?.width(1000).height(400).url() ??
               ""
             }
-            width={1000}
-            height={400}
+            width={1200}
+            height={500}
             alt={mainImage.alt ?? title ?? "Recipe"}
             priority={true}
-            placeholder="blur"
             blurDataURL={mainImage?.asset?.metadata?.lqip ?? undefined}
           />
         )}
