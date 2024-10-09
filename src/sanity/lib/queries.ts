@@ -3,7 +3,7 @@ import { defineQuery } from "next-sanity";
 const baseRecipesQuery = /* groq */ `_type == "recipe"`;
 const recipesSearchMatchQuery = /* groq */ `(pt::text(instructions) match $searchQuery || title match $searchQuery)`;
 const recipesCategoryFilterQuery = /* groq */ `count((categories[]->slug.current)[@ in $categories]) > 0`;
-const recipesScoreQuery = /* groq */ `score(pt::text(instructions) match $searchQuery, boost(title match $searchQuery, 3))`;
+const recipesScoreQuery = /* groq */ `score(pt::text(instructions) match $searchQuery, boost(title match $searchQuery, 6))`;
 const recipesOrderQuery = /* groq */ `order(_createdAt desc)`;
 const allRecipesFields = /* groq */ `
   _id,
