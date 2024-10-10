@@ -377,7 +377,7 @@ export type AllRecipesQueryResult = Array<{
   } | null;
 }>;
 // Variable: recipesSearchQuery
-// Query: *[    _type == "recipe" &&    (pt::text(instructions) match $searchQuery || title match $searchQuery)]    |order(_createdAt desc)    |score(pt::text(instructions) match $searchQuery, boost(title match $searchQuery, 100))    |order(_score desc)    {        _id,  title,  slug,  mainImage {    alt,    asset->{      _id,      metadata {        ...,        lqip      }    },  }    }
+// Query: *[    _type == "recipe" &&    (pt::text(instructions) match $searchQuery || title match $searchQuery)]    |order(_createdAt desc)    |score(pt::text(instructions) match $searchQuery, boost(title match $searchQuery, 3))    |order(_score desc)    {        _id,  title,  slug,  mainImage {    alt,    asset->{      _id,      metadata {        ...,        lqip      }    },  }    }
 export type RecipesSearchQueryResult = Array<{
   _id: string;
   title: string | null;
@@ -400,7 +400,7 @@ export type RecipesSearchQueryResult = Array<{
   } | null;
 }>;
 // Variable: recipesSearchWithCategoriesQuery
-// Query: *[_type == "recipe" &&  (pt::text(instructions) match $searchQuery || title match $searchQuery) &&  count((categories[]->slug.current)[@ in $categories]) > 0]  |order(_createdAt desc)  |score(pt::text(instructions) match $searchQuery, boost(title match $searchQuery, 100))  |order(_score desc)  {      _id,  title,  slug,  mainImage {    alt,    asset->{      _id,      metadata {        ...,        lqip      }    },  }  }
+// Query: *[_type == "recipe" &&  (pt::text(instructions) match $searchQuery || title match $searchQuery) &&  count((categories[]->slug.current)[@ in $categories]) > 0]  |order(_createdAt desc)  |score(pt::text(instructions) match $searchQuery, boost(title match $searchQuery, 3))  |order(_score desc)  {      _id,  title,  slug,  mainImage {    alt,    asset->{      _id,      metadata {        ...,        lqip      }    },  }  }
 export type RecipesSearchWithCategoriesQueryResult = Array<{
   _id: string;
   title: string | null;
@@ -423,7 +423,7 @@ export type RecipesSearchWithCategoriesQueryResult = Array<{
   } | null;
 }>;
 // Variable: allCategoriesQuery
-// Query: *[_type == "category"]{  _id, title, "slug": slug.current,}
+// Query: *[_type == "category"]  |order(title asc){    _id, title, "slug": slug.current,  }
 export type AllCategoriesQueryResult = Array<{
   _id: string;
   title: string | null;
@@ -540,9 +540,9 @@ declare module "@sanity/client" {
   interface SanityQueries {
     '*[_type == "recipe"]\n  |order(_createdAt desc)\n  [0...6]\n  {\n    \n  _id,\n  title,\n  slug,\n  mainImage {\n    alt,\n    asset->{\n      _id,\n      metadata {\n        ...,\n        lqip\n      }\n    },\n  }\n\n  }': FrontPageRecipesQueryResult;
     '*[_type == "recipe"]\n  |order(_createdAt desc)\n  {\n    \n  _id,\n  title,\n  slug,\n  mainImage {\n    alt,\n    asset->{\n      _id,\n      metadata {\n        ...,\n        lqip\n      }\n    },\n  }\n\n  }': AllRecipesQueryResult;
-    '*[\n    _type == "recipe" &&\n    (pt::text(instructions) match $searchQuery || title match $searchQuery)]\n    |order(_createdAt desc)\n    |score(pt::text(instructions) match $searchQuery, boost(title match $searchQuery, 100))\n    |order(_score desc)\n    {\n      \n  _id,\n  title,\n  slug,\n  mainImage {\n    alt,\n    asset->{\n      _id,\n      metadata {\n        ...,\n        lqip\n      }\n    },\n  }\n\n    }': RecipesSearchQueryResult;
-    '*[_type == "recipe" &&\n  (pt::text(instructions) match $searchQuery || title match $searchQuery) &&\n  count((categories[]->slug.current)[@ in $categories]) > 0]\n  |order(_createdAt desc)\n  |score(pt::text(instructions) match $searchQuery, boost(title match $searchQuery, 100))\n  |order(_score desc)\n  {\n    \n  _id,\n  title,\n  slug,\n  mainImage {\n    alt,\n    asset->{\n      _id,\n      metadata {\n        ...,\n        lqip\n      }\n    },\n  }\n\n  }': RecipesSearchWithCategoriesQueryResult;
-    '*[_type == "category"]{\n  _id, title, "slug": slug.current,\n}': AllCategoriesQueryResult;
+    '*[\n    _type == "recipe" &&\n    (pt::text(instructions) match $searchQuery || title match $searchQuery)]\n    |order(_createdAt desc)\n    |score(pt::text(instructions) match $searchQuery, boost(title match $searchQuery, 3))\n    |order(_score desc)\n    {\n      \n  _id,\n  title,\n  slug,\n  mainImage {\n    alt,\n    asset->{\n      _id,\n      metadata {\n        ...,\n        lqip\n      }\n    },\n  }\n\n    }': RecipesSearchQueryResult;
+    '*[_type == "recipe" &&\n  (pt::text(instructions) match $searchQuery || title match $searchQuery) &&\n  count((categories[]->slug.current)[@ in $categories]) > 0]\n  |order(_createdAt desc)\n  |score(pt::text(instructions) match $searchQuery, boost(title match $searchQuery, 3))\n  |order(_score desc)\n  {\n    \n  _id,\n  title,\n  slug,\n  mainImage {\n    alt,\n    asset->{\n      _id,\n      metadata {\n        ...,\n        lqip\n      }\n    },\n  }\n\n  }': RecipesSearchWithCategoriesQueryResult;
+    '*[_type == "category"]\n  |order(title asc){\n    _id, title, "slug": slug.current,\n  }': AllCategoriesQueryResult;
     '*[_type == "recipe" && slug.current == $slug][0]{\n    _id,\n    title,\n    mainImage {\n      alt,\n      asset->{\n        _id,\n        metadata {\n          ...,\n          lqip\n        }\n      },\n    },\n    ingredients[]->{\n      _id,\n      "ingredient": ingredient->{\n        name,\n        type,\n      },\n      unit,\n      percent,\n    },\n    activeTime,\n    totalTime,\n    baseDryIngredients,\n    servings,\n    instructions[]{\n      ...,\n      _type == "block" => {\n        ...,\n        children[]{\n          ...,\n          _type == "recipeIngredientReference" => {\n            ...,\n            "ingredient": @.ingredient->{\n              _id,\n              "name": ingredient->.name,\n              percent,\n              unit,\n            },\n          }\n        }\n      }\n    }\n}': RecipeQueryResult;
     '*[_id == $pageId][0]{\n  _type,\n  "slug": slug.current,\n}': PageSlugQueryResult;
   }

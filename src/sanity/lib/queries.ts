@@ -56,9 +56,10 @@ export const recipesSearchWithCategoriesQuery =
     ${allRecipesFields}
   }`);
 
-export const allCategoriesQuery = defineQuery(`*[_type == "category"]{
-  _id, title, "slug": slug.current,
-}`);
+export const allCategoriesQuery = defineQuery(`*[_type == "category"]
+  |order(title asc){
+    _id, title, "slug": slug.current,
+  }`);
 
 export const recipeQuery =
   defineQuery(`*[_type == "recipe" && slug.current == $slug][0]{
