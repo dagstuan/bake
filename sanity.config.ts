@@ -24,8 +24,9 @@ import { resolvePagePreviewUrl } from "@/sanity/lib/resolveProductionUrl";
 import { defaultDocumentNode } from "@/sanity/structure/defaultDocumentNode";
 import { singletonPlugin } from "@/sanity/plugins/singletonPlugin";
 import { homeType } from "@/sanity/schemaTypes/singletons/homeType";
+import { aboutType } from "@/sanity/schemaTypes/singletons/aboutType";
 
-const singletonTypes = [homeType];
+const singletonTypes = [homeType, aboutType];
 
 export default defineConfig({
   title: "Bakdel studio",

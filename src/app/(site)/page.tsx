@@ -18,7 +18,7 @@ export default async function Home() {
       <div className="flex max-w-3xl flex-col gap-3 sm:text-center">
         <TypographyH1>
           Bak<span className="text-4xl font-extralight text-gray-400">&</span>
-          del 🍞
+          del 🧑‍🍳
         </TypographyH1>
         <p className="text-2xl">{subtitle}</p>
       </div>

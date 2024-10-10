@@ -68,6 +68,48 @@ export type Geopoint = {
   alt?: number;
 };
 
+export type About = {
+  _id: string;
+  _type: "about";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  body?: Array<
+    | {
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "normal" | "h2" | "h3" | "h4" | "blockquote";
+        listItem?: "bullet";
+        markDefs?: Array<{
+          href?: string;
+          _type: "link";
+          _key: string;
+        }>;
+        level?: number;
+        _type: "block";
+        _key: string;
+      }
+    | {
+        asset?: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+        };
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        _type: "image";
+        _key: string;
+      }
+  >;
+};
+
 export type Home = {
   _id: string;
   _type: "home";
@@ -328,6 +370,7 @@ export type AllSanitySchemaTypes =
   | SanityImageDimensions
   | SanityFileAsset
   | Geopoint
+  | About
   | Home
   | TimeValue
   | ScalableRecipeNumber
@@ -499,6 +542,10 @@ export type RecipeQueryResult = {
 // Query: *[_id == $pageId][0]{  _type,  "slug": slug.current,}
 export type PageSlugQueryResult =
   | {
+      _type: "about";
+      slug: null;
+    }
+  | {
       _type: "category";
       slug: string | null;
     }
@@ -557,6 +604,44 @@ export type HomePageQueryResult = {
     } | null;
   }> | null;
 } | null;
+// Variable: aboutQuery
+// Query: *[_type == "about"][0]{  title,  body,}
+export type AboutQueryResult = {
+  title: string | null;
+  body: Array<
+    | {
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "blockquote" | "h2" | "h3" | "h4" | "normal";
+        listItem?: "bullet";
+        markDefs?: Array<{
+          href?: string;
+          _type: "link";
+          _key: string;
+        }>;
+        level?: number;
+        _type: "block";
+        _key: string;
+      }
+    | {
+        asset?: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+        };
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        _type: "image";
+        _key: string;
+      }
+  > | null;
+} | null;
 
 // Query TypeMap
 import "@sanity/client";
@@ -569,5 +654,6 @@ declare module "@sanity/client" {
     '*[_type == "recipe" && slug.current == $slug][0]{\n    _id,\n    title,\n    mainImage {\n      \n  alt,\n  asset->{\n    _id,\n    metadata {\n      ...,\n      lqip\n    }\n  },\n    },\n    ingredients[]->{\n      _id,\n      "ingredient": ingredient->{\n        name,\n        type,\n      },\n      unit,\n      percent,\n    },\n    activeTime,\n    totalTime,\n    baseDryIngredients,\n    servings,\n    instructions[]{\n      ...,\n      _type == "block" => {\n        ...,\n        children[]{\n          ...,\n          _type == "recipeIngredientReference" => {\n            ...,\n            "ingredient": @.ingredient->{\n              _id,\n              "name": ingredient->.name,\n              percent,\n              unit,\n            },\n          }\n        }\n      }\n    }\n}': RecipeQueryResult;
     '*[_id == $pageId][0]{\n  _type,\n  "slug": slug.current,\n}': PageSlugQueryResult;
     '*[_type == "home"][0]{\n  subtitle,\n  recipes[]->{\n    _id,\n    title,\n    "slug": slug.current,\n    mainImage {\n      \n  alt,\n  asset->{\n    _id,\n    metadata {\n      ...,\n      lqip\n    }\n  },\n    },\n  },\n}': HomePageQueryResult;
+    '*[_type == "about"][0]{\n  title,\n  body,\n}': AboutQueryResult;
   }
 }

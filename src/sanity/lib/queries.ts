@@ -113,3 +113,8 @@ export const homePageQuery = defineQuery(`*[_type == "home"][0]{
     },
   },
 }`);
+
+export const aboutQuery = defineQuery(`*[_type == "about"][0]{
+  title,
+  body,
+}`);

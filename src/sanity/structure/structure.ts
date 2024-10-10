@@ -8,7 +8,7 @@ export const resolveStructure = (
   return (S) => {
     const singletonChilds = singletonItems.map((typeDef) => {
       return S.listItem()
-        .title(typeDef.title ?? typeDef.name)
+        .title(typeDef.title!)
         .icon(typeDef.icon)
         .child(
           S.editor()

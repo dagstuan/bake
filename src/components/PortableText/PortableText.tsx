@@ -11,7 +11,7 @@ type Components = NonNullable<SanityPortableTextProps["components"]>;
 
 export type PortableTextProps = {
   value: SanityPortableTextProps["value"];
-  types: Components["types"];
+  types?: Components["types"];
   marks?: Components["marks"];
   block?: Components["block"];
 };
@@ -38,6 +38,7 @@ const components: Components = {
 export const PortableText = (props: PortableTextProps) => {
   const { types, block, marks } = props;
 
+  const typesObj = useMemo(() => ({ ...components.types, ...types }), [types]);
   const blockObj = useMemo(() => ({ ...components.block, ...block }), [block]);
   const marksObj = useMemo(() => ({ ...components.marks, ...marks }), [marks]);
 
@@ -45,7 +46,7 @@ export const PortableText = (props: PortableTextProps) => {
     <SanityPortableText
       {...props}
       components={{
-        types: { ...components.types, ...types },
+        types: typesObj,
         marks: marksObj,
         block: blockObj,
       }}

@@ -13,6 +13,10 @@ const mainDocuments = defineDocuments([
     route: "/",
     filter: `_type == "home"`,
   },
+  {
+    route: "/om",
+    filter: `_type == "about"`,
+  },
 ]);
 
 const locations = {
@@ -38,6 +42,9 @@ const locations = {
     message: "This document is used to render the front page",
     tone: "positive",
     locations: [{ title: "Home", href: "/" }],
+  }),
+  about: defineLocations({
+    locations: [{ title: "Om", href: "/om" }],
   }),
 };
 
