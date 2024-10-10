@@ -1,5 +1,3 @@
-"use client";
-
 import { RecipeQueryResult } from "../../../sanity.types";
 import { RecipeContextProvider } from "./recipeContext";
 import { RecipeContent } from "./RecipeContent";
