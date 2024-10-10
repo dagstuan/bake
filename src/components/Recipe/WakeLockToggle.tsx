@@ -20,6 +20,7 @@ export const WakeLockToggle = (): JSX.Element | null => {
         id="wake-lock-toggle"
         disabled={!isServer && !isSupported}
         checked={checked}
+        title="Behold skjermen på"
         onCheckedChange={(checked) => {
           setChecked(checked);
           if (checked) {

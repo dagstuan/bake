@@ -184,6 +184,7 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
                               ? "indeterminate"
                               : allIngredientsComplete
                           }
+                          title="Merk alle ingredienser som fullført"
                           onCheckedChange={(checked) => {
                             if (checked === "indeterminate") {
                               dispatch({
@@ -219,6 +220,7 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
                               <Checkbox
                                 id={checkboxId}
                                 checked={isComplete}
+                                title={`Marker ${name.toLowerCase()} som fullført`}
                                 onCheckedChange={(checked) => {
                                   if (checked === "indeterminate") return;
 

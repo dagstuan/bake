@@ -4,6 +4,7 @@ import { useRecipeContext } from "../recipeContext";
 import { formatAmount } from "@/utils/recipeUtils";
 import { Label } from "../../ui/label";
 import { RecipeIngredientReferenceCheckbox } from "./checkbox";
+import { useId } from "react";
 
 type RecipeIngredientReferenceResultProps = {
   value: NonNullable<RecipeIngredientReference>;
@@ -12,6 +13,7 @@ type RecipeIngredientReferenceResultProps = {
 export const RecipeIngredientReferenceResult = ({
   value,
 }: RecipeIngredientReferenceResultProps) => {
+  const checkboxId = useId();
   const { ingredients, ingredientsCompletion, dispatch } = useRecipeContext();
 
   if (
@@ -30,7 +32,7 @@ export const RecipeIngredientReferenceResult = ({
   const completed =
     ingredientsCompletion[_id]?.[value._key]?.completed ?? false;
 
-  const checkboxId = `ingredient-reference-${_id}`;
+  const labelText = `${formatAmount(ingredientState?.amount)} ${unit} ${name}`;
 
   return (
     <>
@@ -46,11 +48,12 @@ export const RecipeIngredientReferenceResult = ({
           htmlFor={checkboxId}
           className="pl mr-[calc(-14px_-_0.5rem_-_0.25rem)] flex-1 pl-2 pr-[calc(14px_+_0.5rem_+_0.25rem)] text-base font-[450] leading-6 hover:cursor-pointer"
         >
-          {formatAmount(ingredientState?.amount)} {unit} {name}
+          {labelText}
         </Label>
         <RecipeIngredientReferenceCheckbox
           id={checkboxId}
           checked={completed}
+          title={`Marker ${labelText?.toLowerCase() ?? "ingrediensen"} som fullført`}
           onCheckedChange={() =>
             dispatch({
               type: "onIngredientReferenceCompletionChange",
