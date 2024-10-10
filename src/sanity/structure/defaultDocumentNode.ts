@@ -6,7 +6,7 @@ import { Iframe, type IframeOptions } from "sanity-plugin-iframe-pane";
 import { EyeOpenIcon } from "@radix-ui/react-icons";
 import { apiVersion, draftModeRoute } from "../env";
 import { resolveDocumentProductionUrl } from "../lib/resolveProductionUrl";
-import { recipeType } from "../schemaTypes/recipeType";
+import { recipeType } from "../schemaTypes/recipe/recipeType";
 import { DocumentIcon } from "@sanity/icons";
 
 const createIframeOptions = (S: StructureContext): IframeOptions => ({

@@ -1,5 +1,5 @@
 import { defineType, Reference } from "sanity";
-import { Recipe } from "../../../sanity.types";
+import { Recipe } from "../../../../sanity.types";
 import { formatAmount } from "@/utils/recipeUtils";
 
 export const recipeIngredientReferenceType = defineType({

@@ -17,7 +17,7 @@ import { RecipeEditor } from "./RecipeEditor";
 import { useRecipeContext } from "./recipeContext";
 import { calcInitialState, isIngredientComplete } from "./recipeReducer";
 import { RecipeIngredientReferenceResult } from "./RecipeIngredientReference/RecipeIngredientReference";
-import { recipeIngredientReferenceType } from "@/sanity/schemaTypes/recipeIngredientReference";
+import { recipeIngredientReferenceType } from "@/sanity/schemaTypes/recipe/recipeIngredientReference";
 import {
   RecipeIngredientReference,
   ScalableRecipeNumber as ScalableRecipeNumberType,
@@ -27,7 +27,7 @@ import { PortableText } from "../PortableText/PortableText";
 import { formatAmount } from "@/utils/recipeUtils";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 import { ClockIcon, InfoCircledIcon } from "@radix-ui/react-icons";
-import { scalableRecipeNumberType } from "@/sanity/schemaTypes/scalableRecipeNumberType";
+import { scalableRecipeNumberType } from "@/sanity/schemaTypes/recipe/scalableRecipeNumberType";
 import { ScalableRecipeNumber } from "./ScalableRecipeNumber";
 import { Checkbox } from "../ui/checkbox";
 import { Label } from "../ui/label";

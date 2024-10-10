@@ -2,11 +2,11 @@ import { type SchemaTypeDefinition } from "sanity";
 
 import { blockContentType } from "./blockContentType";
 import { categoryType } from "./categoryType";
-import { recipeType } from "./recipeType";
 import { ingredientType } from "./ingredientType";
-import { recipeIngredientType } from "./recipeIngredientType";
-import { recipeIngredientReferenceType } from "./recipeIngredientReference";
-import { scalableRecipeNumberType } from "./scalableRecipeNumberType";
+import { recipeType } from "./recipe/recipeType";
+import { recipeIngredientType } from "./recipe/recipeIngredientType";
+import { recipeIngredientReferenceType } from "./recipe/recipeIngredientReference";
+import { scalableRecipeNumberType } from "./recipe/scalableRecipeNumberType";
 import { timeValueType } from "./timeValueType";
 import { durationType } from "./durationType";
 

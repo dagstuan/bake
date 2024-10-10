@@ -4,7 +4,7 @@ import {
   baseBlockLists,
   baseBlockMarks,
   baseBlockStyles,
-} from "./blockContentType";
+} from "../blockContentType";
 import { recipeIngredientReferenceType } from "./recipeIngredientReference";
 import { scalableRecipeNumberType } from "./scalableRecipeNumberType";
 
