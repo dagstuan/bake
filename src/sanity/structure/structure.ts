@@ -23,8 +23,8 @@ export const resolveStructure = (
       .items([
         ...singletonChilds,
         S.divider(),
-        S.documentTypeListItem("ingredient").title("Ingredients"),
         S.documentTypeListItem("recipe").title("Recipes"),
+        S.documentTypeListItem("ingredient").title("Ingredients"),
         S.documentTypeListItem("category").title("Categories"),
         S.divider(),
         ...S.documentTypeListItems().filter(
