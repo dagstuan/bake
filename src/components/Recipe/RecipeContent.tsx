@@ -171,7 +171,7 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
             </div>
 
             <div className="flex flex-col gap-2">
-              <TypographyH3>Ingredienser</TypographyH3>
+              <TypographyH3 as="h2">Ingredienser</TypographyH3>
 
               {ingredients ? (
                 <Table>
