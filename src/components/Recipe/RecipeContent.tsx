@@ -261,16 +261,17 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
                 <InfoCircledIcon />
                 <AlertTitle>Skalert oppskrift</AlertTitle>
                 <AlertDescription>
-                  Denne oppskriften er skalert {formatAmount(scaleFactor, 0)}% i
-                  forhold til original oppskrift.{" "}
+                  Denne oppskriften er skalert{" "}
+                  {scaleFactor > 100 ? "opp til" : "ned til"}{" "}
+                  {formatAmount(scaleFactor, 0)}% av original oppskrift.{" "}
                   <TypographyLink
                     type="external"
                     href="mailto:d.stuan@gmail.com"
                   >
                     Ta kontakt
                   </TypographyLink>{" "}
-                  hvis oppskriften ikke gir mening eller noen av ingrediensene
-                  ikke blir riktig skalert.
+                  hvis den skalerte oppskriften ikke gir mening eller noen av
+                  ingrediensene ikke blir riktig skalert.
                 </AlertDescription>
               </Alert>
             )}
