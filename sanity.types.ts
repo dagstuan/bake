@@ -642,6 +642,24 @@ export type AboutQueryResult = {
       }
   > | null;
 } | null;
+// Variable: homeSitemapQuery
+// Query: *[_type == "home"][0]{    "slug": slug.current,  _updatedAt,}
+export type HomeSitemapQueryResult = {
+  slug: null;
+  _updatedAt: string;
+} | null;
+// Variable: aboutSitemapQuery
+// Query: *[_type == "about"][0]{    "slug": slug.current,  _updatedAt,}
+export type AboutSitemapQueryResult = {
+  slug: null;
+  _updatedAt: string;
+} | null;
+// Variable: recipesSitemapQuery
+// Query: *[_type == "recipe"] {    "slug": slug.current,  _updatedAt,}
+export type RecipesSitemapQueryResult = Array<{
+  slug: string | null;
+  _updatedAt: string;
+}>;
 
 // Query TypeMap
 import "@sanity/client";
@@ -655,5 +673,8 @@ declare module "@sanity/client" {
     '*[_id == $pageId][0]{\n  _type,\n  "slug": slug.current,\n}': PageSlugQueryResult;
     '*[_type == "home"][0]{\n  subtitle,\n  recipes[]->{\n    _id,\n    title,\n    "slug": slug.current,\n    mainImage {\n      \n  alt,\n  asset->{\n    _id,\n    metadata {\n      ...,\n      lqip\n    }\n  },\n    },\n  },\n}': HomePageQueryResult;
     '*[_type == "about"][0]{\n  title,\n  body,\n}': AboutQueryResult;
+    '*[_type == "home"][0]{\n  \n  "slug": slug.current,\n  _updatedAt,\n\n}': HomeSitemapQueryResult;
+    '*[_type == "about"][0]{\n  \n  "slug": slug.current,\n  _updatedAt,\n\n}': AboutSitemapQueryResult;
+    '*[_type == "recipe"] {\n  \n  "slug": slug.current,\n  _updatedAt,\n\n}': RecipesSitemapQueryResult;
   }
 }

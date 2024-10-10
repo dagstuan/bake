@@ -118,3 +118,20 @@ export const aboutQuery = defineQuery(`*[_type == "about"][0]{
   title,
   body,
 }`);
+
+const sitemapFields = /* groq */ `
+  "slug": slug.current,
+  _updatedAt,
+`;
+
+export const homeSitemapQuery = defineQuery(`*[_type == "home"][0]{
+  ${sitemapFields}
+}`);
+
+export const aboutSitemapQuery = defineQuery(`*[_type == "about"][0]{
+  ${sitemapFields}
+}`);
+
+export const recipesSitemapQuery = defineQuery(`*[_type == "recipe"] {
+  ${sitemapFields}
+}`);
