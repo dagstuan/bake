@@ -19,19 +19,54 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
+const metaDescription =
+  "Bakdel er en side som gir deg lettleste og skalerbare bake- og matoppskrifter uten reklame.";
+
 export const metadata: Metadata = {
   title: {
     default: "Bakdel",
     template: "%s | Bakdel",
   },
-  description: "Lettleste, skalerbare oppskrifter",
+  keywords: [
+    "bake",
+    "mat",
+    "oppskrifter",
+    "bakeoppskrifter",
+    "matoppskrifter",
+    "skalere",
+    "skalerbare",
+  ],
+  description: metaDescription,
   openGraph: {
     locale: "no_NO",
     type: "website",
     url: "https://www.bakdel.no",
     siteName: "Bakdel",
     title: "Bakdel",
-    description: "Lettleste, skalerbare oppskrifter",
+    description: metaDescription,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Bakdel",
+    creator: "Dag Stuan",
+    description: metaDescription,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    "max-image-preview": "large",
+    "max-snippet": -1,
+    "max-video-preview": -1,
+    googleBot: "index, follow",
+  },
+  applicationName: "Bakdel",
+  appleWebApp: {
+    title: "Bakdel",
+    statusBarStyle: "default",
+    capable: true,
+  },
+  icons: {
+    icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍞</text></svg>",
   },
 };
 
