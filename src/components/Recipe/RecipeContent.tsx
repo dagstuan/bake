@@ -39,6 +39,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { TypographyH3 } from "../Typography/TypographyH3";
 import { urlForImage } from "@/sanity/lib/utils";
 import { Image } from "../Image/Image";
+import { TypographyLink } from "../Typography/TypographyLink";
 
 const types: ComponentProps<typeof PortableText>["types"] = {
   [recipeIngredientReferenceType.name]: ({
@@ -261,9 +262,15 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
                 <AlertTitle>Skalert oppskrift</AlertTitle>
                 <AlertDescription>
                   Denne oppskriften er skalert {formatAmount(scaleFactor, 0)}% i
-                  forhold til original oppskrift. Ta kontakt hvis oppskriften
-                  ikke gir mening eller noen av ingrediensene ikke blir riktig
-                  skalert.
+                  forhold til original oppskrift.{" "}
+                  <TypographyLink
+                    type="external"
+                    href="mailto:d.stuan@gmail.com"
+                  >
+                    Ta kontakt
+                  </TypographyLink>{" "}
+                  hvis oppskriften ikke gir mening eller noen av ingrediensene
+                  ikke blir riktig skalert.
                 </AlertDescription>
               </Alert>
             )}
