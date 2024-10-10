@@ -25,5 +25,6 @@ export const ingredientType = defineType({
   name: "ingredient",
   title: "Ingredient",
   type: "document",
+  icon: () => "🥒",
   fields,
 });

@@ -9,6 +9,10 @@ const mainDocuments = defineDocuments([
     route: "/oppskrifter/:slug",
     filter: `_type == "recipe" && slug.current == $slug`,
   },
+  {
+    route: "/",
+    filter: `_type == "home"`,
+  },
 ]);
 
 const locations = {
@@ -29,6 +33,11 @@ const locations = {
         },
       ],
     }),
+  }),
+  home: defineLocations({
+    message: "This document is used to render the front page",
+    tone: "positive",
+    locations: [{ title: "Home", href: "/" }],
   }),
 };
 

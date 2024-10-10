@@ -8,6 +8,8 @@ import {
 import { apiVersion, draftModeRoute } from "../env";
 import { pageSlugQuery } from "./queries";
 
+const resolvableDocumentTypes = ["recipe", "category", "home"];
+
 export const resolveDocumentProductionUrl = async (
   document: SanityDocumentLike,
   client: SanityClient,
@@ -21,6 +23,8 @@ export const resolveDocumentProductionUrl = async (
       return `/oppskrifter/${doc.slug}`;
     case "category":
       return `/kategorier/${doc.slug}`;
+    case "home":
+      return "/";
     default:
       return "";
   }
@@ -35,7 +39,7 @@ export const resolvePagePreviewUrl: DocumentPluginOptions["productionUrl"] =
     context: ResolveProductionUrlContext,
   ): Promise<string | undefined> => {
     const { document } = context;
-    if (document._type === "recipe" || document._type === "category") {
+    if (document._type in resolvableDocumentTypes) {
       return (await generatePagePreviewUrl(context)) ?? prev;
     }
     return prev;

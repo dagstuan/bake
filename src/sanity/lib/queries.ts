@@ -1,5 +1,15 @@
 import { defineQuery } from "next-sanity";
 
+const imageFields = /* groq */ `
+  alt,
+  asset->{
+    _id,
+    metadata {
+      ...,
+      lqip
+    }
+  },`;
+
 const baseRecipesQuery = /* groq */ `_type == "recipe"`;
 const recipesSearchMatchQuery = /* groq */ `(pt::text(instructions) match $searchQuery || title match $searchQuery)`;
 const recipesCategoryFilterQuery = /* groq */ `count((categories[]->slug.current)[@ in $categories]) > 0`;
@@ -9,25 +19,11 @@ const recipesCreatedAtOrderQuery = /* groq */ `order(_createdAt desc)`;
 const allRecipesFields = /* groq */ `
   _id,
   title,
-  slug,
+  "slug": slug.current,
   mainImage {
-    alt,
-    asset->{
-      _id,
-      metadata {
-        ...,
-        lqip
-      }
-    },
+    ${imageFields}
   }
 `;
-
-export const frontPageRecipesQuery = defineQuery(`*[${baseRecipesQuery}]
-  |${recipesCreatedAtOrderQuery}
-  [0...6]
-  {
-    ${allRecipesFields}
-  }`);
 
 export const allRecipesQuery = defineQuery(`*[${baseRecipesQuery}]
   |${recipesCreatedAtOrderQuery}
@@ -66,14 +62,7 @@ export const recipeQuery =
     _id,
     title,
     mainImage {
-      alt,
-      asset->{
-        _id,
-        metadata {
-          ...,
-          lqip
-        }
-      },
+      ${imageFields}
     },
     ingredients[]->{
       _id,
@@ -111,4 +100,16 @@ export const recipeQuery =
 export const pageSlugQuery = defineQuery(`*[_id == $pageId][0]{
   _type,
   "slug": slug.current,
+}`);
+
+export const homePageQuery = defineQuery(`*[_type == "home"][0]{
+  subtitle,
+  recipes[]->{
+    _id,
+    title,
+    "slug": slug.current,
+    mainImage {
+      ${imageFields}
+    },
+  },
 }`);

@@ -3,13 +3,15 @@ import { TypographyH1 } from "@/components/Typography/TypographyH1";
 import { TypographyH2 } from "@/components/Typography/TypographyH2";
 import { TypographyLink } from "@/components/Typography/TypographyLink";
 import { sanityFetch } from "@/sanity/lib/client";
-import { frontPageRecipesQuery } from "@/sanity/lib/queries";
+import { homePageQuery } from "@/sanity/lib/queries";
 import { ArrowRightIcon } from "@radix-ui/react-icons";
 
 export default async function Home() {
-  const recipes = await sanityFetch({
-    query: frontPageRecipesQuery,
+  const homePageData = await sanityFetch({
+    query: homePageQuery,
   });
+
+  const { subtitle, recipes } = homePageData ?? {};
 
   return (
     <main className="sm:mt-35 mt-8 flex flex-col gap-10 px-6 sm:mt-16 sm:items-center sm:gap-16">
@@ -18,14 +20,14 @@ export default async function Home() {
           Bak<span className="text-4xl font-extralight text-gray-400">&</span>
           del 🍞
         </TypographyH1>
-        <p className="text-2xl">Lettleste oppskrifter som skalerer.</p>
+        <p className="text-2xl">{subtitle}</p>
       </div>
 
       <div className="w-full max-w-6xl">
         <TypographyH2>Oppskrifter</TypographyH2>
 
         <div className="flex flex-col gap-4">
-          <RecipesGrid recipes={recipes} />
+          <RecipesGrid recipes={recipes ?? []} />
           <TypographyLink
             href="/oppskrifter"
             type="internal"

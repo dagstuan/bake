@@ -18,10 +18,14 @@ import {
   projectId,
 } from "./src/sanity/env";
 import { schema } from "./src/sanity/schemaTypes";
-import { structure } from "./src/sanity/structure/structure";
+import { resolveStructure } from "./src/sanity/structure/structure";
 import { resolve } from "@/sanity/presentation/resolve";
 import { resolvePagePreviewUrl } from "@/sanity/lib/resolveProductionUrl";
 import { defaultDocumentNode } from "@/sanity/structure/defaultDocumentNode";
+import { singletonPlugin } from "@/sanity/plugins/singletonPlugin";
+import { homeType } from "@/sanity/schemaTypes/singletons/homeType";
+
+const singletonTypes = [homeType];
 
 export default defineConfig({
   title: "Bakdel studio",
@@ -31,7 +35,10 @@ export default defineConfig({
   // Add and edit the content schema in the './sanity/schemaTypes' folder
   schema,
   plugins: [
-    structureTool({ structure, defaultDocumentNode }),
+    structureTool({
+      structure: resolveStructure(singletonTypes),
+      defaultDocumentNode,
+    }),
     presentationTool({
       resolve,
       previewUrl: {
@@ -40,6 +47,7 @@ export default defineConfig({
         },
       },
     }),
+    singletonPlugin(singletonTypes.map((t) => t.name)),
     media(),
     // Vision is for querying with GROQ from inside the Studio
     // https://www.sanity.io/docs/the-vision-plugin

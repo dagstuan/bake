@@ -20,7 +20,7 @@ export const RecipesGrid = ({ recipes }: RecipesGridProps) => {
       {recipes.map((recipe, i) => {
         return (
           <Link
-            href={`/oppskrifter/${recipe.slug?.current}`}
+            href={`/oppskrifter/${recipe.slug}`}
             key={recipe._id}
             className="flex flex-col justify-between"
           >

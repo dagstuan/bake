@@ -26,6 +26,7 @@ export const recipeIngredientType = defineType({
   name: "recipeIngredient",
   title: "Recipe Ingredient",
   type: "document",
+  icon: () => "🍌",
   fields,
   preview: {
     select: {

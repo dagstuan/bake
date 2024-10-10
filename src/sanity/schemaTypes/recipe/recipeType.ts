@@ -1,4 +1,3 @@
-import { DocumentTextIcon } from "@sanity/icons";
 import { defineArrayMember, defineField, defineType } from "sanity";
 import {
   baseBlockLists,
@@ -12,7 +11,7 @@ export const recipeType = defineType({
   name: "recipe",
   title: "Recipe",
   type: "document",
-  icon: DocumentTextIcon,
+  icon: () => "📜",
   fields: [
     defineField({
       name: "title",

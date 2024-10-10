@@ -1,11 +1,13 @@
 import { defineType, Reference } from "sanity";
 import { Recipe } from "../../../../sanity.types";
 import { formatAmount } from "@/utils/recipeUtils";
+import { TagIcon } from "@sanity/icons";
 
 export const recipeIngredientReferenceType = defineType({
   name: "recipeIngredientReference",
   title: "Ingredient Reference",
   type: "object",
+  icon: TagIcon,
   fields: [
     {
       name: "ingredient",

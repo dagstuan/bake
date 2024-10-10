@@ -16,8 +16,8 @@ export async function generateStaticParams() {
     { perspective: "published" },
   );
 
-  return recipes.map((post) => ({
-    slug: post?.slug?.current,
+  return recipes.map((recipe) => ({
+    slug: recipe?.slug,
   }));
 }
 

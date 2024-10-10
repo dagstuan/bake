@@ -9,6 +9,7 @@ import { recipeIngredientReferenceType } from "./recipe/recipeIngredientReferenc
 import { scalableRecipeNumberType } from "./recipe/scalableRecipeNumberType";
 import { timeValueType } from "./timeValueType";
 import { durationType } from "./durationType";
+import { homeType } from "./singletons/homeType";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -21,5 +22,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     scalableRecipeNumberType,
     timeValueType,
     durationType,
+    homeType,
   ],
 };
