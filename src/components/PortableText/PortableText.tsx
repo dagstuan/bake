@@ -4,6 +4,7 @@ import { TypographyH2 } from "../Typography/TypographyH2";
 import { TypographyH3 } from "../Typography/TypographyH3";
 import { TypographyP } from "../Typography/TypographyP";
 import { TypographyLink } from "../Typography/TypographyLink";
+import ImageBox, { BlockContentImage } from "./ImageBox";
 
 type SanityPortableTextProps = ComponentProps<typeof SanityPortableText>;
 
@@ -17,6 +18,15 @@ export type PortableTextProps = {
 };
 
 const components: Components = {
+  types: {
+    image: ({ value }: { value: BlockContentImage }) => {
+      return (
+        <div className="my-6 space-y-2">
+          <ImageBox image={value} />
+        </div>
+      );
+    },
+  },
   marks: {
     link: ({ value, children }) => {
       const { href } = value;

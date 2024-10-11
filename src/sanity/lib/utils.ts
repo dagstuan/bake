@@ -2,6 +2,7 @@ import createImageUrlBuilder from "@sanity/image-url";
 
 import { dataset, projectId } from "../env";
 import { ImageUrlBuilder } from "sanity";
+import { SanityImageSource } from "@sanity/image-url/lib/types/types";
 
 const imageBuilder = createImageUrlBuilder({
   projectId: projectId || "",
@@ -9,12 +10,12 @@ const imageBuilder = createImageUrlBuilder({
 });
 
 export const urlForImage = (
-  imageId: string | null | undefined,
+  imageSource: SanityImageSource | null | undefined,
 ): ImageUrlBuilder | undefined => {
   // Ensure that source image contains a valid reference
-  if (!imageId) {
+  if (!imageSource) {
     return undefined;
   }
 
-  return imageBuilder?.image(imageId).auto("format").dpr(2).fit("min");
+  return imageBuilder?.image(imageSource).auto("format").dpr(2).fit("min");
 };
