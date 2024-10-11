@@ -25,14 +25,19 @@ export const RecipeIngredientReferenceResult = ({
     return null;
   }
 
+  const { percentage: referencePercentage } = value;
+
   const { _id, name, unit } = value.ingredient;
 
   const ingredientState = ingredients.find((i) => i.ingredientId === _id);
 
+  const mappedAmount =
+    (ingredientState?.amount ?? 0) * (referencePercentage / 100);
+
   const completed =
     ingredientsCompletion[_id]?.[value._key]?.completed ?? false;
 
-  const labelText = `${formatAmount(ingredientState?.amount)} ${unit} ${name}`;
+  const labelText = `${formatAmount(mappedAmount)} ${unit} ${name}`;
 
   return (
     <>
