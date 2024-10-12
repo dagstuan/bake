@@ -5,6 +5,7 @@ import { formatAmount } from "@/utils/recipeUtils";
 import { RecipeIngredientReferenceCheckbox } from "./checkbox";
 import { useId } from "react";
 import { Highlight } from "../../PortableText/Highlight";
+import * as Label from "@radix-ui/react-label";
 
 type RecipeIngredientReferenceResultProps = {
   value: NonNullable<RecipeIngredientReference>;
@@ -48,12 +49,12 @@ export const RecipeIngredientReferenceResult = ({
         },
       )}
     >
-      <label
+      <Label.Root
         htmlFor={checkboxId}
         className="mr-[calc(-14px_-_0.5rem_-_0.25rem)] pl-2 pr-[calc(14px_+_0.5rem_+_0.25rem)] hover:cursor-pointer"
       >
         {labelText}
-      </label>
+      </Label.Root>
       <RecipeIngredientReferenceCheckbox
         id={checkboxId}
         checked={completed}
