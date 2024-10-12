@@ -2,9 +2,9 @@ import { RecipeIngredientReference } from "../types";
 import { cn } from "@/lib/utils";
 import { useRecipeContext } from "../recipeContext";
 import { formatAmount } from "@/utils/recipeUtils";
-import { Label } from "../../ui/label";
 import { RecipeIngredientReferenceCheckbox } from "./checkbox";
 import { useId } from "react";
+import { Highlight } from "../../PortableText/Highlight";
 
 type RecipeIngredientReferenceResultProps = {
   value: NonNullable<RecipeIngredientReference>;
@@ -40,36 +40,34 @@ export const RecipeIngredientReferenceResult = ({
   const labelText = `${formatAmount(mappedAmount)} ${unit} ${name}`;
 
   return (
-    <>
-      <span
-        className={cn(
-          "inline-flex h-auto items-center justify-center gap-1 rounded-md border border-gray-200 bg-accent pr-2 align-baseline leading-6 text-accent-foreground focus-within:bg-secondary focus-within:ring-1 focus-within:ring-ring hover:cursor-pointer hover:bg-muted",
-          {
-            ["bg-muted text-muted-foreground hover:bg-muted"]: completed,
-          },
-        )}
+    <Highlight
+      className={cn(
+        "inline-flex items-center justify-center gap-1 pl-0 pr-2 align-baseline focus-within:bg-secondary focus-within:ring-1 focus-within:ring-ring hover:cursor-pointer hover:bg-muted",
+        {
+          ["bg-muted text-muted-foreground hover:bg-muted"]: completed,
+        },
+      )}
+    >
+      <label
+        htmlFor={checkboxId}
+        className="mr-[calc(-14px_-_0.5rem_-_0.25rem)] pl-2 pr-[calc(14px_+_0.5rem_+_0.25rem)] hover:cursor-pointer"
       >
-        <Label
-          htmlFor={checkboxId}
-          className="pl mr-[calc(-14px_-_0.5rem_-_0.25rem)] flex-1 pl-2 pr-[calc(14px_+_0.5rem_+_0.25rem)] text-base font-[450] leading-6 hover:cursor-pointer"
-        >
-          {labelText}
-        </Label>
-        <RecipeIngredientReferenceCheckbox
-          id={checkboxId}
-          checked={completed}
-          title={`Marker ${labelText?.toLowerCase() ?? "ingrediensen"} som fullført`}
-          onCheckedChange={() =>
-            dispatch({
-              type: "onIngredientReferenceCompletionChange",
-              payload: {
-                ingredientId: _id,
-                ingredientReferenceKey: value._key,
-              },
-            })
-          }
-        />
-      </span>
-    </>
+        {labelText}
+      </label>
+      <RecipeIngredientReferenceCheckbox
+        id={checkboxId}
+        checked={completed}
+        title={`Marker ${labelText?.toLowerCase() ?? "ingrediensen"} som fullført`}
+        onCheckedChange={() =>
+          dispatch({
+            type: "onIngredientReferenceCompletionChange",
+            payload: {
+              ingredientId: _id,
+              ingredientReferenceKey: value._key,
+            },
+          })
+        }
+      />
+    </Highlight>
   );
 };

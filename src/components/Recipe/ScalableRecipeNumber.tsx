@@ -1,6 +1,7 @@
 import { formatAmount } from "@/utils/recipeUtils";
 import { useRecipeContext } from "./recipeContext";
 import { ScalableRecipeNumber as ScalableRecipeNumberType } from "./types";
+import { Highlight } from "../PortableText/Highlight";
 
 type ScalableRecipeNumberProps = {
   value: NonNullable<ScalableRecipeNumberType>;
@@ -12,9 +13,9 @@ export const ScalableRecipeNumber = (props: ScalableRecipeNumberProps) => {
   const { servings, initialServings } = useRecipeContext();
 
   return (
-    <span className="inline-block rounded-md border border-gray-200 bg-accent px-2 text-base font-[450] leading-6">
+    <Highlight>
       {formatAmount(number * (servings / initialServings))}
       {suffix && ` ${suffix}`}
-    </span>
+    </Highlight>
   );
 };

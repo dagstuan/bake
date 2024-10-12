@@ -6,7 +6,8 @@ import {
   BlockMarksDefinition,
   BlockDecoratorDefinition,
 } from "sanity";
-import { ImageIcon } from "@sanity/icons";
+import { CodeBlockIcon, ImageIcon } from "@sanity/icons";
+import { HighlightDecorator } from "./decorators/highlight";
 
 /**
  * This is the schema type for block content used in the post document type
@@ -34,6 +35,12 @@ export const baseBlockLists: BlockListDefinition[] = [
 export const baseBlockDecorators: BlockDecoratorDefinition[] = [
   { title: "Strong", value: "strong" },
   { title: "Emphasis", value: "em" },
+  {
+    title: "Highlight",
+    value: "highlight",
+    icon: CodeBlockIcon,
+    component: HighlightDecorator,
+  },
 ];
 
 export const baseBlockAnnotations: BlockMarksDefinition["annotations"] = [
@@ -52,10 +59,7 @@ export const baseBlockAnnotations: BlockMarksDefinition["annotations"] = [
 ];
 
 export const baseBlockMarks: BlockMarksDefinition = {
-  // Decorators usually describe a single property – e.g. a typographic
-  // preference or highlighting
   decorators: baseBlockDecorators,
-  // Annotations can be any object structure – e.g. a link or a footnote.
   annotations: baseBlockAnnotations,
 };
 

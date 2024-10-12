@@ -5,6 +5,7 @@ import { TypographyH3 } from "../Typography/TypographyH3";
 import { TypographyP } from "../Typography/TypographyP";
 import { TypographyLink } from "../Typography/TypographyLink";
 import ImageBox, { BlockContentImage } from "./ImageBox";
+import { Highlight } from "./Highlight";
 
 type SanityPortableTextProps = ComponentProps<typeof SanityPortableText>;
 
@@ -28,6 +29,7 @@ const components: Components = {
     },
   },
   marks: {
+    highlight: ({ children }) => <Highlight>{children}</Highlight>,
     link: ({ value, children }) => {
       const { href } = value;
 
