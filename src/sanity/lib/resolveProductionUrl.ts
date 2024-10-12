@@ -7,6 +7,9 @@ import {
 } from "sanity";
 import { apiVersion, draftModeRoute } from "../env";
 import { pageSlugQuery } from "./queries";
+import { recipeType } from "../schemaTypes/recipe/recipeType";
+import { homeType } from "../schemaTypes/singletons/homeType";
+import { aboutType } from "../schemaTypes/singletons/aboutType";
 
 const resolvableDocumentTypes = ["recipe", "category", "home"];
 
@@ -19,12 +22,14 @@ export const resolveDocumentProductionUrl = async (
   });
 
   switch (doc?._type) {
-    case "recipe":
+    case recipeType.name:
       return `/oppskrifter/${doc.slug}`;
     case "category":
       return `/kategorier/${doc.slug}`;
-    case "home":
+    case homeType.name:
       return "/";
+    case aboutType.name:
+      return "/om";
     default:
       return "";
   }

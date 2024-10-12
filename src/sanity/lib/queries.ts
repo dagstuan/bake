@@ -60,6 +60,7 @@ export const allCategoriesQuery = defineQuery(`*[_type == "category"]
 export const recipeQuery =
   defineQuery(`*[_type == "recipe" && slug.current == $slug][0]{
     _id,
+    _createdAt,
     title,
     mainImage {
       ${imageFields}
@@ -94,7 +95,8 @@ export const recipeQuery =
           }
         }
       }
-    }
+    },
+    seo
 }`);
 
 export const pageSlugQuery = defineQuery(`*[_id == $pageId][0]{
@@ -134,4 +136,8 @@ export const aboutSitemapQuery = defineQuery(`*[_type == "about"][0]{
 
 export const recipesSitemapQuery = defineQuery(`*[_type == "recipe"] {
   ${sitemapFields}
+}`);
+
+export const homeSeoQuery = defineQuery(`*[_type == "home"][0]{
+  seo
 }`);

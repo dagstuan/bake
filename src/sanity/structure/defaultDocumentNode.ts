@@ -8,6 +8,8 @@ import { apiVersion, draftModeRoute } from "../env";
 import { resolveDocumentProductionUrl } from "../lib/resolveProductionUrl";
 import { recipeType } from "../schemaTypes/recipe/recipeType";
 import { DocumentIcon } from "@sanity/icons";
+import { aboutType } from "../schemaTypes/singletons/aboutType";
+import { homeType } from "../schemaTypes/singletons/homeType";
 
 const createIframeOptions = (S: StructureContext): IframeOptions => ({
   url: {
@@ -34,6 +36,8 @@ export const defaultDocumentNode: DefaultDocumentNodeResolver = (
 ) => {
   switch (schemaType) {
     case recipeType.name:
+    case aboutType.name:
+    case homeType.name:
       return S.document().views([
         S.view.form().icon(DocumentIcon),
         S.view
