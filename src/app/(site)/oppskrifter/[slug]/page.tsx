@@ -14,6 +14,7 @@ import {
   siteUrl,
   twitterMetadata,
 } from "../../shared-metadata";
+import { formatDurationISO } from "@/utils/recipeUtils";
 
 export async function generateStaticParams() {
   const recipes = await client.fetch(
@@ -105,7 +106,22 @@ export default async function Page({ params }: { params: QueryParams }) {
     description: recipe.seo?.metaDescription ?? "",
     url: `${siteUrl}/oppskrifter/${params.slug}`,
     datePublished: recipe._createdAt,
-    creator: creator,
+    author: {
+      "@type": "Person",
+      name: creator,
+    },
+    creator: {
+      "@type": "Person",
+      name: creator,
+    },
+    prepTime: recipe.activeTime
+      ? formatDurationISO(recipe.activeTime)
+      : undefined,
+    cookTime: recipe.totalTime
+      ? formatDurationISO(recipe.totalTime)
+      : undefined,
+    recipeCategory:
+      recipe.categories?.map((category) => category.title).join(", ") ?? "",
     image: recipe.mainImage?.asset?._id
       ? (urlForImage(recipe.mainImage.asset._id)
           ?.width(800)

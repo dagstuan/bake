@@ -65,6 +65,9 @@ export const recipeQuery =
     mainImage {
       ${imageFields}
     },
+    categories[]->{
+      title,
+    },
     ingredients[]->{
       _id,
       "ingredient": ingredient->{
