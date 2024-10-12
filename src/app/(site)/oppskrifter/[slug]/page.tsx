@@ -1,5 +1,3 @@
-// ./app/(blog)/posts/[slug]/page.tsx
-
 import { QueryParams } from "next-sanity";
 import { notFound } from "next/navigation";
 
@@ -8,6 +6,14 @@ import { recipeQuery, allRecipesQuery } from "@/sanity/lib/queries";
 import { Recipe } from "@/components/Recipe/Recipe";
 import { Metadata } from "next";
 import { urlForImage } from "@/sanity/lib/utils";
+import type { Recipe as RecipeSchema, WithContext } from "schema-dts";
+import { JsonLd } from "@/components/JsonLd/JsonLd";
+import {
+  creator,
+  openGraphMetadata,
+  siteUrl,
+  twitterMetadata,
+} from "../../shared-metadata";
 
 export async function generateStaticParams() {
   const recipes = await client.fetch(
@@ -32,22 +38,46 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   });
 
   if (recipe) {
-    const { title, mainImage } = recipe;
+    const { title, mainImage, seo } = recipe;
+
+    const imageWidth = 800;
+    const imageHeight = 600;
+
+    const imageUrl = mainImage?.asset?._id
+      ? (urlForImage(mainImage?.asset?._id)
+          ?.width(imageWidth)
+          .height(600)
+          .dpr(1)
+          .url() ?? undefined)
+      : undefined;
 
     return {
-      title,
+      title: seo?.metaTitle ?? title ?? "",
+      description: seo?.metaDescription ?? "",
       openGraph: {
-        images: mainImage?.asset?._id
+        ...openGraphMetadata,
+        title: seo?.metaTitle ?? title ?? "",
+        url: `${siteUrl}/oppskrifter/${params.slug}`,
+        images: imageUrl
           ? [
               {
-                url:
-                  urlForImage(mainImage.asset._id)
-                    ?.width(800)
-                    .height(600)
-                    .dpr(1)
-                    .url() ?? "",
-                width: 800,
-                height: 600,
+                url: imageUrl,
+                width: imageWidth,
+                height: imageHeight,
+              },
+            ]
+          : [],
+      },
+      twitter: {
+        ...twitterMetadata,
+        title: seo?.metaTitle ?? title ?? twitterMetadata?.title,
+        description: seo?.metaDescription ?? "",
+        images: imageUrl
+          ? [
+              {
+                url: imageUrl,
+                width: imageWidth,
+                height: imageHeight,
               },
             ]
           : [],
@@ -67,5 +97,28 @@ export default async function Page({ params }: { params: QueryParams }) {
   if (!recipe) {
     return notFound();
   }
-  return <Recipe recipe={recipe} />;
+
+  const jsonLd: WithContext<RecipeSchema> = {
+    "@context": "https://schema.org",
+    "@type": "Recipe",
+    name: recipe.seo?.metaTitle ?? recipe.title ?? "",
+    description: recipe.seo?.metaDescription ?? "",
+    url: `${siteUrl}/oppskrifter/${params.slug}`,
+    datePublished: recipe._createdAt,
+    creator: creator,
+    image: recipe.mainImage?.asset?._id
+      ? (urlForImage(recipe.mainImage.asset._id)
+          ?.width(800)
+          .height(600)
+          .dpr(1)
+          .url() ?? "")
+      : "",
+  };
+
+  return (
+    <>
+      <Recipe recipe={recipe} />
+      <JsonLd jsonLd={jsonLd} />
+    </>
+  );
 }

@@ -11,10 +11,10 @@ export const resolveStructure = (
         .title(typeDef.title!)
         .icon(typeDef.icon)
         .child(
-          S.editor()
-            .id(typeDef.name)
-            .schemaType(typeDef.name)
-            .documentId(typeDef.name),
+          S.defaultDocument({
+            schemaType: typeDef.name,
+            documentId: typeDef.name,
+          }),
         );
     });
 

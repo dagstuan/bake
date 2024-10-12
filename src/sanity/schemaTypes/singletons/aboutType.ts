@@ -1,3 +1,4 @@
+import { ComposeIcon } from "@sanity/icons";
 import { defineField, defineType } from "sanity";
 
 export const aboutType = defineType({
@@ -5,6 +6,9 @@ export const aboutType = defineType({
   type: "document",
   title: "About",
   icon: () => "🧔‍♂️",
+  groups: [
+    { name: "content", title: "Content", icon: ComposeIcon, default: true },
+  ],
   fields: [
     defineField({
       name: "title",

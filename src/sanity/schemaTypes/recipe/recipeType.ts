@@ -6,20 +6,27 @@ import {
 } from "../blockContentType";
 import { recipeIngredientReferenceType } from "./recipeIngredientReference";
 import { scalableRecipeNumberType } from "./scalableRecipeNumberType";
+import { ComposeIcon, SearchIcon } from "@sanity/icons";
 
 export const recipeType = defineType({
   name: "recipe",
   title: "Recipe",
   type: "document",
   icon: () => "📜",
+  groups: [
+    { name: "content", title: "Content", icon: ComposeIcon, default: true },
+    { name: "seo", title: "SEO", icon: SearchIcon },
+  ],
   fields: [
     defineField({
       name: "title",
       type: "string",
+      group: ["content"],
     }),
     defineField({
       name: "slug",
       type: "slug",
+      group: ["content"],
       options: {
         source: "title",
       },
@@ -27,6 +34,7 @@ export const recipeType = defineType({
     defineField({
       name: "mainImage",
       type: "image",
+      group: ["content"],
       options: {
         hotspot: true,
       },
@@ -41,6 +49,7 @@ export const recipeType = defineType({
     defineField({
       name: "categories",
       type: "array",
+      group: ["content"],
       of: [defineArrayMember({ type: "reference", to: { type: "category" } })],
       validation: (rule) => rule.required(),
     }),
@@ -48,27 +57,32 @@ export const recipeType = defineType({
       name: "activeTime",
       type: "duration",
       title: "Active time",
+      group: ["content"],
     }),
     defineField({
       name: "totalTime",
       type: "duration",
       title: "Total time",
+      group: ["content"],
     }),
     defineField({
       name: "baseDryIngredients",
       type: "number",
       title: "Sum base ingredients",
       description: "The sum of all base ingredients in grams",
+      group: ["content"],
       initialValue: 1000,
     }),
     defineField({
       name: "servings",
       description: "The amount of servings the base ingredients make",
       type: "number",
+      group: ["content"],
       validation: (rule) => rule.required(),
     }),
     defineField({
       name: "ingredients",
+      group: ["content"],
       type: "array",
       of: [
         defineArrayMember({
@@ -95,6 +109,7 @@ export const recipeType = defineType({
     defineField({
       name: "instructions",
       title: "Instructions",
+      group: ["content"],
       type: "array",
       of: [
         {
@@ -108,6 +123,11 @@ export const recipeType = defineType({
           ],
         },
       ],
+    }),
+    defineField({
+      name: "seo",
+      type: "seo",
+      group: ["seo"],
     }),
   ],
   preview: {

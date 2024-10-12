@@ -7,6 +7,12 @@ import "./globals.css";
 import { Nav } from "@/components/Nav/Nav";
 import { Footer } from "@/components/Footer/Footer";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { SearchAction, WebSite, WithContext } from "schema-dts";
+import { JsonLd } from "@/components/JsonLd/JsonLd";
+import { sanityFetch } from "@/sanity/lib/client";
+import { homeSeoQuery } from "@/sanity/lib/queries";
+import { urlForImage } from "@/sanity/lib/utils";
+import { openGraphMetadata, siteUrl, twitterMetadata } from "./shared-metadata";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -19,62 +25,112 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-const metaDescription =
-  "Bakdel er en side som gir deg lettleste og skalerbare bake- og matoppskrifter uten reklame.";
+export async function generateMetadata(): Promise<Metadata> {
+  const homeSeo = await sanityFetch({
+    query: homeSeoQuery,
+  });
 
-export const metadata: Metadata = {
-  title: {
-    default: "Bakdel",
-    template: "%s | Bakdel",
-  },
-  keywords: [
-    "bake",
-    "mat",
-    "oppskrifter",
-    "bakeoppskrifter",
-    "matoppskrifter",
-    "skalere",
-    "skalerbare",
-  ],
-  description: metaDescription,
-  openGraph: {
-    locale: "no_NO",
-    type: "website",
-    url: "https://www.bakdel.no",
-    siteName: "Bakdel",
-    title: "Bakdel",
-    description: metaDescription,
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Bakdel",
-    creator: "Dag Stuan",
-    description: metaDescription,
-  },
-  robots: {
-    index: true,
-    follow: true,
-    "max-image-preview": "large",
-    "max-snippet": -1,
-    "max-video-preview": -1,
-    googleBot: "index, follow",
-  },
-  applicationName: "Bakdel",
-  appleWebApp: {
-    title: "Bakdel",
-    statusBarStyle: "default",
-    capable: true,
-  },
-  icons: {
-    icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍞</text></svg>",
-  },
-};
+  const metaDescription = homeSeo?.seo?.metaDescription ?? "";
 
-export default function RootLayout({
+  const imageWidth = 800;
+  const imageHeight = 600;
+
+  const imageUrl = homeSeo?.seo?.openGraphImage?.asset?._ref
+    ? (urlForImage(homeSeo?.seo?.openGraphImage?.asset?._ref)
+        ?.width(imageWidth)
+        .height(600)
+        .dpr(1)
+        .url() ?? undefined)
+    : undefined;
+
+  return {
+    title: {
+      default: "Bakdel",
+      template: "%s | Bakdel",
+    },
+    keywords: [
+      "bake",
+      "mat",
+      "baking",
+      "oppskrifter",
+      "bakeoppskrifter",
+      "matoppskrifter",
+      "skalere",
+      "skalerbare",
+      "skalerbar",
+    ],
+    description: metaDescription,
+    openGraph: {
+      ...openGraphMetadata,
+      title: homeSeo?.seo?.metaTitle ?? openGraphMetadata?.title ?? "Bakdel.no",
+      description: metaDescription,
+      images: imageUrl
+        ? [
+            {
+              url: imageUrl,
+              width: imageWidth,
+              height: imageHeight,
+            },
+          ]
+        : [],
+    },
+    twitter: {
+      ...twitterMetadata,
+      description: metaDescription,
+      images: imageUrl
+        ? [
+            {
+              url: imageUrl,
+              width: imageWidth,
+              height: imageHeight,
+            },
+          ]
+        : [],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+      googleBot: "index, follow",
+    },
+    applicationName: "Bakdel",
+    appleWebApp: {
+      title: "Bakdel",
+      statusBarStyle: "default",
+      capable: true,
+    },
+    icons: {
+      icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍞</text></svg>",
+    },
+  };
+}
+
+const searchAction = {
+  "@type": "SearchAction",
+  target: `https://www.bakdel.no/oppskrifter?query={search_term_string}`,
+  "query-input": "required name=search_term_string",
+} satisfies SearchAction & { "query-input": string };
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const homeSeo = await sanityFetch({
+    query: homeSeoQuery,
+  });
+
+  const jsonLd: WithContext<WebSite> = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Bakdel",
+    description: homeSeo?.seo?.metaDescription ?? "",
+    url: siteUrl,
+    potentialAction: searchAction,
+  };
+
   return (
     <html lang="no">
       <body
@@ -95,6 +151,7 @@ export default function RootLayout({
           {draftMode().isEnabled && <VisualEditing />}
           <Analytics />
         </TooltipProvider>
+        <JsonLd jsonLd={jsonLd} />
       </body>
     </html>
   );

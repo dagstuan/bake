@@ -11,6 +11,7 @@ import { timeValueType } from "./timeValueType";
 import { durationType } from "./durationType";
 import { homeType } from "./singletons/homeType";
 import { aboutType } from "./singletons/aboutType";
+import { seoType } from "./seoType";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -25,5 +26,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     durationType,
     homeType,
     aboutType,
+    seoType,
   ],
 };

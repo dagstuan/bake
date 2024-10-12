@@ -124,6 +124,7 @@ export type Home = {
     _key: string;
     [internalGroqTypeReferenceTo]?: "recipe";
   }>;
+  seo?: Seo;
 };
 
 export type TimeValue = {
@@ -239,6 +240,25 @@ export type Recipe = {
     _type: "block";
     _key: string;
   }>;
+  seo?: Seo;
+};
+
+export type Seo = {
+  _type: "seo";
+  metaTitle?: string;
+  metaDescription?: string;
+  openGraphImage?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    _type: "image";
+  };
 };
 
 export type Duration = {
@@ -378,6 +398,7 @@ export type AllSanitySchemaTypes =
   | RecipeIngredient
   | Ingredient
   | Recipe
+  | Seo
   | Duration
   | Category
   | BlockContent
@@ -467,9 +488,10 @@ export type AllCategoriesQueryResult = Array<{
   slug: string | null;
 }>;
 // Variable: recipeQuery
-// Query: *[_type == "recipe" && slug.current == $slug][0]{    _id,    title,    mainImage {        alt,  asset->{    _id,    metadata {      ...,      lqip    }  },    },    ingredients[]->{      _id,      "ingredient": ingredient->{        name,        type,      },      unit,      percent,    },    activeTime,    totalTime,    baseDryIngredients,    servings,    instructions[]{      ...,      _type == "block" => {        ...,        children[]{          ...,          _type == "recipeIngredientReference" => {            ...,            "ingredient": @.ingredient->{              _id,              "name": ingredient->.name,              percent,              unit,            },          }        }      }    }}
+// Query: *[_type == "recipe" && slug.current == $slug][0]{    _id,    _createdAt,    title,    mainImage {        alt,  asset->{    _id,    metadata {      ...,      lqip    }  },    },    ingredients[]->{      _id,      "ingredient": ingredient->{        name,        type,      },      unit,      percent,    },    activeTime,    totalTime,    baseDryIngredients,    servings,    instructions[]{      ...,      _type == "block" => {        ...,        children[]{          ...,          _type == "recipeIngredientReference" => {            ...,            "ingredient": @.ingredient->{              _id,              "name": ingredient->.name,              percent,              unit,            },          }        }      }    },    seo}
 export type RecipeQueryResult = {
   _id: string;
+  _createdAt: string;
   title: string | null;
   mainImage: {
     alt: string | null;
@@ -537,6 +559,7 @@ export type RecipeQueryResult = {
     _type: "block";
     _key: string;
   }> | null;
+  seo: Seo | null;
 } | null;
 // Variable: pageSlugQuery
 // Query: *[_id == $pageId][0]{  _type,  "slug": slug.current,}
@@ -660,6 +683,11 @@ export type RecipesSitemapQueryResult = Array<{
   slug: string | null;
   _updatedAt: string;
 }>;
+// Variable: homeSeoQuery
+// Query: *[_type == "home"][0]{  seo}
+export type HomeSeoQueryResult = {
+  seo: Seo | null;
+} | null;
 
 // Query TypeMap
 import "@sanity/client";
@@ -669,12 +697,13 @@ declare module "@sanity/client" {
     '*[\n    _type == "recipe" &&\n    (pt::text(instructions) match $searchQuery || title match $searchQuery)]\n    |order(_createdAt desc)\n    |score(pt::text(instructions) match $searchQuery, boost(title match $searchQuery, 3))\n    |order(_score desc)\n    {\n      \n  _id,\n  title,\n  "slug": slug.current,\n  mainImage {\n    \n  alt,\n  asset->{\n    _id,\n    metadata {\n      ...,\n      lqip\n    }\n  },\n  }\n\n    }': RecipesSearchQueryResult;
     '*[_type == "recipe" &&\n  (pt::text(instructions) match $searchQuery || title match $searchQuery) &&\n  count((categories[]->slug.current)[@ in $categories]) > 0]\n  |order(_createdAt desc)\n  |score(pt::text(instructions) match $searchQuery, boost(title match $searchQuery, 3))\n  |order(_score desc)\n  {\n    \n  _id,\n  title,\n  "slug": slug.current,\n  mainImage {\n    \n  alt,\n  asset->{\n    _id,\n    metadata {\n      ...,\n      lqip\n    }\n  },\n  }\n\n  }': RecipesSearchWithCategoriesQueryResult;
     '*[_type == "category"]\n  |order(title asc){\n    _id, title, "slug": slug.current,\n  }': AllCategoriesQueryResult;
-    '*[_type == "recipe" && slug.current == $slug][0]{\n    _id,\n    title,\n    mainImage {\n      \n  alt,\n  asset->{\n    _id,\n    metadata {\n      ...,\n      lqip\n    }\n  },\n    },\n    ingredients[]->{\n      _id,\n      "ingredient": ingredient->{\n        name,\n        type,\n      },\n      unit,\n      percent,\n    },\n    activeTime,\n    totalTime,\n    baseDryIngredients,\n    servings,\n    instructions[]{\n      ...,\n      _type == "block" => {\n        ...,\n        children[]{\n          ...,\n          _type == "recipeIngredientReference" => {\n            ...,\n            "ingredient": @.ingredient->{\n              _id,\n              "name": ingredient->.name,\n              percent,\n              unit,\n            },\n          }\n        }\n      }\n    }\n}': RecipeQueryResult;
+    '*[_type == "recipe" && slug.current == $slug][0]{\n    _id,\n    _createdAt,\n    title,\n    mainImage {\n      \n  alt,\n  asset->{\n    _id,\n    metadata {\n      ...,\n      lqip\n    }\n  },\n    },\n    ingredients[]->{\n      _id,\n      "ingredient": ingredient->{\n        name,\n        type,\n      },\n      unit,\n      percent,\n    },\n    activeTime,\n    totalTime,\n    baseDryIngredients,\n    servings,\n    instructions[]{\n      ...,\n      _type == "block" => {\n        ...,\n        children[]{\n          ...,\n          _type == "recipeIngredientReference" => {\n            ...,\n            "ingredient": @.ingredient->{\n              _id,\n              "name": ingredient->.name,\n              percent,\n              unit,\n            },\n          }\n        }\n      }\n    },\n    seo\n}': RecipeQueryResult;
     '*[_id == $pageId][0]{\n  _type,\n  "slug": slug.current,\n}': PageSlugQueryResult;
     '*[_type == "home"][0]{\n  subtitle,\n  recipes[]->{\n    _id,\n    title,\n    "slug": slug.current,\n    mainImage {\n      \n  alt,\n  asset->{\n    _id,\n    metadata {\n      ...,\n      lqip\n    }\n  },\n    },\n  },\n}': HomePageQueryResult;
     '*[_type == "about"][0]{\n  title,\n  body,\n}': AboutQueryResult;
     '*[_type == "home"][0]{\n  \n  "slug": slug.current,\n  _updatedAt,\n\n}': HomeSitemapQueryResult;
     '*[_type == "about"][0]{\n  \n  "slug": slug.current,\n  _updatedAt,\n\n}': AboutSitemapQueryResult;
     '*[_type == "recipe"] {\n  \n  "slug": slug.current,\n  _updatedAt,\n\n}': RecipesSitemapQueryResult;
+    '*[_type == "home"][0]{\n  seo\n}': HomeSeoQueryResult;
   }
 }
