@@ -33,7 +33,7 @@ export const RecipeIngredientReferenceResult = ({
   const completed =
     ingredientsCompletion[_id]?.[value._key]?.completed ?? false;
 
-  const labelText = `${formatAmount(mappedAmount)}${unit} ${name}`;
+  const labelText = `${formatAmount(mappedAmount)} ${unit} ${name}`;
 
   return (
     <HighlightWithCheckbox
