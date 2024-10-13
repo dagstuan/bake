@@ -43,7 +43,7 @@ export const RecipeIngredientReferenceResult = ({
   return (
     <Highlight
       className={cn(
-        "inline-flex items-center justify-center gap-1 pl-0 pr-2 align-baseline focus-within:bg-secondary focus-within:ring-1 focus-within:ring-ring hover:cursor-pointer hover:bg-muted",
+        "inline-flex items-center justify-center gap-1 pl-0 pr-1 align-baseline focus-within:bg-secondary focus-within:ring-1 focus-within:ring-ring hover:cursor-pointer hover:bg-muted",
         {
           ["bg-muted text-muted-foreground hover:bg-muted"]: completed,
         },
@@ -51,7 +51,7 @@ export const RecipeIngredientReferenceResult = ({
     >
       <Label.Root
         htmlFor={checkboxId}
-        className="mr-[calc(-14px_-_0.5rem_-_0.25rem)] pl-2 pr-[calc(14px_+_0.5rem_+_0.25rem)] hover:cursor-pointer"
+        className="mr-[calc(-14px_-_0.25rem_-_0.25rem)] pl-1 pr-[calc(14px_+_0.25rem_+_0.25rem)] hover:cursor-pointer"
       >
         {labelText}
       </Label.Root>
