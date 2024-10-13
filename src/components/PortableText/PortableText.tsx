@@ -29,6 +29,9 @@ const components: Components = {
     },
   },
   marks: {
+    strong: ({ children }) => (
+      <strong className="font-semibold">{children}</strong>
+    ),
     highlight: ({ children }) => <Highlight>{children}</Highlight>,
     link: ({ value, children }) => {
       const { href } = value;
