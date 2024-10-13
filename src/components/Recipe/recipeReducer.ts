@@ -24,6 +24,7 @@ type RecipeIngredientType = {
 export type RecipeIngredientsState = Array<RecipeIngredientType>;
 
 export type RecipeState = {
+  recipeRevision: string;
   initialServings: number;
   servings: number;
   ingredientsCompletion: IngredientsCompletionState;
@@ -173,7 +174,8 @@ export type RecipeAction =
 export const calcInitialState = (
   recipe: NonNullable<RecipeQueryResult>,
 ): RecipeState => {
-  const { servings, instructions, ingredients, baseDryIngredients } = recipe;
+  const { _rev, servings, instructions, ingredients, baseDryIngredients } =
+    recipe;
 
   const initialServingsNum = servings ?? 1;
   const initialDryIngredients = baseDryIngredients ?? 1000;
@@ -189,6 +191,7 @@ export const calcInitialState = (
   );
 
   return {
+    recipeRevision: _rev,
     initialServings: initialServingsNum,
     servings: initialServingsNum,
     ingredientsCompletion: calcInitialIngredientsCompletionState(instructions),

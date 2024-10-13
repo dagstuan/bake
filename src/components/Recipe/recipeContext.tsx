@@ -16,7 +16,7 @@ import {
   RecipeState,
 } from "./recipeReducer";
 import { RecipeQueryResult } from "../../../sanity.types";
-import useSessionStorage from "@/hooks/useLocalStorage";
+import useSessionStorage from "@/hooks/useSessionStorage";
 
 type RecipeContextState = RecipeState & {
   dispatch: React.Dispatch<RecipeAction>;
@@ -49,7 +49,10 @@ const useReducerWithSessionStorage = (
   useEffect(() => {
     if (isClient && !hasInitializedStorage.current) {
       hasInitializedStorage.current = true;
-      if (sessionStorageValue !== state) {
+      if (
+        sessionStorageValue !== state &&
+        sessionStorageValue.recipeRevision === state.recipeRevision
+      ) {
         dispatch({ type: "reset", payload: sessionStorageValue });
       }
     }

@@ -62,6 +62,7 @@ export const recipeQuery =
   defineQuery(`*[_type == "recipe" && slug.current == $slug][0]{
     _id,
     _createdAt,
+    _rev,
     title,
     mainImage {
       ${imageFields}
