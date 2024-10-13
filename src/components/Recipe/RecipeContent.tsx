@@ -16,7 +16,7 @@ import { WakeLockToggle } from "./WakeLockToggle";
 import { RecipeEditor } from "./RecipeEditor";
 import { useRecipeContext } from "./recipeContext";
 import { calcInitialState, isIngredientComplete } from "./recipeReducer";
-import { RecipeIngredientReferenceResult } from "./RecipeIngredientReference/RecipeIngredientReference";
+import { RecipeIngredientReferenceResult } from "./RecipeIngredientReference";
 import { recipeIngredientReferenceType } from "@/sanity/schemaTypes/recipe/recipeIngredientReference";
 import {
   RecipeIngredientReference,
