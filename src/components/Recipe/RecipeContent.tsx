@@ -177,9 +177,9 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>
+                      <TableHead className="flex items-center">
                         <Checkbox
-                          className="inline-block"
+                          className="!transform-none"
                           checked={
                             anyIngredientsComplete && !allIngredientsComplete
                               ? "indeterminate"
