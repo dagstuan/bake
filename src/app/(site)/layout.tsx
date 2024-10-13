@@ -12,7 +12,12 @@ import { JsonLd } from "@/components/JsonLd/JsonLd";
 import { sanityFetch } from "@/sanity/lib/client";
 import { homeSeoQuery } from "@/sanity/lib/queries";
 import { urlForImage } from "@/sanity/lib/utils";
-import { openGraphMetadata, siteUrl, twitterMetadata } from "./shared-metadata";
+import {
+  openGraphMetadata,
+  siteName,
+  siteUrl,
+  twitterMetadata,
+} from "./shared-metadata";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -62,7 +67,7 @@ export async function generateMetadata(): Promise<Metadata> {
     description: metaDescription,
     openGraph: {
       ...openGraphMetadata,
-      title: homeSeo?.seo?.metaTitle ?? openGraphMetadata?.title ?? "Bakdel.no",
+      title: homeSeo?.seo?.metaTitle ?? openGraphMetadata?.title ?? siteName,
       description: metaDescription,
       images: imageUrl
         ? [
@@ -104,7 +109,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 const searchAction = {
   "@type": "SearchAction",
-  target: `https://www.bakdel.no/oppskrifter?query={search_term_string}`,
+  target: `${siteUrl}/oppskrifter?query={search_term_string}`,
   "query-input": "required name=search_term_string",
 } satisfies SearchAction & { "query-input": string };
 

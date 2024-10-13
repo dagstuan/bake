@@ -1,4 +1,5 @@
 import { MetadataRoute } from "next";
+import { siteUrl } from "./(site)/shared-metadata";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -7,6 +8,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: ["/"],
       disallow: ["/oppskrifter?query="],
     },
-    sitemap: ["https://bakdel.no/sitemap.xml"],
+    sitemap: [`${siteUrl}/sitemap.xml`],
   };
 }
