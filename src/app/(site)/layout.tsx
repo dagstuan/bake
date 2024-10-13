@@ -35,8 +35,8 @@ export async function generateMetadata(): Promise<Metadata> {
   const imageWidth = 800;
   const imageHeight = 600;
 
-  const imageUrl = homeSeo?.seo?.openGraphImage?.asset?._ref
-    ? (urlForImage(homeSeo?.seo?.openGraphImage?.asset?._ref)
+  const imageUrl = homeSeo?.seo?.openGraphImage
+    ? (urlForImage(homeSeo?.seo?.openGraphImage)
         ?.width(imageWidth)
         .height(600)
         .dpr(1)

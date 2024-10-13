@@ -1,11 +1,12 @@
 import { defineQuery } from "next-sanity";
 
 const imageFields = /* groq */ `
+  hotspot,
+  crop,
   alt,
   asset->{
     _id,
     metadata {
-      ...,
       lqip
     }
   },`;

@@ -30,7 +30,7 @@ export const RecipesGrid = ({ recipes }: RecipesGridProps) => {
                   width={500}
                   height={300}
                   src={
-                    urlForImage(recipe.mainImage.asset?._id)
+                    urlForImage(recipe.mainImage)
                       ?.width(500)
                       .height(300)
                       .fit("clip")

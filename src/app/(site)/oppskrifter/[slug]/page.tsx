@@ -44,12 +44,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const imageWidth = 800;
     const imageHeight = 600;
 
-    const imageUrl = mainImage?.asset?._id
-      ? (urlForImage(mainImage?.asset?._id)
-          ?.width(imageWidth)
-          .height(600)
-          .dpr(1)
-          .url() ?? undefined)
+    const imageUrl = mainImage
+      ? (urlForImage(mainImage)?.width(imageWidth).height(600).dpr(1).url() ??
+        undefined)
       : undefined;
 
     return {
@@ -122,12 +119,9 @@ export default async function Page({ params }: { params: QueryParams }) {
       : undefined,
     recipeCategory:
       recipe.categories?.map((category) => category.title).join(", ") ?? "",
-    image: recipe.mainImage?.asset?._id
-      ? (urlForImage(recipe.mainImage.asset._id)
-          ?.width(800)
-          .height(600)
-          .dpr(1)
-          .url() ?? "")
+    image: recipe.mainImage
+      ? (urlForImage(recipe.mainImage)?.width(800).height(600).dpr(1).url() ??
+        "")
       : "",
   };
 

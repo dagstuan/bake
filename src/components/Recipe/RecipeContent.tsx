@@ -108,15 +108,11 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
         {title ? (
           <TypographyH1 className="text-center sm:mb-8">{title}</TypographyH1>
         ) : null}
-        {mainImage?.asset?._id && (
+        {mainImage && (
           <Image
             className="w-full rounded-lg"
             src={
-              urlForImage(mainImage.asset._id)
-                ?.width(1200)
-                .height(500)
-                .dpr(2)
-                .url() ?? ""
+              urlForImage(mainImage)?.width(1200).height(500).dpr(2).url() ?? ""
             }
             width={1200}
             height={500}
