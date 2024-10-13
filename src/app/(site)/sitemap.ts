@@ -6,6 +6,7 @@ import {
 } from "@/sanity/lib/queries";
 import { ArrayElement } from "@/utils/types";
 import { MetadataRoute } from "next";
+import { siteUrl } from "./shared-metadata";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [recipes, home, about] = await Promise.all([
@@ -27,7 +28,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       }
 
       return {
-        url: `https://bakdel.no/oppskrifter/${recipe.slug}`,
+        url: `${siteUrl}/oppskrifter/${recipe.slug}`,
         lastModified: recipe._updatedAt ?? new Date(),
         changeFrequency: "weekly",
         priority: 0.9,
@@ -37,19 +38,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     {
-      url: "https://bakdel.no",
+      url: siteUrl,
       lastModified: home?._updatedAt ?? new Date(),
       changeFrequency: "monthly",
       priority: 1,
     },
     {
-      url: "https://bakdel.no/om",
+      url: `${siteUrl}/om`,
       lastModified: about?._updatedAt ?? new Date(),
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
-      url: "https://bakdel.no/oppskrifter",
+      url: `${siteUrl}/oppskrifter`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.9,
