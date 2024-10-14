@@ -6,7 +6,6 @@ export const HighlightDecorator = (props: { children: ReactNode }) => (
       backgroundColor: "lightgrey",
       fontWeight: "bold",
       color: "black",
-      padding: "0 0.2em",
     }}
   >
     {props.children}
