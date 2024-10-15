@@ -27,6 +27,16 @@ export const resolveStructure = (
         S.documentTypeListItem("ingredient").title("Ingredients"),
         S.documentTypeListItem("category").title("Categories"),
         S.divider(),
+        S.listItem()
+          .title("Unused documents")
+          .icon(() => "❌")
+          .child(
+            S.documentList()
+              .title("Unused documents")
+              .filter(
+                '_type != "recipe" && _type != "home" && _type != "about" && count(*[references(^._id)]) == 0',
+              ),
+          ),
         ...S.documentTypeListItems().filter(
           (item) =>
             item.getId() &&
