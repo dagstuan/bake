@@ -23,10 +23,20 @@ export const recipeIngredientReferenceType = defineType({
             return true;
           }
 
+          const recipe = document as Recipe;
+
           if (
-            (document as Recipe).ingredients?.some(
-              (ingredient) => ingredient._ref === value._ref,
-            )
+            recipe.ingredients
+              ?.map((i) => {
+                if (i._type === "ingredientGroup") {
+                  return (
+                    i.ingredients?.map((ingredient) => ingredient._ref) ?? []
+                  );
+                }
+                return [i._ref];
+              })
+              .flat()
+              .some((ingredientRef) => ingredientRef === value._ref)
           ) {
             return true;
           }
@@ -41,12 +51,26 @@ export const recipeIngredientReferenceType = defineType({
 
           const recipe = document as Recipe;
 
+          const ids: string[] =
+            recipe.ingredients
+              ?.map((ingredient) => {
+                if (ingredient._type === "ingredientGroup") {
+                  return (
+                    ingredient.ingredients?.map(
+                      (ingredient) => ingredient._ref,
+                    ) ?? []
+                  );
+                } else {
+                  return [ingredient._ref];
+                }
+              })
+              .flat() ?? [];
+
           return {
             filter: "_type == $type && _id in $ids",
             params: {
               type: "recipeIngredient",
-              ids:
-                recipe.ingredients?.map((ingredient) => ingredient._ref) ?? [],
+              ids,
             },
           };
         },

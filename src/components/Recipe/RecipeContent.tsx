@@ -1,36 +1,26 @@
 "use client";
 
 import { RecipeQueryResult } from "../../../sanity.types";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "../ui/table";
 import { TypographyH1 } from "../Typography/TypographyH1";
 import { Button } from "../ui/button";
 import { TypographyP } from "../Typography/TypographyP";
 import { WakeLockToggle } from "./WakeLockToggle";
 import { RecipeEditor } from "./RecipeEditor";
 import { useRecipeContext } from "./recipeContext";
-import { calcInitialState, isIngredientComplete } from "./recipeReducer";
+import { calcInitialState } from "./recipeReducer";
 import { RecipeIngredientReferenceResult } from "./RecipeIngredientReference";
 import { recipeIngredientReferenceType } from "@/sanity/schemaTypes/recipe/recipeIngredientReference";
 import {
   RecipeIngredientReference,
   ScalableRecipeNumber as ScalableRecipeNumberType,
 } from "./types";
-import { ComponentProps } from "react";
+import { ComponentProps, Fragment } from "react";
 import { PortableText } from "../PortableText/PortableText";
 import { formatAmount } from "@/utils/recipeUtils";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 import { ClockIcon, InfoCircledIcon } from "@radix-ui/react-icons";
 import { scalableRecipeNumberType } from "@/sanity/schemaTypes/recipe/scalableRecipeNumberType";
 import { ScalableRecipeNumber } from "./ScalableRecipeNumber";
-import { Checkbox } from "../ui/checkbox";
-import { Label } from "../ui/label";
 import { Duration } from "./Duration";
 import { CookingPotIcon } from "../icons/CookingPotIcon";
 import { CakeSliceIcon } from "../icons/CakeSliceIcon";
@@ -40,6 +30,7 @@ import { TypographyH3 } from "../Typography/TypographyH3";
 import { urlForImage } from "@/sanity/lib/utils";
 import { Image } from "../Image/Image";
 import { TypographyLink } from "../Typography/TypographyLink";
+import { IngredientsTable } from "./IngredientsTable";
 
 const types: ComponentProps<typeof PortableText>["types"] = {
   [recipeIngredientReferenceType.name]: ({
@@ -77,7 +68,7 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
 
   const {
     ingredients,
-    ingredientsCompletion,
+    ingredientsGroupOrder,
     servings,
     initialServings,
     dispatch,
@@ -91,16 +82,6 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
   };
 
   const scaleFactor = 100 * (servings / initialServings);
-
-  const ingredientsCompletionValues = Object.values(ingredientsCompletion);
-
-  const anyIngredientsComplete = ingredientsCompletionValues.some((c) =>
-    Object.values(c).some((c) => c.completed),
-  );
-
-  const allIngredientsComplete = ingredientsCompletionValues.every((c) =>
-    Object.values(c).every((c) => c.completed),
-  );
 
   return (
     <main className="px-6">
@@ -173,86 +154,26 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
             <div className="flex flex-col gap-2">
               <TypographyH3 as="h2">Ingredienser</TypographyH3>
 
-              {ingredients ? (
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead className="flex items-center">
-                        <Checkbox
-                          className="!transform-none"
-                          checked={
-                            anyIngredientsComplete && !allIngredientsComplete
-                              ? "indeterminate"
-                              : allIngredientsComplete
-                          }
-                          title="Merk alle ingredienser som fullført"
-                          onCheckedChange={(checked) => {
-                            if (checked === "indeterminate") {
-                              dispatch({
-                                type: "onAllIngredientsCompletionChange",
-                                payload: true,
-                              });
-                            } else {
-                              dispatch({
-                                type: "onAllIngredientsCompletionChange",
-                                payload: checked,
-                              });
-                            }
-                          }}
-                        />
-                      </TableHead>
-                      <TableHead>Ingrediens</TableHead>
-                      <TableHead>Mengde</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {ingredients.map(({ ingredientId, name, amount, unit }) => {
-                      const isComplete = isIngredientComplete(
-                        ingredientsCompletion,
-                        ingredientId,
-                      );
+              <IngredientsTable
+                group={null}
+                ingredients={ingredients.filter((i) => !i.group)}
+              />
 
-                      const checkboxId = `ingredient-${ingredientId}-complete`;
+              {ingredientsGroupOrder.map((group) => {
+                const groupIngredients = ingredients.filter(
+                  (i) => i.group === group,
+                );
 
-                      return (
-                        <TableRow key={ingredientId}>
-                          <TableCell>
-                            <div>
-                              <Checkbox
-                                id={checkboxId}
-                                checked={isComplete}
-                                title={`Marker ${name.toLowerCase()} som fullført`}
-                                onCheckedChange={(checked) => {
-                                  if (checked === "indeterminate") return;
-
-                                  dispatch({
-                                    type: "onIngredientCompletionChange",
-                                    payload: {
-                                      ingredientId,
-                                      completed: checked,
-                                    },
-                                  });
-                                }}
-                              />
-                            </div>
-                          </TableCell>
-                          <TableCell>
-                            <Label
-                              htmlFor={checkboxId}
-                              className="hover:cursor-pointer"
-                            >
-                              {name}
-                            </Label>
-                          </TableCell>
-                          <TableCell>
-                            {formatAmount(amount)} {unit}
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  </TableBody>
-                </Table>
-              ) : null}
+                return (
+                  <Fragment key={group}>
+                    <TypographyH3 as="h3">{group}</TypographyH3>
+                    <IngredientsTable
+                      group={group}
+                      ingredients={groupIngredients}
+                    />
+                  </Fragment>
+                );
+              })}
             </div>
           </div>
           <div className="col-span-full align-baseline md:col-span-8">

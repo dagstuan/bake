@@ -12,6 +12,7 @@ import { durationType } from "./durationType";
 import { homeType } from "./singletons/homeType";
 import { aboutType } from "./singletons/aboutType";
 import { seoType } from "./seoType";
+import { ingredientGroupType } from "./recipe/ingredientGroup";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -27,5 +28,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     homeType,
     aboutType,
     seoType,
+    ingredientGroupType,
   ],
 };
