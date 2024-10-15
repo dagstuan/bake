@@ -31,6 +31,7 @@ import { urlForImage } from "@/sanity/lib/utils";
 import { Image } from "../Image/Image";
 import { TypographyLink } from "../Typography/TypographyLink";
 import { IngredientsTable } from "./IngredientsTable";
+import { TypographyH4 } from "../Typography/TypographyH4";
 
 const types: ComponentProps<typeof PortableText>["types"] = {
   [recipeIngredientReferenceType.name]: ({
@@ -166,7 +167,7 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
 
                 return (
                   <Fragment key={group}>
-                    <TypographyH3 as="h3">{group}</TypographyH3>
+                    <TypographyH4 as="h3">{group}</TypographyH4>
                     <IngredientsTable
                       group={group}
                       ingredients={groupIngredients}
