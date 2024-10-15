@@ -8,6 +8,25 @@ import { recipeIngredientReferenceType } from "./recipeIngredientReference";
 import { scalableRecipeNumberType } from "./scalableRecipeNumberType";
 import { ComposeIcon, SearchIcon } from "@sanity/icons";
 
+export const recipeIngredientArrayMember = defineArrayMember({
+  type: "reference",
+  to: { type: "recipeIngredient" },
+  options: {
+    filter: ({ document }) => {
+      return {
+        filter: `_type == $type
+          && count(*[references(^._id) && !(_id in [$nonDraftDocumentId, $documentId])]) == 0
+          && !(_id in *[_id == $documentId].ingredients[]._ref)`,
+        params: {
+          type: "recipeIngredient",
+          documentId: document._id,
+          nonDraftDocumentId: document._id.replace(/^drafts\./, ""),
+        },
+      };
+    },
+  },
+});
+
 export const recipeType = defineType({
   name: "recipe",
   title: "Recipe",
@@ -85,24 +104,8 @@ export const recipeType = defineType({
       group: ["content"],
       type: "array",
       of: [
-        defineArrayMember({
-          type: "reference",
-          to: { type: "recipeIngredient" },
-          options: {
-            filter: ({ document }) => {
-              return {
-                filter: `_type == $type
-                  && count(*[references(^._id) && !(_id in [$nonDraftDocumentId, $documentId])]) == 0
-                  && !(_id in *[_id == $documentId].ingredients[]._ref)`,
-                params: {
-                  type: "recipeIngredient",
-                  documentId: document._id,
-                  nonDraftDocumentId: document._id.replace(/^drafts\./, ""),
-                },
-              };
-            },
-          },
-        }),
+        recipeIngredientArrayMember,
+        defineArrayMember({ type: "ingredientGroup" }),
       ],
       validation: (rule) => rule.required(),
     }),

@@ -1,10 +1,18 @@
+import { OmitStrict } from "@/utils/types";
 import { Ingredient, RecipeQueryResult } from "../../../sanity.types";
-import { RecipeIngredients, RecipeInstructions } from "./types";
+import {
+  RecipeIngredient,
+  RecipeIngredients,
+  RecipeInstructions,
+} from "./types";
+import { produce } from "immer";
 
 export const minServings = 1;
 export const maxServings = 999;
 
-export type IngredientsCompletionState = {
+type IngredientsGroupOrder = Array<string>;
+
+type IngredientsCompletionState = {
   [ingredientId: string]: {
     [recipeIngredientKey: string]: {
       completed: boolean;
@@ -12,22 +20,24 @@ export type IngredientsCompletionState = {
   };
 };
 
-type RecipeIngredientType = {
+export type RecipeIngredientState = {
   ingredientId: string;
   name: string;
+  group: string | null;
   percent: number;
   amount: number;
   unit: string;
   type: NonNullable<Ingredient["type"]>;
 };
 
-export type RecipeIngredientsState = Array<RecipeIngredientType>;
+type RecipeIngredientsState = Array<RecipeIngredientState>;
 
 export type RecipeState = {
   recipeRevision: string;
   initialServings: number;
   servings: number;
   ingredientsCompletion: IngredientsCompletionState;
+  ingredientsGroupOrder: IngredientsGroupOrder;
   ingredients: RecipeIngredientsState;
   yieldPerServing: number;
 };
@@ -89,54 +99,81 @@ const resetIngredientsCompletionState = (
   ingredientsCompletionState: IngredientsCompletionState,
   completed: boolean,
 ): IngredientsCompletionState => {
-  return Object.entries(
-    ingredientsCompletionState,
-  ).reduce<IngredientsCompletionState>(
-    (state, [ingredientId, ingredientCompletion]) => {
-      state[ingredientId] = Object.entries(ingredientCompletion).reduce<{
-        [recipeIngredientKey: string]: { completed: boolean };
-      }>((ingredientState, [recipeIngredientKey]) => {
-        ingredientState[recipeIngredientKey] = { completed };
-        return ingredientState;
-      }, {});
+  return produce(ingredientsCompletionState, (draft) => {
+    Object.keys(draft).forEach((ingredientId) => {
+      const recipeIngredients = draft[ingredientId];
+      Object.keys(recipeIngredients).forEach((recipeIngredientKey) => {
+        recipeIngredients[recipeIngredientKey].completed = completed;
+      });
+    });
+  });
+};
 
-      return state;
-    },
-    {},
-  );
+const mapIngredientReferenceToIngredient = (
+  baseDryIngredients: number,
+  group: string | null,
+  ingredientRef: OmitStrict<RecipeIngredient, "_type">,
+): RecipeIngredientState | null => {
+  const { _id, ingredient, percent, unit } = ingredientRef;
+
+  if (
+    !_id ||
+    !ingredient ||
+    !ingredient.name ||
+    !ingredient.type ||
+    !percent ||
+    !unit
+  ) {
+    return null;
+  }
+
+  return {
+    ingredientId: _id,
+    name: ingredient.name,
+    percent: percent,
+    group: group,
+    amount: calcIngredientAmount(percent, baseDryIngredients),
+    unit: unit,
+    type: ingredient.type,
+  };
 };
 
 const calcInitialRecipeIngredientsState = (
   baseDryIngredients: number,
   recipeIngredientsQueryResult: RecipeIngredients | null | undefined,
-): RecipeIngredientsState => {
-  return (
+): [IngredientsGroupOrder, RecipeIngredientsState] => {
+  const groupOrder: IngredientsGroupOrder = [];
+
+  const ingredientsState =
     recipeIngredientsQueryResult
-      ?.map((ingredientRef): RecipeIngredientType | null => {
-        const { _id, ingredient, percent, unit } = ingredientRef ?? {};
-
-        if (
-          !_id ||
-          !ingredient ||
-          !ingredient.name ||
-          !ingredient.type ||
-          !percent ||
-          !unit
+      ?.map((ingredientRef) => {
+        if (ingredientRef?._type === "reference") {
+          return [
+            mapIngredientReferenceToIngredient(
+              baseDryIngredients,
+              null,
+              ingredientRef,
+            ),
+          ];
+        } else if (
+          ingredientRef.title != null &&
+          (ingredientRef.ingredients?.length ?? 0) > 0
         ) {
-          return null;
-        }
+          groupOrder.push(ingredientRef.title);
 
-        return {
-          ingredientId: _id,
-          name: ingredient.name,
-          percent: percent,
-          amount: calcIngredientAmount(percent, baseDryIngredients),
-          unit: unit,
-          type: ingredient.type,
-        };
+          return ingredientRef.ingredients?.map((ingredient) =>
+            mapIngredientReferenceToIngredient(
+              baseDryIngredients,
+              ingredientRef.title,
+              ingredient,
+            ),
+          );
+        }
       })
-      .filter((r) => r != null) ?? []
-  );
+      .flat()
+      .filter((r) => r != null) ?? [];
+
+  return [groupOrder, ingredientsState];
 };
 
 export type RecipeAction =
@@ -156,7 +193,10 @@ export type RecipeAction =
     }
   | {
       type: "onAllIngredientsCompletionChange";
-      payload: boolean;
+      payload: {
+        group: string | null;
+        completed: boolean;
+      };
     }
   | {
       type: "onServingsChange";
@@ -180,7 +220,7 @@ export const calcInitialState = (
   const initialServingsNum = servings ?? 1;
   const initialDryIngredients = baseDryIngredients ?? 1000;
 
-  const ingredientsState = calcInitialRecipeIngredientsState(
+  const [groupOrder, ingredientsState] = calcInitialRecipeIngredientsState(
     initialDryIngredients,
     ingredients,
   );
@@ -194,6 +234,7 @@ export const calcInitialState = (
     recipeRevision: _rev,
     initialServings: initialServingsNum,
     servings: initialServingsNum,
+    ingredientsGroupOrder: groupOrder,
     ingredientsCompletion: calcInitialIngredientsCompletionState(instructions),
     ingredients: ingredientsState,
     yieldPerServing: totalYield / initialServingsNum,
@@ -208,55 +249,44 @@ export const recipeReducer = (
     case "onIngredientReferenceCompletionChange": {
       const { ingredientId, ingredientReferenceKey } = action.payload;
 
-      const currentIngredient = state.ingredientsCompletion[ingredientId];
-      const currentKeyStatus =
-        currentIngredient[ingredientReferenceKey]?.completed ?? false;
+      return produce(state, (draft) => {
+        const currentIngredient = draft.ingredientsCompletion[ingredientId];
+        const currentKeyStatus =
+          currentIngredient[ingredientReferenceKey]?.completed ?? false;
 
-      const updatedIngredient = {
-        ...currentIngredient,
-        [ingredientReferenceKey]: {
+        currentIngredient[ingredientReferenceKey] = {
           completed: !currentKeyStatus,
-        },
-      };
-
-      return {
-        ...state,
-        ingredientsCompletion: {
-          ...state.ingredientsCompletion,
-          [ingredientId]: updatedIngredient,
-        },
-      };
+        };
+      });
     }
     case "onIngredientCompletionChange": {
       const { ingredientId, completed } = action.payload;
 
-      const updatedIngredient = Object.entries(
-        state.ingredientsCompletion[ingredientId],
-      ).reduce<{
-        [recipeIngredientKey: string]: { completed: boolean };
-      }>((ingredientState, [recipeIngredientKey]) => {
-        ingredientState[recipeIngredientKey] = { completed: completed };
-        return ingredientState;
-      }, {});
+      return produce(state, (draft) => {
+        const currentIngredient = draft.ingredientsCompletion[ingredientId];
 
-      return {
-        ...state,
-        ingredientsCompletion: {
-          ...state.ingredientsCompletion,
-          [ingredientId]: updatedIngredient,
-        },
-      };
+        Object.keys(currentIngredient).forEach((recipeIngredientKey) => {
+          currentIngredient[recipeIngredientKey].completed = completed;
+        });
+      });
     }
     case "onAllIngredientsCompletionChange": {
-      const completed = action.payload;
+      return produce(state, (draft) => {
+        const { group, completed } = action.payload;
 
-      return {
-        ...state,
-        ingredientsCompletion: resetIngredientsCompletionState(
-          state.ingredientsCompletion,
-          completed,
-        ),
-      };
+        const ingredientsToUpdate = draft.ingredients.filter(
+          (i) => i.group === group,
+        );
+
+        ingredientsToUpdate.forEach((ingredient) => {
+          const ingredientCompletion =
+            draft.ingredientsCompletion[ingredient.ingredientId];
+
+          Object.keys(ingredientCompletion).forEach((recipeIngredientKey) => {
+            ingredientCompletion[recipeIngredientKey].completed = completed;
+          });
+        });
+      });
     }
     case "onServingsChange": {
       const newServings = action.payload;
@@ -271,21 +301,19 @@ export const recipeReducer = (
       }
 
       const changePercent = newServings / state.servings;
-      const updatedIngredients = state.ingredients.map((ingredient) => {
-        const updatedAmount = ingredient.amount * changePercent;
-        return { ...ingredient, amount: updatedAmount };
-      });
 
-      return {
-        ...state,
-        ingredientsCompletion: resetIngredientsCompletionState(
-          state.ingredientsCompletion,
+      return produce(state, (draft) => {
+        draft.servings = newServings;
+
+        draft.ingredients.forEach((ingredient) => {
+          ingredient.amount *= changePercent;
+        });
+
+        draft.ingredientsCompletion = resetIngredientsCompletionState(
+          draft.ingredientsCompletion,
           false,
-        ),
-        servings: newServings,
-        ingredients: updatedIngredients,
-        yieldPerServing: state.yieldPerServing,
-      };
+        );
+      });
     }
     case "onIngredientChange": {
       const { newAmount, ingredientId } = action.payload;
@@ -294,44 +322,38 @@ export const recipeReducer = (
         return state;
       }
 
-      const ingredientToUpdate = state.ingredients.find(
-        (ingredient) => ingredient.ingredientId === ingredientId,
-      );
+      return produce(state, (draft) => {
+        const ingredientToUpdate = draft.ingredients.find(
+          (ingredient) => ingredient.ingredientId === ingredientId,
+        );
 
-      if (!ingredientToUpdate) {
-        return state;
-      }
-
-      const { percent: updatedIngredientPercent } = ingredientToUpdate;
-
-      const updatedIngredients = state.ingredients.map((ingredient) => {
-        if (ingredient.ingredientId === ingredientId) {
-          return { ...ingredient, amount: newAmount };
+        if (!ingredientToUpdate) {
+          return;
         }
 
-        const updatedAmount =
-          (ingredient.percent / updatedIngredientPercent) * newAmount;
+        const updatedIngredientPercent = ingredientToUpdate.percent;
 
-        return { ...ingredient, amount: updatedAmount };
-      });
+        draft.ingredients.forEach((ingredient) => {
+          if (ingredient.ingredientId === ingredientId) {
+            ingredient.amount = newAmount;
+          } else {
+            ingredient.amount =
+              (ingredient.percent / updatedIngredientPercent) * newAmount;
+          }
+        });
 
-      const updatedTotalYield = updatedIngredients.reduce(
-        (acc, curr) => acc + curr.amount,
-        0,
-      );
+        const updatedTotalYield = draft.ingredients.reduce(
+          (acc, curr) => acc + curr.amount,
+          0,
+        );
 
-      const updatedServings = updatedTotalYield / state.yieldPerServing;
+        draft.servings = updatedTotalYield / draft.yieldPerServing;
 
-      return {
-        ...state,
-        ingredientsCompletion: resetIngredientsCompletionState(
-          state.ingredientsCompletion,
+        draft.ingredientsCompletion = resetIngredientsCompletionState(
+          draft.ingredientsCompletion,
           false,
-        ),
-        servings: updatedServings,
-        ingredients: updatedIngredients,
-        yieldPerServing: state.yieldPerServing,
-      };
+        );
+      });
     }
     case "reset":
       return action.payload;

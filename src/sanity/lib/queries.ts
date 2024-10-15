@@ -58,6 +58,16 @@ export const allCategoriesQuery = defineQuery(`*[_type == "category"]
     _id, title, "slug": slug.current,
   }`);
 
+export const recipeIngredientReferenceFields = /* groq */ `
+  _id,
+  "ingredient": ingredient->{
+    name,
+    type,
+  },
+  unit,
+  percent,
+`;
+
 export const recipeQuery =
   defineQuery(`*[_type == "recipe" && slug.current == $slug][0]{
     _id,
@@ -70,14 +80,18 @@ export const recipeQuery =
     categories[]->{
       title,
     },
-    ingredients[]->{
-      _id,
-      "ingredient": ingredient->{
-        name,
-        type,
+    ingredients[]{
+      _type == "reference" => @->{
+        "_type": "reference",
+        ${recipeIngredientReferenceFields}
       },
-      unit,
-      percent,
+      _type == "ingredientGroup" => {
+        "_type": "ingredientGroup",
+        title,
+        ingredients[]->{
+          ${recipeIngredientReferenceFields}
+        }
+      }
     },
     activeTime,
     totalTime,
