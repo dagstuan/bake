@@ -1,6 +1,6 @@
 import { type SchemaTypeDefinition } from "sanity";
 
-import { blockContentType } from "./blockContentType";
+import { blockContentType } from "./portableText/blockContentType";
 import { categoryType } from "./categoryType";
 import { ingredientType } from "./ingredientType";
 import { recipeType } from "./recipe/recipeType";
@@ -13,6 +13,7 @@ import { homeType } from "./singletons/homeType";
 import { aboutType } from "./singletons/aboutType";
 import { seoType } from "./seoType";
 import { ingredientGroupType } from "./recipe/ingredientGroup";
+import { alertType } from "./alertType";
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -29,5 +30,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     aboutType,
     seoType,
     ingredientGroupType,
+    alertType,
   ],
 };
