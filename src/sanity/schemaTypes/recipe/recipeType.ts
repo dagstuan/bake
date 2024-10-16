@@ -1,12 +1,12 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
-import {
-  baseBlockLists,
-  baseBlockMarks,
-  baseBlockStyles,
-} from "../blockContentType";
+
 import { recipeIngredientReferenceType } from "./recipeIngredientReference";
 import { scalableRecipeNumberType } from "./scalableRecipeNumberType";
 import { ComposeIcon, SearchIcon } from "@sanity/icons";
+import { baseBlockLists } from "../portableText/baseBlockLists";
+import { baseBlockMarks } from "../portableText/baseBlockMarks";
+import { baseBlockStyles } from "../portableText/baseBlockStyles";
+import { alertType } from "../alertType";
 
 export const recipeIngredientArrayMember = defineArrayMember({
   type: "reference",
@@ -115,7 +115,7 @@ export const recipeType = defineType({
       group: ["content"],
       type: "array",
       of: [
-        {
+        defineArrayMember({
           type: "block",
           styles: baseBlockStyles,
           lists: baseBlockLists,
@@ -124,7 +124,8 @@ export const recipeType = defineType({
             { type: recipeIngredientReferenceType.name },
             { type: scalableRecipeNumberType.name },
           ],
-        },
+        }),
+        defineArrayMember({ type: alertType.name }),
       ],
     }),
     defineField({

@@ -68,6 +68,30 @@ export type Geopoint = {
   alt?: number;
 };
 
+export type Alert = {
+  _type: "alert";
+  variant?: "default" | "destructive";
+  title?: string;
+  body?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal";
+    listItem?: never;
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
+};
+
 export type IngredientGroup = {
   _type: "ingredientGroup";
   title?: string;
@@ -119,6 +143,9 @@ export type About = {
         _type: "image";
         _key: string;
       }
+    | ({
+        _key: string;
+      } & Alert)
   >;
 };
 
@@ -327,6 +354,9 @@ export type BlockContent = Array<
       _type: "image";
       _key: string;
     }
+  | ({
+      _key: string;
+    } & Alert)
 >;
 
 export type SanityImageCrop = {
@@ -407,6 +437,7 @@ export type AllSanitySchemaTypes =
   | SanityImageDimensions
   | SanityFileAsset
   | Geopoint
+  | Alert
   | IngredientGroup
   | About
   | Home
@@ -650,6 +681,9 @@ export type HomePageQueryResult = {
 export type AboutQueryResult = {
   title: string | null;
   body: Array<
+    | ({
+        _key: string;
+      } & Alert)
     | {
         children?: Array<{
           marks?: Array<string>;
