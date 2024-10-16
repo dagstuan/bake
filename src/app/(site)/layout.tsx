@@ -1,5 +1,4 @@
 import { Analytics } from "@vercel/analytics/react";
-import { VisualEditing } from "next-sanity";
 import { draftMode } from "next/headers";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
@@ -9,7 +8,6 @@ import { Footer } from "@/components/Footer/Footer";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { SearchAction, WebSite, WithContext } from "schema-dts";
 import { JsonLd } from "@/components/JsonLd/JsonLd";
-import { sanityFetch } from "@/sanity/lib/client";
 import { homeSeoQuery } from "@/sanity/lib/queries";
 import { urlForImage } from "@/sanity/lib/utils";
 import {
@@ -18,6 +16,12 @@ import {
   siteUrl,
   twitterMetadata,
 } from "./shared-metadata";
+import { loadQuery } from "@/sanity/loader/loadQuery";
+import dynamic from "next/dynamic";
+
+const LiveVisualEditing = dynamic(
+  () => import("@/sanity/loader/LiveVisualEditing"),
+);
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -31,9 +35,7 @@ const geistMono = localFont({
 });
 
 export async function generateMetadata(): Promise<Metadata> {
-  const homeSeo = await sanityFetch({
-    query: homeSeoQuery,
-  });
+  const { data: homeSeo } = await loadQuery(homeSeoQuery);
 
   const metaDescription = homeSeo?.seo?.metaDescription ?? "";
 
@@ -118,9 +120,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const homeSeo = await sanityFetch({
-    query: homeSeoQuery,
-  });
+  const { data: homeSeo } = await loadQuery(homeSeoQuery);
 
   const jsonLd: WithContext<WebSite> = {
     "@context": "https://schema.org",
@@ -148,7 +148,7 @@ export default async function RootLayout({
           <Nav />
           <div className="flex-1">{children}</div>
           <Footer />
-          {draftMode().isEnabled && <VisualEditing />}
+          {draftMode().isEnabled ? <LiveVisualEditing /> : null}
           <Analytics />
         </TooltipProvider>
         <JsonLd jsonLd={jsonLd} />

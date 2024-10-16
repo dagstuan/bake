@@ -1,42 +1,38 @@
-import { QueryParams } from "next-sanity";
-import { notFound } from "next/navigation";
-
-import { client, sanityFetch } from "@/sanity/lib/client";
-import { recipeQuery, allRecipesQuery } from "@/sanity/lib/queries";
-import { Recipe } from "@/components/Recipe/Recipe";
+import { recipeQuery, allRecipesSlugQuery } from "@/sanity/lib/queries";
 import { Metadata } from "next";
 import { urlForImage } from "@/sanity/lib/utils";
-import type { Recipe as RecipeSchema, WithContext } from "schema-dts";
-import { JsonLd } from "@/components/JsonLd/JsonLd";
 import {
-  creator,
   openGraphMetadata,
   siteUrl,
   twitterMetadata,
 } from "../../shared-metadata";
-import { formatDurationISO } from "@/utils/recipeUtils";
-
-export async function generateStaticParams() {
-  const recipes = await client.fetch(
-    allRecipesQuery,
-    {},
-    { perspective: "published" },
-  );
-
-  return recipes.map((recipe) => ({
-    slug: recipe?.slug,
-  }));
-}
+import { loadQuery } from "@/sanity/loader/loadQuery";
+import { getClient } from "@/sanity/lib/client";
+import { RecipePage } from "@/components/pages/RecipePage/RecipePage";
+import { draftMode } from "next/headers";
+import { RecipePagePreview } from "@/components/pages/RecipePage/RecipePagePreview";
 
 type Props = {
   params: { slug: string };
 };
 
+export async function generateStaticParams(): Promise<Array<Props["params"]>> {
+  const recipes = await getClient()
+    .withConfig({
+      perspective: "published",
+    })
+    .fetch(allRecipesSlugQuery);
+
+  return recipes
+    .map((r) => r?.slug)
+    .filter((s) => s !== null)
+    .map((slug) => ({
+      slug,
+    }));
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const recipe = await sanityFetch({
-    query: recipeQuery,
-    params,
-  });
+  const { data: recipe } = await loadQuery(recipeQuery, params);
 
   if (recipe) {
     const { title, mainImage, seo } = recipe;
@@ -86,49 +82,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {};
 }
 
-export default async function Page({ params }: { params: QueryParams }) {
-  const recipe = await sanityFetch({
-    query: recipeQuery,
-    params,
-  });
+export default async function Page({ params }: Props) {
+  const initial = await loadQuery(recipeQuery, params);
 
-  if (!recipe) {
-    return notFound();
+  if (draftMode().isEnabled) {
+    return <RecipePagePreview initial={initial} params={params} />;
   }
 
-  const jsonLd: WithContext<RecipeSchema> = {
-    "@context": "https://schema.org",
-    "@type": "Recipe",
-    name: recipe.seo?.metaTitle ?? recipe.title ?? "",
-    description: recipe.seo?.metaDescription ?? "",
-    url: `${siteUrl}/oppskrifter/${params.slug}`,
-    datePublished: recipe._createdAt,
-    author: {
-      "@type": "Person",
-      name: creator,
-    },
-    creator: {
-      "@type": "Person",
-      name: creator,
-    },
-    prepTime: recipe.activeTime
-      ? formatDurationISO(recipe.activeTime)
-      : undefined,
-    cookTime: recipe.totalTime
-      ? formatDurationISO(recipe.totalTime)
-      : undefined,
-    recipeCategory:
-      recipe.categories?.map((category) => category.title).join(", ") ?? "",
-    image: recipe.mainImage
-      ? (urlForImage(recipe.mainImage)?.width(800).height(600).dpr(1).url() ??
-        "")
-      : "",
-  };
-
-  return (
-    <>
-      <Recipe recipe={recipe} />
-      <JsonLd jsonLd={jsonLd} />
-    </>
-  );
+  return <RecipePage data={initial.data} params={params} />;
 }

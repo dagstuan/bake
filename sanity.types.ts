@@ -447,6 +447,11 @@ export type AllRecipesQueryResult = Array<{
     } | null;
   } | null;
 }>;
+// Variable: allRecipesSlugQuery
+// Query: *[_type == "recipe"]{  "slug": slug.current,}
+export type AllRecipesSlugQueryResult = Array<{
+  slug: string | null;
+}>;
 // Variable: recipesSearchQuery
 // Query: *[    _type == "recipe" &&    (pt::text(instructions) match $searchQuery || title match $searchQuery)]    |order(_createdAt desc)    |score(pt::text(instructions) match $searchQuery, boost(title match $searchQuery, 3))    |order(_score desc)    {        _id,  title,  "slug": slug.current,  mainImage {      hotspot,  crop,  alt,  asset->{    _id,    metadata {      lqip    }  },  }    }
 export type RecipesSearchQueryResult = Array<{
@@ -707,6 +712,7 @@ import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     '*[_type == "recipe"]\n  |order(_createdAt desc)\n  {\n    \n  _id,\n  title,\n  "slug": slug.current,\n  mainImage {\n    \n  hotspot,\n  crop,\n  alt,\n  asset->{\n    _id,\n    metadata {\n      lqip\n    }\n  },\n  }\n\n  }': AllRecipesQueryResult;
+    '*[_type == "recipe"]{\n  "slug": slug.current,\n}': AllRecipesSlugQueryResult;
     '*[\n    _type == "recipe" &&\n    (pt::text(instructions) match $searchQuery || title match $searchQuery)]\n    |order(_createdAt desc)\n    |score(pt::text(instructions) match $searchQuery, boost(title match $searchQuery, 3))\n    |order(_score desc)\n    {\n      \n  _id,\n  title,\n  "slug": slug.current,\n  mainImage {\n    \n  hotspot,\n  crop,\n  alt,\n  asset->{\n    _id,\n    metadata {\n      lqip\n    }\n  },\n  }\n\n    }': RecipesSearchQueryResult;
     '*[_type == "recipe" &&\n  (pt::text(instructions) match $searchQuery || title match $searchQuery) &&\n  count((categories[]->slug.current)[@ in $categories]) > 0]\n  |order(_createdAt desc)\n  |score(pt::text(instructions) match $searchQuery, boost(title match $searchQuery, 3))\n  |order(_score desc)\n  {\n    \n  _id,\n  title,\n  "slug": slug.current,\n  mainImage {\n    \n  hotspot,\n  crop,\n  alt,\n  asset->{\n    _id,\n    metadata {\n      lqip\n    }\n  },\n  }\n\n  }': RecipesSearchWithCategoriesQueryResult;
     '*[_type == "category"]\n  |order(title asc){\n    _id, title, "slug": slug.current,\n  }': AllCategoriesQueryResult;

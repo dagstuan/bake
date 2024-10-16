@@ -6,8 +6,8 @@ import {
 } from "@/components/RecipesPage/RecipesFilters";
 import { RecipesPageContent } from "@/components/RecipesPage/RecipesPageContent";
 import { TypographyH1 } from "@/components/Typography/TypographyH1";
-import { sanityFetch } from "@/sanity/lib/client";
 import { allCategoriesQuery } from "@/sanity/lib/queries";
+import { loadQuery } from "@/sanity/loader/loadQuery";
 import { Metadata } from "next/types";
 import { Suspense } from "react";
 
@@ -26,9 +26,7 @@ export default async function Page({
   const query = searchParams?.query;
   const categoryQuery = searchParams?.category;
 
-  const categories = await sanityFetch({
-    query: allCategoriesQuery,
-  });
+  const { data: categories } = await loadQuery(allCategoriesQuery);
 
   return (
     <div className="px-6">
