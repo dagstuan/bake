@@ -19,6 +19,14 @@ export type PortableTextProps = {
 };
 
 const components: Components = {
+  list: {
+    bullet: ({ children }) => (
+      <ul className="my-4 ml-6 list-disc marker:text-primary [&>li]:mt-2">
+        {children}
+      </ul>
+    ),
+  },
+  listItem: ({ children }) => <li>{children}</li>,
   types: {
     image: ({ value }: { value: BlockContentImage }) => {
       return (
@@ -57,14 +65,14 @@ export const PortableText = (props: PortableTextProps) => {
   const blockObj = useMemo(() => ({ ...components.block, ...block }), [block]);
   const marksObj = useMemo(() => ({ ...components.marks, ...marks }), [marks]);
 
-  return (
-    <SanityPortableText
-      {...props}
-      components={{
-        types: typesObj,
-        marks: marksObj,
-        block: blockObj,
-      }}
-    />
-  );
+  const memoedComponents = useMemo<Components>(() => {
+    return {
+      ...components,
+      types: typesObj,
+      marks: marksObj,
+      block: blockObj,
+    };
+  }, [typesObj, blockObj, marksObj]);
+
+  return <SanityPortableText {...props} components={memoedComponents} />;
 };
