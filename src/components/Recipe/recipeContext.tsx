@@ -40,7 +40,7 @@ const useReducerWithSessionStorage = (
   const [sessionStorageValue, setSessionStorageValue] = useStorage(
     key,
     initialState,
-    window.sessionStorage,
+    "sessionStorage",
   );
 
   useEffect(() => {

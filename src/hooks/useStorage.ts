@@ -2,17 +2,22 @@
 
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 
+type StorageType = "localStorage" | "sessionStorage";
+
+export const getStorage = (type: StorageType): Storage =>
+  type === "localStorage" ? window.localStorage : window.sessionStorage;
+
 export default function useStorage<T>(
   key: string,
   defaultValue: T,
-  storage: Storage = window.sessionStorage,
+  storageType: StorageType = "sessionStorage",
 ): [T, Dispatch<SetStateAction<T>>] {
   const isMounted = useRef(false);
   const [value, setValue] = useState<T>(defaultValue);
 
   useEffect(() => {
     try {
-      const item = storage.getItem(key);
+      const item = getStorage(storageType).getItem(key);
       if (item) {
         setValue(JSON.parse(item));
       }
@@ -22,15 +27,15 @@ export default function useStorage<T>(
     return () => {
       isMounted.current = false;
     };
-  }, [key, storage]);
+  }, [key, storageType]);
 
   useEffect(() => {
     if (isMounted.current) {
-      storage.setItem(key, JSON.stringify(value));
+      getStorage(storageType).setItem(key, JSON.stringify(value));
     } else {
       isMounted.current = true;
     }
-  }, [key, value, storage]);
+  }, [key, value, storageType]);
 
   return [value, setValue];
 }

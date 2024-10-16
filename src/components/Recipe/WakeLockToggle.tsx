@@ -14,7 +14,7 @@ export const WakeLockToggle = (): JSX.Element | null => {
   const [storageChecked, setStorageChecked] = useStorage<boolean>(
     "wakeLock",
     false,
-    window.localStorage,
+    "localStorage",
   );
 
   useEffect(() => {
