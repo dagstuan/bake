@@ -32,6 +32,10 @@ export const allRecipesQuery = defineQuery(`*[${baseRecipesQuery}]
     ${allRecipesFields}
   }`);
 
+export const allRecipesSlugQuery = defineQuery(`*[${baseRecipesQuery}]{
+  "slug": slug.current,
+}`);
+
 export const recipesSearchQuery = defineQuery(`*[
     ${baseRecipesQuery} &&
     ${recipesSearchMatchQuery}]
