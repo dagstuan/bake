@@ -1,15 +1,18 @@
+"use client";
+
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 
-export default function useSessionStorage<T>(
+export default function useStorage<T>(
   key: string,
   defaultValue: T,
+  storage: Storage = window.sessionStorage,
 ): [T, Dispatch<SetStateAction<T>>] {
   const isMounted = useRef(false);
   const [value, setValue] = useState<T>(defaultValue);
 
   useEffect(() => {
     try {
-      const item = window.sessionStorage.getItem(key);
+      const item = storage.getItem(key);
       if (item) {
         setValue(JSON.parse(item));
       }
@@ -19,15 +22,15 @@ export default function useSessionStorage<T>(
     return () => {
       isMounted.current = false;
     };
-  }, [key]);
+  }, [key, storage]);
 
   useEffect(() => {
     if (isMounted.current) {
-      window.sessionStorage.setItem(key, JSON.stringify(value));
+      storage.setItem(key, JSON.stringify(value));
     } else {
       isMounted.current = true;
     }
-  }, [key, value]);
+  }, [key, value, storage]);
 
   return [value, setValue];
 }
