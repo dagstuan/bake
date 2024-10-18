@@ -54,8 +54,9 @@ export const calcInitialIngredientsCompletionState = (
     return {};
   }
 
-  return instructions.reduce<IngredientsCompletionState>(
-    (state, instruction) => {
+  return instructions
+    .filter((i) => i._type === "block")
+    .reduce<IngredientsCompletionState>((state, instruction) => {
       const ingredientReferences = instruction.children?.filter(
         (x) => x._type === "recipeIngredientReference",
       );
@@ -77,9 +78,7 @@ export const calcInitialIngredientsCompletionState = (
       });
 
       return state;
-    },
-    {},
-  );
+    }, {});
 };
 
 export const isIngredientComplete = (

@@ -4,13 +4,17 @@ import { RecipeQueryResult } from "../../../sanity.types";
 export type RecipeInstructions = NonNullable<RecipeQueryResult>["instructions"];
 export type RecipeIngredients = NonNullable<RecipeQueryResult>["ingredients"];
 
+type RecipeInstructionsBlockChilds = ArrayElement<
+  Extract<ArrayElement<RecipeInstructions>, { _type: "block" }>["children"]
+>;
+
 export type RecipeIngredientReference = Extract<
-  ArrayElement<NonNullable<ArrayElement<RecipeInstructions>["children"]>>,
+  RecipeInstructionsBlockChilds,
   { _type: "recipeIngredientReference" }
 >;
 
 export type ScalableRecipeNumber = Extract<
-  ArrayElement<NonNullable<ArrayElement<RecipeInstructions>["children"]>>,
+  RecipeInstructionsBlockChilds,
   { _type: "scalableRecipeNumber" }
 >;
 
