@@ -111,9 +111,9 @@ const resetIngredientsCompletionState = (
 const mapIngredientReferenceToIngredient = (
   baseDryIngredients: number,
   group: string | null,
-  ingredientRef: OmitStrict<RecipeIngredient, "_type">,
+  ingredientRef: OmitStrict<RecipeIngredient, "_type"> | null,
 ): RecipeIngredientState | null => {
-  const { _id, ingredient, percent, unit } = ingredientRef;
+  const { _id, ingredient, percent, unit } = ingredientRef ?? {};
 
   if (
     !_id ||

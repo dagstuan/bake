@@ -165,6 +165,8 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
                   (i) => i.group === group,
                 );
 
+                if (groupIngredients.length === 0) return null;
+
                 return (
                   <Fragment key={group}>
                     <TypographyH4 as="h3">{group}</TypographyH4>
