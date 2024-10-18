@@ -1,5 +1,6 @@
 import { DocumentDefinition } from "sanity";
 import type { StructureResolver } from "sanity/structure";
+import { apiVersion } from "../env";
 
 // https://www.sanity.io/docs/structure-builder-cheat-sheet
 export const resolveStructure = (
@@ -33,6 +34,7 @@ export const resolveStructure = (
           .child(
             S.documentList()
               .title("Unused documents")
+              .apiVersion(apiVersion)
               .filter(
                 '_type != "recipe" && _type != "home" && _type != "about" && count(*[references(^._id)]) == 0',
               ),

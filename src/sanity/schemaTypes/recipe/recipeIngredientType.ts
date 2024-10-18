@@ -34,6 +34,11 @@ export const recipeIngredientType = defineType({
       percent: "percent",
       unit: "unit",
     },
+    prepare({ ingredientName, percent }) {
+      return {
+        title: `${ingredientName} (${percent}%)`,
+      };
+    },
   },
   components: {
     preview: RecipeIngredientPreviewComponent,
