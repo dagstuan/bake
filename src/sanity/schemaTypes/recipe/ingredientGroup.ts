@@ -1,5 +1,6 @@
 import { defineField, defineType } from "sanity";
 import { recipeIngredientArrayMember } from "./recipeType";
+import { IngredientGroupItemComponent } from "@/sanity/components/IngredientGroupItemComponent";
 
 export const ingredientGroupType = defineType({
   name: "ingredientGroup",
@@ -16,4 +17,7 @@ export const ingredientGroupType = defineType({
       of: [recipeIngredientArrayMember],
     }),
   ],
+  components: {
+    item: IngredientGroupItemComponent,
+  },
 });

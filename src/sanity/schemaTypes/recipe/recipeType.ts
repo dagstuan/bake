@@ -8,6 +8,9 @@ import { baseBlockMarks } from "../portableText/baseBlockMarks";
 import { baseBlockStyles } from "../portableText/baseBlockStyles";
 import { alertType } from "../alertType";
 
+export const baseDryIngredientsName = "baseDryIngredients";
+export const ingredientsName = "ingredients";
+
 export const recipeIngredientArrayMember = defineArrayMember({
   type: "reference",
   to: { type: "recipeIngredient" },
@@ -85,7 +88,7 @@ export const recipeType = defineType({
       group: ["content"],
     }),
     defineField({
-      name: "baseDryIngredients",
+      name: baseDryIngredientsName,
       type: "number",
       title: "Sum base ingredients",
       description: "The sum of all base ingredients in grams",
@@ -100,7 +103,7 @@ export const recipeType = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
-      name: "ingredients",
+      name: ingredientsName,
       group: ["content"],
       type: "array",
       of: [

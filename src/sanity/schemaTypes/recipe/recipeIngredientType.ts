@@ -1,4 +1,4 @@
-import { formatAmount } from "@/utils/recipeUtils";
+import { RecipeIngredientPreviewComponent } from "@/sanity/components/RecipeIngredientPreviewComponent";
 import { defineField, defineType } from "sanity";
 
 const fields = [
@@ -32,11 +32,10 @@ export const recipeIngredientType = defineType({
     select: {
       ingredientName: "ingredient.name",
       percent: "percent",
+      unit: "unit",
     },
-    prepare({ ingredientName, percent }) {
-      return {
-        title: `${ingredientName} (${formatAmount(percent)}%)`,
-      };
-    },
+  },
+  components: {
+    preview: RecipeIngredientPreviewComponent,
   },
 });

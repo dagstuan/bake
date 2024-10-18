@@ -258,32 +258,37 @@ export type Recipe = {
         _key: string;
       } & IngredientGroup)
   >;
-  instructions?: Array<{
-    children?: Array<
-      | {
-          marks?: Array<string>;
-          text?: string;
-          _type: "span";
+  instructions?: Array<
+    | {
+        children?: Array<
+          | {
+              marks?: Array<string>;
+              text?: string;
+              _type: "span";
+              _key: string;
+            }
+          | ({
+              _key: string;
+            } & RecipeIngredientReference)
+          | ({
+              _key: string;
+            } & ScalableRecipeNumber)
+        >;
+        style?: "normal" | "h2" | "h3" | "h4" | "blockquote";
+        listItem?: "bullet";
+        markDefs?: Array<{
+          href?: string;
+          _type: "link";
           _key: string;
-        }
-      | ({
-          _key: string;
-        } & RecipeIngredientReference)
-      | ({
-          _key: string;
-        } & ScalableRecipeNumber)
-    >;
-    style?: "normal" | "h2" | "h3" | "h4" | "blockquote";
-    listItem?: "bullet";
-    markDefs?: Array<{
-      href?: string;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
-    _key: string;
-  }>;
+        }>;
+        level?: number;
+        _type: "block";
+        _key: string;
+      }
+    | ({
+        _key: string;
+      } & Alert)
+  >;
   seo?: Seo;
 };
 
@@ -576,43 +581,69 @@ export type RecipeQueryResult = {
   totalTime: Duration | null;
   baseDryIngredients: number | null;
   servings: number | null;
-  instructions: Array<{
-    children: Array<
-      | {
+  instructions: Array<
+    | {
+        _key: string;
+        _type: "alert";
+        variant?: "default" | "destructive";
+        title?: string;
+        body?: Array<{
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "normal";
+          listItem?: never;
+          markDefs?: Array<{
+            href?: string;
+            _type: "link";
+            _key: string;
+          }>;
+          level?: number;
+          _type: "block";
           _key: string;
-          _type: "recipeIngredientReference";
-          ingredient: {
-            _id: string;
-            name: string | null;
-            percent: number | null;
-            unit: "dl" | "egg" | "g" | "ss" | "stk" | "ts" | null;
-          } | null;
-          percentage?: number;
-        }
-      | {
+        }>;
+      }
+    | {
+        children: Array<
+          | {
+              _key: string;
+              _type: "recipeIngredientReference";
+              ingredient: {
+                _id: string;
+                name: string | null;
+                percent: number | null;
+                unit: "dl" | "egg" | "g" | "ss" | "stk" | "ts" | null;
+              } | null;
+              percentage?: number;
+            }
+          | {
+              _key: string;
+              _type: "scalableRecipeNumber";
+              number?: number;
+              suffix?: string;
+            }
+          | {
+              marks?: Array<string>;
+              text?: string;
+              _type: "span";
+              _key: string;
+            }
+        > | null;
+        style?: "blockquote" | "h2" | "h3" | "h4" | "normal";
+        listItem?: "bullet";
+        markDefs?: Array<{
+          href?: string;
+          _type: "link";
           _key: string;
-          _type: "scalableRecipeNumber";
-          number?: number;
-          suffix?: string;
-        }
-      | {
-          marks?: Array<string>;
-          text?: string;
-          _type: "span";
-          _key: string;
-        }
-    > | null;
-    style?: "blockquote" | "h2" | "h3" | "h4" | "normal";
-    listItem?: "bullet";
-    markDefs?: Array<{
-      href?: string;
-      _type: "link";
-      _key: string;
-    }>;
-    level?: number;
-    _type: "block";
-    _key: string;
-  }> | null;
+        }>;
+        level?: number;
+        _type: "block";
+        _key: string;
+      }
+  > | null;
   seo: Seo | null;
 } | null;
 // Variable: pageSlugQuery
