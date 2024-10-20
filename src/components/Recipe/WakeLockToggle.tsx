@@ -11,6 +11,7 @@ const isServer = typeof window === "undefined";
 export const WakeLockToggle = (): JSX.Element | null => {
   const [isClient, setIsClient] = useState(false);
   const hasInitializedStorage = useRef(false);
+  const hasClicked = useRef(false);
   const [storageChecked, setStorageChecked] = useStorage<boolean>(
     "wakeLock",
     false,
@@ -25,15 +26,8 @@ export const WakeLockToggle = (): JSX.Element | null => {
   const wakeLockActive = useRef(false);
 
   const { isSupported, request, release } = useWakeLock({
-    onRelease: () => {
-      setChecked(false);
-    },
-    onRequest: () => {
-      setChecked(true);
-    },
-    onError: (error) => {
-      console.error(error);
-    },
+    onRelease: () => setChecked(false),
+    onRequest: () => setChecked(true),
   });
 
   const handleCheckedChange = useCallback(
@@ -50,6 +44,23 @@ export const WakeLockToggle = (): JSX.Element | null => {
   );
 
   useEffect(() => {
+    if (!hasClicked.current) {
+      const listener = () => {
+        hasClicked.current = true;
+        if (wakeLockActive.current && !checked) {
+          request();
+        }
+      };
+
+      document.addEventListener("click", listener);
+
+      return () => {
+        document.removeEventListener("click", listener);
+      };
+    }
+  }, [checked, request]);
+
+  useEffect(() => {
     const listener = () => {
       if (
         document.visibilityState === "visible" &&
@@ -61,11 +72,9 @@ export const WakeLockToggle = (): JSX.Element | null => {
     };
 
     document.addEventListener("visibilitychange", listener);
-    document.addEventListener("click", listener);
 
     return () => {
       document.removeEventListener("visibilitychange", listener);
-      document.removeEventListener("click", listener);
     };
   }, [checked, request]);
 
