@@ -22,22 +22,52 @@ export const WakeLockToggle = (): JSX.Element | null => {
   }, []);
 
   const [checked, setChecked] = useState(false);
+  const wakeLockActive = useRef(false);
 
   const { isSupported, request, release } = useWakeLock({
-    onRelease: () => setChecked(false),
-    onRequest: () => setChecked(true),
+    onRelease: () => {
+      setChecked(false);
+    },
+    onRequest: () => {
+      setChecked(true);
+    },
+    onError: (error) => {
+      console.error(error);
+    },
   });
 
   const handleCheckedChange = useCallback(
     (checked: boolean) => {
       if (checked) {
+        wakeLockActive.current = true;
         request();
       } else {
+        wakeLockActive.current = false;
         release();
       }
     },
     [request, release],
   );
+
+  useEffect(() => {
+    const listener = () => {
+      if (
+        document.visibilityState === "visible" &&
+        wakeLockActive.current &&
+        !checked
+      ) {
+        request();
+      }
+    };
+
+    document.addEventListener("visibilitychange", listener);
+    document.addEventListener("click", listener);
+
+    return () => {
+      document.removeEventListener("visibilitychange", listener);
+      document.removeEventListener("click", listener);
+    };
+  }, [checked, request]);
 
   useEffect(() => {
     if (isClient && !hasInitializedStorage.current) {
