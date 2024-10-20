@@ -23,7 +23,8 @@ const allRecipesFields = /* groq */ `
   "slug": slug.current,
   mainImage {
     ${imageFields}
-  }
+  },
+  totalTime
 `;
 
 export const allRecipesQuery = defineQuery(`*[${baseRecipesQuery}]
@@ -130,12 +131,7 @@ export const pageSlugQuery = defineQuery(`*[_id == $pageId][0]{
 export const homePageQuery = defineQuery(`*[_type == "home"][0]{
   subtitle,
   recipes[]->{
-    _id,
-    title,
-    "slug": slug.current,
-    mainImage {
-      ${imageFields}
-    },
+    ${allRecipesFields}
   },
 }`);
 

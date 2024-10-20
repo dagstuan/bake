@@ -1,34 +1,15 @@
-import { formatDuration } from "date-fns";
-import { nb } from "date-fns/locale";
 import { ReactNode } from "react";
-import { Duration as DurationType, TimeValue } from "../../../sanity.types";
+import { Duration as DurationType } from "../../../sanity.types";
 import { Badge } from "../ui/badge";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { capitalize } from "@/utils/tsUtils";
+import { formatTimeValue } from "@/utils/durationUtils";
 
 type DurationProps = {
   icon: ReactNode;
   title: string;
   duration: DurationType;
   tooltip: string;
-};
-
-const formatTimeValue = (value: TimeValue): string => {
-  if (!value) {
-    return "";
-  }
-
-  const { time, type } = value;
-
-  return formatDuration(
-    {
-      days: type === "days" ? time : undefined,
-      hours: type === "hours" ? time : undefined,
-      minutes: type === "minutes" ? time : undefined,
-      seconds: type === "seconds" ? time : undefined,
-    },
-    { locale: nb },
-  );
 };
 
 const formatDurationType = (duration: DurationType): string => {
