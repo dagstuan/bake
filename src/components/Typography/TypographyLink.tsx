@@ -1,12 +1,19 @@
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { ComponentProps } from "react";
 
 type TypographyLinkProps = {
   href: string;
   children: React.ReactNode;
-  type: "internal" | "external";
   className?: string;
-};
+} & (
+  | {
+      type: "external";
+    }
+  | ({
+      type: "internal";
+    } & ComponentProps<typeof Link>)
+);
 
 export const TypographyLink = ({
   href,
