@@ -24,6 +24,7 @@ export const RecipesGrid = ({ recipes }: RecipesGridProps) => {
 
         return (
           <Link
+            prefetch
             href={`/oppskrifter/${recipe.slug}`}
             key={recipe._id}
             className="flex flex-col justify-between"
