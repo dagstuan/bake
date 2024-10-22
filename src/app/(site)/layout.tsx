@@ -124,7 +124,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { data: homeSeo } = await loadQuery(homeSeoQuery);
+  const { data: homeSeo } = await getSeoData();
 
   const jsonLd: WithContext<WebSite> = {
     "@context": "https://schema.org",
