@@ -30,14 +30,9 @@ export const recipeIngredientType = defineType({
   fields,
   preview: {
     select: {
-      ingredientName: "ingredient.name",
+      title: "ingredient.name",
       percent: "percent",
       unit: "unit",
-    },
-    prepare({ ingredientName, percent }) {
-      return {
-        title: `${ingredientName} (${percent}%)`,
-      };
     },
   },
   components: {

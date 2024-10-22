@@ -26,6 +26,22 @@ export const resolveStructure = (
         S.divider(),
         S.documentTypeListItem("recipe").title("Recipes"),
         S.documentTypeListItem("ingredient").title("Ingredients"),
+        S.listItem()
+          .title("Recipe ingredients by recipe")
+          .icon(() => "🥘")
+          .child(
+            S.documentTypeList("recipe")
+              .title("Recipes")
+              .child((documentId) => {
+                return S.documentTypeList("recipeIngredient")
+                  .title("Ingredients")
+                  .apiVersion(apiVersion)
+                  .filter(
+                    `_type == "recipeIngredient" && count(*[_type == "recipe" && _id == $documentId && references(^._id)]) > 0`,
+                  )
+                  .params({ documentId });
+              }),
+          ),
         S.documentTypeListItem("category").title("Categories"),
         S.divider(),
         S.listItem()
@@ -46,6 +62,7 @@ export const resolveStructure = (
               "ingredient",
               "recipe",
               "category",
+              "recipeIngredient",
               ...singletonChilds.map((c) => c.getId()),
             ].includes(item.getId()!),
         ),

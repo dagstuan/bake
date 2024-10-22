@@ -7,7 +7,7 @@ import {
 import { formatAmount } from "@/utils/recipeUtils";
 
 type RecipeIngredientPreviewProps = PreviewProps & { _id: string } & {
-  ingredientName: string | null;
+  title: string | null;
   percent: RecipeIngredient["percent"];
   unit: RecipeIngredient["unit"];
 };
@@ -16,10 +16,7 @@ const isRecipeIngredientPreviewProps = (
   props: PreviewProps,
 ): props is RecipeIngredientPreviewProps => {
   return (
-    "_id" in props &&
-    "ingredientName" in props &&
-    "percent" in props &&
-    "unit" in props
+    "_id" in props && "title" in props && "percent" in props && "unit" in props
   );
 };
 
@@ -65,7 +62,7 @@ export const RecipeIngredientPreviewComponent = (props: PreviewProps) => {
     <div>
       {props.renderDefault({
         ...props,
-        title: `${props.ingredientName} - ${formatAmount(amount, 1)}${unit} (${formatAmount(percent)}%)`,
+        title: `${props.title} - ${formatAmount(amount, 1)}${unit} (${formatAmount(percent)}%)`,
         subtitle: parentIngredient?.group,
       })}
     </div>
