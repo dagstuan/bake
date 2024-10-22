@@ -19,6 +19,7 @@ import {
 } from "./shared-metadata";
 import { loadQuery } from "@/sanity/loader/loadQuery";
 import dynamic from "next/dynamic";
+import { cache } from "react";
 
 const LiveVisualEditing = dynamic(
   () => import("@/sanity/loader/LiveVisualEditing"),
@@ -35,8 +36,10 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
+const getSeoData = cache(async () => await loadQuery(homeSeoQuery));
+
 export async function generateMetadata(): Promise<Metadata> {
-  const { data: homeSeo } = await loadQuery(homeSeoQuery);
+  const { data: homeSeo } = await getSeoData();
 
   const metaDescription = homeSeo?.seo?.metaDescription ?? "";
 
