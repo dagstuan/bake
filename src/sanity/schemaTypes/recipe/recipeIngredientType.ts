@@ -17,7 +17,7 @@ const fields = [
     name: "unit",
     type: "string",
     options: {
-      list: ["g", "dl", "ts", "ss", "stk", "egg"],
+      list: ["g", "dl", "ts", "ss", "stk", "fedd"],
     },
   }),
 ];
