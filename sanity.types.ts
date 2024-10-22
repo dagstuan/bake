@@ -169,7 +169,7 @@ export type Home = {
 export type TimeValue = {
   _type: "timeValue";
   time?: number;
-  type?: "hours" | "minutes" | "seconds" | "days";
+  type?: "hours" | "minutes" | "days";
 };
 
 export type ScalableRecipeNumber = {

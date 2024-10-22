@@ -1008,10 +1008,6 @@
               },
               {
                 "type": "string",
-                "value": "seconds"
-              },
-              {
-                "type": "string",
                 "value": "days"
               }
             ]

@@ -21,8 +21,6 @@ const formatTimeValueISO = (timeValue: TimeValue): string => {
       return `PT${time}H`;
     case "minutes":
       return `PT${time}M`;
-    case "seconds":
-      return `PT${time}S`;
     default:
       return "";
   }

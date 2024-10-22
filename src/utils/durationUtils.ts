@@ -14,7 +14,6 @@ export const formatTimeValue = (value: TimeValue): string => {
       days: type === "days" ? time : undefined,
       hours: type === "hours" ? time : undefined,
       minutes: type === "minutes" ? time : undefined,
-      seconds: type === "seconds" ? time : undefined,
     },
     { locale: nb },
   );

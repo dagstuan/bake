@@ -15,7 +15,7 @@ export const timeValueType = defineType({
       title: "Type",
       type: "string",
       options: {
-        list: ["hours", "minutes", "seconds", "days"],
+        list: ["hours", "minutes", "days"],
       },
     },
   ],
