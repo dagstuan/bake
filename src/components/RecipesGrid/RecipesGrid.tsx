@@ -58,7 +58,7 @@ export const RecipesGrid = ({ recipes }: RecipesGridProps) => {
                 <h2 className="text-xl font-semibold">{recipe.title}</h2>
                 {duration && (
                   <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                    <ClockIcon /> {formatDurationShort(recipe.totalTime)}
+                    <ClockIcon /> {duration}
                   </div>
                 )}
               </div>
