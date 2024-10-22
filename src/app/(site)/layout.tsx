@@ -135,13 +135,15 @@ export default async function RootLayout({
     potentialAction: searchAction,
   };
 
+  const draftModeEnabled = draftMode().isEnabled;
+
   return (
     <html lang="no">
       <body
         className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col bg-zinc-50 text-black antialiased`}
       >
         <TooltipProvider delayDuration={400}>
-          {draftMode().isEnabled && (
+          {draftModeEnabled && (
             <a
               className="fixed bottom-0 right-0 m-4 bg-blue-500 p-4 text-white"
               href="/api/draft-mode/disable"
@@ -152,7 +154,7 @@ export default async function RootLayout({
           <Nav />
           <div className="flex-1">{children}</div>
           <Footer />
-          {draftMode().isEnabled ? <LiveVisualEditing /> : null}
+          {draftModeEnabled ? <LiveVisualEditing /> : null}
         </TooltipProvider>
         <JsonLd jsonLd={jsonLd} />
         <SpeedInsights />
