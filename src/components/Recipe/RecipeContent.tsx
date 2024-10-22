@@ -90,7 +90,7 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
         {title ? (
           <TypographyH1 className="text-center sm:mb-8">{title}</TypographyH1>
         ) : null}
-        {mainImage && (
+        {mainImage ? (
           <Image
             className="w-full rounded-lg"
             src={
@@ -103,6 +103,10 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
             blurDataURL={mainImage?.asset?.metadata?.lqip ?? undefined}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 70vw"
           />
+        ) : (
+          <div className="flex aspect-[16/3] w-full items-center justify-center rounded-lg bg-secondary text-7xl">
+            🍞🍰🧑‍🍳
+          </div>
         )}
         <div className="grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-8">
           <div className="col-span-full flex flex-col gap-6 md:col-span-4 md:gap-8">
