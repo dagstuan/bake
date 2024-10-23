@@ -137,7 +137,7 @@ export default async function RootLayout({
     potentialAction: searchAction,
   };
 
-  const draftModeEnabled = draftMode().isEnabled;
+  const draftModeEnabled = (await draftMode()).isEnabled;
 
   return (
     <html lang="no">

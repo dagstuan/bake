@@ -10,10 +10,12 @@ import { sanityFetch } from "@/sanity/lib/live";
 import { RecipePage } from "@/components/pages/RecipePage/RecipePage";
 
 type Props = {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 };
 
-export async function generateStaticParams(): Promise<Array<Props["params"]>> {
+export async function generateStaticParams(): Promise<
+  Array<Awaited<Props["params"]>>
+> {
   const { data: recipes } = await sanityFetch({
     query: allRecipesSlugQuery,
     perspective: "published",
@@ -28,7 +30,8 @@ export async function generateStaticParams(): Promise<Array<Props["params"]>> {
     }));
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const params = await props.params;
   const { data: recipe } = await sanityFetch({
     query: recipeQuery,
     params,
@@ -83,7 +86,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {};
 }
 
-export default async function Page({ params }: Props) {
+export default async function Page(props: Props) {
+  const params = await props.params;
   const initial = await sanityFetch({ query: recipeQuery, params });
 
   return <RecipePage data={initial.data} params={params} />;
