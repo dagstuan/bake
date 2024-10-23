@@ -7,7 +7,7 @@ import { draftMode } from "next/headers";
 export default async function Home() {
   const initial = await loadQuery(homePageQuery);
 
-  if (draftMode().isEnabled) {
+  if ((await draftMode()).isEnabled) {
     return <HomePagePreview initial={initial} />;
   }
 

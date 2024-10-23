@@ -13,10 +13,12 @@ import { draftMode } from "next/headers";
 import { RecipePagePreview } from "@/components/pages/RecipePage/RecipePagePreview";
 
 type Props = {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 };
 
-export async function generateStaticParams(): Promise<Array<Props["params"]>> {
+export async function generateStaticParams(): Promise<
+  Array<Awaited<Props["params"]>>
+> {
   const recipes = await getClient()
     .withConfig({
       perspective: "published",
@@ -31,7 +33,8 @@ export async function generateStaticParams(): Promise<Array<Props["params"]>> {
     }));
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const params = await props.params;
   const { data: recipe } = await loadQuery(recipeQuery, params);
 
   if (recipe) {
@@ -82,10 +85,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {};
 }
 
-export default async function Page({ params }: Props) {
+export default async function Page(props: Props) {
+  const params = await props.params;
   const initial = await loadQuery(recipeQuery, params);
 
-  if (draftMode().isEnabled) {
+  if ((await draftMode()).isEnabled) {
     return <RecipePagePreview initial={initial} params={params} />;
   }
 

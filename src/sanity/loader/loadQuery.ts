@@ -34,10 +34,9 @@ export const loadQuery = async <TQuery extends string>(
   options: Options = {},
 ): Promise<LoadQueryResult<TQuery>> => {
   const {
-    perspective = draftMode().isEnabled ? "previewDrafts" : "published",
+    perspective = (await draftMode()).isEnabled ? "previewDrafts" : "published",
   } = options;
   // Don't cache by default
-  // eslint-disable-next-line no-undef -- eslint borked
   let revalidate: NextFetchRequestConfig["revalidate"] = 0;
   // If `next.tags` is set, and we're not using the CDN, then it's safe to cache
   if (!usingCdn && Array.isArray(options.next?.tags)) {

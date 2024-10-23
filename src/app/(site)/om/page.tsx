@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default async function Page() {
   const initial = await loadQuery(aboutQuery);
 
-  if (draftMode().isEnabled) {
+  if ((await draftMode()).isEnabled) {
     return <AboutPagePreview initial={initial} />;
   }
 
