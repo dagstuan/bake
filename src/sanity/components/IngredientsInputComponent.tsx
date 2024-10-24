@@ -15,20 +15,26 @@ import { recipeIngredientType } from "../schemaTypes/recipe/recipeIngredientType
 import { uuid } from "@sanity/uuid";
 import { useCallback, useState } from "react";
 
+const parseInitialPercent = (value: string): number => {
+  const number = Number(value);
+  return isNaN(number) ? 1 : number;
+};
+
 export const IngredientsInputComponent = (props: ReferenceInputProps) => {
   const { onChange, onPathFocus, path } = props;
 
   const { onEditReference } = useReferenceInputOptions();
 
   const sumBaseIngredients =
-    useFormValue<Recipe["baseDryIngredients"]>([baseDryIngredientsName]) ?? 0;
+    useFormValue<Recipe["baseDryIngredients"]>([baseDryIngredientsName]) ?? 1;
 
   const [initialPercent, setInitialPercent] = useState("");
 
   const handleClick = useCallback(async () => {
     const newDocumentId = uuid();
 
-    const percent = sumBaseIngredients * (Number(initialPercent) / 100);
+    const percent =
+      (parseInitialPercent(initialPercent) / sumBaseIngredients) * 100;
 
     const reference = {
       _type: "reference",
