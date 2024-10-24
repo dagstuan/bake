@@ -1,4 +1,4 @@
-import { type SchemaTypeDefinition } from "sanity";
+import { SchemaPluginOptions } from "sanity";
 
 import { blockContentType } from "./portableText/blockContentType";
 import { categoryType } from "./categoryType";
@@ -14,8 +14,9 @@ import { aboutType } from "./singletons/aboutType";
 import { seoType } from "./seoType";
 import { ingredientGroupType } from "./recipe/ingredientGroup";
 import { alertType } from "./alertType";
+import { initialValueTemplates } from "./initialValueTemplates";
 
-export const schema: { types: SchemaTypeDefinition[] } = {
+export const schema: SchemaPluginOptions = {
   types: [
     blockContentType,
     categoryType,
@@ -32,4 +33,5 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     ingredientGroupType,
     alertType,
   ],
+  templates: initialValueTemplates,
 };

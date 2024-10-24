@@ -7,6 +7,7 @@ import { baseBlockLists } from "../portableText/baseBlockLists";
 import { baseBlockMarks } from "../portableText/baseBlockMarks";
 import { baseBlockStyles } from "../portableText/baseBlockStyles";
 import { alertType } from "../alertType";
+import { IngredientsInputComponent } from "@/sanity/components/IngredientsInputComponent";
 
 export const baseDryIngredientsName = "baseDryIngredients";
 export const ingredientsName = "ingredients";
@@ -27,6 +28,9 @@ export const recipeIngredientArrayMember = defineArrayMember({
         },
       };
     },
+  },
+  components: {
+    input: IngredientsInputComponent,
   },
 });
 

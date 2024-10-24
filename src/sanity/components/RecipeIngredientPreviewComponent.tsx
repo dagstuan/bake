@@ -1,10 +1,11 @@
-import { Path, PreviewProps, useFormValue as sanityUseFormValue } from "sanity";
+import { PreviewProps } from "sanity";
 import { Recipe, RecipeIngredient } from "../../../sanity.types";
 import {
   baseDryIngredientsName,
   ingredientsName,
 } from "../schemaTypes/recipe/recipeType";
 import { formatAmount } from "@/utils/recipeUtils";
+import { useFormValue } from "./utils";
 
 type RecipeIngredientPreviewProps = PreviewProps & { _id: string } & {
   title: string | null;
@@ -19,8 +20,6 @@ const isRecipeIngredientPreviewProps = (
     "_id" in props && "title" in props && "percent" in props && "unit" in props
   );
 };
-
-const useFormValue = sanityUseFormValue as <TVal>(path: Path) => TVal;
 
 export const RecipeIngredientPreviewComponent = (props: PreviewProps) => {
   const sumBaseIngredients =
