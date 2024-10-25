@@ -3,7 +3,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { draftMode } from "next/headers";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import "./globals.css";
+import "../globals.css";
 import { Nav } from "@/components/Nav/Nav";
 import { Footer } from "@/components/Footer/Footer";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -17,13 +17,9 @@ import {
   siteUrl,
   twitterMetadata,
 } from "./shared-metadata";
-import { loadQuery } from "@/sanity/loader/loadQuery";
-import dynamic from "next/dynamic";
 import { cache } from "react";
-
-const LiveVisualEditing = dynamic(
-  () => import("@/sanity/loader/LiveVisualEditing"),
-);
+import { sanityFetch, SanityLive } from "@/sanity/lib/live";
+import { VisualEditing } from "next-sanity";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -36,7 +32,13 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-const getSeoData = cache(async () => await loadQuery(homeSeoQuery));
+const getSeoData = cache(
+  async () =>
+    await sanityFetch({
+      query: homeSeoQuery,
+      stega: false,
+    }),
+);
 
 export async function generateMetadata(): Promise<Metadata> {
   const { data: homeSeo } = await getSeoData();
@@ -143,18 +145,21 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col bg-zinc-50 text-black antialiased`}
       >
         <TooltipProvider delayDuration={400}>
-          {draftModeEnabled && (
-            <a
-              className="fixed bottom-0 right-0 m-4 bg-blue-500 p-4 text-white"
-              href="/api/draft-mode/disable"
-            >
-              Disable preview mode
-            </a>
-          )}
           <Nav />
           <div className="flex-1">{children}</div>
           <Footer />
-          {draftModeEnabled ? <LiveVisualEditing /> : null}
+          <SanityLive />
+          {draftModeEnabled && (
+            <>
+              <VisualEditing />
+              <a
+                className="fixed bottom-0 right-0 m-4 bg-blue-500 p-4 text-white"
+                href="/api/draft-mode/disable"
+              >
+                Disable preview mode
+              </a>
+            </>
+          )}
         </TooltipProvider>
         <JsonLd jsonLd={jsonLd} />
         <SpeedInsights />

@@ -6,22 +6,19 @@ import {
   siteUrl,
   twitterMetadata,
 } from "../../shared-metadata";
-import { loadQuery } from "@/sanity/loader/loadQuery";
-import { getClient } from "@/sanity/lib/client";
+import { sanityFetch } from "@/sanity/lib/live";
 import { RecipePage } from "@/components/pages/RecipePage/RecipePage";
-import { draftMode } from "next/headers";
-import { RecipePagePreview } from "@/components/pages/RecipePage/RecipePagePreview";
 
 type Props = {
   params: { slug: string };
 };
 
 export async function generateStaticParams(): Promise<Array<Props["params"]>> {
-  const recipes = await getClient()
-    .withConfig({
-      perspective: "published",
-    })
-    .fetch(allRecipesSlugQuery);
+  const { data: recipes } = await sanityFetch({
+    query: allRecipesSlugQuery,
+    perspective: "published",
+    stega: false,
+  });
 
   return recipes
     .map((r) => r?.slug)
@@ -32,7 +29,11 @@ export async function generateStaticParams(): Promise<Array<Props["params"]>> {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { data: recipe } = await loadQuery(recipeQuery, params);
+  const { data: recipe } = await sanityFetch({
+    query: recipeQuery,
+    params,
+    stega: false,
+  });
 
   if (recipe) {
     const { title, mainImage, seo } = recipe;
@@ -83,11 +84,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function Page({ params }: Props) {
-  const initial = await loadQuery(recipeQuery, params);
-
-  if (draftMode().isEnabled) {
-    return <RecipePagePreview initial={initial} params={params} />;
-  }
+  const initial = await sanityFetch({ query: recipeQuery, params });
 
   return <RecipePage data={initial.data} params={params} />;
 }
