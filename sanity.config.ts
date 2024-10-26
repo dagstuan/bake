@@ -25,8 +25,9 @@ import { defaultDocumentNode } from "@/sanity/structure/defaultDocumentNode";
 import { singletonPlugin } from "@/sanity/plugins/singletonPlugin";
 import { homeType } from "@/sanity/schemaTypes/singletons/homeType";
 import { aboutType } from "@/sanity/schemaTypes/singletons/aboutType";
+import { recipeIngredientType } from "@/sanity/schemaTypes/recipe/recipeIngredientType";
 
-const singletonTypes = [homeType, aboutType];
+const singletonTypes = [homeType, aboutType, recipeIngredientType];
 
 export default defineConfig({
   title: "Bakdel studio",
@@ -47,8 +48,8 @@ export default defineConfig({
         },
       },
     }),
-    singletonPlugin(singletonTypes.map((t) => t.name)),
     media(),
+    singletonPlugin({ types: singletonTypes.map((t) => t.name) }),
     visionTool({ defaultApiVersion: apiVersion }),
   ],
   document: {

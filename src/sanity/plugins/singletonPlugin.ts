@@ -1,7 +1,7 @@
 import { definePlugin } from "sanity";
 
-export const singletonPlugin = (types: string[]) => {
-  return definePlugin({
+export const singletonPlugin = definePlugin<{ types: string[] }>(
+  ({ types }) => ({
     name: "singletonPlugin",
     document: {
       // Hide 'Singletons (such as Home)' from new document options
@@ -24,5 +24,5 @@ export const singletonPlugin = (types: string[]) => {
         return prev;
       },
     },
-  });
-};
+  }),
+);
