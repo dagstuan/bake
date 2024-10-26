@@ -21,17 +21,16 @@ import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 import { ClockIcon, InfoCircledIcon } from "@radix-ui/react-icons";
 import { scalableRecipeNumberType } from "@/sanity/schemaTypes/recipe/scalableRecipeNumberType";
 import { ScalableRecipeNumber } from "./ScalableRecipeNumber";
-import { Duration } from "./Duration";
 import { CookingPotIcon } from "../icons/CookingPotIcon";
 import { CakeSliceIcon } from "../icons/CakeSliceIcon";
-import { Badge } from "../ui/badge";
-import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 import { TypographyH3 } from "../Typography/TypographyH3";
 import { urlForImage } from "@/sanity/lib/utils";
 import { Image } from "../Image/Image";
 import { TypographyLink } from "../Typography/TypographyLink";
 import { IngredientsTable } from "./IngredientsTable";
 import { TypographyH4 } from "../Typography/TypographyH4";
+import { InfoItem } from "./InfoItem";
+import { formatDurationType } from "./utils";
 
 const types: ComponentProps<typeof PortableText>["types"] = {
   [recipeIngredientReferenceType.name]: ({
@@ -114,43 +113,40 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
               <WakeLockToggle />
 
               <div className="flex flex-wrap gap-2">
-                <RecipeEditor onReset={reset} />
-                <Button type="button" variant="outline" onClick={reset}>
+                <RecipeEditor onReset={reset} triggerClassName="flex-1" />
+                <Button
+                  className="flex-1"
+                  type="button"
+                  variant="outline"
+                  onClick={reset}
+                >
                   Tilbakestill
                 </Button>
               </div>
 
-              <div className="flex flex-col flex-wrap items-start gap-2">
-                <Tooltip>
-                  <TooltipTrigger>
-                    <Badge
-                      variant="outline"
-                      className="flex items-center gap-2"
-                    >
-                      <CakeSliceIcon />
-                      Antall: {formatAmount(servings)}
-                    </Badge>
-                  </TooltipTrigger>
-                  <TooltipContent side="bottom">
-                    Antall porsjoner du får.
-                  </TooltipContent>
-                </Tooltip>
+              <div className="flex max-w-max flex-col flex-wrap gap-2">
+                <InfoItem
+                  icon={<CakeSliceIcon />}
+                  label="Antall"
+                  value="2"
+                  info="Antall porsjoner du får."
+                />
 
                 {activeTime && (
-                  <Duration
-                    duration={activeTime}
+                  <InfoItem
                     icon={<CookingPotIcon />}
-                    title="Aktiv tid:"
-                    tooltip="Aktiv tidsbruk som kreves for å lage oppskriften."
+                    label="Aktiv tid"
+                    value={formatDurationType(activeTime)}
+                    info="Aktiv tidsbruk som kreves for å lage oppskriften."
                   />
                 )}
 
                 {totalTime && (
-                  <Duration
-                    duration={totalTime}
+                  <InfoItem
                     icon={<ClockIcon />}
-                    title="Total tid:"
-                    tooltip="Total tidsbruk fra du starter til retten er ferdig."
+                    label="Total tid"
+                    value={formatDurationType(totalTime)}
+                    info="Total tidsbruk fra du starter til retten er ferdig."
                   />
                 )}
               </div>

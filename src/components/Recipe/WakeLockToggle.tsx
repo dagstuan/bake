@@ -98,7 +98,7 @@ export const WakeLockToggle = (): JSX.Element | null => {
   }, [checked, isClient, setStorageChecked, storageChecked]);
 
   return (
-    <div className="flex items-center space-x-3">
+    <div className="flex items-center justify-between rounded-lg bg-primary/5 p-4">
       <Label htmlFor="wake-lock-toggle">Behold skjermen på</Label>
       <Switch
         id="wake-lock-toggle"

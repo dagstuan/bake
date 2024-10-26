@@ -68,7 +68,7 @@ export const IngredientsTable = (props: IngredientsTableProps) => {
             />
           </TableHead>
           <TableHead>Ingrediens</TableHead>
-          <TableHead>Mengde</TableHead>
+          <TableHead className="text-right">Mengde</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -102,12 +102,12 @@ export const IngredientsTable = (props: IngredientsTableProps) => {
                   />
                 </div>
               </TableCell>
-              <TableCell>
+              <TableCell className="w-full">
                 <Label htmlFor={checkboxId} className="hover:cursor-pointer">
                   {name}
                 </Label>
               </TableCell>
-              <TableCell>
+              <TableCell className="text-right">
                 {formatAmount(amount)} {unit}
               </TableCell>
             </TableRow>

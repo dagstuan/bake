@@ -6,7 +6,6 @@ import localFont from "next/font/local";
 import "../globals.css";
 import { Nav } from "@/components/Nav/Nav";
 import { Footer } from "@/components/Footer/Footer";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import { SearchAction, WebSite, WithContext } from "schema-dts";
 import { JsonLd } from "@/components/JsonLd/JsonLd";
 import { homeSeoQuery } from "@/sanity/lib/queries";
@@ -144,23 +143,21 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col bg-zinc-50 text-black antialiased`}
       >
-        <TooltipProvider delayDuration={400}>
-          <Nav />
-          <div className="flex-1">{children}</div>
-          <Footer />
-          <SanityLive />
-          {draftModeEnabled && (
-            <>
-              <VisualEditing />
-              <a
-                className="fixed bottom-0 right-0 m-4 bg-blue-500 p-4 text-white"
-                href="/api/draft-mode/disable"
-              >
-                Disable preview mode
-              </a>
-            </>
-          )}
-        </TooltipProvider>
+        <Nav />
+        <div className="flex-1">{children}</div>
+        <Footer />
+        <SanityLive />
+        {draftModeEnabled && (
+          <>
+            <VisualEditing />
+            <a
+              className="fixed bottom-0 right-0 m-4 bg-blue-500 p-4 text-white"
+              href="/api/draft-mode/disable"
+            >
+              Disable preview mode
+            </a>
+          </>
+        )}
         <JsonLd jsonLd={jsonLd} />
         <SpeedInsights />
         <Analytics />

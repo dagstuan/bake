@@ -18,10 +18,14 @@ import { DeferredNumberInput } from "./DeferredNumberInput";
 import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
 
 type RecipeEditorProps = {
+  triggerClassName?: string;
   onReset: () => void;
 };
 
-export const RecipeEditor = ({ onReset }: RecipeEditorProps) => {
+export const RecipeEditor = ({
+  onReset,
+  triggerClassName,
+}: RecipeEditorProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const { servings, ingredients, dispatch } = useRecipeContext();
 
@@ -48,7 +52,9 @@ export const RecipeEditor = ({ onReset }: RecipeEditorProps) => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant="default">Rediger oppskrift</Button>
+        <Button variant="default" className={triggerClassName}>
+          Rediger oppskrift
+        </Button>
       </DialogTrigger>
       <DialogContent className="my-10 sm:max-w-lg">
         <DialogHeader>
