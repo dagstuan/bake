@@ -33,7 +33,6 @@ export default defineConfig({
   basePath: "/studio",
   projectId,
   dataset,
-  // Add and edit the content schema in the './sanity/schemaTypes' folder
   schema,
   plugins: [
     structureTool({
@@ -50,8 +49,6 @@ export default defineConfig({
     }),
     singletonPlugin(singletonTypes.map((t) => t.name)),
     media(),
-    // Vision is for querying with GROQ from inside the Studio
-    // https://www.sanity.io/docs/the-vision-plugin
     visionTool({ defaultApiVersion: apiVersion }),
   ],
   document: {

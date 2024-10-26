@@ -84,7 +84,7 @@ export const IngredientsInputComponent = (props: ReferenceInputProps) => {
         <Text size={1} weight="medium">
           New with initial amount
         </Text>
-        <Flex gap={3}>
+        <Flex gap={3} direction={["column", "column", "row"]}>
           <TextInput
             onChange={(event) => setInitialPercent(event.currentTarget.value)}
             value={initialPercent}

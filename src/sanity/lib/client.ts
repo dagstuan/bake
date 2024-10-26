@@ -4,7 +4,7 @@ import { apiVersion, dataset, projectId, studioUrl } from "../env";
 export const client = createClient({
   projectId,
   dataset,
-  useCdn: true,
   apiVersion,
+  useCdn: true,
   stega: { studioUrl },
 });
