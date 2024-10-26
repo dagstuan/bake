@@ -103,7 +103,7 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 70vw"
           />
         ) : (
-          <div className="flex aspect-[16/3] w-full items-center justify-center rounded-lg bg-secondary text-7xl">
+          <div className="flex aspect-[16/3] w-full items-center justify-center rounded-lg bg-secondary text-2xl sm:text-7xl">
             🍞🍰🧑‍🍳
           </div>
         )}
