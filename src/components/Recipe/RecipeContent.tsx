@@ -109,7 +109,7 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
         )}
         <div className="grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-8">
           <div className="col-span-full flex flex-col gap-6 md:col-span-4 md:gap-8">
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 rounded-lg bg-primary/5 p-4">
               <WakeLockToggle />
 
               <div className="flex flex-wrap gap-2">
@@ -124,7 +124,7 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
                 </Button>
               </div>
 
-              <div className="flex max-w-max flex-col flex-wrap gap-2">
+              <div className="flex flex-col flex-wrap gap-2">
                 <InfoItem
                   icon={<CakeSliceIcon />}
                   label="Antall"
@@ -152,7 +152,7 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
               </div>
             </div>
 
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-2 rounded-lg bg-primary/5 p-4">
               <TypographyH3 as="h2">Ingredienser</TypographyH3>
 
               <IngredientsTable
