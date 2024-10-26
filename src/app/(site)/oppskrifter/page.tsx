@@ -15,14 +15,15 @@ export const metadata: Metadata = {
   title: "Alle oppskrifter",
 };
 
-export default async function Page({
-  searchParams,
-}: {
-  searchParams?: {
-    [searchQueryParam]?: string;
-    [categoryQueryParam]?: string;
-  };
-}) {
+export default async function Page(
+  props: {
+    searchParams?: Promise<{
+      [searchQueryParam]?: string;
+      [categoryQueryParam]?: string;
+    }>;
+  }
+) {
+  const searchParams = await props.searchParams;
   const query = searchParams?.query;
   const categoryQuery = searchParams?.category;
 
