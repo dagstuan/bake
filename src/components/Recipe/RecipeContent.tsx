@@ -109,19 +109,21 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
         )}
         <div className="grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-8">
           <div className="col-span-full flex flex-col gap-6 md:col-span-4 md:gap-8">
-            <div className="flex flex-col gap-4 rounded-lg bg-primary/5 p-4">
-              <WakeLockToggle />
+            <div className="flex flex-col gap-6 rounded-lg bg-primary/5 p-4">
+              <div className="flex flex-col gap-2">
+                <div className="flex flex-wrap gap-2">
+                  <RecipeEditor onReset={reset} triggerClassName="flex-1" />
+                  <Button
+                    className="flex-1"
+                    type="button"
+                    variant="outline"
+                    onClick={reset}
+                  >
+                    Tilbakestill
+                  </Button>
+                </div>
 
-              <div className="flex flex-wrap gap-2">
-                <RecipeEditor onReset={reset} triggerClassName="flex-1" />
-                <Button
-                  className="flex-1"
-                  type="button"
-                  variant="outline"
-                  onClick={reset}
-                >
-                  Tilbakestill
-                </Button>
+                <WakeLockToggle />
               </div>
 
               <div className="flex flex-col flex-wrap gap-2">
