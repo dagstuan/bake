@@ -6,7 +6,7 @@ import {
 import { RecipesGrid } from "../RecipesGrid/RecipesGrid";
 import { RecipesSearchQueryResult } from "../../../sanity.types";
 import { Nullable } from "@/utils/types";
-import { loadQuery } from "@/sanity/loader/loadQuery";
+import { sanityFetch } from "@/sanity/lib/live";
 
 type RecipesPageContentProps = {
   query: Nullable<string>;
@@ -18,20 +18,21 @@ const fetchRecipes = async (
   category: Nullable<string>,
 ): Promise<RecipesSearchQueryResult> => {
   if (searchQuery || category) {
-    const { data: recipes } = await loadQuery(
-      (category?.length ?? 0) > 0
-        ? recipesSearchWithCategoriesQuery
-        : recipesSearchQuery,
-      {
+    const { data: recipes } = await sanityFetch({
+      query:
+        (category?.length ?? 0) > 0
+          ? recipesSearchWithCategoriesQuery
+          : recipesSearchQuery,
+      params: {
         searchQuery: searchQuery ? `*${searchQuery}*` : "*",
         categories: category ? [category] : [],
       },
-    );
+    });
 
     return recipes;
   }
 
-  const { data: recipes } = await loadQuery(allRecipesQuery);
+  const { data: recipes } = await sanityFetch({ query: allRecipesQuery });
   return recipes;
 };
 

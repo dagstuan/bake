@@ -6,14 +6,14 @@ import {
 import { ArrayElement } from "@/utils/types";
 import { MetadataRoute } from "next";
 import { siteUrl } from "./shared-metadata";
-import { loadQuery } from "@/sanity/loader/loadQuery";
+import { sanityFetch } from "@/sanity/lib/live";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [{ data: recipes }, { data: home }, { data: about }] =
     await Promise.all([
-      loadQuery(recipesSitemapQuery),
-      loadQuery(homeSitemapQuery),
-      loadQuery(aboutSitemapQuery),
+      sanityFetch({ query: recipesSitemapQuery }),
+      sanityFetch({ query: homeSitemapQuery }),
+      sanityFetch({ query: aboutSitemapQuery }),
     ]);
 
   const mappedRecipes = recipes
