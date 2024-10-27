@@ -146,9 +146,9 @@ export default async function RootLayout({
         <Nav />
         <div className="flex-1">{children}</div>
         <Footer />
-        <SanityLive />
         {draftModeEnabled && (
           <>
+            <SanityLive />
             <VisualEditing />
             <a
               className="fixed bottom-0 right-0 m-4 bg-blue-500 p-4 text-white"
