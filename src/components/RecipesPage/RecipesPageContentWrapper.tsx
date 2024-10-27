@@ -15,11 +15,6 @@ export const RecipesPageContentWrapper = async ({
   const recipes = await fetchRecipes(query, category, amountPerFetch);
 
   return (
-    <RecipesPageContent
-      key={`${query}-${category}`}
-      recipes={recipes}
-      query={query}
-      category={category}
-    />
+    <RecipesPageContent recipes={recipes} query={query} category={category} />
   );
 };

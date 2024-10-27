@@ -23,7 +23,7 @@ export default async function Page(props: {
 }) {
   const searchParams = await props.searchParams;
   const query = searchParams?.query;
-  const categoryQuery = searchParams?.category;
+  const category = searchParams?.category;
 
   const { data: categories } = await sanityFetch({ query: allCategoriesQuery });
 
@@ -34,8 +34,11 @@ export default async function Page(props: {
 
         <RecipesFilters categories={categories} />
 
-        <Suspense key={query} fallback={<RecipesGridSkeleton />}>
-          <RecipesPageContentWrapper query={query} category={categoryQuery} />
+        <Suspense
+          key={`${query}-${category}`}
+          fallback={<RecipesGridSkeleton />}
+        >
+          <RecipesPageContentWrapper query={query} category={category} />
         </Suspense>
       </div>
     </div>
