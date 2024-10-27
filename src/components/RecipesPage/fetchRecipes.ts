@@ -1,13 +1,9 @@
 "use server";
 
-import {
-  allRecipesQuery,
-  recipesSearchQuery,
-  recipesSearchWithCategoriesQuery,
-} from "@/sanity/lib/queries";
-import { RecipesSearchQueryResult } from "../../../sanity.types";
+import { recipesListQuery } from "@/sanity/lib/queries";
 import { Nullable } from "@/utils/types";
 import { sanityFetch } from "@/sanity/lib/live";
+import { RecipesListQueryResult } from "../../../sanity.types";
 
 export const fetchRecipes = async (
   searchQuery: Nullable<string>,
@@ -15,28 +11,12 @@ export const fetchRecipes = async (
   amount: number,
   lastId: Nullable<string> = null,
   lastCreatedAt: Nullable<string> = null,
-): Promise<RecipesSearchQueryResult> => {
-  if (searchQuery || category) {
-    const { data: recipes } = await sanityFetch({
-      query:
-        (category?.length ?? 0) > 0
-          ? recipesSearchWithCategoriesQuery
-          : recipesSearchQuery,
-      params: {
-        searchQuery: searchQuery ? `*${searchQuery}*` : "*",
-        categories: category ? [category] : [],
-        lastId,
-        lastCreatedAt,
-        amount,
-      },
-    });
-
-    return recipes;
-  }
-
+): Promise<RecipesListQueryResult> => {
   const { data: recipes } = await sanityFetch({
-    query: allRecipesQuery,
+    query: recipesListQuery,
     params: {
+      searchQuery: searchQuery ? `*${searchQuery}*` : "*",
+      categories: category ? [category] : null,
       lastId,
       lastCreatedAt,
       amount,

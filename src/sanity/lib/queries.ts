@@ -11,14 +11,6 @@ const imageFields = /* groq */ `
     }
   },`;
 
-const baseRecipesQuery = /* groq */ `_type == "recipe"`;
-const recipesCreatedAtFilterQuery = /* groq */ `(!defined($lastCreatedAt) || (_createdAt < $lastCreatedAt || (_createdAt == $lastCreatedAt && _id < $lastId)))`;
-const recipesSearchMatchQuery = /* groq */ `(pt::text(instructions) match $searchQuery || title match $searchQuery)`;
-const recipesCategoryFilterQuery = /* groq */ `count((categories[]->slug.current)[@ in $categories]) > 0`;
-const recipesScoreQuery = /* groq */ `score(pt::text(instructions) match $searchQuery, boost(title match $searchQuery, 3))`;
-const recipesScoreOrderQuery = /* groq */ `order(_score desc)`;
-const recipesCreatedAtOrderQuery = /* groq */ `order(_createdAt desc)`;
-const recipesSliceQuery = /* groq */ `0...$amount`;
 const recipesListFields = /* groq */ `
   _id,
   _createdAt,
@@ -30,45 +22,24 @@ const recipesListFields = /* groq */ `
   totalTime,
 `;
 
-export const allRecipesQuery = defineQuery(`*[
-  ${baseRecipesQuery} &&
-  ${recipesCreatedAtFilterQuery}]
-  |${recipesCreatedAtOrderQuery}
-  [${recipesSliceQuery}]
-  {
-    ${recipesListFields}
-  }`);
-
-export const allRecipesSlugQuery = defineQuery(`*[
-  ${baseRecipesQuery}]
+export const allRecipesSlugQuery = defineQuery(`*[_type == "recipe"]
   {
     "slug": slug.current,
   }`);
 
-export const recipesSearchQuery = defineQuery(`*[
-    ${baseRecipesQuery} &&
-    ${recipesSearchMatchQuery} &&
-    ${recipesCreatedAtFilterQuery}]
-    |${recipesCreatedAtOrderQuery}
-    |${recipesScoreQuery}
-    |${recipesScoreOrderQuery}
-    [${recipesSliceQuery}]
-    {
-      ${recipesListFields}
-    }`);
-
-export const recipesSearchWithCategoriesQuery = defineQuery(`*[
-  ${baseRecipesQuery} &&
-  ${recipesSearchMatchQuery} &&
-  ${recipesCategoryFilterQuery} &&
-  ${recipesCreatedAtFilterQuery}]
-  |${recipesCreatedAtOrderQuery}
-  |${recipesScoreQuery}
-  |${recipesScoreOrderQuery}
-  [${recipesSliceQuery}]
-  {
-    ${recipesListFields}
-  }`);
+export const recipesListQuery = defineQuery(`*[
+  _type == "recipe" &&
+  (!defined($lastCreatedAt) || (_createdAt < $lastCreatedAt || (_createdAt == $lastCreatedAt && _id < $lastId))) &&
+  (pt::text(instructions) match $searchQuery || title match $searchQuery) &&
+  (!defined($categories) || (count((categories[]->slug.current)[@ in $categories]) > 0))
+]
+|order(_createdAt desc)
+|score(pt::text(instructions) match $searchQuery, boost(title match $searchQuery, 3))
+|order(_score desc)
+[0...$amount]
+{
+  ${recipesListFields}
+}`);
 
 export const allCategoriesQuery = defineQuery(`*[_type == "category"]
   |order(title asc)
