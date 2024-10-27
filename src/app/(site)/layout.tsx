@@ -1,5 +1,4 @@
 import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import { draftMode } from "next/headers";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
@@ -159,7 +158,6 @@ export default async function RootLayout({
           </>
         )}
         <JsonLd jsonLd={jsonLd} />
-        <SpeedInsights />
         <Analytics />
       </body>
     </html>
