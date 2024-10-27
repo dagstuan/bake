@@ -1,6 +1,6 @@
 import { urlForImage } from "@/sanity/lib/utils";
 import Link from "next/link";
-import { AllRecipesQueryResult } from "../../../sanity.types";
+import { RecipesListQueryResult } from "../../../sanity.types";
 import { Card } from "../ui/card";
 import { RecipesGridWrapper } from "./RecipesGridWrapper";
 import { NoRecipes } from "./NoRecipes";
@@ -9,7 +9,7 @@ import { ClockIcon } from "@radix-ui/react-icons";
 import { formatDurationShort } from "@/utils/durationUtils";
 
 type RecipesGridProps = {
-  recipes: AllRecipesQueryResult;
+  recipes: RecipesListQueryResult;
 };
 
 export const RecipesGrid = ({ recipes }: RecipesGridProps) => {

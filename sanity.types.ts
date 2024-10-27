@@ -465,54 +465,14 @@ export type AllSanitySchemaTypes =
   | Slug;
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./src/sanity/lib/queries.ts
-// Variable: allRecipesQuery
-// Query: *[  _type == "recipe" &&  (!defined($lastCreatedAt) || (_createdAt < $lastCreatedAt || (_createdAt == $lastCreatedAt && _id < $lastId)))]  |order(_createdAt desc)  [0...$amount]  {      _id,  _createdAt,  title,  "slug": slug.current,  mainImage {      hotspot,  crop,  alt,  asset->{    _id,    metadata {      lqip    }  },  },  totalTime,  }
-export type AllRecipesQueryResult = Array<{
-  _id: string;
-  _createdAt: string;
-  title: string | null;
-  slug: string | null;
-  mainImage: {
-    hotspot: SanityImageHotspot | null;
-    crop: SanityImageCrop | null;
-    alt: string | null;
-    asset: {
-      _id: string;
-      metadata: {
-        lqip: string | null;
-      } | null;
-    } | null;
-  } | null;
-  totalTime: Duration | null;
-}>;
 // Variable: allRecipesSlugQuery
-// Query: *[  _type == "recipe"]  {    "slug": slug.current,  }
+// Query: *[_type == "recipe"]  {    "slug": slug.current,  }
 export type AllRecipesSlugQueryResult = Array<{
   slug: string | null;
 }>;
-// Variable: recipesSearchQuery
-// Query: *[    _type == "recipe" &&    (pt::text(instructions) match $searchQuery || title match $searchQuery) &&    (!defined($lastCreatedAt) || (_createdAt < $lastCreatedAt || (_createdAt == $lastCreatedAt && _id < $lastId)))]    |order(_createdAt desc)    |score(pt::text(instructions) match $searchQuery, boost(title match $searchQuery, 3))    |order(_score desc)    [0...$amount]    {        _id,  _createdAt,  title,  "slug": slug.current,  mainImage {      hotspot,  crop,  alt,  asset->{    _id,    metadata {      lqip    }  },  },  totalTime,    }
-export type RecipesSearchQueryResult = Array<{
-  _id: string;
-  _createdAt: string;
-  title: string | null;
-  slug: string | null;
-  mainImage: {
-    hotspot: SanityImageHotspot | null;
-    crop: SanityImageCrop | null;
-    alt: string | null;
-    asset: {
-      _id: string;
-      metadata: {
-        lqip: string | null;
-      } | null;
-    } | null;
-  } | null;
-  totalTime: Duration | null;
-}>;
-// Variable: recipesSearchWithCategoriesQuery
-// Query: *[  _type == "recipe" &&  (pt::text(instructions) match $searchQuery || title match $searchQuery) &&  count((categories[]->slug.current)[@ in $categories]) > 0 &&  (!defined($lastCreatedAt) || (_createdAt < $lastCreatedAt || (_createdAt == $lastCreatedAt && _id < $lastId)))]  |order(_createdAt desc)  |score(pt::text(instructions) match $searchQuery, boost(title match $searchQuery, 3))  |order(_score desc)  [0...$amount]  {      _id,  _createdAt,  title,  "slug": slug.current,  mainImage {      hotspot,  crop,  alt,  asset->{    _id,    metadata {      lqip    }  },  },  totalTime,  }
-export type RecipesSearchWithCategoriesQueryResult = Array<{
+// Variable: recipesListQuery
+// Query: *[  _type == "recipe" &&  (!defined($lastCreatedAt) || (_createdAt < $lastCreatedAt || (_createdAt == $lastCreatedAt && _id < $lastId))) &&  (pt::text(instructions) match $searchQuery || title match $searchQuery) &&  (!defined($categories) || (count((categories[]->slug.current)[@ in $categories]) > 0))]|order(_createdAt desc)|score(pt::text(instructions) match $searchQuery, boost(title match $searchQuery, 3))|order(_score desc)[0...$amount]{    _id,  _createdAt,  title,  "slug": slug.current,  mainImage {      hotspot,  crop,  alt,  asset->{    _id,    metadata {      lqip    }  },  },  totalTime,}
+export type RecipesListQueryResult = Array<{
   _id: string;
   _createdAt: string;
   title: string | null;
@@ -784,10 +744,8 @@ export type HomeSeoQueryResult = {
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    '*[\n  _type == "recipe" &&\n  (!defined($lastCreatedAt) || (_createdAt < $lastCreatedAt || (_createdAt == $lastCreatedAt && _id < $lastId)))]\n  |order(_createdAt desc)\n  [0...$amount]\n  {\n    \n  _id,\n  _createdAt,\n  title,\n  "slug": slug.current,\n  mainImage {\n    \n  hotspot,\n  crop,\n  alt,\n  asset->{\n    _id,\n    metadata {\n      lqip\n    }\n  },\n  },\n  totalTime,\n\n  }': AllRecipesQueryResult;
-    '*[\n  _type == "recipe"]\n  {\n    "slug": slug.current,\n  }': AllRecipesSlugQueryResult;
-    '*[\n    _type == "recipe" &&\n    (pt::text(instructions) match $searchQuery || title match $searchQuery) &&\n    (!defined($lastCreatedAt) || (_createdAt < $lastCreatedAt || (_createdAt == $lastCreatedAt && _id < $lastId)))]\n    |order(_createdAt desc)\n    |score(pt::text(instructions) match $searchQuery, boost(title match $searchQuery, 3))\n    |order(_score desc)\n    [0...$amount]\n    {\n      \n  _id,\n  _createdAt,\n  title,\n  "slug": slug.current,\n  mainImage {\n    \n  hotspot,\n  crop,\n  alt,\n  asset->{\n    _id,\n    metadata {\n      lqip\n    }\n  },\n  },\n  totalTime,\n\n    }': RecipesSearchQueryResult;
-    '*[\n  _type == "recipe" &&\n  (pt::text(instructions) match $searchQuery || title match $searchQuery) &&\n  count((categories[]->slug.current)[@ in $categories]) > 0 &&\n  (!defined($lastCreatedAt) || (_createdAt < $lastCreatedAt || (_createdAt == $lastCreatedAt && _id < $lastId)))]\n  |order(_createdAt desc)\n  |score(pt::text(instructions) match $searchQuery, boost(title match $searchQuery, 3))\n  |order(_score desc)\n  [0...$amount]\n  {\n    \n  _id,\n  _createdAt,\n  title,\n  "slug": slug.current,\n  mainImage {\n    \n  hotspot,\n  crop,\n  alt,\n  asset->{\n    _id,\n    metadata {\n      lqip\n    }\n  },\n  },\n  totalTime,\n\n  }': RecipesSearchWithCategoriesQueryResult;
+    '*[_type == "recipe"]\n  {\n    "slug": slug.current,\n  }': AllRecipesSlugQueryResult;
+    '*[\n  _type == "recipe" &&\n  (!defined($lastCreatedAt) || (_createdAt < $lastCreatedAt || (_createdAt == $lastCreatedAt && _id < $lastId))) &&\n  (pt::text(instructions) match $searchQuery || title match $searchQuery) &&\n  (!defined($categories) || (count((categories[]->slug.current)[@ in $categories]) > 0))\n]\n|order(_createdAt desc)\n|score(pt::text(instructions) match $searchQuery, boost(title match $searchQuery, 3))\n|order(_score desc)\n[0...$amount]\n{\n  \n  _id,\n  _createdAt,\n  title,\n  "slug": slug.current,\n  mainImage {\n    \n  hotspot,\n  crop,\n  alt,\n  asset->{\n    _id,\n    metadata {\n      lqip\n    }\n  },\n  },\n  totalTime,\n\n}': RecipesListQueryResult;
     '*[_type == "category"]\n  |order(title asc)\n  {\n    _id,\n    title,\n    "slug": slug.current,\n  }': AllCategoriesQueryResult;
     '*[_type == "recipe" && slug.current == $slug][0]{\n    _id,\n    _createdAt,\n    _rev,\n    title,\n    mainImage {\n      \n  hotspot,\n  crop,\n  alt,\n  asset->{\n    _id,\n    metadata {\n      lqip\n    }\n  },\n    },\n    categories[]->{\n      title,\n    },\n    ingredients[]{\n      _type == "reference" => @->{\n        "_type": "reference",\n        \n  _id,\n  "ingredient": ingredient->{\n    name,\n    type,\n  },\n  unit,\n  percent,\n\n      },\n      _type == "ingredientGroup" => {\n        "_type": "ingredientGroup",\n        title,\n        ingredients[]->{\n          \n  _id,\n  "ingredient": ingredient->{\n    name,\n    type,\n  },\n  unit,\n  percent,\n\n        }\n      }\n    },\n    activeTime,\n    totalTime,\n    baseDryIngredients,\n    servings,\n    instructions[]{\n      ...,\n      _type == "block" => {\n        ...,\n        children[]{\n          ...,\n          _type == "recipeIngredientReference" => {\n            ...,\n            "ingredient": @.ingredient->{\n              _id,\n              "name": ingredient->.name,\n              percent,\n              unit,\n            },\n          }\n        }\n      }\n    },\n    seo\n}': RecipeQueryResult;
     '*[_id == $pageId][0]{\n  _type,\n  "slug": slug.current,\n}': PageSlugQueryResult;

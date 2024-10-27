@@ -2,15 +2,15 @@
 
 import { RecipesGrid } from "../RecipesGrid/RecipesGrid";
 import { Button } from "../ui/button";
-import { RecipesSearchQueryResult } from "../../../sanity.types";
 import { useState } from "react";
 import { fetchRecipes } from "./fetchRecipes";
 import { SpinnerIcon } from "@sanity/icons";
 import { amountPerFetch } from "./utils";
 import { RecipesGridWrapperProps } from "./RecipesPageContentWrapper";
+import { RecipesListQueryResult } from "../../../sanity.types";
 
 type RecipesPageContentProps = {
-  recipes: RecipesSearchQueryResult;
+  recipes: RecipesListQueryResult;
 } & RecipesGridWrapperProps;
 
 export const RecipesPageContent = ({
@@ -19,7 +19,7 @@ export const RecipesPageContent = ({
   category,
 }: RecipesPageContentProps) => {
   const [recipesList, setRecipesList] = useState<
-    NonNullable<RecipesSearchQueryResult>
+    NonNullable<RecipesListQueryResult>
   >(recipes ?? []);
   const [hasMore, setHasMore] = useState(recipesList.length >= amountPerFetch);
   const [isLoading, setIsLoading] = useState(false);
