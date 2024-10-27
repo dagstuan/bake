@@ -4,7 +4,7 @@ import {
   RecipesFilters,
   searchQueryParam,
 } from "@/components/RecipesPage/RecipesFilters";
-import { RecipesPageContent } from "@/components/RecipesPage/RecipesPageContent";
+import { RecipesPageContentWrapper } from "@/components/RecipesPage/RecipesPageContentWrapper";
 import { TypographyH1 } from "@/components/Typography/TypographyH1";
 import { sanityFetch } from "@/sanity/lib/live";
 import { allCategoriesQuery } from "@/sanity/lib/queries";
@@ -15,14 +15,12 @@ export const metadata: Metadata = {
   title: "Alle oppskrifter",
 };
 
-export default async function Page(
-  props: {
-    searchParams?: Promise<{
-      [searchQueryParam]?: string;
-      [categoryQueryParam]?: string;
-    }>;
-  }
-) {
+export default async function Page(props: {
+  searchParams?: Promise<{
+    [searchQueryParam]?: string;
+    [categoryQueryParam]?: string;
+  }>;
+}) {
   const searchParams = await props.searchParams;
   const query = searchParams?.query;
   const categoryQuery = searchParams?.category;
@@ -37,7 +35,7 @@ export default async function Page(
         <RecipesFilters categories={categories} />
 
         <Suspense key={query} fallback={<RecipesGridSkeleton />}>
-          <RecipesPageContent query={query} category={categoryQuery} />
+          <RecipesPageContentWrapper query={query} category={categoryQuery} />
         </Suspense>
       </div>
     </div>
