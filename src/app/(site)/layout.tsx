@@ -16,8 +16,9 @@ import {
   twitterMetadata,
 } from "./shared-metadata";
 import { cache } from "react";
-import { sanityFetch, SanityLive } from "@/sanity/lib/live";
+import { SanityLive } from "@/sanity/lib/live";
 import { VisualEditing } from "next-sanity";
+import { sanityFetchNonLive } from "@/sanity/lib/client";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -32,14 +33,14 @@ const geistMono = localFont({
 
 const getSeoData = cache(
   async () =>
-    await sanityFetch({
+    await sanityFetchNonLive({
       query: homeSeoQuery,
-      stega: false,
+      revalidate: 60 * 60,
     }),
 );
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { data: homeSeo } = await getSeoData();
+  const homeSeo = await getSeoData();
 
   const metaDescription = homeSeo?.seo?.metaDescription ?? "";
 
@@ -124,7 +125,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { data: homeSeo } = await getSeoData();
+  const homeSeo = await getSeoData();
 
   const jsonLd: WithContext<WebSite> = {
     "@context": "https://schema.org",
