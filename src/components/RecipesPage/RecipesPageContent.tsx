@@ -65,7 +65,7 @@ export const RecipesPageContent = ({
         </Button>
       ) : (
         <p className="mx-auto flex h-9 items-center text-muted-foreground">
-          Ingen flere oppskrifter å laste.
+          Ingen flere oppskrifter.
         </p>
       )}
     </div>
