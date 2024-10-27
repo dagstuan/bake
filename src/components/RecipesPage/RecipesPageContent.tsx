@@ -1,46 +1,73 @@
-import {
-  allRecipesQuery,
-  recipesSearchQuery,
-  recipesSearchWithCategoriesQuery,
-} from "@/sanity/lib/queries";
+"use client";
+
 import { RecipesGrid } from "../RecipesGrid/RecipesGrid";
+import { Button } from "../ui/button";
 import { RecipesSearchQueryResult } from "../../../sanity.types";
-import { Nullable } from "@/utils/types";
-import { sanityFetch } from "@/sanity/lib/live";
+import { useState } from "react";
+import { fetchRecipes } from "./fetchRecipes";
+import { SpinnerIcon } from "@sanity/icons";
+import { amountPerFetch } from "./utils";
+import { RecipesGridWrapperProps } from "./RecipesPageContentWrapper";
 
 type RecipesPageContentProps = {
-  query: Nullable<string>;
-  category: Nullable<string>;
-};
+  recipes: RecipesSearchQueryResult;
+} & RecipesGridWrapperProps;
 
-const fetchRecipes = async (
-  searchQuery: Nullable<string>,
-  category: Nullable<string>,
-): Promise<RecipesSearchQueryResult> => {
-  if (searchQuery || category) {
-    const { data: recipes } = await sanityFetch({
-      query:
-        (category?.length ?? 0) > 0
-          ? recipesSearchWithCategoriesQuery
-          : recipesSearchQuery,
-      params: {
-        searchQuery: searchQuery ? `*${searchQuery}*` : "*",
-        categories: category ? [category] : [],
-      },
-    });
-
-    return recipes;
-  }
-
-  const { data: recipes } = await sanityFetch({ query: allRecipesQuery });
-  return recipes;
-};
-
-export const RecipesPageContent = async ({
+export const RecipesPageContent = ({
+  recipes,
   query,
   category,
 }: RecipesPageContentProps) => {
-  const recipes = await fetchRecipes(query, category);
+  const [recipesList, setRecipesList] = useState<
+    NonNullable<RecipesSearchQueryResult>
+  >(recipes ?? []);
+  const [hasMore, setHasMore] = useState(recipesList.length >= amountPerFetch);
+  const [isLoading, setIsLoading] = useState(false);
 
-  return <RecipesGrid recipes={recipes} />;
+  const fetchMore = async () => {
+    setIsLoading(true);
+    try {
+      const lastRecipe = recipesList[recipesList.length - 1];
+      const newRecipes = await fetchRecipes(
+        query,
+        category,
+        amountPerFetch,
+        lastRecipe._id,
+        lastRecipe._createdAt,
+      );
+
+      if (newRecipes.length < amountPerFetch) {
+        setHasMore(false);
+      }
+      setRecipesList([...recipesList, ...newRecipes]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="flex flex-col gap-10">
+      <RecipesGrid recipes={recipesList} />
+
+      {hasMore ? (
+        <Button
+          className="mx-auto max-w-max"
+          disabled={isLoading}
+          onClick={fetchMore}
+        >
+          {isLoading ? (
+            <>
+              <SpinnerIcon className="animate-spin" /> Laster...
+            </>
+          ) : (
+            "Hent flere oppskrifter"
+          )}
+        </Button>
+      ) : (
+        <p className="mx-auto flex h-9 items-center text-muted-foreground">
+          Ingen flere oppskrifter å laste.
+        </p>
+      )}
+    </div>
+  );
 };

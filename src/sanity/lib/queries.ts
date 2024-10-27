@@ -12,55 +12,70 @@ const imageFields = /* groq */ `
   },`;
 
 const baseRecipesQuery = /* groq */ `_type == "recipe"`;
+const recipesCreatedAtFilterQuery = /* groq */ `(!defined($lastCreatedAt) || (_createdAt < $lastCreatedAt || (_createdAt == $lastCreatedAt && _id < $lastId)))`;
 const recipesSearchMatchQuery = /* groq */ `(pt::text(instructions) match $searchQuery || title match $searchQuery)`;
 const recipesCategoryFilterQuery = /* groq */ `count((categories[]->slug.current)[@ in $categories]) > 0`;
 const recipesScoreQuery = /* groq */ `score(pt::text(instructions) match $searchQuery, boost(title match $searchQuery, 3))`;
 const recipesScoreOrderQuery = /* groq */ `order(_score desc)`;
 const recipesCreatedAtOrderQuery = /* groq */ `order(_createdAt desc)`;
-const allRecipesFields = /* groq */ `
+const recipesSliceQuery = /* groq */ `0...$amount`;
+const recipesListFields = /* groq */ `
   _id,
+  _createdAt,
   title,
   "slug": slug.current,
   mainImage {
     ${imageFields}
   },
-  totalTime
+  totalTime,
 `;
 
-export const allRecipesQuery = defineQuery(`*[${baseRecipesQuery}]
+export const allRecipesQuery = defineQuery(`*[
+  ${baseRecipesQuery} &&
+  ${recipesCreatedAtFilterQuery}]
   |${recipesCreatedAtOrderQuery}
+  [${recipesSliceQuery}]
   {
-    ${allRecipesFields}
+    ${recipesListFields}
   }`);
 
-export const allRecipesSlugQuery = defineQuery(`*[${baseRecipesQuery}]{
-  "slug": slug.current,
-}`);
+export const allRecipesSlugQuery = defineQuery(`*[
+  ${baseRecipesQuery}]
+  {
+    "slug": slug.current,
+  }`);
 
 export const recipesSearchQuery = defineQuery(`*[
     ${baseRecipesQuery} &&
-    ${recipesSearchMatchQuery}]
+    ${recipesSearchMatchQuery} &&
+    ${recipesCreatedAtFilterQuery}]
     |${recipesCreatedAtOrderQuery}
     |${recipesScoreQuery}
     |${recipesScoreOrderQuery}
+    [${recipesSliceQuery}]
     {
-      ${allRecipesFields}
+      ${recipesListFields}
     }`);
 
-export const recipesSearchWithCategoriesQuery =
-  defineQuery(`*[${baseRecipesQuery} &&
+export const recipesSearchWithCategoriesQuery = defineQuery(`*[
+  ${baseRecipesQuery} &&
   ${recipesSearchMatchQuery} &&
-  ${recipesCategoryFilterQuery}]
+  ${recipesCategoryFilterQuery} &&
+  ${recipesCreatedAtFilterQuery}]
   |${recipesCreatedAtOrderQuery}
   |${recipesScoreQuery}
   |${recipesScoreOrderQuery}
+  [${recipesSliceQuery}]
   {
-    ${allRecipesFields}
+    ${recipesListFields}
   }`);
 
 export const allCategoriesQuery = defineQuery(`*[_type == "category"]
-  |order(title asc){
-    _id, title, "slug": slug.current,
+  |order(title asc)
+  {
+    _id,
+    title,
+    "slug": slug.current,
   }`);
 
 export const recipeIngredientReferenceFields = /* groq */ `
@@ -131,7 +146,7 @@ export const pageSlugQuery = defineQuery(`*[_id == $pageId][0]{
 export const homePageQuery = defineQuery(`*[_type == "home"][0]{
   subtitle,
   recipes[]->{
-    ${allRecipesFields}
+    ${recipesListFields}
   },
 }`);
 
