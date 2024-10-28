@@ -1,4 +1,3 @@
-import { Analytics } from "@vercel/analytics/react";
 import { draftMode } from "next/headers";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
@@ -19,6 +18,7 @@ import { cache } from "react";
 import { SanityLive } from "@/sanity/lib/live";
 import { VisualEditing } from "next-sanity";
 import { sanityFetchNonLive } from "@/sanity/lib/client";
+import Script from "next/script";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -159,7 +159,10 @@ export default async function RootLayout({
           </>
         )}
         <JsonLd jsonLd={jsonLd} />
-        <Analytics />
+        <Script
+          strategy="lazyOnload"
+          src="https://app.tinyanalytics.io/pixel/YRE2eBbx3BUYqOdv"
+        />
       </body>
     </html>
   );
