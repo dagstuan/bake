@@ -1,7 +1,7 @@
-import { defineType, Reference } from "sanity";
-import { Recipe } from "../../../../sanity.types";
+import { defineType, isReference } from "sanity";
 import { formatAmount } from "@/utils/recipeUtils";
 import { TagIcon } from "@sanity/icons";
+import { isRecipe } from "./utils";
 
 export const recipeIngredientReferenceType = defineType({
   name: "recipeIngredientReference",
@@ -14,19 +14,17 @@ export const recipeIngredientReferenceType = defineType({
       type: "reference",
       to: [{ type: "recipeIngredient" }],
       validation: (rule) =>
-        rule.custom((value: Reference | null, { document }) => {
+        rule.custom((value, { document }) => {
           if (!value) {
             return "You must select an ingredient";
           }
 
-          if (!document) {
+          if (!document || !isRecipe(document) || !isReference(value)) {
             return true;
           }
 
-          const recipe = document as Recipe;
-
           if (
-            recipe.ingredients
+            document.ingredients
               ?.map((i) => {
                 if (i._type === "ingredientGroup") {
                   return (
@@ -45,14 +43,12 @@ export const recipeIngredientReferenceType = defineType({
         }),
       options: {
         filter: ({ document }) => {
-          if (document._type !== "recipe") {
+          if (!isRecipe(document)) {
             return false;
           }
 
-          const recipe = document as Recipe;
-
           const ids: string[] =
-            recipe.ingredients
+            document.ingredients
               ?.map((ingredient) => {
                 if (ingredient._type === "ingredientGroup") {
                   return (

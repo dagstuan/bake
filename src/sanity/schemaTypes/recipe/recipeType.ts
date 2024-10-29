@@ -2,7 +2,6 @@ import {
   defineArrayMember,
   defineField,
   defineType,
-  isTypedObject,
   Path,
   ValidationError,
 } from "sanity";
@@ -17,6 +16,7 @@ import { alertType } from "../alertType";
 import { IngredientsInputComponent } from "@/sanity/components/IngredientsInputComponent";
 import { Recipe, RecipeIngredientReference } from "../../../../sanity.types";
 import { isDefined } from "@/utils/tsUtils";
+import { isRecipe } from "./utils";
 
 type IngredientsNameType = "ingredients";
 
@@ -54,10 +54,6 @@ const createUnreferencedIngredientError = (path: Path): ValidationError => ({
   path,
   message: "Ingredient is not used in the instructions",
 });
-
-const isRecipe = (document: unknown): document is Recipe => {
-  return isTypedObject(document) && document._type === recipeType.name;
-};
 
 export const recipeType = defineType({
   name: "recipe",
