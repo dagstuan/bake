@@ -17,6 +17,7 @@ import { IngredientsInputComponent } from "@/sanity/components/IngredientsInputC
 import { Recipe, RecipeIngredientReference } from "../../../../sanity.types";
 import { isDefined } from "@/utils/tsUtils";
 import { isRecipe } from "./utils";
+import { recipeTypeName } from "./constants";
 
 type IngredientsNameType = "ingredients";
 
@@ -56,7 +57,7 @@ const createUnreferencedIngredientError = (path: Path): ValidationError => ({
 });
 
 export const recipeType = defineType({
-  name: "recipe",
+  name: recipeTypeName,
   title: "Recipe",
   type: "document",
   icon: () => "📜",
