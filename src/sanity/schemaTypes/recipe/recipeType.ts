@@ -1,4 +1,11 @@
-import { defineArrayMember, defineField, defineType } from "sanity";
+import {
+  defineArrayMember,
+  defineField,
+  defineType,
+  isDocumentSchemaType,
+  Path,
+  ValidationError,
+} from "sanity";
 
 import { recipeIngredientReferenceType } from "./recipeIngredientReference";
 import { scalableRecipeNumberType } from "./scalableRecipeNumberType";
@@ -8,9 +15,13 @@ import { baseBlockMarks } from "../portableText/baseBlockMarks";
 import { baseBlockStyles } from "../portableText/baseBlockStyles";
 import { alertType } from "../alertType";
 import { IngredientsInputComponent } from "@/sanity/components/IngredientsInputComponent";
+import { Recipe, RecipeIngredientReference } from "../../../../sanity.types";
+import { isDefined } from "@/utils/tsUtils";
+
+type IngredientsNameType = "ingredients";
 
 export const baseDryIngredientsName = "baseDryIngredients";
-export const ingredientsName = "ingredients";
+export const ingredientsName: IngredientsNameType = "ingredients";
 
 export const recipeIngredientArrayMember = defineArrayMember({
   type: "reference",
@@ -29,10 +40,24 @@ export const recipeIngredientArrayMember = defineArrayMember({
       };
     },
   },
+  validation: (rule) => rule.required(),
   components: {
     input: IngredientsInputComponent,
   },
 });
+
+const isReferenced = (references: string[], ref: string) => {
+  return references.includes(ref);
+};
+
+const createUnreferencedIngredientError = (path: Path): ValidationError => ({
+  path,
+  message: "Ingredient is not used in the instructions",
+});
+
+const isRecipe = (document: unknown): document is Recipe => {
+  return isDocumentSchemaType(document) && document.name === recipeType.name;
+};
 
 export const recipeType = defineType({
   name: "recipe",
@@ -114,7 +139,70 @@ export const recipeType = defineType({
         recipeIngredientArrayMember,
         defineArrayMember({ type: "ingredientGroup" }),
       ],
-      validation: (rule) => rule.required(),
+      validation: (rule) =>
+        rule
+          .required()
+          .custom((value: Recipe[IngredientsNameType], { parent }) => {
+            if (!isRecipe(parent)) {
+              return true;
+            }
+
+            const instructions = parent?.instructions ?? [];
+            const ingredientRefsInInstructions = instructions
+              .reduce<RecipeIngredientReference[]>((acc, block) => {
+                if (block._type === "block") {
+                  const children = block.children ?? [];
+
+                  const childRefs = children.filter(
+                    (child) =>
+                      child._type === recipeIngredientReferenceType.name,
+                  );
+
+                  return [...acc, ...childRefs];
+                }
+
+                return acc;
+              }, [])
+              .map((item) => item.ingredient?._ref)
+              .filter(isDefined);
+
+            const validationErrors = (value ?? []).reduce<ValidationError[]>(
+              (acc, item) => {
+                if (item._type === "ingredientGroup") {
+                  const groupIngredients = item.ingredients ?? [];
+                  const results = groupIngredients
+                    .filter(
+                      (groupIngredient) =>
+                        !isReferenced(
+                          ingredientRefsInInstructions,
+                          groupIngredient._ref,
+                        ),
+                    )
+                    .map<ValidationError>((groupIngredient) =>
+                      createUnreferencedIngredientError([
+                        { _key: item._key },
+                        "ingredients",
+                        { _key: groupIngredient._key },
+                      ]),
+                    );
+
+                  return [...acc, ...results];
+                }
+
+                if (!isReferenced(ingredientRefsInInstructions, item._ref)) {
+                  return [
+                    ...acc,
+                    createUnreferencedIngredientError([{ _key: item._key }]),
+                  ];
+                }
+
+                return acc;
+              },
+              [],
+            );
+
+            return validationErrors.length > 0 ? validationErrors : true;
+          }),
     }),
     defineField({
       name: "instructions",
