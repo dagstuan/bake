@@ -1,11 +1,12 @@
 import { OmitStrict } from "@/utils/types";
-import { Ingredient, RecipeQueryResult } from "../../../sanity.types";
+import { RecipeQueryResult } from "../../../sanity.types";
 import {
   RecipeIngredient,
   RecipeIngredients,
   RecipeInstructions,
 } from "./types";
 import { produce } from "immer";
+import { isDefined } from "@/utils/tsUtils";
 
 export const minServings = 1;
 export const maxServings = 999;
@@ -24,10 +25,10 @@ export type RecipeIngredientState = {
   ingredientId: string;
   name: string;
   group: string | null;
-  percent: number;
-  amount: number;
-  unit: string;
-  type: NonNullable<Ingredient["type"]>;
+  percent?: number;
+  amount?: number;
+  unit?: RecipeIngredient["unit"];
+  comment?: RecipeIngredient["comment"];
 };
 
 type RecipeIngredientsState = Array<RecipeIngredientState>;
@@ -43,9 +44,10 @@ export type RecipeState = {
 };
 
 export const calcIngredientAmount = (
-  percent: number,
+  percent: number | null | undefined,
   baseIngredientsAmount: number,
-): number => baseIngredientsAmount * (percent / 100);
+): number | undefined =>
+  percent ? baseIngredientsAmount * (percent / 100) : undefined;
 
 export const calcInitialIngredientsCompletionState = (
   instructions: RecipeInstructions | null | undefined,
@@ -113,27 +115,20 @@ const mapIngredientReferenceToIngredient = (
   group: string | null,
   ingredientRef: OmitStrict<RecipeIngredient, "_type"> | null,
 ): RecipeIngredientState | null => {
-  const { _id, ingredient, percent, unit } = ingredientRef ?? {};
+  const { _id, ingredient, percent, unit, comment } = ingredientRef ?? {};
 
-  if (
-    !_id ||
-    !ingredient ||
-    !ingredient.name ||
-    !ingredient.type ||
-    !percent ||
-    !unit
-  ) {
+  if (!_id || !ingredient || !ingredient.name) {
     return null;
   }
 
   return {
     ingredientId: _id,
     name: ingredient.name,
-    percent: percent,
+    percent: percent ?? undefined,
     group: group,
-    amount: calcIngredientAmount(percent, baseDryIngredients),
+    amount: calcIngredientAmount(percent, baseDryIngredients) ?? undefined,
     unit: unit,
-    type: ingredient.type,
+    comment: comment,
   };
 };
 
@@ -225,7 +220,7 @@ export const calcInitialState = (
   );
 
   const totalYield = ingredientsState.reduce(
-    (acc, curr) => acc + curr.amount,
+    (acc, curr) => acc + (curr?.amount ?? 0),
     0,
   );
 
@@ -305,7 +300,9 @@ export const recipeReducer = (
         draft.servings = newServings;
 
         draft.ingredients.forEach((ingredient) => {
-          ingredient.amount *= changePercent;
+          if (isDefined(ingredient.amount)) {
+            ingredient.amount *= changePercent;
+          }
         });
 
         draft.ingredientsCompletion = resetIngredientsCompletionState(
@@ -335,14 +332,17 @@ export const recipeReducer = (
         draft.ingredients.forEach((ingredient) => {
           if (ingredient.ingredientId === ingredientId) {
             ingredient.amount = newAmount;
-          } else {
+          } else if (
+            isDefined(ingredient.percent) &&
+            isDefined(updatedIngredientPercent)
+          ) {
             ingredient.amount =
               (ingredient.percent / updatedIngredientPercent) * newAmount;
           }
         });
 
         const updatedTotalYield = draft.ingredients.reduce(
-          (acc, curr) => acc + curr.amount,
+          (acc, curr) => acc + (curr.amount ?? 0),
           0,
         );
 

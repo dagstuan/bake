@@ -19,6 +19,7 @@ import { SanityLive } from "@/sanity/lib/live";
 import { VisualEditing } from "next-sanity";
 import { sanityFetchNonLive } from "@/sanity/lib/client";
 import Script from "next/script";
+import { DisableDraftMode } from "@/components/DisableDraftMode";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -150,12 +151,7 @@ export default async function RootLayout({
           <>
             <SanityLive />
             <VisualEditing />
-            <a
-              className="fixed bottom-0 right-0 m-4 bg-blue-500 p-4 text-white"
-              href="/api/draft-mode/disable"
-            >
-              Disable preview mode
-            </a>
+            <DisableDraftMode />
           </>
         )}
         <JsonLd jsonLd={jsonLd} />

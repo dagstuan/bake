@@ -16,6 +16,7 @@ import { formatAmount } from "@/utils/recipeUtils";
 import { Label } from "@radix-ui/react-label";
 import { DeferredNumberInput } from "./DeferredNumberInput";
 import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
+import { isDefined } from "@/utils/tsUtils";
 
 type RecipeEditorProps = {
   triggerClassName?: string;
@@ -98,29 +99,34 @@ export const RecipeEditor = ({
           <div className="border-t pt-4">
             <h3 className="mb-4 font-medium">Ingredienser</h3>
             <div className="grid grid-cols-[max-content_1fr] items-center gap-4">
-              {ingredients.map((ingredient, index) => (
-                <Fragment key={index}>
-                  <Label htmlFor={`ingredient-${index}`} className="text-right">
-                    {ingredient.name}
-                  </Label>
-                  <div className="flex items-center gap-2">
-                    <DeferredNumberInput
-                      id={`ingredient-${index}`}
-                      className="w-24"
-                      value={parseFloat(formatAmount(ingredient.amount))}
-                      min={0.00001}
-                      max={100000}
-                      onChange={(newValue) =>
-                        handleIngredientChange(
-                          ingredient.ingredientId,
-                          newValue,
-                        )
-                      }
-                    />
-                    {ingredient.unit}
-                  </div>
-                </Fragment>
-              ))}
+              {ingredients
+                .filter((i) => isDefined(i.amount) && isDefined(i.ingredientId))
+                .map((ingredient, index) => (
+                  <Fragment key={index}>
+                    <Label
+                      htmlFor={`ingredient-${index}`}
+                      className="text-right"
+                    >
+                      {ingredient.name}
+                    </Label>
+                    <div className="flex items-center gap-2">
+                      <DeferredNumberInput
+                        id={`ingredient-${index}`}
+                        className="w-24"
+                        value={parseFloat(formatAmount(ingredient.amount))}
+                        min={0.00001}
+                        max={100000}
+                        onChange={(newValue) =>
+                          handleIngredientChange(
+                            ingredient.ingredientId,
+                            newValue,
+                          )
+                        }
+                      />
+                      {ingredient.unit}
+                    </div>
+                  </Fragment>
+                ))}
             </div>
           </div>
         </div>

@@ -72,7 +72,7 @@ export const IngredientsTable = (props: IngredientsTableProps) => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {ingredients.map(({ ingredientId, name, amount, unit }) => {
+        {ingredients.map(({ ingredientId, name, amount, unit, comment }) => {
           const isComplete = isIngredientComplete(
             ingredientsCompletion,
             ingredientId,
@@ -104,11 +104,11 @@ export const IngredientsTable = (props: IngredientsTableProps) => {
               </TableCell>
               <TableCell className="w-full">
                 <Label htmlFor={checkboxId} className="hover:cursor-pointer">
-                  {name}
+                  {`${name}${comment ? ` (${comment})` : ""}`}
                 </Label>
               </TableCell>
               <TableCell className="text-right">
-                {formatAmount(amount)} {unit}
+                {amount ? `${formatAmount(amount)} ${unit}` : ""}
               </TableCell>
             </TableRow>
           );

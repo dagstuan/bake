@@ -57,6 +57,7 @@ export const recipeIngredientType = defineType({
       title: "ingredient.name",
       percent: "percent",
       unit: "unit",
+      comment: "comment",
     },
   },
   components: {

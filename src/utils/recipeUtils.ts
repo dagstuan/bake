@@ -3,7 +3,7 @@ import { Duration, TimeValue } from "../../sanity.types";
 export const formatAmount = (
   amount: number | null | undefined,
   decimals: number = 1,
-  defaultValue: string = "0",
+  defaultValue: string = "",
 ): string =>
   amount ? `${parseFloat(amount.toFixed(decimals))}` : defaultValue;
 

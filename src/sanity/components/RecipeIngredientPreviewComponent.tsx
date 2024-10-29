@@ -11,6 +11,7 @@ type RecipeIngredientPreviewProps = PreviewProps & { _id: string } & {
   title: string | null;
   percent: RecipeIngredient["percent"];
   unit: RecipeIngredient["unit"];
+  comment: RecipeIngredient["comment"];
 };
 
 const isRecipeIngredientPreviewProps = (
@@ -19,6 +20,22 @@ const isRecipeIngredientPreviewProps = (
   return (
     "_id" in props && "title" in props && "percent" in props && "unit" in props
   );
+};
+
+const formatTitle = (
+  props: RecipeIngredientPreviewProps,
+  sumBaseIngredients: number,
+) => {
+  const baseTitle = `${props.title}${props.comment ? ` (${props.comment})` : ""}`;
+
+  if (!props.percent) {
+    return baseTitle;
+  }
+
+  const percent = props.percent ?? 100;
+  const amount = sumBaseIngredients * (percent / 100);
+
+  return `${baseTitle} - ${formatAmount(amount, 1)}${props.unit} (${formatAmount(percent)}%)`;
 };
 
 export const RecipeIngredientPreviewComponent = (props: PreviewProps) => {
@@ -53,15 +70,11 @@ export const RecipeIngredientPreviewComponent = (props: PreviewProps) => {
     .flat()
     .find((i) => i.id === props._id);
 
-  const percent = props.percent ?? 100;
-  const amount = sumBaseIngredients * (percent / 100);
-  const unit = props.unit ?? "g";
-
   return (
     <div>
       {props.renderDefault({
         ...props,
-        title: `${props.title} - ${formatAmount(amount, 1)}${unit} (${formatAmount(percent)}%)`,
+        title: formatTitle(props, sumBaseIngredients),
         subtitle: parentIngredient?.group,
       })}
     </div>
