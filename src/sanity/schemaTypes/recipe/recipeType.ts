@@ -2,7 +2,7 @@ import {
   defineArrayMember,
   defineField,
   defineType,
-  isDocumentSchemaType,
+  isTypedObject,
   Path,
   ValidationError,
 } from "sanity";
@@ -56,7 +56,7 @@ const createUnreferencedIngredientError = (path: Path): ValidationError => ({
 });
 
 const isRecipe = (document: unknown): document is Recipe => {
-  return isDocumentSchemaType(document) && document.name === recipeType.name;
+  return isTypedObject(document) && document._type === recipeType.name;
 };
 
 export const recipeType = defineType({
