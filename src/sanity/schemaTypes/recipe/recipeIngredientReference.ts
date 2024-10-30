@@ -1,7 +1,7 @@
 import { defineType, isReference } from "sanity";
-import { formatAmount } from "@/utils/recipeUtils";
 import { TagIcon } from "@sanity/icons";
 import { isRecipe } from "./utils";
+import { RecipeIngredientReferenceInlineBlockComponent } from "@/sanity/components/RecipeIngredientReferenceInlineBlockComponent";
 
 export const recipeIngredientReferenceType = defineType({
   name: "recipeIngredientReference",
@@ -84,18 +84,11 @@ export const recipeIngredientReferenceType = defineType({
     select: {
       ingredientName: "ingredient.ingredient.name",
       ingredientPercent: "ingredient.percent",
+      ingredientUnit: "ingredient.unit",
       percentage: "percentage",
     },
-    prepare({ ingredientName, ingredientPercent, percentage }) {
-      if (!ingredientName) {
-        return { title: "Unknown ingredient" };
-      }
-
-      const shownAmount = ingredientPercent * (percentage / 100);
-
-      return {
-        title: `${ingredientName} (${formatAmount(shownAmount)}%)`,
-      };
-    },
+  },
+  components: {
+    preview: RecipeIngredientReferenceInlineBlockComponent,
   },
 });
