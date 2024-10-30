@@ -19,7 +19,7 @@ export const Image = ({
   useEffect(() => {
     const timer = setTimeout(() => {
       setShouldAnimate(true);
-    }, 1000);
+    }, 100);
 
     return () => clearTimeout(timer);
   });
