@@ -19,7 +19,11 @@ const isRecipeIngredientPreviewProps = (
   props: PreviewProps,
 ): props is RecipeIngredientPreviewProps => {
   return (
-    "_id" in props && "title" in props && "percent" in props && "unit" in props
+    "_id" in props &&
+    "title" in props &&
+    "percent" in props &&
+    "unit" in props &&
+    "comment" in props
   );
 };
 
