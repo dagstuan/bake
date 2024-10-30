@@ -53,10 +53,10 @@ export const recipeIngredientReferenceFields = /* groq */ `
   _id,
   "ingredient": ingredient->{
     name,
-    type,
   },
   unit,
   percent,
+  comment,
 `;
 
 export const recipeQuery =

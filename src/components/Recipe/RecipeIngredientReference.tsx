@@ -2,6 +2,7 @@ import { RecipeIngredientReference } from "./types";
 import { useRecipeContext } from "./recipeContext";
 import { formatAmount } from "@/utils/recipeUtils";
 import { HighlightWithCheckbox } from "@/components/PortableText/HighlightWithCheckbox";
+import { isDefined } from "@/utils/tsUtils";
 
 type RecipeIngredientReferenceResultProps = {
   value: NonNullable<RecipeIngredientReference>;
@@ -12,12 +13,7 @@ export const RecipeIngredientReferenceResult = ({
 }: RecipeIngredientReferenceResultProps) => {
   const { ingredients, ingredientsCompletion, dispatch } = useRecipeContext();
 
-  if (
-    !value.ingredient ||
-    !value.ingredient._id ||
-    !value.ingredient.percent ||
-    !value.percentage
-  ) {
+  if (!value.ingredient || !value.ingredient._id) {
     return null;
   }
 
@@ -28,12 +24,18 @@ export const RecipeIngredientReferenceResult = ({
   const ingredientState = ingredients.find((i) => i.ingredientId === _id);
 
   const mappedAmount =
-    (ingredientState?.amount ?? 0) * (referencePercentage / 100);
+    isDefined(ingredientState?.amount) && isDefined(referencePercentage)
+      ? ingredientState.amount * (referencePercentage / 100)
+      : null;
 
   const completed =
     ingredientsCompletion[_id]?.[value._key]?.completed ?? false;
 
-  const labelText = `${formatAmount(mappedAmount)} ${unit} ${name}`;
+  const amountLabel = isDefined(mappedAmount)
+    ? `${formatAmount(mappedAmount)} ${unit} `
+    : "";
+
+  const labelText = `${amountLabel}${name}`;
 
   return (
     <HighlightWithCheckbox
