@@ -38,8 +38,8 @@ export const Image = ({
         {...props}
         className={cn(
           {
-            ["opacity-0"]: shouldAnimate && !isLoaded && blurDataURL,
-            ["opacity-100"]: shouldAnimate && (isLoaded || !blurDataURL),
+            ["opacity-0"]: !isLoaded && blurDataURL,
+            ["opacity-100"]: isLoaded || !blurDataURL,
             ["transition-opacity"]: shouldAnimate,
           },
           className,
