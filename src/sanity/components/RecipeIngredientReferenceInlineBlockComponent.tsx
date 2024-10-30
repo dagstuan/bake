@@ -5,7 +5,6 @@ import {
   RecipeIngredient,
   RecipeIngredientReference,
 } from "../../../sanity.types";
-import { baseDryIngredientsName } from "../schemaTypes/recipe/recipeType";
 import { useFormValue } from "./utils";
 import { formatAmount } from "@/utils/recipeUtils";
 
@@ -49,7 +48,7 @@ export const RecipeIngredientReferenceInlineBlockComponent = (
   props: PreviewProps<PreviewLayoutKey>,
 ) => {
   const sumBaseIngredients =
-    useFormValue<Recipe["baseDryIngredients"]>([baseDryIngredientsName]) ?? 0;
+    useFormValue<Recipe["baseDryIngredients"]>(["baseDryIngredients"]) ?? 0;
 
   if (
     props.layout !== "inline" ||

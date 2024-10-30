@@ -9,11 +9,11 @@ import {
   useReferenceInputOptions,
 } from "sanity";
 import { Recipe } from "../../../sanity.types";
-import { baseDryIngredientsName } from "../schemaTypes/recipe/recipeType";
 import { useFormValue } from "./utils";
 import { recipeIngredientType } from "../schemaTypes/recipe/recipeIngredientType";
 import { uuid } from "@sanity/uuid";
 import { useCallback, useState } from "react";
+import { baseDryIngredientsName } from "../schemaTypes/recipe/constants";
 
 const parseInitialPercent = (value: string): number => {
   const number = Number(value);

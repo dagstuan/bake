@@ -17,12 +17,12 @@ import { IngredientsInputComponent } from "@/sanity/components/IngredientsInputC
 import { Recipe, RecipeIngredientReference } from "../../../../sanity.types";
 import { isDefined } from "@/utils/tsUtils";
 import { isRecipe } from "./utils";
-import { recipeTypeName } from "./constants";
-
-type IngredientsNameType = "ingredients";
-
-export const baseDryIngredientsName = "baseDryIngredients";
-export const ingredientsName: IngredientsNameType = "ingredients";
+import {
+  baseDryIngredientsName,
+  ingredientsName,
+  IngredientsNameType,
+  recipeTypeName,
+} from "./constants";
 
 export const recipeIngredientArrayMember = defineArrayMember({
   type: "reference",

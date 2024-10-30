@@ -1,11 +1,12 @@
 import { PreviewProps } from "sanity";
 import { Recipe, RecipeIngredient } from "../../../sanity.types";
+
+import { formatAmount } from "@/utils/recipeUtils";
+import { useFormValue } from "./utils";
 import {
   baseDryIngredientsName,
   ingredientsName,
-} from "../schemaTypes/recipe/recipeType";
-import { formatAmount } from "@/utils/recipeUtils";
-import { useFormValue } from "./utils";
+} from "../schemaTypes/recipe/constants";
 
 type RecipeIngredientPreviewProps = PreviewProps & { _id: string } & {
   title: string | null;
