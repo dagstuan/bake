@@ -40,7 +40,7 @@ const formatTitle = (
   const percent = props.percent ?? 100;
   const amount = sumBaseIngredients * (percent / 100);
 
-  return `${baseTitle} - ${formatAmount(amount, 1)}${props.unit} (${formatAmount(percent)}%)`;
+  return `${baseTitle} - ${formatAmount(amount, props.unit)} (${formatAmount(percent, "%")})`;
 };
 
 export const RecipeIngredientPreviewComponent = (props: PreviewProps) => {

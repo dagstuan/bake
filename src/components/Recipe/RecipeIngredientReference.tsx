@@ -32,7 +32,7 @@ export const RecipeIngredientReferenceResult = ({
     ingredientsCompletion[_id]?.[value._key]?.completed ?? false;
 
   const amountLabel = isDefined(mappedAmount)
-    ? `${formatAmount(mappedAmount)} ${unit} `
+    ? `${formatAmount(mappedAmount, unit)} `
     : "";
 
   const labelText = `${amountLabel}${name}`;

@@ -113,7 +113,9 @@ export const RecipeEditor = ({
                       <DeferredNumberInput
                         id={`ingredient-${index}`}
                         className="w-24"
-                        value={parseFloat(formatAmount(ingredient.amount))}
+                        value={parseFloat(
+                          formatAmount(ingredient.amount, ingredient.unit),
+                        )}
                         min={0.00001}
                         max={100000}
                         onChange={(newValue) =>

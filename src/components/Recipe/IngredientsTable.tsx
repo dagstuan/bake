@@ -108,7 +108,7 @@ export const IngredientsTable = (props: IngredientsTableProps) => {
                 </Label>
               </TableCell>
               <TableCell className="text-right">
-                {amount ? `${formatAmount(amount)} ${unit}` : ""}
+                {amount ? formatAmount(amount, unit) : ""}
               </TableCell>
             </TableRow>
           );

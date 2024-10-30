@@ -1,11 +1,44 @@
-import { Duration, TimeValue } from "../../sanity.types";
+import { Duration, RecipeIngredient, TimeValue } from "../../sanity.types";
+
+type FormatAmountUnit = RecipeIngredient["unit"] | "%" | null | undefined;
+
+const getDecimalsForValueAndUnit = (
+  value: number,
+  unit: FormatAmountUnit,
+): number => {
+  switch (unit) {
+    case "g":
+      return value < 100 ? 1 : 0;
+    case "dl":
+      return value < 1 ? 2 : 1;
+    case "fedd":
+      return 1;
+    case "ss":
+      return value < 1 ? 2 : 1;
+    case "stk":
+      return 1;
+    case "ts":
+      return value < 1 ? 2 : 1;
+    case "%":
+      return 0;
+    default:
+      return 1;
+  }
+};
 
 export const formatAmount = (
   amount: number | null | undefined,
-  decimals: number = 1,
+  unit: FormatAmountUnit = undefined,
   defaultValue: string = "",
-): string =>
-  amount ? `${parseFloat(amount.toFixed(decimals))}` : defaultValue;
+): string => {
+  const amountString = amount
+    ? `${parseFloat(amount.toFixed(getDecimalsForValueAndUnit(amount, unit)))}`
+    : defaultValue;
+
+  return unit
+    ? `${amountString}${unit === "%" ? "%" : ` ${unit}`}`
+    : amountString;
+};
 
 const formatTimeValueISO = (timeValue: TimeValue): string => {
   const { time, type } = timeValue;

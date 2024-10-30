@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "typegen": "sanity schema extract && sanity typegen generate",
-    "prettier": "prettier --write ."
+    "prettier": "prettier --write .",
+    "tsc": "tsc --noEmit --incremental"
   },
   "dependencies": {
     "@radix-ui/react-checkbox": "^1.1.2",

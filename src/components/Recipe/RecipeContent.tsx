@@ -130,7 +130,7 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
                 <InfoItem
                   icon={<CakeSliceIcon />}
                   label="Antall"
-                  value={formatAmount(servings, 1)}
+                  value={formatAmount(servings, undefined)}
                   info="Antall porsjoner du får."
                 />
 
@@ -189,7 +189,7 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
                 <AlertDescription>
                   Denne oppskriften er skalert{" "}
                   {scaleFactor > 100 ? "opp til" : "ned til"}{" "}
-                  {formatAmount(scaleFactor, 0)}% av original oppskrift.{" "}
+                  {formatAmount(scaleFactor, "%", "0")} av original oppskrift.{" "}
                   <TypographyLink
                     type="external"
                     href="mailto:d.stuan@gmail.com"
