@@ -31,6 +31,7 @@ import { IngredientsTable } from "./IngredientsTable";
 import { TypographyH4 } from "../Typography/TypographyH4";
 import { InfoItem } from "./InfoItem";
 import { formatDurationType } from "./utils";
+import { TypographyH2 } from "../Typography/TypographyH2";
 
 const types: ComponentProps<typeof PortableText>["types"] = {
   [recipeIngredientReferenceType.name]: ({
@@ -182,8 +183,10 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
             </div>
           </div>
           <div className="col-span-full align-baseline md:col-span-8">
+            <TypographyH2>Fremgangsmåte</TypographyH2>
+
             {scaleFactor !== 100 && (
-              <Alert>
+              <Alert className="my-4">
                 <InfoCircledIcon />
                 <AlertTitle>Skalert oppskrift</AlertTitle>
                 <AlertDescription>

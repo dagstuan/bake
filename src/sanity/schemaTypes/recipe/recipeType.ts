@@ -209,7 +209,7 @@ export const recipeType = defineType({
       of: [
         defineArrayMember({
           type: "block",
-          styles: baseBlockStyles,
+          styles: baseBlockStyles.filter((s) => s.value !== "h2"),
           lists: baseBlockLists,
           marks: baseBlockMarks,
           of: [
