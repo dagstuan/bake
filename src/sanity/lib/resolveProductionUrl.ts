@@ -7,11 +7,11 @@ import {
 } from "sanity";
 import { apiVersion, draftModeRoute } from "../env";
 import { pageSlugQuery } from "./queries";
-import { recipeType } from "../schemaTypes/recipe/recipeType";
 import { homeType } from "../schemaTypes/singletons/homeType";
 import { aboutType } from "../schemaTypes/singletons/aboutType";
+import { recipeTypeName } from "../schemaTypes/recipe/constants";
 
-const resolvableDocumentTypes = ["recipe", "category", "home"];
+const resolvableDocumentTypes = [recipeTypeName, "category", "home"];
 
 export const resolveDocumentProductionUrl = async (
   document: SanityDocumentLike,
@@ -22,7 +22,7 @@ export const resolveDocumentProductionUrl = async (
   });
 
   switch (doc?._type) {
-    case recipeType.name:
+    case recipeTypeName:
       return `/oppskrifter/${doc.slug}`;
     case "category":
       return `/kategorier/${doc.slug}`;
@@ -44,8 +44,10 @@ export const resolvePagePreviewUrl: DocumentPluginOptions["productionUrl"] =
     context: ResolveProductionUrlContext,
   ): Promise<string | undefined> => {
     const { document } = context;
-    if (document._type in resolvableDocumentTypes) {
-      return (await generatePagePreviewUrl(context)) ?? prev;
+
+    if (resolvableDocumentTypes.includes(document._type)) {
+      const previewUrl = await generatePagePreviewUrl(context);
+      return previewUrl ?? prev;
     }
     return prev;
   };
