@@ -147,18 +147,18 @@ export default async function RootLayout({
         <Nav />
         <div className="flex-1">{children}</div>
         <Footer />
-        {draftModeEnabled && (
-          <>
-            <SanityLive />
-            <VisualEditing />
-            <DisableDraftMode />
-          </>
-        )}
         <JsonLd jsonLd={jsonLd} />
         <Script
           strategy="lazyOnload"
           src="https://app.tinyanalytics.io/pixel/YRE2eBbx3BUYqOdv"
         />
+        <SanityLive />
+        {draftModeEnabled && (
+          <>
+            <VisualEditing />
+            <DisableDraftMode />
+          </>
+        )}
       </body>
     </html>
   );
