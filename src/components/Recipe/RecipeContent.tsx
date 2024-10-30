@@ -130,7 +130,7 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
                 <InfoItem
                   icon={<CakeSliceIcon />}
                   label="Antall"
-                  value="2"
+                  value={formatAmount(servings, 1)}
                   info="Antall porsjoner du får."
                 />
 
