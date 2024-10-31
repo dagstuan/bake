@@ -187,6 +187,7 @@ export type RecipeIngredientReference = {
     [internalGroqTypeReferenceTo]?: "recipeIngredient";
   };
   percentage?: number;
+  hideCheckbox?: boolean;
 };
 
 export type RecipeIngredient = {
@@ -275,7 +276,7 @@ export type Recipe = {
               _key: string;
             } & ScalableRecipeNumber)
         >;
-        style?: "normal" | "h2" | "h3" | "h4" | "blockquote";
+        style?: "normal" | "h3" | "h4" | "blockquote";
         listItem?: "bullet";
         markDefs?: Array<{
           href?: string;
@@ -585,6 +586,7 @@ export type RecipeQueryResult = {
                 unit: "dl" | "fedd" | "g" | "ss" | "stk" | "ts" | null;
               } | null;
               percentage?: number;
+              hideCheckbox?: boolean;
             }
           | {
               _key: string;
@@ -599,7 +601,7 @@ export type RecipeQueryResult = {
               _key: string;
             }
         > | null;
-        style?: "blockquote" | "h2" | "h3" | "h4" | "normal";
+        style?: "blockquote" | "h3" | "h4" | "normal";
         listItem?: "bullet";
         markDefs?: Array<{
           href?: string;

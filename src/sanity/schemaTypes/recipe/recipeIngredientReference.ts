@@ -80,6 +80,12 @@ export const recipeIngredientReferenceType = defineType({
       initialValue: 100,
       validation: (rule) => rule.required(),
     },
+    {
+      name: "hideCheckbox",
+      type: "boolean",
+      title: "Hide checkbox",
+      initialValue: false,
+    },
   ],
   preview: {
     select: {

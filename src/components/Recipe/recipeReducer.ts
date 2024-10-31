@@ -59,9 +59,9 @@ export const calcInitialIngredientsCompletionState = (
   return instructions
     .filter((i) => i._type === "block")
     .reduce<IngredientsCompletionState>((state, instruction) => {
-      const ingredientReferences = instruction.children?.filter(
-        (x) => x._type === "recipeIngredientReference",
-      );
+      const ingredientReferences = instruction.children
+        ?.filter((x) => x._type === "recipeIngredientReference")
+        .filter((x) => x.hideCheckbox !== true);
 
       ingredientReferences?.forEach((recipeInstruction) => {
         const ingredientId = recipeInstruction.ingredient?._id;

@@ -3,6 +3,7 @@ import { useRecipeContext } from "./recipeContext";
 import { formatAmount } from "@/utils/recipeUtils";
 import { HighlightWithCheckbox } from "@/components/PortableText/HighlightWithCheckbox";
 import { isDefined } from "@/utils/tsUtils";
+import { Highlight } from "../PortableText/Highlight";
 
 type RecipeIngredientReferenceResultProps = {
   value: NonNullable<RecipeIngredientReference>;
@@ -17,7 +18,7 @@ export const RecipeIngredientReferenceResult = ({
     return null;
   }
 
-  const { percentage: referencePercentage } = value;
+  const { percentage: referencePercentage, hideCheckbox } = value;
 
   const { _id, name, unit } = value.ingredient;
 
@@ -28,18 +29,17 @@ export const RecipeIngredientReferenceResult = ({
       ? ingredientState.amount * (referencePercentage / 100)
       : null;
 
-  const completed =
-    ingredientsCompletion[_id]?.[value._key]?.completed ?? false;
-
   const amountLabel = isDefined(mappedAmount)
     ? `${formatAmount(mappedAmount, unit)} `
     : "";
 
   const labelText = `${amountLabel}${name}`;
 
-  return (
+  return hideCheckbox ? (
+    <Highlight>{labelText}</Highlight>
+  ) : (
     <HighlightWithCheckbox
-      checked={completed}
+      checked={ingredientsCompletion[_id]?.[value._key]?.completed ?? false}
       title={`Marker ${labelText?.toLowerCase() ?? "ingrediensen"} som fullført`}
       onCheckedChange={() =>
         dispatch({

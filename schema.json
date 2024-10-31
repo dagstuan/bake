@@ -1096,6 +1096,13 @@
             "type": "number"
           },
           "optional": true
+        },
+        "hideCheckbox": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "boolean"
+          },
+          "optional": true
         }
       }
     }
@@ -1636,10 +1643,6 @@
                         {
                           "type": "string",
                           "value": "normal"
-                        },
-                        {
-                          "type": "string",
-                          "value": "h2"
                         },
                         {
                           "type": "string",
