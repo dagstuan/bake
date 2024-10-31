@@ -21,6 +21,10 @@ export const IngredientsTable = (props: IngredientsTableProps) => {
   const { group, ingredients } = props;
   const { ingredientsCompletion, dispatch } = useRecipeContext();
 
+  if (ingredients.length === 0) {
+    return null;
+  }
+
   const ingredientsCompletionMap = ingredients.map(({ ingredientId }) => {
     return isIngredientComplete(ingredientsCompletion, ingredientId);
   });
