@@ -15,11 +15,18 @@ import {
   twitterMetadata,
 } from "./shared-metadata";
 import { cache } from "react";
-import { SanityLive } from "@/sanity/lib/live";
-import { VisualEditing } from "next-sanity";
 import { sanityFetchNonLive } from "@/sanity/lib/client";
 import Script from "next/script";
-import { DisableDraftMode } from "@/components/DisableDraftMode";
+import { DynamicDisableDraftMode } from "./DynamicDisableDraftMode";
+import dynamic from "next/dynamic";
+
+const SanityLive = dynamic(() =>
+  import("@/sanity/lib/live").then((mod) => mod.SanityLive),
+);
+
+const VisualEditing = dynamic(() =>
+  import("next-sanity").then((mod) => mod.VisualEditing),
+);
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -154,9 +161,9 @@ export default async function RootLayout({
         />
         {draftModeEnabled && (
           <>
+            <DynamicDisableDraftMode />
             <SanityLive />
             <VisualEditing />
-            <DisableDraftMode />
           </>
         )}
       </body>
