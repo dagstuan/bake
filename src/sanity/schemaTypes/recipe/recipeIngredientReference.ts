@@ -2,9 +2,10 @@ import { defineType, isReference } from "sanity";
 import { TagIcon } from "@sanity/icons";
 import { isRecipe } from "./utils";
 import { RecipeIngredientReferenceInlineBlockComponent } from "@/sanity/components/RecipeIngredientReferenceInlineBlockComponent";
+import { recipeIngredientReferenceTypeName } from "./constants";
 
 export const recipeIngredientReferenceType = defineType({
-  name: "recipeIngredientReference",
+  name: recipeIngredientReferenceTypeName,
   title: "Ingredient Reference",
   type: "object",
   icon: TagIcon,

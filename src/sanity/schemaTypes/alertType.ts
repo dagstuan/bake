@@ -1,8 +1,9 @@
 import { defineField, defineType } from "sanity";
 import { baseBlockMarks } from "./portableText/baseBlockMarks";
+import { alertTypeName } from "./constants";
 
 export const alertType = defineType({
-  name: "alert",
+  name: alertTypeName,
   title: "Alert",
   type: "object",
   fields: [

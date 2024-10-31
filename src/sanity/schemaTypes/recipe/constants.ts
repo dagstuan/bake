@@ -5,3 +5,6 @@ export type IngredientsNameType = "ingredients";
 
 export const baseDryIngredientsName = "baseDryIngredients";
 export const ingredientsName: IngredientsNameType = "ingredients";
+
+export const scalableRecipeNumberTypeName = "scalableRecipeNumber";
+export const recipeIngredientReferenceTypeName = "recipeIngredientReference";

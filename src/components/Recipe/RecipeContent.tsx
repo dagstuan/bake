@@ -9,7 +9,6 @@ import { RecipeEditor } from "./RecipeEditor";
 import { useRecipeContext } from "./recipeContext";
 import { calcInitialState } from "./recipeReducer";
 import { RecipeIngredientReferenceResult } from "./RecipeIngredientReference";
-import { recipeIngredientReferenceType } from "@/sanity/schemaTypes/recipe/recipeIngredientReference";
 import {
   RecipeIngredientReference,
   ScalableRecipeNumber as ScalableRecipeNumberType,
@@ -19,7 +18,6 @@ import { PortableText } from "../PortableText/PortableText";
 import { formatAmount } from "@/utils/recipeUtils";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 import { ClockIcon, InfoCircledIcon } from "@radix-ui/react-icons";
-import { scalableRecipeNumberType } from "@/sanity/schemaTypes/recipe/scalableRecipeNumberType";
 import { ScalableRecipeNumber } from "./ScalableRecipeNumber";
 import { CookingPotIcon } from "../icons/CookingPotIcon";
 import { CakeSliceIcon } from "../icons/CakeSliceIcon";
@@ -32,9 +30,13 @@ import { TypographyH4 } from "../Typography/TypographyH4";
 import { InfoItem } from "./InfoItem";
 import { formatDurationType } from "./utils";
 import { TypographyH2 } from "../Typography/TypographyH2";
+import {
+  recipeIngredientReferenceTypeName,
+  scalableRecipeNumberTypeName,
+} from "@/sanity/schemaTypes/recipe/constants";
 
 const types: ComponentProps<typeof PortableText>["types"] = {
-  [recipeIngredientReferenceType.name]: ({
+  [recipeIngredientReferenceTypeName]: ({
     value,
   }: {
     value: RecipeIngredientReference | null | undefined;
@@ -43,7 +45,7 @@ const types: ComponentProps<typeof PortableText>["types"] = {
 
     return <RecipeIngredientReferenceResult value={value} />;
   },
-  [scalableRecipeNumberType.name]: ({
+  [scalableRecipeNumberTypeName]: ({
     value,
   }: {
     value: ScalableRecipeNumberType | null | undefined;

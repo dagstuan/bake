@@ -1,7 +1,8 @@
 import { defineField, defineType } from "sanity";
+import { scalableRecipeNumberTypeName } from "./constants";
 
 export const scalableRecipeNumberType = defineType({
-  name: "scalableRecipeNumber",
+  name: scalableRecipeNumberTypeName,
   title: "Scalable recipe number",
   type: "object",
   fields: [

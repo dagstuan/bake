@@ -6,9 +6,9 @@ import { TypographyP } from "../Typography/TypographyP";
 import { TypographyLink } from "../Typography/TypographyLink";
 import ImageBox, { BlockContentImage } from "./ImageBox";
 import { Highlight } from "./Highlight";
-import { alertType } from "@/sanity/schemaTypes/alertType";
 import { Alert } from "../../../sanity.types";
 import { PortableTextAlert } from "./PortableTextAlert";
+import { alertTypeName } from "@/sanity/schemaTypes/constants";
 
 type SanityPortableTextProps = ComponentProps<typeof SanityPortableText>;
 
@@ -38,7 +38,7 @@ const components: Components = {
         </div>
       );
     },
-    [alertType.name]: ({ value }: { value: Alert }) => (
+    [alertTypeName]: ({ value }: { value: Alert }) => (
       <PortableTextAlert value={value} />
     ),
   },
