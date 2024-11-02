@@ -23,6 +23,7 @@ import {
   IngredientsNameType,
   recipeTypeName,
 } from "./constants";
+import { IngredientItemComponent } from "@/sanity/components/IngredientItemComponent";
 
 export const recipeIngredientArrayMember = defineArrayMember({
   type: "reference",
@@ -43,6 +44,7 @@ export const recipeIngredientArrayMember = defineArrayMember({
   },
   validation: (rule) => rule.required(),
   components: {
+    item: IngredientItemComponent,
     input: IngredientsInputComponent,
   },
 });
