@@ -28,6 +28,9 @@ const components: Components = {
         {children}
       </ul>
     ),
+    number: ({ children }) => (
+      <ol className="my-4 ml-6 list-decimal [&>li]:mt-2">{children}</ol>
+    ),
   },
   listItem: ({ children }) => <li>{children}</li>,
   types: {
