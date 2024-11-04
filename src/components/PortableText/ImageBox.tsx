@@ -48,11 +48,11 @@ export default function ImageBox({
     <Dialog>
       <DialogTrigger
         tabIndex={0}
-        className="my-6 block aspect-[3/2] w-full cursor-zoom-in space-y-2 rounded-[3px]"
+        className="my-6 block aspect-[3/2] w-full cursor-zoom-in space-y-2"
       >
         <AspectRatio
           ratio={3 / 2}
-          className={cn("w-full", className)}
+          className={cn("w-full overflow-hidden rounded-md", className)}
           data-sanity={props["data-sanity"]}
         >
           {imageUrl && (
