@@ -68,6 +68,25 @@ export type Geopoint = {
   alt?: number;
 };
 
+export type ImageGallery = {
+  _type: "imageGallery";
+  images?: Array<{
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    caption?: string;
+    alt?: string;
+    _type: "image";
+    _key: string;
+  }>;
+  columns?: number;
+};
+
 export type Alert = {
   _type: "alert";
   variant?: "default" | "destructive";
@@ -120,7 +139,7 @@ export type About = {
           _key: string;
         }>;
         style?: "normal" | "h2" | "h3" | "h4" | "blockquote";
-        listItem?: "bullet";
+        listItem?: "bullet" | "number";
         markDefs?: Array<{
           href?: string;
           _type: "link";
@@ -277,7 +296,7 @@ export type Recipe = {
             } & ScalableRecipeNumber)
         >;
         style?: "normal" | "h3" | "h4" | "blockquote";
-        listItem?: "bullet";
+        listItem?: "bullet" | "number";
         markDefs?: Array<{
           href?: string;
           _type: "link";
@@ -290,6 +309,22 @@ export type Recipe = {
     | ({
         _key: string;
       } & Alert)
+    | {
+        asset?: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+        };
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        alt?: string;
+        _type: "image";
+        _key: string;
+      }
+    | ({
+        _key: string;
+      } & ImageGallery)
   >;
   seo?: Seo;
 };
@@ -338,7 +373,7 @@ export type BlockContent = Array<
         _key: string;
       }>;
       style?: "normal" | "h2" | "h3" | "h4" | "blockquote";
-      listItem?: "bullet";
+      listItem?: "bullet" | "number";
       markDefs?: Array<{
         href?: string;
         _type: "link";
@@ -444,6 +479,7 @@ export type AllSanitySchemaTypes =
   | SanityImageDimensions
   | SanityFileAsset
   | Geopoint
+  | ImageGallery
   | Alert
   | IngredientGroup
   | About
@@ -500,7 +536,7 @@ export type AllCategoriesQueryResult = Array<{
   slug: string | null;
 }>;
 // Variable: recipeQuery
-// Query: *[_type == "recipe" && slug.current == $slug][0]{    _id,    _createdAt,    _rev,    title,    mainImage {        hotspot,  crop,  alt,  asset->{    _id,    metadata {      lqip    }  },    },    categories[]->{      title,    },    ingredients[]{      _type == "reference" => @->{        "_type": "reference",          _id,  "ingredient": ingredient->{    name,  },  unit,  percent,  comment,      },      _type == "ingredientGroup" => {        "_type": "ingredientGroup",        title,        ingredients[]->{            _id,  "ingredient": ingredient->{    name,  },  unit,  percent,  comment,        }      }    },    activeTime,    totalTime,    baseDryIngredients,    servings,    instructions[]{      ...,      _type == "block" => {        ...,        children[]{          ...,          _type == "recipeIngredientReference" => {            ...,            "ingredient": @.ingredient->{              _id,              "name": ingredient->.name,              percent,              unit,            },          }        }      }    },    seo}
+// Query: *[_type == "recipe" && slug.current == $slug][0]{    _id,    _createdAt,    _rev,    title,    mainImage {        hotspot,  crop,  alt,  asset->{    _id,    metadata {      lqip    }  },    },    categories[]->{      title,    },    ingredients[]{      _type == "reference" => @->{        "_type": "reference",          _id,  "ingredient": ingredient->{    name,  },  unit,  percent,  comment,      },      _type == "ingredientGroup" => {        "_type": "ingredientGroup",        _type,        title,        ingredients[]->{            _id,  "ingredient": ingredient->{    name,  },  unit,  percent,  comment,        }      }    },    activeTime,    totalTime,    baseDryIngredients,    servings,    instructions[]{      ...,      _type == "block" => {        ...,        children[]{          ...,          _type == "recipeIngredientReference" => {            ...,            "ingredient": @.ingredient->{              _id,              "name": ingredient->.name,              percent,              unit,            },          },        }      },      _type == "image" => {          hotspot,  crop,  alt,  asset->{    _id,    metadata {      lqip    }  },      },      _type == "imageGallery" => {        ...,        images[] {            hotspot,  crop,  alt,  asset->{    _id,    metadata {      lqip    }  },        }      }    },    seo}
 export type RecipeQueryResult = {
   _id: string;
   _createdAt: string;
@@ -602,7 +638,7 @@ export type RecipeQueryResult = {
             }
         > | null;
         style?: "blockquote" | "h3" | "h4" | "normal";
-        listItem?: "bullet";
+        listItem?: "bullet" | "number";
         markDefs?: Array<{
           href?: string;
           _type: "link";
@@ -611,6 +647,35 @@ export type RecipeQueryResult = {
         level?: number;
         _type: "block";
         _key: string;
+      }
+    | {
+        asset: {
+          _id: string;
+          metadata: {
+            lqip: string | null;
+          } | null;
+        } | null;
+        hotspot: SanityImageHotspot | null;
+        crop: SanityImageCrop | null;
+        alt: string | null;
+        _type: "image";
+        _key: string;
+      }
+    | {
+        _key: string;
+        _type: "imageGallery";
+        images: Array<{
+          hotspot: SanityImageHotspot | null;
+          crop: SanityImageCrop | null;
+          alt: string | null;
+          asset: {
+            _id: string;
+            metadata: {
+              lqip: string | null;
+            } | null;
+          } | null;
+        }> | null;
+        columns?: number;
       }
   > | null;
   seo: Seo | null;
@@ -694,7 +759,7 @@ export type AboutQueryResult = {
           _key: string;
         }>;
         style?: "blockquote" | "h2" | "h3" | "h4" | "normal";
-        listItem?: "bullet";
+        listItem?: "bullet" | "number";
         markDefs?: Array<{
           href?: string;
           _type: "link";
@@ -750,7 +815,7 @@ declare module "@sanity/client" {
     '*[_type == "recipe"]\n  {\n    "slug": slug.current,\n  }': AllRecipesSlugQueryResult;
     '*[\n  _type == "recipe" &&\n  (!defined($lastCreatedAt) || (_createdAt < $lastCreatedAt || (_createdAt == $lastCreatedAt && _id < $lastId))) &&\n  (pt::text(instructions) match $searchQuery || title match $searchQuery) &&\n  (!defined($categories) || (count((categories[]->slug.current)[@ in $categories]) > 0))\n]\n|order(_createdAt desc)\n|score(pt::text(instructions) match $searchQuery, boost(title match $searchQuery, 3))\n|order(_score desc)\n[0...$amount]\n{\n  \n  _id,\n  _createdAt,\n  title,\n  "slug": slug.current,\n  mainImage {\n    \n  hotspot,\n  crop,\n  alt,\n  asset->{\n    _id,\n    metadata {\n      lqip\n    }\n  },\n  },\n  totalTime,\n\n}': RecipesListQueryResult;
     '*[_type == "category"]\n  |order(title asc)\n  {\n    _id,\n    title,\n    "slug": slug.current,\n  }': AllCategoriesQueryResult;
-    '*[_type == "recipe" && slug.current == $slug][0]{\n    _id,\n    _createdAt,\n    _rev,\n    title,\n    mainImage {\n      \n  hotspot,\n  crop,\n  alt,\n  asset->{\n    _id,\n    metadata {\n      lqip\n    }\n  },\n    },\n    categories[]->{\n      title,\n    },\n    ingredients[]{\n      _type == "reference" => @->{\n        "_type": "reference",\n        \n  _id,\n  "ingredient": ingredient->{\n    name,\n  },\n  unit,\n  percent,\n  comment,\n\n      },\n      _type == "ingredientGroup" => {\n        "_type": "ingredientGroup",\n        title,\n        ingredients[]->{\n          \n  _id,\n  "ingredient": ingredient->{\n    name,\n  },\n  unit,\n  percent,\n  comment,\n\n        }\n      }\n    },\n    activeTime,\n    totalTime,\n    baseDryIngredients,\n    servings,\n    instructions[]{\n      ...,\n      _type == "block" => {\n        ...,\n        children[]{\n          ...,\n          _type == "recipeIngredientReference" => {\n            ...,\n            "ingredient": @.ingredient->{\n              _id,\n              "name": ingredient->.name,\n              percent,\n              unit,\n            },\n          }\n        }\n      }\n    },\n    seo\n}': RecipeQueryResult;
+    '*[_type == "recipe" && slug.current == $slug][0]{\n    _id,\n    _createdAt,\n    _rev,\n    title,\n    mainImage {\n      \n  hotspot,\n  crop,\n  alt,\n  asset->{\n    _id,\n    metadata {\n      lqip\n    }\n  },\n    },\n    categories[]->{\n      title,\n    },\n    ingredients[]{\n      _type == "reference" => @->{\n        "_type": "reference",\n        \n  _id,\n  "ingredient": ingredient->{\n    name,\n  },\n  unit,\n  percent,\n  comment,\n\n      },\n      _type == "ingredientGroup" => {\n        "_type": "ingredientGroup",\n        _type,\n        title,\n        ingredients[]->{\n          \n  _id,\n  "ingredient": ingredient->{\n    name,\n  },\n  unit,\n  percent,\n  comment,\n\n        }\n      }\n    },\n    activeTime,\n    totalTime,\n    baseDryIngredients,\n    servings,\n    instructions[]{\n      ...,\n      _type == "block" => {\n        ...,\n        children[]{\n          ...,\n          _type == "recipeIngredientReference" => {\n            ...,\n            "ingredient": @.ingredient->{\n              _id,\n              "name": ingredient->.name,\n              percent,\n              unit,\n            },\n          },\n        }\n      },\n      _type == "image" => {\n        \n  hotspot,\n  crop,\n  alt,\n  asset->{\n    _id,\n    metadata {\n      lqip\n    }\n  },\n      },\n      _type == "imageGallery" => {\n        ...,\n        images[] {\n          \n  hotspot,\n  crop,\n  alt,\n  asset->{\n    _id,\n    metadata {\n      lqip\n    }\n  },\n        }\n      }\n    },\n    seo\n}': RecipeQueryResult;
     '*[_id == $pageId][0]{\n  _type,\n  "slug": slug.current,\n}': PageSlugQueryResult;
     '*[_type == "home"][0]{\n  subtitle,\n  recipes[]->{\n    \n  _id,\n  _createdAt,\n  title,\n  "slug": slug.current,\n  mainImage {\n    \n  hotspot,\n  crop,\n  alt,\n  asset->{\n    _id,\n    metadata {\n      lqip\n    }\n  },\n  },\n  totalTime,\n\n  },\n}': HomePageQueryResult;
     '*[_type == "about"][0]{\n  title,\n  body,\n}': AboutQueryResult;

@@ -8,7 +8,14 @@ import ImageBox, { BlockContentImage } from "./ImageBox";
 import { Highlight } from "./Highlight";
 import { Alert } from "../../../sanity.types";
 import { PortableTextAlert } from "./PortableTextAlert";
-import { alertTypeName } from "@/sanity/schemaTypes/constants";
+import {
+  alertTypeName,
+  imageGalleryTypeName,
+} from "@/sanity/schemaTypes/constants";
+import {
+  BlockContentImageGallery,
+  ImageGallery,
+} from "./ImageGallery/ImageGallery";
 
 type SanityPortableTextProps = ComponentProps<typeof SanityPortableText>;
 
@@ -35,15 +42,16 @@ const components: Components = {
   listItem: ({ children }) => <li>{children}</li>,
   types: {
     image: ({ value }: { value: BlockContentImage }) => {
-      return (
-        <div className="my-6 space-y-2">
-          <ImageBox image={value} />
-        </div>
-      );
+      return <ImageBox image={value} />;
     },
     [alertTypeName]: ({ value }: { value: Alert }) => (
       <PortableTextAlert value={value} />
     ),
+    [imageGalleryTypeName]: ({
+      value,
+    }: {
+      value: BlockContentImageGallery;
+    }) => <ImageGallery value={value} />,
   },
   marks: {
     strong: ({ children }) => (

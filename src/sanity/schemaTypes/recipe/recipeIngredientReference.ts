@@ -2,7 +2,10 @@ import { defineType, isReference } from "sanity";
 import { TagIcon } from "@sanity/icons";
 import { isRecipe } from "./utils";
 import { RecipeIngredientReferenceInlineBlockComponent } from "@/sanity/components/RecipeIngredientReferenceInlineBlockComponent";
-import { recipeIngredientReferenceTypeName } from "./constants";
+import {
+  ingredientGroupTypeName,
+  recipeIngredientReferenceTypeName,
+} from "./constants";
 
 export const recipeIngredientReferenceType = defineType({
   name: recipeIngredientReferenceTypeName,
@@ -27,7 +30,7 @@ export const recipeIngredientReferenceType = defineType({
           if (
             document.ingredients
               ?.map((i) => {
-                if (i._type === "ingredientGroup") {
+                if (i._type === ingredientGroupTypeName) {
                   return (
                     i.ingredients?.map((ingredient) => ingredient._ref) ?? []
                   );
@@ -51,7 +54,7 @@ export const recipeIngredientReferenceType = defineType({
           const ids: string[] =
             document.ingredients
               ?.map((ingredient) => {
-                if (ingredient._type === "ingredientGroup") {
+                if (ingredient._type === ingredientGroupTypeName) {
                   return (
                     ingredient.ingredients?.map(
                       (ingredient) => ingredient._ref,

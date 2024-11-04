@@ -1,59 +1,89 @@
-import Image from "next/image";
 import { urlForImage } from "@/sanity/lib/utils";
-import { BlockContent } from "../../../sanity.types";
+import { RecipeQueryResult } from "../../../sanity.types";
 import { ArrayElement } from "@/utils/types";
 import { cn } from "@/lib/utils";
+import { AspectRatio } from "../ui/aspect-ratio";
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+  DialogTitle,
+  DialogDescription,
+} from "../ui/dialog";
+import { VisuallyHidden } from "../ui/visuallyHidden";
+import { Image } from "../Image/Image";
 
 export type BlockContentImage = Extract<
-  ArrayElement<BlockContent>,
+  ArrayElement<NonNullable<RecipeQueryResult>["instructions"]>,
   { _type: "image" }
 >;
 
 interface ImageBoxProps {
   image?: BlockContentImage;
+  className?: string;
   width?: number;
   height?: number;
   size?: string;
-  wrapperClasses?: string;
   "data-sanity"?: string;
 }
 
 export default function ImageBox({
   image,
-  width = 1440,
-  height = 820,
-  size = "100vw",
-  wrapperClasses,
+  className,
+  width = 1024,
+  height = 682,
   ...props
 }: ImageBoxProps) {
   if (!image) {
     return null;
   }
 
-  const imageUrl = urlForImage(image)?.width(width).dpr(2).fit("max").url();
+  const imageUrl = urlForImage(image)?.width(width).dpr(2).fit("crop").url();
+
+  if (!imageUrl) {
+    return null;
+  }
 
   return (
-    <div
-      className={cn(
-        "w-full overflow-hidden rounded-[3px] bg-gray-50",
-        wrapperClasses,
-      )}
-      data-sanity={props["data-sanity"]}
-    >
-      {imageUrl && (
-        <Image
-          className="max-h-[400px] object-contain"
-          alt={image.alt ?? "image"}
-          width={width}
-          height={height}
-          style={{
-            width: "100%",
-            height: "auto",
-          }}
-          sizes={size}
-          src={imageUrl}
-        />
-      )}
-    </div>
+    <Dialog>
+      <DialogTrigger
+        tabIndex={0}
+        className="my-6 aspect-[3/2] w-full cursor-zoom-in space-y-2 rounded-[3px]"
+      >
+        <AspectRatio
+          ratio={3 / 2}
+          className={cn("w-full", className)}
+          data-sanity={props["data-sanity"]}
+        >
+          {imageUrl && (
+            <Image
+              className="pointer-events-none h-full w-full object-cover"
+              alt={image.alt ?? "image"}
+              width={width}
+              height={height}
+              sizes="(max-width: 768px) 90vw, 50vw"
+              src={imageUrl}
+              blurDataURL={image.asset?.metadata?.lqip ?? ""}
+            />
+          )}
+        </AspectRatio>
+      </DialogTrigger>
+      <DialogContent className="aspect-[3/2] w-full max-w-full p-0 sm:max-w-[70vw]">
+        <VisuallyHidden>
+          <DialogTitle>Image</DialogTitle>
+          <DialogDescription>Description</DialogDescription>
+        </VisuallyHidden>
+        <div className="h-full w-full overflow-hidden rounded-lg">
+          <Image
+            className="pointer-events-none h-full w-full object-cover"
+            alt={image.alt ?? "image"}
+            width={width}
+            height={height}
+            sizes="(max-width: 768px) 100vw, 70vw"
+            src={imageUrl}
+          />
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 }

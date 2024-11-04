@@ -96,14 +96,14 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
           <Image
             className="w-full rounded-lg"
             src={
-              urlForImage(mainImage)?.width(1200).height(500).dpr(2).url() ?? ""
+              urlForImage(mainImage)?.width(1024).height(400).dpr(2).url() ?? ""
             }
-            width={1200}
-            height={500}
+            width={1024}
+            height={400}
             alt={mainImage.alt ?? title ?? "Recipe"}
             priority
             blurDataURL={mainImage?.asset?.metadata?.lqip ?? undefined}
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 70vw"
+            sizes="(max-width: 768px) 100vw, 70vw"
           />
         ) : (
           <div className="flex aspect-[16/3] w-full items-center justify-center rounded-lg bg-secondary text-2xl sm:text-7xl">

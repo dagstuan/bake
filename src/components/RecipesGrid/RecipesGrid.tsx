@@ -34,13 +34,14 @@ export const RecipesGrid = ({ recipes }: RecipesGridProps) => {
             <Card className="transition-shadow hover:shadow-md">
               {mainImage ? (
                 <Image
-                  width={500}
-                  height={300}
+                  width={384}
+                  height={230}
                   src={
                     urlForImage(mainImage)
-                      ?.width(500)
-                      .height(300)
-                      .fit("clip")
+                      ?.width(384)
+                      .height(230)
+                      .fit("crop")
+                      .dpr(2)
                       .url() ?? ""
                   }
                   priority={i < 3}
