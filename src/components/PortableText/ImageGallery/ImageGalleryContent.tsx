@@ -10,6 +10,7 @@ import { VisuallyHidden } from "../../ui/visuallyHidden";
 import { BlockContentImageGallery } from "./ImageGallery";
 import { Image } from "../../Image/Image";
 import { urlForImage } from "@/sanity/lib/utils";
+import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 
 const imageWidth = 1024;
 const imageHeight = 682;
@@ -22,7 +23,7 @@ export const ImageGalleryContent = ({
   initialIndex?: number;
 }) => {
   return (
-    <DialogContent className="aspect-[3/2] w-full p-0 sm:max-w-[70vw]">
+    <DialogContent className="max-h-[90vh] w-full p-0 sm:max-w-[60vw] lg:max-w-[70vw]">
       <VisuallyHidden>
         <DialogTitle>Image gallery</DialogTitle>
         <DialogDescription>Description</DialogDescription>
@@ -44,9 +45,12 @@ export const ImageGalleryContent = ({
 
             return (
               <CarouselItem className="pl-0" key={image.asset?._id ?? index}>
-                <div className="aspect-[3/2] w-full overflow-hidden rounded-lg">
+                <AspectRatio
+                  ratio={3 / 2}
+                  className="overflow-hidden rounded-lg"
+                >
                   <Image
-                    className="pointer-events-none w-full object-cover"
+                    className="pointer-events-none h-full w-full object-cover"
                     alt={image.alt ?? "image"}
                     width={imageWidth}
                     height={imageHeight}
@@ -54,7 +58,7 @@ export const ImageGalleryContent = ({
                     src={url!}
                     blurDataURL={image.asset?.metadata?.lqip ?? ""}
                   />
-                </div>
+                </AspectRatio>
               </CarouselItem>
             );
           })}

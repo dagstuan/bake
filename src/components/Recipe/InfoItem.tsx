@@ -24,6 +24,7 @@ export const InfoItem = ({ icon, label, value, info }: InfoItemProps) => (
           variant="ghost"
           size="icon"
           className="h-6 w-6 text-muted-foreground"
+          title="Mer informasjon"
         >
           <QuestionMarkCircledIcon className="h-4 w-4" />
         </Button>
