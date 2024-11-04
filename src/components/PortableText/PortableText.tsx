@@ -16,6 +16,7 @@ import {
   BlockContentImageGallery,
   ImageGallery,
 } from "./ImageGallery/ImageGallery";
+import { TypographyH4 } from "../Typography/TypographyH4";
 
 type SanityPortableTextProps = ComponentProps<typeof SanityPortableText>;
 
@@ -72,6 +73,7 @@ const components: Components = {
     normal: ({ children }) => <TypographyP>{children}</TypographyP>,
     h2: ({ children }) => <TypographyH2>{children}</TypographyH2>,
     h3: ({ children }) => <TypographyH3>{children}</TypographyH3>,
+    h4: ({ children }) => <TypographyH4>{children}</TypographyH4>,
   },
 } as const;
 
