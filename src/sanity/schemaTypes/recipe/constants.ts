@@ -8,3 +8,4 @@ export const ingredientsName: IngredientsNameType = "ingredients";
 
 export const scalableRecipeNumberTypeName = "scalableRecipeNumber";
 export const recipeIngredientReferenceTypeName = "recipeIngredientReference";
+export const ingredientGroupTypeName = "ingredientGroup";

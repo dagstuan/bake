@@ -12,18 +12,23 @@ import { ComposeIcon, SearchIcon } from "@sanity/icons";
 import { baseBlockLists } from "../portableText/baseBlockLists";
 import { baseBlockMarks } from "../portableText/baseBlockMarks";
 import { baseBlockStyles } from "../portableText/baseBlockStyles";
-import { alertType } from "../alertType";
 import { IngredientsInputComponent } from "@/sanity/components/IngredientsInputComponent";
 import { Recipe, RecipeIngredientReference } from "../../../../sanity.types";
 import { isDefined } from "@/utils/tsUtils";
 import { isRecipe } from "./utils";
 import {
   baseDryIngredientsName,
+  ingredientGroupTypeName,
   ingredientsName,
   IngredientsNameType,
   recipeTypeName,
 } from "./constants";
 import { IngredientItemComponent } from "@/sanity/components/IngredientItemComponent";
+import {
+  alertArrayMember,
+  imageArrayMember,
+  imageGalleryArrayMember,
+} from "../portableText/blockContentType";
 
 export const recipeIngredientArrayMember = defineArrayMember({
   type: "reference",
@@ -136,7 +141,7 @@ export const recipeType = defineType({
       type: "array",
       of: [
         recipeIngredientArrayMember,
-        defineArrayMember({ type: "ingredientGroup" }),
+        defineArrayMember({ type: ingredientGroupTypeName }),
       ],
       validation: (rule) =>
         rule
@@ -167,7 +172,7 @@ export const recipeType = defineType({
 
             const validationErrors = (value ?? []).reduce<ValidationError[]>(
               (acc, item) => {
-                if (item._type === "ingredientGroup") {
+                if (item._type === ingredientGroupTypeName) {
                   const groupIngredients = item.ingredients ?? [];
                   const results = groupIngredients
                     .filter(
@@ -219,7 +224,9 @@ export const recipeType = defineType({
             { type: scalableRecipeNumberType.name },
           ],
         }),
-        defineArrayMember({ type: alertType.name }),
+        alertArrayMember,
+        imageArrayMember,
+        imageGalleryArrayMember,
       ],
     }),
     defineField({

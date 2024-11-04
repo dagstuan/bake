@@ -1,4 +1,10 @@
 import { defineQuery } from "next-sanity";
+import { imageGalleryTypeName } from "../schemaTypes/constants";
+import {
+  ingredientGroupTypeName,
+  recipeIngredientReferenceTypeName,
+  recipeTypeName,
+} from "../schemaTypes/recipe/constants";
 
 const imageFields = /* groq */ `
   hotspot,
@@ -28,7 +34,7 @@ export const allRecipesSlugQuery = defineQuery(`*[_type == "recipe"]
   }`);
 
 export const recipesListQuery = defineQuery(`*[
-  _type == "recipe" &&
+  _type == "${recipeTypeName}" &&
   (!defined($lastCreatedAt) || (_createdAt < $lastCreatedAt || (_createdAt == $lastCreatedAt && _id < $lastId))) &&
   (pt::text(instructions) match $searchQuery || title match $searchQuery) &&
   (!defined($categories) || (count((categories[]->slug.current)[@ in $categories]) > 0))
@@ -60,7 +66,7 @@ export const recipeIngredientReferenceFields = /* groq */ `
 `;
 
 export const recipeQuery =
-  defineQuery(`*[_type == "recipe" && slug.current == $slug][0]{
+  defineQuery(`*[_type == "${recipeTypeName}" && slug.current == $slug][0]{
     _id,
     _createdAt,
     _rev,
@@ -76,8 +82,9 @@ export const recipeQuery =
         "_type": "reference",
         ${recipeIngredientReferenceFields}
       },
-      _type == "ingredientGroup" => {
+      _type == "${ingredientGroupTypeName}" => {
         "_type": "ingredientGroup",
+        _type,
         title,
         ingredients[]->{
           ${recipeIngredientReferenceFields}
@@ -94,7 +101,7 @@ export const recipeQuery =
         ...,
         children[]{
           ...,
-          _type == "recipeIngredientReference" => {
+          _type == "${recipeIngredientReferenceTypeName}" => {
             ...,
             "ingredient": @.ingredient->{
               _id,
@@ -102,7 +109,16 @@ export const recipeQuery =
               percent,
               unit,
             },
-          }
+          },
+        }
+      },
+      _type == "image" => {
+        ${imageFields}
+      },
+      _type == "${imageGalleryTypeName}" => {
+        ...,
+        images[] {
+          ${imageFields}
         }
       }
     },

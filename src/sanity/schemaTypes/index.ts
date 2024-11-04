@@ -15,6 +15,7 @@ import { seoType } from "./seoType";
 import { ingredientGroupType } from "./recipe/ingredientGroup";
 import { alertType } from "./alertType";
 import { initialValueTemplates } from "./initialValueTemplates";
+import { imageGalleryType } from "./imageGallery";
 
 export const schema: SchemaPluginOptions = {
   types: [
@@ -32,6 +33,7 @@ export const schema: SchemaPluginOptions = {
     seoType,
     ingredientGroupType,
     alertType,
+    imageGalleryType,
   ],
   templates: initialValueTemplates,
 };

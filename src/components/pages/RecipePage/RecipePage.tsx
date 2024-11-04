@@ -44,8 +44,12 @@ export const RecipePage = (props: RecipePageProps) => {
     recipeCategory:
       recipe.categories?.map((category) => category.title).join(", ") ?? "",
     image: recipe.mainImage
-      ? (urlForImage(recipe.mainImage)?.width(800).height(600).dpr(1).url() ??
-        "")
+      ? (urlForImage(recipe.mainImage)
+          ?.width(800)
+          .height(600)
+          .fit("crop")
+          .dpr(1)
+          .url() ?? "")
       : "",
   };
 
