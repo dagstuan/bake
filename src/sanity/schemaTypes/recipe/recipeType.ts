@@ -240,8 +240,5 @@ export const recipeType = defineType({
       title: "title",
       media: "mainImage",
     },
-    prepare(selection) {
-      return { ...selection };
-    },
   },
 });
