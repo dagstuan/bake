@@ -54,7 +54,7 @@ export const ImageGallery = (props: ImageGalleryProps) => {
 
         return (
           <Dialog key={image.asset?._id ?? index}>
-            <DialogTrigger className="cursor-zoom-in">
+            <DialogTrigger className="cursor-zoom-in transition-shadow hover:shadow-md">
               <Image
                 className="pointer-events-none h-full w-full rounded-md object-cover"
                 alt={image.alt ?? "image"}

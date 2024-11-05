@@ -48,7 +48,7 @@ export default function ImageBox({
     <Dialog>
       <DialogTrigger
         tabIndex={0}
-        className="my-6 block aspect-[3/2] w-full cursor-zoom-in space-y-2"
+        className="my-6 block aspect-[3/2] w-full cursor-zoom-in space-y-2 transition-shadow hover:shadow-md"
       >
         <AspectRatio
           ratio={3 / 2}

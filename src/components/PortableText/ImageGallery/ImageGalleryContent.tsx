@@ -44,7 +44,10 @@ export const ImageGalleryContent = ({
               .url();
 
             return (
-              <CarouselItem className="pl-0" key={image.asset?._id ?? index}>
+              <CarouselItem
+                className="select-none pl-0"
+                key={image.asset?._id ?? index}
+              >
                 <AspectRatio
                   ratio={3 / 2}
                   className="overflow-hidden rounded-lg"
