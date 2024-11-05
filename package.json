@@ -29,7 +29,7 @@
     "@sanity/ui": "^2.8.19",
     "@sanity/uuid": "^3.0.2",
     "@sanity/vision": "^3.63.0",
-    "@sentry/nextjs": "^8",
+    "@sentry/nextjs": "^8.37.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
