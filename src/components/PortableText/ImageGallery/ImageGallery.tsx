@@ -56,7 +56,7 @@ export const ImageGallery = (props: ImageGalleryProps) => {
           <Dialog key={image.asset?._id ?? index}>
             <DialogTrigger className="cursor-zoom-in">
               <Image
-                className="pointer-events-none h-full w-full object-cover"
+                className="pointer-events-none h-full w-full rounded-md object-cover"
                 alt={image.alt ?? "image"}
                 width={gridSize}
                 height={gridSize}
