@@ -66,6 +66,9 @@ type RecipeContentProps = {
   recipe: NonNullable<RecipeQueryResult>;
 };
 
+const mainImageWidth = 1024;
+const mainImageHeight = 400;
+
 export const RecipeContent = ({ recipe }: RecipeContentProps) => {
   const { title, mainImage, instructions, activeTime, totalTime } = recipe;
 
@@ -96,10 +99,15 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
           <Image
             className="w-full rounded-lg"
             src={
-              urlForImage(mainImage)?.width(1024).height(400).dpr(2).url() ?? ""
+              urlForImage(mainImage)
+                ?.width(mainImageWidth)
+                .height(mainImageHeight)
+                .fit("max")
+                .dpr(2)
+                .url() ?? ""
             }
-            width={1024}
-            height={400}
+            width={mainImageWidth}
+            height={mainImageHeight}
             alt={mainImage.alt ?? title ?? "Recipe"}
             priority
             blurDataURL={mainImage?.asset?.metadata?.lqip ?? undefined}

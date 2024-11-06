@@ -50,7 +50,11 @@ export const ImageGallery = (props: ImageGalleryProps) => {
   return (
     <div className={`grid ${gridCols} my-6 gap-4`}>
       {images.map((image, index) => {
-        const url = urlForImage(image)?.width(gridSize).height(gridSize).url();
+        const url = urlForImage(image)
+          ?.width(gridSize)
+          .height(gridSize)
+          .fit("max")
+          .url();
 
         return (
           <Dialog key={image.asset?._id ?? index}>

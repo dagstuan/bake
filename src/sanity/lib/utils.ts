@@ -17,5 +17,5 @@ export const urlForImage = (
     return undefined;
   }
 
-  return imageBuilder?.image(imageSource).auto("format").fit("min");
+  return imageBuilder?.image(imageSource).auto("format");
 };

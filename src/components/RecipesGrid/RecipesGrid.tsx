@@ -12,6 +12,9 @@ type RecipesGridProps = {
   recipes: RecipesListQueryResult;
 };
 
+const gridImageWidth = 384;
+const gridImageHeight = 230;
+
 export const RecipesGrid = ({ recipes }: RecipesGridProps) => {
   if (recipes.length === 0) {
     return <NoRecipes />;
@@ -34,13 +37,13 @@ export const RecipesGrid = ({ recipes }: RecipesGridProps) => {
             <Card className="transition-shadow hover:shadow-md">
               {mainImage ? (
                 <Image
-                  width={384}
-                  height={230}
+                  width={gridImageWidth}
+                  height={gridImageHeight}
                   src={
                     urlForImage(mainImage)
-                      ?.width(384)
-                      .height(230)
-                      .fit("crop")
+                      ?.width(gridImageWidth)
+                      .height(gridImageHeight)
+                      .fit("max")
                       .dpr(2)
                       .url() ?? ""
                   }

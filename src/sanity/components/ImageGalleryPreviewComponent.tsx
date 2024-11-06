@@ -39,7 +39,11 @@ export default function ImageGalleryPreviewComponent(
             return null;
           }
 
-          const url = urlForImage(image)?.width(200).height(200).url();
+          const url = urlForImage(image)
+            ?.width(200)
+            .height(200)
+            .fit("max")
+            .url();
 
           if (!url) {
             return null;

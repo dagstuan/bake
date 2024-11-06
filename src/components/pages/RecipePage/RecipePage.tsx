@@ -47,7 +47,7 @@ export const RecipePage = (props: RecipePageProps) => {
       ? (urlForImage(recipe.mainImage)
           ?.width(800)
           .height(600)
-          .fit("crop")
+          .fit("max")
           .dpr(1)
           .url() ?? "")
       : "",

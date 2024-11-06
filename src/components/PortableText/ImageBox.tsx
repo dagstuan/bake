@@ -3,15 +3,9 @@ import { RecipeQueryResult } from "../../../sanity.types";
 import { ArrayElement } from "@/utils/types";
 import { cn } from "@/lib/utils";
 import { AspectRatio } from "../ui/aspect-ratio";
-import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-  DialogTitle,
-  DialogDescription,
-} from "../ui/dialog";
-import { VisuallyHidden } from "../ui/visuallyHidden";
+import { Dialog, DialogTrigger } from "../ui/dialog";
 import { Image } from "../Image/Image";
+import { ImageDialogContent } from "./ImageDialogContent";
 
 export type BlockContentImage = Extract<
   ArrayElement<NonNullable<RecipeQueryResult>["instructions"]>,
@@ -38,7 +32,12 @@ export default function ImageBox({
     return null;
   }
 
-  const imageUrl = urlForImage(image)?.width(width).dpr(2).fit("crop").url();
+  const imageUrl = urlForImage(image)
+    ?.width(width)
+    .height(height)
+    .dpr(2)
+    .fit("max")
+    .url();
 
   if (!imageUrl) {
     return null;
@@ -68,22 +67,19 @@ export default function ImageBox({
           )}
         </AspectRatio>
       </DialogTrigger>
-      <DialogContent className="aspect-[3/2] w-full max-w-full p-0 sm:max-w-[70vw]">
-        <VisuallyHidden>
-          <DialogTitle>Image</DialogTitle>
-          <DialogDescription>Description</DialogDescription>
-        </VisuallyHidden>
-        <div className="h-full w-full overflow-hidden rounded-lg">
-          <Image
-            className="pointer-events-none h-full w-full object-cover"
-            alt={image.alt ?? "image"}
-            width={width}
-            height={height}
-            sizes="(max-width: 768px) 100vw, 70vw"
-            src={imageUrl}
-          />
-        </div>
-      </DialogContent>
+      <ImageDialogContent
+        title="Bilde"
+        description={image.alt ?? "Bilde av matrett"}
+      >
+        <Image
+          className="pointer-events-none aspect-[3/2] h-full max-h-[90vh] w-full rounded-lg object-cover"
+          alt={image.alt ?? "image"}
+          width={width}
+          height={height}
+          sizes="(max-width: 768px) 100vw, 70vw"
+          src={imageUrl}
+        />
+      </ImageDialogContent>
     </Dialog>
   );
 }
