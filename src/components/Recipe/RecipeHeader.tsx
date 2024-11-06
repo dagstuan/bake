@@ -33,7 +33,7 @@ export const RecipeHeader = ({ title, mainImage }: RecipeHeaderProps) => {
           width={mainImageWidth}
           height={mainImageHeight}
           alt={mainImage.alt ?? title ?? "Recipe"}
-          priority
+          priority={true}
           blurDataURL={mainImage?.asset?.metadata?.lqip ?? undefined}
           sizes="(max-width: 768px) 100vw, 70vw"
         />
