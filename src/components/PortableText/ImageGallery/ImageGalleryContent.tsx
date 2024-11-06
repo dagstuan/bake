@@ -23,7 +23,7 @@ export const ImageGalleryContent = ({
   initialIndex?: number;
 }) => {
   return (
-    <DialogContent className="max-h-[90vh] w-full p-0 sm:max-w-[60vw] lg:max-w-[70vw]">
+    <DialogContent className="max-h-[95vh] w-full p-0 sm:max-w-[60vw] lg:max-w-[70vw]">
       <VisuallyHidden>
         <DialogTitle>Image gallery</DialogTitle>
         <DialogDescription>Description</DialogDescription>
