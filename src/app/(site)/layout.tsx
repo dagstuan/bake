@@ -160,10 +160,10 @@ export default async function RootLayout({
           strategy="lazyOnload"
           src="https://app.tinyanalytics.io/pixel/YRE2eBbx3BUYqOdv"
         />
+        <SanityLive />
         {draftModeEnabled && (
           <>
             <DynamicDisableDraftMode />
-            <SanityLive />
             <VisualEditing />
           </>
         )}
