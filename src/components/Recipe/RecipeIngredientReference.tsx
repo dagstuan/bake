@@ -1,3 +1,5 @@
+"use client";
+
 import { RecipeIngredientReference } from "./types";
 import { useRecipeContext } from "./recipeContext";
 import { formatAmount } from "@/utils/recipeUtils";

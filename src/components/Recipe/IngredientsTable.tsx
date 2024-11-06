@@ -1,3 +1,5 @@
+"use client";
+
 import { formatAmount } from "@/utils/recipeUtils";
 import {
   Table,

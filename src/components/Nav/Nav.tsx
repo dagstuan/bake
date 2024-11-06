@@ -18,7 +18,6 @@ const NavLink = ({ href, children, active = false }: NavLinkProps) => (
     })}
     type="internal"
     href={href}
-    prefetch
   >
     {children}
   </TypographyLink>

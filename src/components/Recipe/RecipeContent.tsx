@@ -1,11 +1,9 @@
 "use client";
 
 import { RecipeQueryResult } from "../../../sanity.types";
-import { TypographyH1 } from "../Typography/TypographyH1";
 import { Button } from "../ui/button";
 import { TypographyP } from "../Typography/TypographyP";
 import { WakeLockToggle } from "./WakeLockToggle";
-import { RecipeEditor } from "./RecipeEditor";
 import { useRecipeContext } from "./recipeContext";
 import { calcInitialState } from "./recipeReducer";
 import { RecipeIngredientReferenceResult } from "./RecipeIngredientReference";
@@ -17,23 +15,24 @@ import { ComponentProps, Fragment } from "react";
 import { PortableText } from "../PortableText/PortableText";
 import { formatAmount } from "@/utils/recipeUtils";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
-import { ClockIcon, InfoCircledIcon } from "@radix-ui/react-icons";
+import { InfoCircledIcon } from "@radix-ui/react-icons";
 import { ScalableRecipeNumber } from "./ScalableRecipeNumber";
-import { CookingPotIcon } from "../icons/CookingPotIcon";
-import { CakeSliceIcon } from "../icons/CakeSliceIcon";
 import { TypographyH3 } from "../Typography/TypographyH3";
-import { urlForImage } from "@/sanity/lib/utils";
-import { Image } from "../Image/Image";
 import { TypographyLink } from "../Typography/TypographyLink";
 import { IngredientsTable } from "./IngredientsTable";
 import { TypographyH4 } from "../Typography/TypographyH4";
-import { InfoItem } from "./InfoItem";
-import { formatDurationType } from "./utils";
 import { TypographyH2 } from "../Typography/TypographyH2";
 import {
   recipeIngredientReferenceTypeName,
   scalableRecipeNumberTypeName,
 } from "@/sanity/schemaTypes/recipe/constants";
+import dynamic from "next/dynamic";
+import { RecipeHeader } from "./RecipeHeader";
+import { InfoItems } from "./InfoItems";
+
+const RecipeEditor = dynamic(() =>
+  import("./RecipeEditor").then((mod) => mod.RecipeEditor),
+);
 
 const types: ComponentProps<typeof PortableText>["types"] = {
   [recipeIngredientReferenceTypeName]: ({
@@ -66,9 +65,6 @@ type RecipeContentProps = {
   recipe: NonNullable<RecipeQueryResult>;
 };
 
-const mainImageWidth = 1024;
-const mainImageHeight = 400;
-
 export const RecipeContent = ({ recipe }: RecipeContentProps) => {
   const { title, mainImage, instructions, activeTime, totalTime } = recipe;
 
@@ -92,32 +88,7 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
   return (
     <main className="px-6">
       <div className="prose-lg prose container mx-auto flex max-w-5xl flex-col gap-8 pt-10 sm:pt-16">
-        {title ? (
-          <TypographyH1 className="text-center sm:mb-8">{title}</TypographyH1>
-        ) : null}
-        {mainImage ? (
-          <Image
-            className="w-full rounded-lg"
-            src={
-              urlForImage(mainImage)
-                ?.width(mainImageWidth)
-                .height(mainImageHeight)
-                .fit("max")
-                .dpr(2)
-                .url() ?? ""
-            }
-            width={mainImageWidth}
-            height={mainImageHeight}
-            alt={mainImage.alt ?? title ?? "Recipe"}
-            priority
-            blurDataURL={mainImage?.asset?.metadata?.lqip ?? undefined}
-            sizes="(max-width: 768px) 100vw, 70vw"
-          />
-        ) : (
-          <div className="flex aspect-[16/3] w-full items-center justify-center rounded-lg bg-secondary text-2xl sm:text-7xl">
-            🍞🍰🧑‍🍳
-          </div>
-        )}
+        <RecipeHeader title={title} mainImage={mainImage} />
         <div className="grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-8">
           <div className="col-span-full flex flex-col gap-6 md:col-span-4 md:gap-8">
             <div className="flex flex-col gap-6 rounded-lg bg-primary/5 p-4">
@@ -137,32 +108,11 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
                 <WakeLockToggle />
               </div>
 
-              <div className="flex flex-col flex-wrap gap-2">
-                <InfoItem
-                  icon={<CakeSliceIcon />}
-                  label="Antall"
-                  value={formatAmount(servings, undefined)}
-                  info="Antall porsjoner du får."
-                />
-
-                {activeTime && (
-                  <InfoItem
-                    icon={<CookingPotIcon />}
-                    label="Aktiv tid"
-                    value={formatDurationType(activeTime)}
-                    info="Aktiv tidsbruk som kreves for å lage oppskriften."
-                  />
-                )}
-
-                {totalTime && (
-                  <InfoItem
-                    icon={<ClockIcon />}
-                    label="Total tid"
-                    value={formatDurationType(totalTime)}
-                    info="Total tidsbruk fra du starter til retten er ferdig."
-                  />
-                )}
-              </div>
+              <InfoItems
+                servings={servings}
+                activeTime={activeTime}
+                totalTime={totalTime}
+              />
             </div>
 
             <div className="flex flex-col gap-2 rounded-lg bg-primary/5 p-4">

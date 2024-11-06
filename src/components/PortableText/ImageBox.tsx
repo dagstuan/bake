@@ -5,7 +5,11 @@ import { cn } from "@/lib/utils";
 import { AspectRatio } from "../ui/aspect-ratio";
 import { Dialog, DialogTrigger } from "../ui/dialog";
 import { Image } from "../Image/Image";
-import { ImageDialogContent } from "./ImageDialogContent";
+import dynamic from "next/dynamic";
+
+const ImageDialogContent = dynamic(() =>
+  import("./ImageDialogContent").then((mod) => mod.ImageDialogContent),
+);
 
 export type BlockContentImage = Extract<
   ArrayElement<NonNullable<RecipeQueryResult>["instructions"]>,

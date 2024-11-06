@@ -1,3 +1,5 @@
+"use client";
+
 import { formatAmount } from "@/utils/recipeUtils";
 import { useRecipeContext } from "./recipeContext";
 import { ScalableRecipeNumber as ScalableRecipeNumberType } from "./types";
