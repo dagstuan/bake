@@ -5,7 +5,7 @@ import {
   DialogPortal,
   DialogTitle,
 } from "../ui/dialog";
-import * as DialogPrimitive from "@radix-ui/react-dialog";
+import { Content as DialogPrimitiveContent } from "@radix-ui/react-dialog";
 import { VisuallyHidden } from "../ui/visuallyHidden";
 import { Cross2Icon } from "@radix-ui/react-icons";
 
@@ -21,7 +21,7 @@ export const ImageDialogContent = (props: ImageDialogContentProps) => {
   return (
     <DialogPortal>
       <DialogOverlay>
-        <DialogPrimitive.Content className="relative w-full shadow-xl md:max-w-[80vw]">
+        <DialogPrimitiveContent className="relative w-full shadow-xl md:max-w-[80vw]">
           <VisuallyHidden>
             <DialogTitle>{title}</DialogTitle>
             <DialogDescription>{description}</DialogDescription>
@@ -31,7 +31,7 @@ export const ImageDialogContent = (props: ImageDialogContentProps) => {
             <Cross2Icon className="h-6 w-6" />
             <span className="sr-only">Close</span>
           </DialogClose>
-        </DialogPrimitive.Content>
+        </DialogPrimitiveContent>
       </DialogOverlay>
     </DialogPortal>
   );
