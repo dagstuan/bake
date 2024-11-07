@@ -4,7 +4,7 @@ import { TypographyH2 } from "../Typography/TypographyH2";
 import { TypographyH3 } from "../Typography/TypographyH3";
 import { TypographyP } from "../Typography/TypographyP";
 import { TypographyLink } from "../Typography/TypographyLink";
-import ImageBox, { BlockContentImage } from "./ImageBox";
+import { type BlockContentImage } from "./ImageBox";
 import { Highlight } from "./Highlight";
 import { Alert } from "../../../sanity.types";
 import { PortableTextAlert } from "./PortableTextAlert";
@@ -12,11 +12,15 @@ import {
   alertTypeName,
   imageGalleryTypeName,
 } from "@/sanity/schemaTypes/constants";
-import {
-  BlockContentImageGallery,
-  ImageGallery,
-} from "./ImageGallery/ImageGallery";
+import { type BlockContentImageGallery } from "./ImageGallery/ImageGallery";
 import { TypographyH4 } from "../Typography/TypographyH4";
+import dynamic from "next/dynamic";
+
+const ImageBox = dynamic(() => import("./ImageBox"));
+
+const ImageGallery = dynamic(() =>
+  import("./ImageGallery/ImageGallery").then((mod) => mod.ImageGallery),
+);
 
 type SanityPortableTextProps = ComponentProps<typeof SanityPortableText>;
 
