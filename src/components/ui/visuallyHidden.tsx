@@ -1,3 +1,3 @@
-import * as VisuallyHiddenPrimitive from "@radix-ui/react-visually-hidden";
+import { Root as VisuallyHiddenPrimitiveRoot } from "@radix-ui/react-visually-hidden";
 
-export const VisuallyHidden = VisuallyHiddenPrimitive.Root;
+export const VisuallyHidden = VisuallyHiddenPrimitiveRoot;

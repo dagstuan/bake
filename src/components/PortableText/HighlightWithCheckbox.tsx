@@ -1,12 +1,15 @@
 import { ComponentPropsWithoutRef, ReactNode, useId } from "react";
 import { Highlight } from "./Highlight";
 import { cn } from "@/lib/utils";
-import * as LabelPrimitive from "@radix-ui/react-label";
-import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
+import { Root as LabelPrimitiveRoot } from "@radix-ui/react-label";
+import {
+  Root as CheckboxPrimitiveRoot,
+  Indicator as CheckboxPrimitiveIndicator,
+} from "@radix-ui/react-checkbox";
 import { CheckIcon } from "@radix-ui/react-icons";
 
 type HighlightWithCheckboxProps = ComponentPropsWithoutRef<
-  typeof CheckboxPrimitive.Root
+  typeof CheckboxPrimitiveRoot
 > & {
   children: ReactNode;
 };
@@ -26,13 +29,13 @@ export const HighlightWithCheckbox = (props: HighlightWithCheckboxProps) => {
       )}
     >
       <span className="inline-flex items-center justify-center gap-1">
-        <LabelPrimitive.Root
+        <LabelPrimitiveRoot
           htmlFor={checkboxId}
           className="mr-[calc(-14px_-_0.25rem_-_0.25rem)] pl-1 pr-[calc(14px_+_0.25rem_+_0.25rem)] hover:cursor-pointer"
         >
           {children}
-        </LabelPrimitive.Root>
-        <CheckboxPrimitive.Root
+        </LabelPrimitiveRoot>
+        <CheckboxPrimitiveRoot
           {...rest}
           id={checkboxId}
           checked={checked}
@@ -41,14 +44,14 @@ export const HighlightWithCheckbox = (props: HighlightWithCheckboxProps) => {
             "peer flex h-[14px] w-[14px] shrink-0 items-center justify-center rounded-[2px] border border-accent-foreground bg-transparent shadow-sm focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:border-transparent data-[state=checked]:shadow-none"
           }
         >
-          <CheckboxPrimitive.Indicator
+          <CheckboxPrimitiveIndicator
             className={cn(
               "flex h-[14px] w-[14px] items-center justify-center text-current",
             )}
           >
             <CheckIcon className="h-[14px] w-[14px]" />
-          </CheckboxPrimitive.Indicator>
-        </CheckboxPrimitive.Root>
+          </CheckboxPrimitiveIndicator>
+        </CheckboxPrimitiveRoot>
       </span>
     </Highlight>
   );

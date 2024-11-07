@@ -1,14 +1,17 @@
-import * as React from "react";
-import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
+import {
+  Root as CheckboxPrimitiveRoot,
+  Indicator as CheckboxPrimitiveIndicator,
+} from "@radix-ui/react-checkbox";
 import { CheckIcon, DividerHorizontalIcon } from "@radix-ui/react-icons";
 
 import { cn } from "@/lib/utils";
+import { forwardRef } from "react";
 
-const Checkbox = React.forwardRef<
-  React.ElementRef<typeof CheckboxPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>
+const Checkbox = forwardRef<
+  React.ElementRef<typeof CheckboxPrimitiveRoot>,
+  React.ComponentPropsWithoutRef<typeof CheckboxPrimitiveRoot>
 >(({ className, checked, ...props }, ref) => (
-  <CheckboxPrimitive.Root
+  <CheckboxPrimitiveRoot
     ref={ref}
     className={cn(
       "peer flex h-4 w-4 shrink-0 items-center justify-center rounded-sm border border-primary shadow focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-secondary data-[state=checked]:text-secondary-foreground",
@@ -17,7 +20,7 @@ const Checkbox = React.forwardRef<
     checked={checked}
     {...props}
   >
-    <CheckboxPrimitive.Indicator
+    <CheckboxPrimitiveIndicator
       className={cn(
         "flex h-[15px] w-[15px] items-center justify-center text-current",
       )}
@@ -28,9 +31,9 @@ const Checkbox = React.forwardRef<
       {checked === true && (
         <CheckIcon className="h-[15px] w-[15px] translate-y-[0.5px]" />
       )}
-    </CheckboxPrimitive.Indicator>
-  </CheckboxPrimitive.Root>
+    </CheckboxPrimitiveIndicator>
+  </CheckboxPrimitiveRoot>
 ));
-Checkbox.displayName = CheckboxPrimitive.Root.displayName;
+Checkbox.displayName = CheckboxPrimitiveRoot.displayName;
 
 export { Checkbox };

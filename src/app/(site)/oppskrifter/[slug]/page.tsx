@@ -47,7 +47,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     const imageUrl = mainImage
       ? (urlForImage(mainImage)
           ?.width(imageWidth)
-          .height(600)
+          .height(imageHeight)
           .fit("max")
           .dpr(1)
           .url() ?? undefined)
