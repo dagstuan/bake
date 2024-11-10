@@ -6,7 +6,7 @@ import type { Recipe as RecipeSchema, WithContext } from "schema-dts";
 import { JsonLd } from "@/components/JsonLd/JsonLd";
 import { formatDurationISO } from "@/utils/recipeUtils";
 import { RecipeQueryResult } from "../../../../sanity.types";
-import { creator, siteUrl } from "@/app/(site)/shared-metadata";
+import { creator, siteUrl } from "@/app/shared-metadata";
 
 type RecipePageProps = {
   params: { slug: string };

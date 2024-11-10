@@ -13,12 +13,11 @@ import {
   siteName,
   siteUrl,
   twitterMetadata,
-} from "./shared-metadata";
-import { cache } from "react";
-import { sanityFetchNonLive } from "@/sanity/lib/client";
+} from "../shared-metadata";
 import Script from "next/script";
 import { DynamicDisableDraftMode } from "./DynamicDisableDraftMode";
 import dynamic from "next/dynamic";
+import { sanityFetch } from "@/sanity/lib/live";
 
 const SanityLive = dynamic(() =>
   import("@/sanity/lib/live").then((mod) => mod.SanityLive),
@@ -39,16 +38,11 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-const getSeoData = cache(
-  async () =>
-    await sanityFetchNonLive({
-      query: homeSeoQuery,
-      revalidate: 60 * 60,
-    }),
-);
-
 export async function generateMetadata(): Promise<Metadata> {
-  const homeSeo = await getSeoData();
+  const { data: homeSeo } = await sanityFetch({
+    query: homeSeoQuery,
+    stega: false,
+  });
 
   const metaDescription = homeSeo?.seo?.metaDescription ?? "";
 
@@ -134,7 +128,10 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const homeSeo = await getSeoData();
+  const { data: homeSeo } = await sanityFetch({
+    query: homeSeoQuery,
+    stega: false,
+  });
 
   const jsonLd: WithContext<WebSite> = {
     "@context": "https://schema.org",

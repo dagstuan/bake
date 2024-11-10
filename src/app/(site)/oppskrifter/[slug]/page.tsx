@@ -5,7 +5,7 @@ import {
   openGraphMetadata,
   siteUrl,
   twitterMetadata,
-} from "../../shared-metadata";
+} from "../../../shared-metadata";
 import { sanityFetch } from "@/sanity/lib/live";
 import { RecipePage } from "@/components/pages/RecipePage/RecipePage";
 
