@@ -8,10 +8,10 @@ import {
 import { BlockContentImageGallery } from "./ImageGallery";
 import { Image } from "../../Image/Image";
 import { urlForImage } from "@/sanity/lib/utils";
-import { ImageDialogContent } from "../ImageDialogContent";
+import { ImageDialogContent } from "../../ImageDialog/ImageDialogContent";
 
-const imageWidth = 1024;
-const imageHeight = 682;
+const imageWidth = 1200;
+const imageHeight = 800;
 
 export const ImageGalleryContent = ({
   images,

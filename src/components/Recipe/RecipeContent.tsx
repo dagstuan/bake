@@ -27,7 +27,7 @@ import {
   scalableRecipeNumberTypeName,
 } from "@/sanity/schemaTypes/recipe/constants";
 import dynamic from "next/dynamic";
-import { RecipeHeader } from "./RecipeHeader";
+import { RecipeHeader } from "./Header/RecipeHeader";
 import { InfoItems } from "./InfoItems";
 
 const RecipeEditor = dynamic(() =>

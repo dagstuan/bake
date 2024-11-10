@@ -7,8 +7,10 @@ import { Dialog, DialogTrigger } from "../ui/dialog";
 import { Image } from "../Image/Image";
 import dynamic from "next/dynamic";
 
-const ImageDialogContent = dynamic(() =>
-  import("./ImageDialogContent").then((mod) => mod.ImageDialogContent),
+const ImageDialogSingle = dynamic(() =>
+  import("../ImageDialog/ImageDialogSingle").then(
+    (mod) => mod.ImageDialogSingle,
+  ),
 );
 
 export type BlockContentImage = Extract<
@@ -71,19 +73,11 @@ export default function ImageBox({
           )}
         </AspectRatio>
       </DialogTrigger>
-      <ImageDialogContent
+      <ImageDialogSingle
+        image={image}
         title="Bilde"
         description={image.alt ?? "Bilde av matrett"}
-      >
-        <Image
-          className="pointer-events-none aspect-[3/2] h-full max-h-[90vh] w-full rounded-lg object-cover"
-          alt={image.alt ?? "image"}
-          width={width}
-          height={height}
-          sizes="(max-width: 768px) 100vw, 70vw"
-          src={imageUrl}
-        />
-      </ImageDialogContent>
+      />
     </Dialog>
   );
 }
