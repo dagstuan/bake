@@ -222,7 +222,7 @@ export type RecipeIngredient = {
     [internalGroqTypeReferenceTo]?: "ingredient";
   };
   percent?: number;
-  unit?: "g" | "dl" | "ts" | "ss" | "stk" | "fedd";
+  unit?: "g" | "dl" | "ts" | "ss" | "stk" | "fedd" | "neve";
   comment?: string;
 };
 
@@ -563,7 +563,7 @@ export type RecipeQueryResult = {
         ingredient: {
           name: string | null;
         } | null;
-        unit: "dl" | "fedd" | "g" | "ss" | "stk" | "ts" | null;
+        unit: "dl" | "fedd" | "g" | "neve" | "ss" | "stk" | "ts" | null;
         percent: number | null;
         comment: string | null;
       }
@@ -575,7 +575,7 @@ export type RecipeQueryResult = {
           ingredient: {
             name: string | null;
           } | null;
-          unit: "dl" | "fedd" | "g" | "ss" | "stk" | "ts" | null;
+          unit: "dl" | "fedd" | "g" | "neve" | "ss" | "stk" | "ts" | null;
           percent: number | null;
           comment: string | null;
         }> | null;
@@ -619,7 +619,7 @@ export type RecipeQueryResult = {
                 _id: string;
                 name: string | null;
                 percent: number | null;
-                unit: "dl" | "fedd" | "g" | "ss" | "stk" | "ts" | null;
+                unit: "dl" | "fedd" | "g" | "neve" | "ss" | "stk" | "ts" | null;
               } | null;
               percentage?: number;
               hideCheckbox?: boolean;

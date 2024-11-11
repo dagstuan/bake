@@ -12,6 +12,7 @@ const getDecimalsForValueAndUnit = (
     case "dl":
       return value < 1 ? 2 : 1;
     case "fedd":
+    case "neve":
       return 1;
     case "ss":
       return value < 1 ? 2 : 1;
