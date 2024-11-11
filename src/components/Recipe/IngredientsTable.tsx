@@ -39,6 +39,8 @@ export const IngredientsTable = (props: IngredientsTableProps) => {
     (x) => x === true,
   );
 
+  const anyWithAmount = ingredients.some(({ amount }) => !!amount);
+
   return (
     <Table>
       <TableHeader>
@@ -74,7 +76,9 @@ export const IngredientsTable = (props: IngredientsTableProps) => {
             />
           </TableHead>
           <TableHead>Ingrediens</TableHead>
-          <TableHead className="text-right">Mengde</TableHead>
+          {anyWithAmount && (
+            <TableHead className="text-right">Mengde</TableHead>
+          )}
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -113,9 +117,11 @@ export const IngredientsTable = (props: IngredientsTableProps) => {
                   {`${name}${comment ? ` (${comment})` : ""}`}
                 </Label>
               </TableCell>
-              <TableCell className="text-right">
-                {amount ? formatAmount(amount, unit) : ""}
-              </TableCell>
+              {anyWithAmount && (
+                <TableCell className="text-right">
+                  {amount ? formatAmount(amount, unit) : ""}
+                </TableCell>
+              )}
             </TableRow>
           );
         })}
