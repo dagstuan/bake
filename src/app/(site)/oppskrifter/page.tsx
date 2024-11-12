@@ -34,10 +34,7 @@ export default async function Page(props: {
 
         <RecipesFilters categories={categories} />
 
-        <Suspense
-          key={`${query}-${category}`}
-          fallback={<RecipesGridSkeleton />}
-        >
+        <Suspense fallback={<RecipesGridSkeleton />}>
           <RecipesPageContentWrapper query={query} category={category} />
         </Suspense>
       </div>
