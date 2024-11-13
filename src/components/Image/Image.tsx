@@ -1,6 +1,6 @@
 "use client";
 
-import { ComponentProps, useEffect, useState } from "react";
+import { ComponentProps, useState } from "react";
 import NextImage from "next/image";
 import { cn } from "@/lib/utils";
 import { OmitStrict } from "@/utils/types";
@@ -11,18 +11,10 @@ export const Image = ({
   alt,
   blurDataURL,
   className,
+  priority,
   ...props
 }: ImageProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [shouldAnimate, setShouldAnimate] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShouldAnimate(true);
-    }, 100);
-
-    return () => clearTimeout(timer);
-  });
 
   return (
     <div
@@ -38,10 +30,10 @@ export const Image = ({
         {...props}
         className={cn(
           {
-            ["opacity-0"]: !isLoaded && blurDataURL,
-            ["opacity-100"]: isLoaded || !blurDataURL,
-            ["transition-opacity"]: shouldAnimate,
+            ["opacity-0"]: !isLoaded && !priority,
+            ["opacity-100"]: isLoaded || priority,
           },
+          "transition-opacity",
           className,
         )}
         alt={alt}
