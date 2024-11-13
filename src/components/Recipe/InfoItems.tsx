@@ -1,5 +1,5 @@
 import { formatAmount } from "@/utils/recipeUtils";
-import { ClockIcon } from "@sanity/icons";
+import { ClockIcon } from "@radix-ui/react-icons";
 import { CakeSliceIcon } from "../icons/CakeSliceIcon";
 import { CookingPotIcon } from "../icons/CookingPotIcon";
 import { InfoItem } from "./InfoItem";

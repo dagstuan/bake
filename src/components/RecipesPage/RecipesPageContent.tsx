@@ -4,7 +4,7 @@ import { RecipesGrid } from "../RecipesGrid/RecipesGrid";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import { fetchRecipes } from "./fetchRecipes";
-import { SpinnerIcon } from "@sanity/icons";
+import { SpinnerIcon } from "../icons/SpinnerIcon";
 import { amountPerFetch } from "./utils";
 import { RecipesGridWrapperProps } from "./RecipesPageContentWrapper";
 import { RecipesListQueryResult } from "../../../sanity.types";
@@ -55,9 +55,9 @@ export const RecipesPageContent = ({
           disabled={isLoading}
           onClick={fetchMore}
         >
-          {isLoading ? (
+          {isLoading || true ? (
             <>
-              <SpinnerIcon className="animate-spin" /> Laster...
+              <SpinnerIcon className="h-5 w-5 animate-spin" /> Laster...
             </>
           ) : (
             "Hent flere oppskrifter"
