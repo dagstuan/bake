@@ -37,9 +37,8 @@ export const Image = ({
           className,
         )}
         alt={alt}
+        priority={priority}
         onLoad={() => setIsLoaded(true)}
-        placeholder={blurDataURL ? "blur" : undefined}
-        blurDataURL={blurDataURL}
       />
     </div>
   );
