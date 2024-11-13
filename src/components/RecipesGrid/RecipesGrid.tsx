@@ -46,7 +46,7 @@ export const RecipesGrid = ({ recipes }: RecipesGridProps) => {
                       .dpr(2)
                       .url() ?? ""
                   }
-                  priority={i < 3}
+                  priority={i < 2}
                   alt={mainImage?.alt ?? "Recipe"}
                   className="aspect-video w-full rounded-t-lg object-cover"
                   blurDataURL={mainImage?.asset?.metadata?.lqip ?? undefined}
