@@ -12,8 +12,8 @@ type RecipesGridProps = {
   recipes: RecipesListQueryResult;
 };
 
-const gridImageWidth = 384;
-const gridImageHeight = 230;
+const gridImageWidth = 360;
+const gridImageHeight = 202;
 
 export const RecipesGrid = ({ recipes }: RecipesGridProps) => {
   if (recipes.length === 0) {
@@ -50,7 +50,7 @@ export const RecipesGrid = ({ recipes }: RecipesGridProps) => {
                   alt={mainImage?.alt ?? "Recipe"}
                   className="aspect-video w-full rounded-t-lg object-cover"
                   blurDataURL={mainImage?.asset?.metadata?.lqip ?? undefined}
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 30vw"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 30vw"
                 />
               ) : (
                 <div className="flex aspect-video w-full flex-grow items-center justify-center bg-secondary text-7xl">
