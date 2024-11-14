@@ -16,6 +16,7 @@ import { ingredientGroupType } from "./recipe/ingredientGroup";
 import { alertType } from "./alertType";
 import { initialValueTemplates } from "./initialValueTemplates";
 import { imageGalleryType } from "./imageGallery";
+import { ingredientWeightsType } from "./ingredientWeightsType";
 
 export const schema: SchemaPluginOptions = {
   types: [
@@ -34,6 +35,7 @@ export const schema: SchemaPluginOptions = {
     ingredientGroupType,
     alertType,
     imageGalleryType,
+    ingredientWeightsType,
   ],
   templates: initialValueTemplates,
 };

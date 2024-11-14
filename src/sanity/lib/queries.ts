@@ -162,3 +162,5 @@ export const recipesSitemapQuery = defineQuery(`*[_type == "recipe"] {
 export const homeSeoQuery = defineQuery(`*[_type == "home"][0]{
   seo
 }`);
+
+export const allIngredientsQuery = defineQuery(`*[_type == "ingredient"]`);

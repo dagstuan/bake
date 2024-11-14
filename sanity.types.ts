@@ -234,6 +234,15 @@ export type Ingredient = {
   _rev: string;
   name?: string;
   type?: "dry" | "wet" | "other";
+  matpratName?: string;
+  weights?: IngredientWeights;
+};
+
+export type IngredientWeights = {
+  _type: "ingredientWeights";
+  liter?: number;
+  tablespoon?: number;
+  teaspoon?: number;
 };
 
 export type Recipe = {
@@ -489,6 +498,7 @@ export type AllSanitySchemaTypes =
   | RecipeIngredientReference
   | RecipeIngredient
   | Ingredient
+  | IngredientWeights
   | Recipe
   | Seo
   | Duration
@@ -807,6 +817,19 @@ export type RecipesSitemapQueryResult = Array<{
 export type HomeSeoQueryResult = {
   seo: Seo | null;
 } | null;
+// Variable: allIngredientsQuery
+// Query: *[_type == "ingredient"]
+export type AllIngredientsQueryResult = Array<{
+  _id: string;
+  _type: "ingredient";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name?: string;
+  type?: "dry" | "other" | "wet";
+  matpratName?: string;
+  weights?: IngredientWeights;
+}>;
 
 // Query TypeMap
 import "@sanity/client";
@@ -823,5 +846,6 @@ declare module "@sanity/client" {
     '*[_type == "about"][0]{\n  \n  "slug": slug.current,\n  _updatedAt,\n\n}': AboutSitemapQueryResult;
     '*[_type == "recipe"] {\n  \n  "slug": slug.current,\n  _updatedAt,\n\n}': RecipesSitemapQueryResult;
     '*[_type == "home"][0]{\n  seo\n}': HomeSeoQueryResult;
+    '*[_type == "ingredient"]': AllIngredientsQueryResult;
   }
 }

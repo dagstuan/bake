@@ -1404,6 +1404,58 @@
           ]
         },
         "optional": true
+      },
+      "matpratName": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "string"
+        },
+        "optional": true
+      },
+      "weights": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "inline",
+          "name": "ingredientWeights"
+        },
+        "optional": true
+      }
+    }
+  },
+  {
+    "name": "ingredientWeights",
+    "type": "type",
+    "value": {
+      "type": "object",
+      "attributes": {
+        "_type": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "string",
+            "value": "ingredientWeights"
+          }
+        },
+        "liter": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "number"
+          },
+          "optional": true
+        },
+        "tablespoon": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "number"
+          },
+          "optional": true
+        },
+        "teaspoon": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "number"
+          },
+          "optional": true
+        }
       }
     }
   },
