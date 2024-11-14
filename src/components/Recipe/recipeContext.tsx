@@ -14,9 +14,11 @@ import {
   RecipeAction,
   recipeReducer,
   RecipeState,
+  recipeStateSchema,
 } from "./recipeReducer";
 import { RecipeQueryResult } from "../../../sanity.types";
 import useStorage from "@/hooks/useStorage";
+import * as v from "valibot";
 
 type RecipeContextState = RecipeState & {
   dispatch: React.Dispatch<RecipeAction>;
@@ -29,7 +31,7 @@ export type RecipeContextProviderProps = {
   recipe: NonNullable<RecipeQueryResult>;
 };
 
-const useReducerWithSessionStorage = (
+const useReducerWithLocalStorage = (
   key: string,
   reducer: typeof recipeReducer,
   initialState: RecipeState,
@@ -37,10 +39,10 @@ const useReducerWithSessionStorage = (
   const [isClient, setIsClient] = useState(false);
   const hasInitializedStorage = useRef(false);
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [sessionStorageValue, setSessionStorageValue] = useStorage(
+  const [localStorageValue, setLocalStorageValue] = useStorage(
     key,
     initialState,
-    "sessionStorage",
+    "localStorage",
   );
 
   useEffect(() => {
@@ -50,24 +52,27 @@ const useReducerWithSessionStorage = (
   useEffect(() => {
     if (isClient && !hasInitializedStorage.current) {
       hasInitializedStorage.current = true;
+
+      const parseResult = v.safeParse(recipeStateSchema, localStorageValue);
+
       if (
-        sessionStorageValue !== state &&
-        sessionStorageValue.recipeRevision === state.recipeRevision
+        parseResult.success &&
+        parseResult.output.recipeRevision === state.recipeRevision
       ) {
-        dispatch({ type: "reset", payload: sessionStorageValue });
+        dispatch({ type: "reset", payload: localStorageValue });
       }
     }
-  }, [isClient, sessionStorageValue, state]);
+  }, [isClient, localStorageValue, state]);
 
   useEffect(() => {
     if (
       isClient &&
       hasInitializedStorage.current &&
-      sessionStorageValue !== state
+      localStorageValue !== state
     ) {
-      setSessionStorageValue(state);
+      setLocalStorageValue(state);
     }
-  }, [isClient, state, sessionStorageValue, setSessionStorageValue]);
+  }, [isClient, state, localStorageValue, setLocalStorageValue]);
 
   return [state, dispatch];
 };
@@ -76,7 +81,7 @@ export const RecipeContextProvider = ({
   recipe,
   children,
 }: RecipeContextProviderProps): JSX.Element => {
-  const [state, dispatch] = useReducerWithSessionStorage(
+  const [state, dispatch] = useReducerWithLocalStorage(
     `recipe-${recipe?._id ?? "unknown"}`,
     recipeReducer,
     calcInitialState(recipe),

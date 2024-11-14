@@ -7,41 +7,66 @@ import {
 } from "./types";
 import { produce } from "immer";
 import { isDefined } from "@/utils/tsUtils";
+import * as v from "valibot";
 
 export const minServings = 1;
 export const maxServings = 999;
 
-type IngredientsGroupOrder = Array<string>;
+const ingredientsCompletionSchema = v.record(
+  v.string(),
+  v.record(
+    v.string(),
+    v.object({
+      completed: v.boolean(),
+    }),
+  ),
+);
+export type IngredientsCompletionState = v.InferInput<
+  typeof ingredientsCompletionSchema
+>;
 
-type IngredientsCompletionState = {
-  [ingredientId: string]: {
-    [recipeIngredientKey: string]: {
-      completed: boolean;
-    };
-  };
-};
+const ingredientsGroupOrderSchema = v.array(v.string());
+type IngredientsGroupOrder = v.InferInput<typeof ingredientsGroupOrderSchema>;
 
-export type RecipeIngredientState = {
-  ingredientId: string;
-  name: string;
-  group: string | null;
-  percent?: number;
-  amount?: number;
-  unit?: RecipeIngredient["unit"];
-  comment?: RecipeIngredient["comment"];
-};
+const recipeIngredientStateSchema = v.object({
+  ingredientId: v.string(),
+  name: v.string(),
+  group: v.nullable(v.string()),
+  percent: v.optional(v.number()),
+  amount: v.optional(v.number()),
+  unit: v.optional(
+    v.union([
+      v.literal("dl"),
+      v.literal("fedd"),
+      v.literal("g"),
+      v.literal("neve"),
+      v.literal("ss"),
+      v.literal("stk"),
+      v.literal("ts"),
+      v.undefined(),
+      v.null(),
+    ]),
+  ),
+  comment: v.optional(v.nullable(v.string())),
+});
+export type RecipeIngredientState = v.InferInput<
+  typeof recipeIngredientStateSchema
+>;
 
-type RecipeIngredientsState = Array<RecipeIngredientState>;
+const recipeIngredientsStateSchema = v.array(recipeIngredientStateSchema);
+type RecipeIngredientsState = v.InferInput<typeof recipeIngredientsStateSchema>;
 
-export type RecipeState = {
-  recipeRevision: string;
-  initialServings: number;
-  servings: number;
-  ingredientsCompletion: IngredientsCompletionState;
-  ingredientsGroupOrder: IngredientsGroupOrder;
-  ingredients: RecipeIngredientsState;
-  yieldPerServing: number;
-};
+export const recipeStateSchema = v.object({
+  recipeRevision: v.string(),
+  initialServings: v.number(),
+  servings: v.number(),
+  ingredientsCompletion: ingredientsCompletionSchema,
+  ingredientsGroupOrder: ingredientsGroupOrderSchema,
+  ingredients: recipeIngredientsStateSchema,
+  yieldPerServing: v.number(),
+});
+
+export type RecipeState = v.InferInput<typeof recipeStateSchema>;
 
 export const calcIngredientAmount = (
   percent: number | null | undefined,
