@@ -30,7 +30,6 @@
     "@sanity/ui": "^2.8.23",
     "@sanity/uuid": "^3.0.2",
     "@sanity/vision": "^3.64.0",
-    "@sentry/nextjs": "^8.38.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
