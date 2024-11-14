@@ -31,7 +31,6 @@ export const ImageDialogSingle = (props: ImageDialogSingleProps) => {
         width={width}
         height={height}
         alt={image.alt ?? "Recipe"}
-        priority={true}
         blurDataURL={image?.asset?.metadata?.lqip ?? undefined}
         sizes="(max-width: 768px) 100vw, 70vw"
       />
