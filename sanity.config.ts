@@ -26,6 +26,8 @@ import { singletonPlugin } from "@/sanity/plugins/singletonPlugin";
 import { homeType } from "@/sanity/schemaTypes/singletons/homeType";
 import { aboutType } from "@/sanity/schemaTypes/singletons/aboutType";
 import { recipeIngredientType } from "@/sanity/schemaTypes/recipe/recipeIngredientType";
+import { SetIngredientWeightsAndPublishAction } from "@/sanity/actions/SetIngredientWeightsAndPublishAction";
+import { ingredientTypeName } from "@/sanity/schemaTypes/constants";
 
 const singletonTypes = [homeType, aboutType, recipeIngredientType];
 
@@ -54,5 +56,17 @@ export default defineConfig({
   ],
   document: {
     productionUrl: resolvePagePreviewUrl,
+    actions: (prev, context) => {
+      return prev.map((originalAction) => {
+        if (
+          originalAction.action === "publish" &&
+          context.schemaType === ingredientTypeName
+        ) {
+          return SetIngredientWeightsAndPublishAction;
+        }
+
+        return originalAction;
+      });
+    },
   },
 });

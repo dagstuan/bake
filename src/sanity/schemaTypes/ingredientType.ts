@@ -1,4 +1,5 @@
 import { defineField, defineType } from "sanity";
+import { ingredientTypeName } from "./constants";
 
 const fields = [
   defineField({
@@ -19,10 +20,21 @@ const fields = [
     },
     validation: (rule) => rule.required(),
   }),
+  defineField({
+    name: "matpratName",
+    type: "string",
+    description:
+      "The name of the ingredient from matprat.no. Used to automatically fetch weights.",
+    validation: (rule) => rule.lowercase().error("Must be lowercase"),
+  }),
+  defineField({
+    name: "weights",
+    type: "ingredientWeights",
+  }),
 ];
 
 export const ingredientType = defineType({
-  name: "ingredient",
+  name: ingredientTypeName,
   title: "Ingredient",
   type: "document",
   icon: () => "🥒",
