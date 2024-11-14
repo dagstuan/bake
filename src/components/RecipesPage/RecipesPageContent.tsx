@@ -55,7 +55,7 @@ export const RecipesPageContent = ({
           disabled={isLoading}
           onClick={fetchMore}
         >
-          {isLoading || true ? (
+          {isLoading ? (
             <>
               <SpinnerIcon className="h-5 w-5 animate-spin" /> Laster...
             </>
