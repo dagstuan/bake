@@ -18,7 +18,7 @@ const fields = [
     name: "unit",
     type: "string",
     options: {
-      list: ["g", "dl", "ts", "ss", "stk", "fedd", "neve"],
+      list: ["g", "dl", "ts", "ss", "stk", "fedd", "neve", "kg", "l"],
     },
     validation: (rule) =>
       rule.custom((value, { parent }) => {

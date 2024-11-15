@@ -22,3 +22,5 @@ export type RecipeIngredient = Extract<
   ArrayElement<RecipeIngredients>,
   { _type: "reference" }
 >;
+
+export type IngredientUnit = NonNullable<RecipeIngredient["unit"]>;

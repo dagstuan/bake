@@ -1,6 +1,7 @@
 import { OmitStrict } from "@/utils/types";
 import { RecipeQueryResult } from "../../../sanity.types";
 import {
+  IngredientUnit,
   RecipeIngredient,
   RecipeIngredients,
   RecipeInstructions,
@@ -28,25 +29,30 @@ export type IngredientsCompletionState = v.InferInput<
 const ingredientsGroupOrderSchema = v.array(v.string());
 type IngredientsGroupOrder = v.InferInput<typeof ingredientsGroupOrderSchema>;
 
+export const ingredientUnit = v.union([
+  v.literal("dl"),
+  v.literal("fedd"),
+  v.literal("g"),
+  v.literal("neve"),
+  v.literal("ss"),
+  v.literal("stk"),
+  v.literal("ts"),
+  v.literal("kg"),
+  v.literal("l"),
+]);
+
 const recipeIngredientStateSchema = v.object({
-  ingredientId: v.string(),
+  id: v.string(),
   name: v.string(),
   group: v.nullable(v.string()),
   percent: v.optional(v.number()),
   amount: v.optional(v.number()),
-  unit: v.optional(
-    v.union([
-      v.literal("dl"),
-      v.literal("fedd"),
-      v.literal("g"),
-      v.literal("neve"),
-      v.literal("ss"),
-      v.literal("stk"),
-      v.literal("ts"),
-      v.undefined(),
-      v.null(),
-    ]),
-  ),
+  unit: v.optional(v.union([ingredientUnit, v.undefined(), v.null()])),
+  weights: v.object({
+    l: v.nullable(v.number()),
+    ss: v.nullable(v.number()),
+    ts: v.nullable(v.number()),
+  }),
   comment: v.optional(v.nullable(v.string())),
 });
 export type RecipeIngredientState = v.InferInput<
@@ -147,12 +153,17 @@ const mapIngredientReferenceToIngredient = (
   }
 
   return {
-    ingredientId: _id,
+    id: _id,
     name: ingredient.name,
     percent: percent ?? undefined,
     group: group,
     amount: calcIngredientAmount(percent, baseDryIngredients) ?? undefined,
     unit: unit,
+    weights: {
+      l: ingredient.weights?.liter ?? null,
+      ss: ingredient.weights?.tablespoon ?? null,
+      ts: ingredient.weights?.teaspoon ?? null,
+    },
     comment: comment,
   };
 };
@@ -228,6 +239,13 @@ export type RecipeAction =
         newAmount: number;
       };
     }
+  | {
+      type: "onIngredientUnitChange";
+      payload: {
+        ingredientId: string;
+        newUnit: IngredientUnit;
+      };
+    }
   | { type: "reset"; payload: RecipeState };
 
 export const calcInitialState = (
@@ -299,7 +317,7 @@ export const recipeReducer = (
 
         ingredientsToUpdate.forEach((ingredient) => {
           const ingredientCompletion =
-            draft.ingredientsCompletion[ingredient.ingredientId];
+            draft.ingredientsCompletion[ingredient.id];
 
           Object.keys(ingredientCompletion).forEach((recipeIngredientKey) => {
             ingredientCompletion[recipeIngredientKey].completed = completed;
@@ -345,7 +363,7 @@ export const recipeReducer = (
 
       return produce(state, (draft) => {
         const ingredientToUpdate = draft.ingredients.find(
-          (ingredient) => ingredient.ingredientId === ingredientId,
+          (ingredient) => ingredient.id === ingredientId,
         );
 
         if (!ingredientToUpdate) {
@@ -355,7 +373,7 @@ export const recipeReducer = (
         const updatedIngredientPercent = ingredientToUpdate.percent;
 
         draft.ingredients.forEach((ingredient) => {
-          if (ingredient.ingredientId === ingredientId) {
+          if (ingredient.id === ingredientId) {
             ingredient.amount = newAmount;
           } else if (
             isDefined(ingredient.percent) &&
@@ -379,9 +397,60 @@ export const recipeReducer = (
         );
       });
     }
+    case "onIngredientUnitChange": {
+      const { ingredientId, newUnit } = action.payload;
+
+      return produce(state, (draft) => {
+        const ingredientToUpdate = draft.ingredients.find(
+          (ingredient) => ingredient.id === ingredientId,
+        );
+
+        if (
+          !ingredientToUpdate ||
+          !ingredientToUpdate.unit ||
+          ingredientToUpdate.unit === newUnit
+        ) {
+          return;
+        }
+
+        const oldWeight = getWeightForUnit(
+          ingredientToUpdate.weights,
+          ingredientToUpdate.unit,
+        );
+        const weight = getWeightForUnit(ingredientToUpdate.weights, newUnit);
+
+        const oldAmountGrams = (ingredientToUpdate.amount ?? 0) * oldWeight;
+        const newAmount = oldAmountGrams * (1 / weight);
+
+        ingredientToUpdate.amount = newAmount;
+        ingredientToUpdate.unit = newUnit;
+      });
+    }
     case "reset":
       return action.payload;
     default:
       return state;
+  }
+};
+
+const getWeightForUnit = (
+  weights: RecipeIngredientState["weights"],
+  unit: IngredientUnit,
+): number => {
+  switch (unit) {
+    case "g":
+      return 1;
+    case "kg":
+      return 1000;
+    case "dl":
+      return (weights.l ?? 1) / 10;
+    case "l":
+      return weights.l ?? 1;
+    case "ts":
+      return weights.ts ?? 1;
+    case "ss":
+      return weights.ss ?? 1;
+    default:
+      return 1;
   }
 };

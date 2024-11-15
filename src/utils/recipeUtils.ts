@@ -7,19 +7,23 @@ const getDecimalsForValueAndUnit = (
   unit: FormatAmountUnit,
 ): number => {
   switch (unit) {
+    case "kg":
+      return value < 10 ? 2 : value > 10 ? 0 : 1;
     case "g":
       return value < 100 ? 1 : 0;
+    case "l":
+      return value < 1 ? 2 : 1;
     case "dl":
       return value < 1 ? 2 : 1;
     case "fedd":
     case "neve":
       return 1;
     case "ss":
-      return value < 1 ? 2 : 1;
+      return value < 1 ? 2 : value > 10 ? 0 : 1;
     case "stk":
       return 1;
     case "ts":
-      return value < 1 ? 2 : 1;
+      return value < 1 ? 2 : value > 10 ? 0 : 1;
     case "%":
       return 0;
     default:
