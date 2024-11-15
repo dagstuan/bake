@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment, useState } from "react";
+import { useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -10,13 +10,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "../ui/button";
-import { useRecipeContext } from "./recipeContext";
+import { Button } from "../../ui/button";
+import { useRecipeContext } from "../recipeContext";
 import { formatAmount } from "@/utils/recipeUtils";
 import { Label } from "@radix-ui/react-label";
-import { DeferredNumberInput } from "./DeferredNumberInput";
+import { DeferredNumberInput } from "../DeferredNumberInput";
 import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
 import { isDefined } from "@/utils/tsUtils";
+import { IngredientEditor } from "./IngredientEditor";
 
 type RecipeEditorProps = {
   triggerClassName?: string;
@@ -39,16 +40,6 @@ export const RecipeEditor = ({
       type: "onServingsChange",
       payload: newServings,
     });
-
-  const handleIngredientChange = (ingredientId: string, newAmount: number) => {
-    dispatch({
-      type: "onIngredientChange",
-      payload: {
-        ingredientId,
-        newAmount,
-      },
-    });
-  };
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -100,34 +91,12 @@ export const RecipeEditor = ({
             <h3 className="mb-4 font-medium">Ingredienser</h3>
             <div className="grid grid-cols-[max-content_1fr] items-center gap-4">
               {ingredients
-                .filter((i) => isDefined(i.amount) && isDefined(i.ingredientId))
-                .map((ingredient, index) => (
-                  <Fragment key={index}>
-                    <Label
-                      htmlFor={`ingredient-${index}`}
-                      className="text-right"
-                    >
-                      {ingredient.name}
-                    </Label>
-                    <div className="flex items-center gap-2">
-                      <DeferredNumberInput
-                        id={`ingredient-${index}`}
-                        className="w-24"
-                        value={parseFloat(
-                          formatAmount(ingredient.amount, ingredient.unit),
-                        )}
-                        min={0.00001}
-                        max={100000}
-                        onChange={(newValue) =>
-                          handleIngredientChange(
-                            ingredient.ingredientId,
-                            newValue,
-                          )
-                        }
-                      />
-                      {ingredient.unit}
-                    </div>
-                  </Fragment>
+                .filter((i) => isDefined(i.amount) && isDefined(i.id))
+                .map((ingredient) => (
+                  <IngredientEditor
+                    key={ingredient.id}
+                    ingredient={ingredient}
+                  />
                 ))}
             </div>
           </div>

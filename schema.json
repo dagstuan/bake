@@ -1328,6 +1328,14 @@
             {
               "type": "string",
               "value": "neve"
+            },
+            {
+              "type": "string",
+              "value": "kg"
+            },
+            {
+              "type": "string",
+              "value": "l"
             }
           ]
         },

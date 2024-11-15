@@ -22,9 +22,9 @@ export const RecipeIngredientReferenceResult = ({
 
   const { percentage: referencePercentage, hideCheckbox } = value;
 
-  const { _id, name, unit } = value.ingredient;
+  const { _id, name } = value.ingredient;
 
-  const ingredientState = ingredients.find((i) => i.ingredientId === _id);
+  const ingredientState = ingredients.find((i) => i.id === _id);
 
   const mappedAmount =
     isDefined(ingredientState?.amount) && isDefined(referencePercentage)
@@ -32,7 +32,7 @@ export const RecipeIngredientReferenceResult = ({
       : null;
 
   const amountLabel = isDefined(mappedAmount)
-    ? `${formatAmount(mappedAmount, unit)} `
+    ? `${formatAmount(mappedAmount, ingredientState?.unit)} `
     : "";
 
   const labelText = `${amountLabel}${name}`;

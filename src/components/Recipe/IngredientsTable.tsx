@@ -27,8 +27,8 @@ export const IngredientsTable = (props: IngredientsTableProps) => {
     return null;
   }
 
-  const ingredientsCompletionMap = ingredients.map(({ ingredientId }) => {
-    return isIngredientComplete(ingredientsCompletion, ingredientId);
+  const ingredientsCompletionMap = ingredients.map(({ id }) => {
+    return isIngredientComplete(ingredientsCompletion, id);
   });
 
   const anyIngredientsComplete = ingredientsCompletionMap.some(
@@ -82,16 +82,13 @@ export const IngredientsTable = (props: IngredientsTableProps) => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {ingredients.map(({ ingredientId, name, amount, unit, comment }) => {
-          const isComplete = isIngredientComplete(
-            ingredientsCompletion,
-            ingredientId,
-          );
+        {ingredients.map(({ id, name, amount, unit, comment }) => {
+          const isComplete = isIngredientComplete(ingredientsCompletion, id);
 
-          const checkboxId = `ingredient-${ingredientId}-complete`;
+          const checkboxId = `ingredient-${id}-complete`;
 
           return (
-            <TableRow key={ingredientId}>
+            <TableRow key={id}>
               <TableCell>
                 <div>
                   <Checkbox
@@ -104,7 +101,7 @@ export const IngredientsTable = (props: IngredientsTableProps) => {
                       dispatch({
                         type: "onIngredientCompletionChange",
                         payload: {
-                          ingredientId,
+                          ingredientId: id,
                           completed: checked,
                         },
                       });

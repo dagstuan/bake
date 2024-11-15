@@ -31,7 +31,7 @@ import { RecipeHeader } from "./Header/RecipeHeader";
 import { InfoItems } from "./InfoItems";
 
 const RecipeEditor = dynamic(() =>
-  import("./RecipeEditor").then((mod) => mod.RecipeEditor),
+  import("./Editor/RecipeEditor").then((mod) => mod.RecipeEditor),
 );
 
 const types: ComponentProps<typeof PortableText>["types"] = {
