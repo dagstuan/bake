@@ -1,6 +1,7 @@
 import { Duration as DurationType } from "../../../sanity.types";
 import { formatTimeValue } from "@/utils/durationUtils";
 import { capitalize } from "@/utils/tsUtils";
+import { IngredientUnit } from "./types";
 
 export const formatDurationType = (duration: DurationType): string => {
   const { start, end } = duration;
@@ -18,4 +19,23 @@ export const formatDurationType = (duration: DurationType): string => {
   }
 
   return "";
+};
+
+export const formatUnit = (unit: IngredientUnit): string => {
+  switch (unit) {
+    case "g":
+      return "gram";
+    case "kg":
+      return "kilogram";
+    case "l":
+      return "liter";
+    case "dl":
+      return "desiliter";
+    case "ss":
+      return "spiseskje";
+    case "ts":
+      return "teskje";
+    default:
+      return unit;
+  }
 };

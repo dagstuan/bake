@@ -76,7 +76,7 @@ export const RecipeEditor = ({
                 id="servings"
                 value={parseFloat(formatAmount(servings))}
                 onChange={handleServingsChange}
-                className="w-20"
+                className="w-20 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
               />
               <Button
                 variant="outline"
@@ -89,7 +89,7 @@ export const RecipeEditor = ({
           </div>
           <div className="border-t pt-4">
             <h3 className="mb-4 font-medium">Ingredienser</h3>
-            <div className="grid grid-cols-[max-content_1fr] items-center gap-4">
+            <div className="grid grid-cols-[max-content_1fr_max-content] items-center gap-4">
               {ingredients
                 .filter((i) => isDefined(i.amount) && isDefined(i.id))
                 .map((ingredient) => (
