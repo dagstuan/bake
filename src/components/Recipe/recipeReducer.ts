@@ -6,9 +6,10 @@ import {
   RecipeIngredients,
   RecipeInstructions,
 } from "./types";
-import { produce } from "immer";
+import { produce, WritableDraft } from "immer";
 import { isDefined } from "@/utils/tsUtils";
 import * as v from "valibot";
+import { isEditableUnit } from "./utils";
 
 export const minServings = 1;
 export const maxServings = 999;
@@ -246,6 +247,10 @@ export type RecipeAction =
         newUnit: IngredientUnit;
       };
     }
+  | {
+      type: "onAllIngredientsUnitChange";
+      payload: IngredientUnit;
+    }
   | { type: "reset"; payload: RecipeState };
 
 export const calcInitialState = (
@@ -435,25 +440,18 @@ export const recipeReducer = (
           (ingredient) => ingredient.id === ingredientId,
         );
 
-        if (
-          !ingredientToUpdate ||
-          !ingredientToUpdate.unit ||
-          ingredientToUpdate.unit === newUnit
-        ) {
-          return;
+        if (ingredientToUpdate) {
+          updateIngredientUnit(ingredientToUpdate, newUnit);
         }
+      });
+    }
+    case "onAllIngredientsUnitChange": {
+      const newUnit = action.payload;
 
-        const oldWeight = getWeightForUnit(
-          ingredientToUpdate.weights,
-          ingredientToUpdate.unit,
-        );
-        const weight = getWeightForUnit(ingredientToUpdate.weights, newUnit);
-
-        const oldAmountGrams = (ingredientToUpdate.amount ?? 0) * oldWeight;
-        const newAmount = oldAmountGrams * (1 / weight);
-
-        ingredientToUpdate.amount = newAmount;
-        ingredientToUpdate.unit = newUnit;
+      return produce(state, (draft) => {
+        draft.ingredients.forEach((ingredient) => {
+          updateIngredientUnit(ingredient, newUnit);
+        });
       });
     }
     case "reset":
@@ -498,4 +496,28 @@ const getWeightForUnit = (
     default:
       return 1;
   }
+};
+
+const updateIngredientUnit = (
+  ingredient: WritableDraft<RecipeIngredientState>,
+  newUnit: IngredientUnit,
+) => {
+  if (
+    !ingredient ||
+    !ingredient.amount ||
+    !ingredient.unit ||
+    ingredient.unit === newUnit ||
+    !isEditableUnit(ingredient.unit)
+  ) {
+    return;
+  }
+
+  const oldWeight = getWeightForUnit(ingredient.weights, ingredient.unit);
+  const weight = getWeightForUnit(ingredient.weights, newUnit);
+
+  const oldAmountGrams = (ingredient.amount ?? 0) * oldWeight;
+  const newAmount = oldAmountGrams * (1 / weight);
+
+  ingredient.amount = newAmount;
+  ingredient.unit = newUnit;
 };

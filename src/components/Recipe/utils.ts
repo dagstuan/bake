@@ -2,6 +2,7 @@ import { Duration as DurationType } from "../../../sanity.types";
 import { formatTimeValue } from "@/utils/durationUtils";
 import { capitalize } from "@/utils/tsUtils";
 import { IngredientUnit } from "./types";
+import { RecipeIngredientState } from "./recipeReducer";
 
 export const formatDurationType = (duration: DurationType): string => {
   const { start, end } = duration;
@@ -39,3 +40,16 @@ export const formatUnit = (unit: IngredientUnit): string => {
       return unit;
   }
 };
+
+export const editableUnits: Array<IngredientUnit> = [
+  "g",
+  "kg",
+  "l",
+  "dl",
+  "ss",
+  "ts",
+];
+
+export const isEditableUnit = (
+  unit: RecipeIngredientState["unit"],
+): unit is IngredientUnit => !!unit && editableUnits.includes(unit);

@@ -18,6 +18,14 @@ import { DeferredNumberInput } from "../DeferredNumberInput";
 import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
 import { isDefined } from "@/utils/tsUtils";
 import { IngredientEditor } from "./IngredientEditor";
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { TypographyH4 } from "@/components/Typography/TypographyH4";
 
 type RecipeEditorProps = {
   triggerClassName?: string;
@@ -41,6 +49,9 @@ export const RecipeEditor = ({
       payload: newServings,
     });
 
+  const handleAllIngredientsToGramClick = () =>
+    dispatch({ type: "onAllIngredientsUnitChange", payload: "g" });
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
@@ -59,7 +70,7 @@ export const RecipeEditor = ({
             passe.
           </DialogDescription>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
+        <div className="grid gap-8 py-4">
           <div className="flex items-center gap-4">
             <Label htmlFor="servings" className="text-right">
               Antall
@@ -87,18 +98,36 @@ export const RecipeEditor = ({
               </Button>
             </div>
           </div>
-          <div className="border-t pt-4">
-            <h3 className="mb-4 font-medium">Ingredienser</h3>
-            <div className="grid grid-cols-[max-content_1fr_max-content] items-center gap-4">
-              {ingredients
-                .filter((i) => isDefined(i.amount) && isDefined(i.id))
-                .map((ingredient) => (
-                  <IngredientEditor
-                    key={ingredient.id}
-                    ingredient={ingredient}
-                  />
-                ))}
+          <div className="border-t pt-8">
+            <div className="mb-4 flex items-center justify-between">
+              <TypographyH4 as="h3">Ingredienser</TypographyH4>
+              <Button
+                variant="outline"
+                onClick={handleAllIngredientsToGramClick}
+              >
+                Sett alle til gram
+              </Button>
             </div>
+
+            <Table className="w-full">
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[40%]">Ingrediens</TableHead>
+                  <TableHead className="w-[30%]">Mengde</TableHead>
+                  <TableHead className="w-[30%]">Enhet</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {ingredients
+                  .filter((i) => isDefined(i.amount) && isDefined(i.id))
+                  .map((ingredient) => (
+                    <IngredientEditor
+                      key={ingredient.id}
+                      ingredient={ingredient}
+                    />
+                  ))}
+              </TableBody>
+            </Table>
           </div>
         </div>
         <DialogFooter>

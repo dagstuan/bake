@@ -10,16 +10,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { IngredientUnit } from "../types";
-
+import { TableCell, TableRow } from "@/components/ui/table";
 import * as v from "valibot";
-import { formatUnit } from "../utils";
-
-const editableUnits: Array<IngredientUnit> = ["g", "kg", "l", "dl", "ss", "ts"];
-
-const isEditableUnit = (
-  unit: RecipeIngredientState["unit"],
-): unit is IngredientUnit => !!unit && editableUnits.includes(unit);
+import { editableUnits, formatUnit, isEditableUnit } from "../utils";
 
 type IngredientEditorProps = {
   ingredient: RecipeIngredientState;
@@ -79,51 +72,58 @@ export const IngredientEditor = (props: IngredientEditorProps) => {
   });
 
   return (
-    <>
-      <Label htmlFor={`ingredient-${id}`} className="text-right">
-        {name}
-      </Label>
-      <DeferredNumberInput
-        id={`ingredient-${id}`}
-        className="w-full text-right [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-        value={parseFloat(formatAmount(amount, unit))}
-        min={0.00001}
-        max={100000}
-        onChange={(newValue) => {
-          if (newValue > 0) {
-            handleIngredientChange(
-              id,
-              parseFloat(formatAmount(newValue, unit)),
-            );
-          }
-        }}
-      />
-      {isEditableUnit(unit) && unitOptions.length > 0 ? (
-        <Select
-          value={unit}
-          onValueChange={(v) => handleIngredientUnitChange(id, v)}
-        >
-          <SelectTrigger className="w-[120px]">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {unitOptions.map((unit) => (
-              <SelectItem key={unit} value={unit}>
-                {formatUnit(unit)}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      ) : (
-        unit && (
-          <div
-            className="h-9 w-max cursor-not-allowed rounded-md px-3 py-2 text-sm"
-            title="Denne enheten kan ikke endres."
+    <TableRow>
+      <TableCell>
+        <Label htmlFor={`ingredient-${id}`} className="text-left">
+          {name}
+        </Label>
+      </TableCell>
+      <TableCell>
+        <DeferredNumberInput
+          id={`ingredient-${id}`}
+          className="w-full text-right [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+          value={parseFloat(formatAmount(amount, unit))}
+          min={0.00001}
+          max={100000}
+          onChange={(newValue) => {
+            if (newValue > 0) {
+              handleIngredientChange(
+                id,
+                parseFloat(formatAmount(newValue, unit)),
+              );
+            }
+          }}
+        />
+      </TableCell>
+
+      <TableCell>
+        {isEditableUnit(unit) && unitOptions.length > 0 ? (
+          <Select
+            value={unit}
+            onValueChange={(v) => handleIngredientUnitChange(id, v)}
           >
-            {formatUnit(unit)}
-          </div>
-        )
-      )}
-    </>
+            <SelectTrigger className="w-[120px]">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {unitOptions.map((unit) => (
+                <SelectItem key={unit} value={unit}>
+                  {formatUnit(unit)}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        ) : (
+          unit && (
+            <div
+              className="h-9 w-max cursor-not-allowed rounded-md px-3 py-2 text-sm"
+              title="Denne enheten kan ikke endres."
+            >
+              {formatUnit(unit)}
+            </div>
+          )
+        )}
+      </TableCell>
+    </TableRow>
   );
 };
