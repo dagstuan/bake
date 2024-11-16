@@ -262,10 +262,7 @@ export const calcInitialState = (
     ingredients,
   );
 
-  const totalYield = ingredientsState.reduce(
-    (acc, curr) => acc + (curr?.amount ?? 0),
-    0,
-  );
+  const totalYield = calcTotalYield(ingredientsState);
 
   return {
     recipeRevision: _rev,
@@ -420,21 +417,7 @@ export const recipeReducer = (
           }
         });
 
-        const updatedTotalYield = draft.ingredients.reduce(
-          (acc, currIngredient) => {
-            const { amount, unit, weights } = currIngredient;
-
-            if (!amount || !unit || !weights) {
-              return acc;
-            }
-
-            const weight = getWeightForUnit(weights, unit);
-            const amountGrams = amount * weight;
-
-            return acc + amountGrams;
-          },
-          0,
-        );
+        const updatedTotalYield = calcTotalYield(draft.ingredients);
 
         draft.servings = updatedTotalYield / draft.yieldPerServing;
 
@@ -478,6 +461,21 @@ export const recipeReducer = (
     default:
       return state;
   }
+};
+
+const calcTotalYield = (ingredients: RecipeIngredientsState) => {
+  return ingredients.reduce((acc, currIngredient) => {
+    const { amount, unit, weights } = currIngredient;
+
+    if (!amount || !unit || !weights) {
+      return acc;
+    }
+
+    const weight = getWeightForUnit(weights, unit);
+    const amountGrams = amount * weight;
+
+    return acc + amountGrams;
+  }, 0);
 };
 
 const getWeightForUnit = (

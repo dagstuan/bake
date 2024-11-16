@@ -145,7 +145,7 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
           <div className="col-span-full align-baseline md:col-span-8">
             <TypographyH2>Fremgangsmåte</TypographyH2>
 
-            {scaleFactor !== 100 && (
+            {parseFloat(scaleFactor.toFixed(2)) !== 100 && (
               <Alert className="my-4">
                 <InfoCircledIcon />
                 <AlertTitle>Skalert oppskrift</AlertTitle>
