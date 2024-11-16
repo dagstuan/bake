@@ -370,22 +370,69 @@ export const recipeReducer = (
           return;
         }
 
+        const updatedIngredientOriginalAmount = ingredientToUpdate.amount;
+        const updatedIngredientUnit = ingredientToUpdate.unit;
         const updatedIngredientPercent = ingredientToUpdate.percent;
+        const updatedIngredientWeights = ingredientToUpdate.weights;
+
+        if (
+          !updatedIngredientOriginalAmount ||
+          !updatedIngredientUnit ||
+          !updatedIngredientPercent ||
+          !updatedIngredientWeights
+        ) {
+          return;
+        }
+
+        const updatedIngredientWeight = getWeightForUnit(
+          updatedIngredientWeights,
+          updatedIngredientUnit,
+        );
+
+        const updatedIngredientOriginalAmountGrams =
+          updatedIngredientOriginalAmount * updatedIngredientWeight;
+        const updatedIngredientAmountGrams =
+          newAmount * updatedIngredientWeight;
 
         draft.ingredients.forEach((ingredient) => {
-          if (ingredient.id === ingredientId) {
+          const { id, percent, amount, unit, weights } = ingredient;
+
+          if (!unit || !amount || !updatedIngredientUnit || !weights) {
+            return;
+          }
+
+          if (id === ingredientId) {
             ingredient.amount = newAmount;
           } else if (
-            isDefined(ingredient.percent) &&
+            isDefined(percent) &&
             isDefined(updatedIngredientPercent)
           ) {
-            ingredient.amount =
-              (ingredient.percent / updatedIngredientPercent) * newAmount;
+            const currIngredientWeight = getWeightForUnit(weights, unit);
+            const oldAmountGrams = amount * currIngredientWeight;
+            const percentDiffGrams =
+              oldAmountGrams / updatedIngredientOriginalAmountGrams;
+            const newAmountGrams =
+              updatedIngredientAmountGrams * percentDiffGrams;
+            const newAmountInCurrentUnit =
+              newAmountGrams / currIngredientWeight;
+
+            ingredient.amount = newAmountInCurrentUnit;
           }
         });
 
         const updatedTotalYield = draft.ingredients.reduce(
-          (acc, curr) => acc + (curr.amount ?? 0),
+          (acc, currIngredient) => {
+            const { amount, unit, weights } = currIngredient;
+
+            if (!amount || !unit || !weights) {
+              return acc;
+            }
+
+            const weight = getWeightForUnit(weights, unit);
+            const amountGrams = amount * weight;
+
+            return acc + amountGrams;
+          },
           0,
         );
 

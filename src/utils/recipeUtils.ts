@@ -8,7 +8,7 @@ const getDecimalsForValueAndUnit = (
 ): number => {
   switch (unit) {
     case "kg":
-      return value < 10 ? 2 : value > 10 ? 0 : 1;
+      return value < 1 ? 2 : 1;
     case "g":
       return value < 100 ? 1 : 0;
     case "l":

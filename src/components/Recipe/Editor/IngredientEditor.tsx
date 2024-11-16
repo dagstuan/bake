@@ -13,6 +13,7 @@ import {
 import { IngredientUnit } from "../types";
 
 import * as v from "valibot";
+import { formatUnit } from "../utils";
 
 const editableUnits: Array<IngredientUnit> = ["g", "kg", "l", "dl", "ss", "ts"];
 
@@ -82,35 +83,47 @@ export const IngredientEditor = (props: IngredientEditorProps) => {
       <Label htmlFor={`ingredient-${id}`} className="text-right">
         {name}
       </Label>
-      <div className="flex items-center gap-2">
-        <DeferredNumberInput
-          id={`ingredient-${id}`}
-          className="w-24"
-          value={parseFloat(formatAmount(amount, unit))}
-          min={0.00001}
-          max={100000}
-          onChange={(newValue) => handleIngredientChange(id, newValue)}
-        />
-        {isEditableUnit(unit) && unitOptions.length > 0 ? (
-          <Select
-            value={unit}
-            onValueChange={(v) => handleIngredientUnitChange(id, v)}
+      <DeferredNumberInput
+        id={`ingredient-${id}`}
+        className="w-full text-right [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+        value={parseFloat(formatAmount(amount, unit))}
+        min={0.00001}
+        max={100000}
+        onChange={(newValue) => {
+          if (newValue > 0) {
+            handleIngredientChange(
+              id,
+              parseFloat(formatAmount(newValue, unit)),
+            );
+          }
+        }}
+      />
+      {isEditableUnit(unit) && unitOptions.length > 0 ? (
+        <Select
+          value={unit}
+          onValueChange={(v) => handleIngredientUnitChange(id, v)}
+        >
+          <SelectTrigger className="w-[120px]">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {unitOptions.map((unit) => (
+              <SelectItem key={unit} value={unit}>
+                {formatUnit(unit)}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      ) : (
+        unit && (
+          <div
+            className="h-9 w-max cursor-not-allowed rounded-md px-3 py-2 text-sm"
+            title="Denne enheten kan ikke endres."
           >
-            <SelectTrigger className="w-[65px]">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              {unitOptions.map((unit) => (
-                <SelectItem key={unit} value={unit}>
-                  {unit}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        ) : (
-          unit
-        )}
-      </div>
+            {formatUnit(unit)}
+          </div>
+        )
+      )}
     </>
   );
 };
