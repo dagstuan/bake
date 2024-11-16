@@ -16,8 +16,8 @@ const nextConfig: NextConfig = {
   },
 };
 
-const withBundleAnalyzer = nextBundleAnalyzer({
-  enabled: process.env.ANALYZE === "true",
-});
+const withBundleAnalyzer = nextBundleAnalyzer();
 
-export default withBundleAnalyzer(nextConfig);
+export default process.env.ANALYZE === "true"
+  ? withBundleAnalyzer(nextConfig)
+  : nextConfig;
