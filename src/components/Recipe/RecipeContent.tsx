@@ -28,7 +28,9 @@ import {
 import dynamic from "next/dynamic";
 import { RecipeHeader } from "./Header/RecipeHeader";
 import { InfoItems } from "./InfoItems";
-import { calcInitialState } from "./reducer/initialState";
+import { calcInitialState } from "./store/initialState";
+import { useStore } from "zustand";
+import { useShallow } from "zustand/react/shallow";
 
 const RecipeEditor = dynamic(() =>
   import("./Editor/RecipeEditor").then((mod) => mod.RecipeEditor),
@@ -68,19 +70,22 @@ type RecipeContentProps = {
 export const RecipeContent = ({ recipe }: RecipeContentProps) => {
   const { title, mainImage, instructions, activeTime, totalTime } = recipe;
 
-  const {
-    ingredients,
-    ingredientsGroupOrder,
-    servings,
-    initialServings,
-    dispatch,
-  } = useRecipeContext();
+  const recipeStore = useRecipeContext();
 
-  const reset = () => {
-    dispatch({
-      type: "reset",
-      payload: calcInitialState(recipe),
-    });
+  const [ingredients, ingredientsGroupOrder, servings, initialServings, reset] =
+    useStore(
+      recipeStore,
+      useShallow((s) => [
+        s.ingredients,
+        s.ingredientsGroupOrder,
+        s.servings,
+        s.initialServings,
+        s.reset,
+      ]),
+    );
+
+  const handleReset = () => {
+    reset(calcInitialState(recipe));
   };
 
   const scaleFactor = 100 * (servings / initialServings);
@@ -94,12 +99,15 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
             <div className="flex flex-col gap-6 rounded-lg bg-primary/5 p-4">
               <div className="flex flex-col gap-2">
                 <div className="flex flex-wrap gap-2">
-                  <RecipeEditor onReset={reset} triggerClassName="flex-1" />
+                  <RecipeEditor
+                    onReset={handleReset}
+                    triggerClassName="flex-1"
+                  />
                   <Button
                     className="flex-1"
                     type="button"
                     variant="outline"
-                    onClick={reset}
+                    onClick={handleReset}
                   >
                     Tilbakestill
                   </Button>

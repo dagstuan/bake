@@ -1,7 +1,7 @@
 import { RecipeQueryResult } from "../../../sanity.types";
-import { RecipeContextProvider } from "./recipeContext";
 import { RecipeContent } from "./RecipeContent";
 import { notFound } from "next/navigation";
+import { RecipeContextProvider } from "./recipeContext";
 
 type RecipeProps = {
   recipe: RecipeQueryResult;
