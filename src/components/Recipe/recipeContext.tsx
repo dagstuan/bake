@@ -9,16 +9,12 @@ import {
   useRef,
   useState,
 } from "react";
-import {
-  calcInitialState,
-  RecipeAction,
-  recipeReducer,
-  RecipeState,
-  recipeStateSchema,
-} from "./recipeReducer";
+import { RecipeAction, recipeReducer } from "./reducer/recipeReducer";
 import { RecipeQueryResult } from "../../../sanity.types";
 import useStorage from "@/hooks/useStorage";
 import * as v from "valibot";
+import { RecipeState, recipeStateSchema } from "./reducer/types";
+import { calcInitialState } from "./reducer/initialState";
 
 type RecipeContextState = RecipeState & {
   dispatch: React.Dispatch<RecipeAction>;

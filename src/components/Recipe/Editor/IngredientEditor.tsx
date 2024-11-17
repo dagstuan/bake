@@ -1,5 +1,5 @@
 import { Label } from "@/components/ui/label";
-import { ingredientUnit, RecipeIngredientState } from "../recipeReducer";
+import { ingredientUnit, RecipeIngredientState } from "../reducer/types";
 import { DeferredNumberInput } from "../DeferredNumberInput";
 import { formatAmount } from "@/utils/recipeUtils";
 import { useRecipeContext } from "../recipeContext";
@@ -27,7 +27,7 @@ export const IngredientEditor = (props: IngredientEditorProps) => {
 
   const handleIngredientChange = (ingredientId: string, newAmount: number) => {
     dispatch({
-      type: "onIngredientChange",
+      type: "onIngredientAmountChange",
       payload: {
         ingredientId,
         newAmount,

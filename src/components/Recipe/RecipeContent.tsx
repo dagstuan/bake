@@ -5,7 +5,6 @@ import { Button } from "../ui/button";
 import { TypographyP } from "../Typography/TypographyP";
 import { WakeLockToggle } from "./WakeLockToggle";
 import { useRecipeContext } from "./recipeContext";
-import { calcInitialState } from "./recipeReducer";
 import { RecipeIngredientReferenceResult } from "./RecipeIngredientReference";
 import {
   RecipeIngredientReference,
@@ -29,6 +28,7 @@ import {
 import dynamic from "next/dynamic";
 import { RecipeHeader } from "./Header/RecipeHeader";
 import { InfoItems } from "./InfoItems";
+import { calcInitialState } from "./reducer/initialState";
 
 const RecipeEditor = dynamic(() =>
   import("./Editor/RecipeEditor").then((mod) => mod.RecipeEditor),

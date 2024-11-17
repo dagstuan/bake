@@ -9,10 +9,26 @@ import {
   TableBody,
   TableCell,
 } from "../ui/table";
-import { isIngredientComplete, RecipeIngredientState } from "./recipeReducer";
 import { Checkbox } from "../ui/checkbox";
 import { Label } from "../ui/label";
 import { useRecipeContext } from "./recipeContext";
+import {
+  IngredientsCompletionState,
+  RecipeIngredientState,
+} from "./reducer/types";
+
+const isIngredientComplete = (
+  ingredientsCompletion: IngredientsCompletionState,
+  ingredientId: string,
+) => {
+  const ingredient = ingredientsCompletion[ingredientId];
+
+  if (!ingredient) {
+    return false;
+  }
+
+  return Object.values(ingredient).every((x) => x.completed);
+};
 
 type IngredientsTableProps = {
   group: string | null;

@@ -2,7 +2,7 @@ import { Duration as DurationType } from "../../../sanity.types";
 import { formatTimeValue } from "@/utils/durationUtils";
 import { capitalize } from "@/utils/tsUtils";
 import { IngredientUnit } from "./types";
-import { RecipeIngredientState } from "./recipeReducer";
+import { RecipeIngredientState } from "./reducer/types";
 
 export const formatDurationType = (duration: DurationType): string => {
   const { start, end } = duration;
