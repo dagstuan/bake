@@ -15,7 +15,9 @@ import { useRecipeContext } from "./recipeContext";
 import {
   IngredientsCompletionState,
   RecipeIngredientState,
-} from "./reducer/types";
+} from "./store/types";
+import { useStore } from "zustand";
+import { useShallow } from "zustand/react/shallow";
 
 const isIngredientComplete = (
   ingredientsCompletion: IngredientsCompletionState,
@@ -37,8 +39,21 @@ type IngredientsTableProps = {
 
 export const IngredientsTable = (props: IngredientsTableProps) => {
   const { group, ingredients } = props;
-  const { ingredientsCompletion, dispatch } = useRecipeContext();
 
+  const recipeStore = useRecipeContext();
+
+  const [
+    ingredientsCompletion,
+    onIngredientCompletionChange,
+    onAllIngredientsCompletionChange,
+  ] = useStore(
+    recipeStore,
+    useShallow((s) => [
+      s.ingredientsCompletion,
+      s.onIngredientCompletionChange,
+      s.onAllIngredientsCompletionChange,
+    ]),
+  );
   if (ingredients.length === 0) {
     return null;
   }
@@ -72,21 +87,9 @@ export const IngredientsTable = (props: IngredientsTableProps) => {
               title="Merk alle ingredienser som fullført"
               onCheckedChange={(checked) => {
                 if (checked === "indeterminate") {
-                  dispatch({
-                    type: "onAllIngredientsCompletionChange",
-                    payload: {
-                      group,
-                      completed: false,
-                    },
-                  });
+                  onAllIngredientsCompletionChange(group, false);
                 } else {
-                  dispatch({
-                    type: "onAllIngredientsCompletionChange",
-                    payload: {
-                      group,
-                      completed: checked,
-                    },
-                  });
+                  onAllIngredientsCompletionChange(group, checked);
                 }
               }}
             />
@@ -114,13 +117,7 @@ export const IngredientsTable = (props: IngredientsTableProps) => {
                     onCheckedChange={(checked) => {
                       if (checked === "indeterminate") return;
 
-                      dispatch({
-                        type: "onIngredientCompletionChange",
-                        payload: {
-                          ingredientId: id,
-                          completed: checked,
-                        },
-                      });
+                      onIngredientCompletionChange(id, checked);
                     }}
                   />
                 </div>

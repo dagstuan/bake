@@ -6,6 +6,8 @@ import { formatAmount } from "@/utils/recipeUtils";
 import { HighlightWithCheckbox } from "@/components/PortableText/HighlightWithCheckbox";
 import { isDefined } from "@/utils/tsUtils";
 import { Highlight } from "../PortableText/Highlight";
+import { useStore } from "zustand";
+import { useShallow } from "zustand/react/shallow";
 
 type RecipeIngredientReferenceResultProps = {
   value: NonNullable<RecipeIngredientReference>;
@@ -14,7 +16,20 @@ type RecipeIngredientReferenceResultProps = {
 export const RecipeIngredientReferenceResult = ({
   value,
 }: RecipeIngredientReferenceResultProps) => {
-  const { ingredients, ingredientsCompletion, dispatch } = useRecipeContext();
+  const recipeStore = useRecipeContext();
+
+  const [
+    ingredients,
+    ingredientsCompletion,
+    onIngredientReferenceCompletionChange,
+  ] = useStore(
+    recipeStore,
+    useShallow((s) => [
+      s.ingredients,
+      s.ingredientsCompletion,
+      s.onIngredientReferenceCompletionChange,
+    ]),
+  );
 
   if (!value.ingredient || !value.ingredient._id) {
     return null;
@@ -44,13 +59,7 @@ export const RecipeIngredientReferenceResult = ({
       checked={ingredientsCompletion[_id]?.[value._key]?.completed ?? false}
       title={`Marker ${labelText?.toLowerCase() ?? "ingrediensen"} som fullført`}
       onCheckedChange={() =>
-        dispatch({
-          type: "onIngredientReferenceCompletionChange",
-          payload: {
-            ingredientId: _id,
-            ingredientReferenceKey: value._key,
-          },
-        })
+        onIngredientReferenceCompletionChange(_id, value._key)
       }
     >
       {labelText}

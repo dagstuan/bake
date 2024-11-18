@@ -26,6 +26,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { TypographyH4 } from "@/components/Typography/TypographyH4";
+import { useStore } from "zustand";
+import { useShallow } from "zustand/react/shallow";
 
 type RecipeEditorProps = {
   triggerClassName?: string;
@@ -37,20 +39,25 @@ export const RecipeEditor = ({
   triggerClassName,
 }: RecipeEditorProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { servings, ingredients, dispatch } = useRecipeContext();
+
+  const recipeStore = useRecipeContext();
+
+  const [servings, ingredients, onServingsChange, onAllIngredientsUnitChange] =
+    useStore(
+      recipeStore,
+      useShallow((s) => [
+        s.servings,
+        s.ingredients,
+        s.onServingsChange,
+        s.onAllIngredientsUnitChange,
+      ]),
+    );
 
   const handleSave = () => {
     setIsOpen(false);
   };
 
-  const handleServingsChange = (newServings: number) =>
-    dispatch({
-      type: "onServingsChange",
-      payload: newServings,
-    });
-
-  const handleAllIngredientsToGramClick = () =>
-    dispatch({ type: "onAllIngredientsUnitChange", payload: "g" });
+  const handleAllIngredientsToGramClick = () => onAllIngredientsUnitChange("g");
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -79,20 +86,20 @@ export const RecipeEditor = ({
               <Button
                 variant="outline"
                 type="button"
-                onClick={() => handleServingsChange(Math.ceil(servings - 1))}
+                onClick={() => onServingsChange(Math.ceil(servings - 1))}
               >
                 <MinusIcon />
               </Button>
               <DeferredNumberInput
                 id="servings"
                 value={parseFloat(formatAmount(servings))}
-                onChange={handleServingsChange}
+                onChange={onServingsChange}
                 className="w-20 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
               />
               <Button
                 variant="outline"
                 type="button"
-                onClick={() => handleServingsChange(Math.floor(servings + 1))}
+                onClick={() => onServingsChange(Math.floor(servings + 1))}
               >
                 <PlusIcon />
               </Button>

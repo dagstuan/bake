@@ -1,5 +1,5 @@
 import { Label } from "@/components/ui/label";
-import { ingredientUnit, RecipeIngredientState } from "../reducer/types";
+import { ingredientUnit, RecipeIngredientState } from "../store/types";
 import { DeferredNumberInput } from "../DeferredNumberInput";
 import { formatAmount } from "@/utils/recipeUtils";
 import { useRecipeContext } from "../recipeContext";
@@ -13,6 +13,7 @@ import {
 import { TableCell, TableRow } from "@/components/ui/table";
 import * as v from "valibot";
 import { editableUnits, formatUnit, isEditableUnit } from "../utils";
+import { useStore } from "zustand";
 
 type IngredientEditorProps = {
   ingredient: RecipeIngredientState;
@@ -23,17 +24,15 @@ export const IngredientEditor = (props: IngredientEditorProps) => {
     ingredient: { id, name, amount, unit, weights },
   } = props;
 
-  const { dispatch } = useRecipeContext();
-
-  const handleIngredientChange = (ingredientId: string, newAmount: number) => {
-    dispatch({
-      type: "onIngredientAmountChange",
-      payload: {
-        ingredientId,
-        newAmount,
-      },
-    });
-  };
+  const recipeStore = useRecipeContext();
+  const onIngredientAmountChange = useStore(
+    recipeStore,
+    (s) => s.onIngredientAmountChange,
+  );
+  const onIngredientUnitChange = useStore(
+    recipeStore,
+    (s) => s.onIngredientUnitChange,
+  );
 
   const handleIngredientUnitChange = (
     ingredientId: string,
@@ -41,13 +40,7 @@ export const IngredientEditor = (props: IngredientEditorProps) => {
   ) => {
     const parsedUnit = v.parse(ingredientUnit, newUnit);
 
-    dispatch({
-      type: "onIngredientUnitChange",
-      payload: {
-        ingredientId,
-        newUnit: parsedUnit,
-      },
-    });
+    onIngredientUnitChange(ingredientId, parsedUnit);
   };
 
   const unitOptions = editableUnits.filter((unit) => {
@@ -87,7 +80,7 @@ export const IngredientEditor = (props: IngredientEditorProps) => {
           max={100000}
           onChange={(newValue) => {
             if (newValue > 0) {
-              handleIngredientChange(
+              onIngredientAmountChange(
                 id,
                 parseFloat(formatAmount(newValue, unit)),
               );
