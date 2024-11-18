@@ -21,7 +21,9 @@ export const RecipesPageContent = ({
   const [recipesList, setRecipesList] = useState<
     NonNullable<RecipesListQueryResult>
   >(recipes ?? []);
-  const [hasMore, setHasMore] = useState(recipesList.length >= amountPerFetch);
+  const [hasMore, setHasMore] = useState(
+    recipesList.length > 0 && recipesList.length >= amountPerFetch,
+  );
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchMore = async () => {
