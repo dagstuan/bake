@@ -38,7 +38,7 @@
     "immer": "^10.1.1",
     "next": "15.0.3",
     "next-sanity": "^9.8.15",
-    "react": "19.0.0-rc-02c0e824-20241028",
+    "react": "19.0.0-rc.1",
     "react-dom": "19.0.0-rc-02c0e824-20241028",
     "react-screen-wake-lock": "^3.0.2",
     "sanity": "^3.64.1",
