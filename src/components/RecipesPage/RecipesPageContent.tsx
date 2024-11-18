@@ -21,9 +21,7 @@ export const RecipesPageContent = ({
   const [recipesList, setRecipesList] = useState<
     NonNullable<RecipesListQueryResult>
   >(recipes ?? []);
-  const [hasMore, setHasMore] = useState(
-    recipesList.length > 0 && recipesList.length >= amountPerFetch,
-  );
+  const [hasMore, setHasMore] = useState(recipesList.length >= amountPerFetch);
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchMore = async () => {
@@ -65,11 +63,11 @@ export const RecipesPageContent = ({
             "Hent flere oppskrifter"
           )}
         </Button>
-      ) : (
+      ) : recipesList.length > 0 ? (
         <p className="mx-auto flex h-9 items-center text-muted-foreground">
           Ingen flere oppskrifter.
         </p>
-      )}
+      ) : null}
     </div>
   );
 };
