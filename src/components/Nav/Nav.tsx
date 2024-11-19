@@ -4,12 +4,17 @@ import Link from "next/link";
 import { TypographyLink } from "../Typography/TypographyLink";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { ComponentProps } from "react";
+import { OmitStrict } from "@/utils/types";
 
 type NavLinkProps = {
   href: string;
   children: React.ReactNode;
   active?: boolean;
-};
+} & OmitStrict<
+  Extract<ComponentProps<typeof TypographyLink>, { type: "internal" }>,
+  "href" | "type"
+>;
 
 const NavLink = ({ href, children, active = false }: NavLinkProps) => (
   <TypographyLink
@@ -41,6 +46,7 @@ export const Nav = () => {
           <li>
             <NavLink
               href="/oppskrifter"
+              prefetch
               active={pathname.startsWith("/oppskrifter")}
             >
               Oppskrifter
