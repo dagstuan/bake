@@ -5,7 +5,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Input } from "../ui/input";
 import { AllCategoriesQueryResult } from "../../../sanity.types";
 import { useDebouncedCallback } from "use-debounce";
-import { TransitionStartFunction, useState, useTransition } from "react";
+import { TransitionStartFunction, useState } from "react";
 import { Button } from "../ui/button";
 
 export const categoryQueryParam = "category";
