@@ -1,9 +1,10 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
 import { recipeType } from "../recipe/recipeType";
 import { ComposeIcon, SearchIcon } from "@sanity/icons";
+import { homeTypeName } from "../constants";
 
 export const homeType = defineType({
-  name: "home",
+  name: homeTypeName,
   title: "Home",
   type: "document",
   icon: () => "🏠",

@@ -132,9 +132,14 @@ export const pageSlugQuery = defineQuery(`*[_id == $pageId][0]{
 }`);
 
 export const homePageQuery = defineQuery(`*[_type == "home"][0]{
+  _id,
+  _type,
   subtitle,
-  recipes[]->{
-    ${recipesListFields}
+  recipes[]{
+    _key,
+    ...(@->{
+      ${recipesListFields}
+    })
   },
 }`);
 
