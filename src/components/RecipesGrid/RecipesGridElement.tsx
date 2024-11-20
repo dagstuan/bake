@@ -6,6 +6,7 @@ import { ClockIcon } from "@radix-ui/react-icons";
 import { RecipesListQueryResult } from "../../../sanity.types";
 import { ArrayElement } from "@/utils/types";
 import { formatDurationShort } from "@/utils/durationUtils";
+import { cn } from "@/lib/utils";
 
 const gridImageWidth = 360;
 const gridImageHeight = 202;
@@ -14,12 +15,14 @@ type RecipesGridElementProps = {
   recipe: ArrayElement<NonNullable<RecipesListQueryResult>>;
   prority?: boolean;
   "data-sanity"?: string;
+  className?: string;
 };
 
 export const RecipesGridElement = ({
   recipe,
   prority,
   "data-sanity": dataSanity,
+  className,
 }: RecipesGridElementProps) => {
   const { _id, slug, title, mainImage, totalTime } = recipe;
 
@@ -30,7 +33,7 @@ export const RecipesGridElement = ({
       data-sanity={dataSanity}
       href={`/oppskrifter/${slug}`}
       key={_id}
-      className="flex flex-col justify-between"
+      className={cn("flex flex-col justify-between", className)}
     >
       <Card className="transition-shadow hover:shadow-md">
         {mainImage ? (

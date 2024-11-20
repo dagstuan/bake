@@ -1,6 +1,5 @@
 "use client";
 
-import { RecipesGrid } from "@/components/RecipesGrid/RecipesGrid";
 import { TypographyH1 } from "@/components/Typography/TypographyH1";
 import { TypographyH2 } from "@/components/Typography/TypographyH2";
 import { TypographyLink } from "@/components/Typography/TypographyLink";
