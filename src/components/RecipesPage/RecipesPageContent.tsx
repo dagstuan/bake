@@ -1,73 +1,48 @@
 "use client";
 
-import { RecipesGrid } from "../RecipesGrid/RecipesGrid";
-import { Button } from "../ui/button";
-import { useState } from "react";
-import { fetchRecipes } from "./fetchRecipes";
-import { SpinnerIcon } from "../icons/SpinnerIcon";
-import { amountPerFetch } from "./utils";
-import { RecipesGridWrapperProps } from "./RecipesPageContentWrapper";
-import { RecipesListQueryResult } from "../../../sanity.types";
+import { Nullable } from "@/utils/types";
+import { RecipesPageGrid } from "./RecipesPageGrid";
+import {
+  AllCategoriesQueryResult,
+  RecipesListQueryResult,
+} from "../../../sanity.types";
+import { RecipesFilters } from "./RecipesFilters";
+import { useTransition } from "react";
+import { TypographyH1 } from "../Typography/TypographyH1";
 
-type RecipesPageContentProps = {
+export type RecipesGridWrapperProps = {
+  categories: AllCategoriesQueryResult;
   recipes: RecipesListQueryResult;
-} & RecipesGridWrapperProps;
+  query: Nullable<string>;
+  category: Nullable<string>;
+};
 
 export const RecipesPageContent = ({
+  categories,
   recipes,
   query,
   category,
-}: RecipesPageContentProps) => {
-  const [recipesList, setRecipesList] = useState<
-    NonNullable<RecipesListQueryResult>
-  >(recipes ?? []);
-  const [hasMore, setHasMore] = useState(recipesList.length >= amountPerFetch);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const fetchMore = async () => {
-    setIsLoading(true);
-    try {
-      const lastRecipe = recipesList[recipesList.length - 1];
-      const newRecipes = await fetchRecipes(
-        query,
-        category,
-        amountPerFetch,
-        lastRecipe._id,
-        lastRecipe._createdAt,
-      );
-
-      if (newRecipes.length < amountPerFetch) {
-        setHasMore(false);
-      }
-      setRecipesList([...recipesList, ...newRecipes]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+}: RecipesGridWrapperProps) => {
+  const [isPending, startTransition] = useTransition();
 
   return (
-    <div className="flex flex-col gap-10">
-      <RecipesGrid recipes={recipesList} />
+    <div className="px-6">
+      <div className="mx-auto mt-8 flex max-w-6xl flex-1 flex-col justify-center gap-12 sm:mt-16">
+        <TypographyH1 className="mx-auto">Alle oppskrifter</TypographyH1>
 
-      {hasMore ? (
-        <Button
-          className="mx-auto max-w-max"
-          disabled={isLoading}
-          onClick={fetchMore}
-        >
-          {isLoading ? (
-            <>
-              <SpinnerIcon className="h-5 w-5 animate-spin" /> Laster...
-            </>
-          ) : (
-            "Hent flere oppskrifter"
-          )}
-        </Button>
-      ) : recipesList.length > 0 ? (
-        <p className="mx-auto flex h-9 items-center text-muted-foreground">
-          Ingen flere oppskrifter.
-        </p>
-      ) : null}
+        <RecipesFilters
+          startTransition={startTransition}
+          categories={categories}
+        />
+
+        <RecipesPageGrid
+          key={`${query}-${category}`}
+          recipes={recipes}
+          query={query}
+          category={category}
+          isTransitionPending={isPending}
+        />
+      </div>
     </div>
   );
 };

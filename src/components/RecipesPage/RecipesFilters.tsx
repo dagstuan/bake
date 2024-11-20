@@ -5,18 +5,19 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Input } from "../ui/input";
 import { AllCategoriesQueryResult } from "../../../sanity.types";
 import { useDebouncedCallback } from "use-debounce";
-import { startTransition, useState } from "react";
+import { TransitionStartFunction, useState, useTransition } from "react";
 import { Button } from "../ui/button";
 
 export const categoryQueryParam = "category";
 export const searchQueryParam = "query";
 
 type RecipesFiltersProps = {
+  startTransition: TransitionStartFunction;
   categories: AllCategoriesQueryResult;
 };
 
 export const RecipesFilters = (props: RecipesFiltersProps) => {
-  const { categories } = props;
+  const { categories, startTransition } = props;
 
   const searchParams = useSearchParams();
   const pathname = usePathname();
