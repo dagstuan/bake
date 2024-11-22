@@ -30,7 +30,7 @@
     "@sanity/preview-url-secret": "^2.0.4",
     "@sanity/ui": "^2.8.24",
     "@sanity/uuid": "^3.0.2",
-    "@sanity/vision": "^3.64.2",
+    "@sanity/vision": "^3.64.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
@@ -41,7 +41,7 @@
     "react": "19.0.0-rc.1",
     "react-dom": "19.0.0-rc.1",
     "react-screen-wake-lock": "^3.0.2",
-    "sanity": "^3.64.2",
+    "sanity": "^3.64.3",
     "sanity-plugin-documents-pane": "^2.3.0",
     "sanity-plugin-iframe-pane": "^3.1.6",
     "sanity-plugin-media": "^2.3.2",
@@ -51,7 +51,7 @@
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
     "use-debounce": "^10.0.4",
-    "valibot": "1.0.0-beta.7",
+    "valibot": "1.0.0-beta.8",
     "zustand": "^5.0.1"
   },
   "devDependencies": {
