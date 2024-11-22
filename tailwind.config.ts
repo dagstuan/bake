@@ -1,5 +1,17 @@
 import type { Config } from "tailwindcss";
+import plugin from "tailwindcss/plugin";
 import tailwindCssAnimatePlugin from "tailwindcss-animate";
+
+const backfaceVisibility = plugin(({ addUtilities }) => {
+  addUtilities({
+    ".backface-visible": {
+      "backface-visibility": "visible",
+    },
+    ".backface-hidden": {
+      "backface-visibility": "hidden",
+    },
+  });
+});
 
 const config: Config = {
   darkMode: ["class"],
@@ -59,6 +71,6 @@ const config: Config = {
       },
     },
   },
-  plugins: [tailwindCssAnimatePlugin],
+  plugins: [tailwindCssAnimatePlugin, backfaceVisibility],
 };
 export default config;
