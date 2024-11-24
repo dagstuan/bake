@@ -9,7 +9,7 @@ export default function Loading() {
 
         <div className="flex w-full flex-col items-center gap-4 overflow-hidden sm:gap-6">
           {/* Search Bar skeleton */}
-          <div className="w-full max-w-xl">
+          <div className="w-full max-w-3xl">
             <Skeleton className="h-10 w-full rounded-lg" />
           </div>
 
