@@ -4,16 +4,16 @@ export default function Loading() {
   return (
     <div className="px-6">
       <div className="mx-auto mt-8 flex max-w-6xl flex-col gap-12 sm:mt-16">
-        {/* Header Skeleton */}
+        {/* Header skeleton */}
         <Skeleton className="mx-auto h-12 w-64" />
 
         <div className="flex w-full flex-col items-center gap-4 overflow-hidden sm:gap-6">
-          {/* Search Bar Skeleton */}
+          {/* Search Bar skeleton */}
           <div className="w-full max-w-xl">
             <Skeleton className="h-10 w-full rounded-lg" />
           </div>
 
-          {/* Categories Skeleton */}
+          {/* Categories skeleton */}
           <div className="mx-auto flex justify-center gap-2 overflow-x-auto">
             {[...Array(8)].map((_, i) => (
               <Skeleton key={i} className="h-8 w-20 flex-shrink-0 rounded-md" />
@@ -21,7 +21,7 @@ export default function Loading() {
           </div>
         </div>
 
-        {/* Recipe Grid Skeleton */}
+        {/* Recipe Grid skeleton */}
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3">
           {[...Array(6)].map((_, i) => (
             <div key={i} className="overflow-hidden rounded-lg border">
