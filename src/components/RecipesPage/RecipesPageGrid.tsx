@@ -58,7 +58,7 @@ export const RecipesPageGrid = ({
         <NoRecipes isTransitionPending={isTransitionPending} />
       ) : (
         <RecipesGridWrapper>
-          {recipes.map((recipe, i) => {
+          {recipesList.map((recipe, i) => {
             return (
               <RecipesGridElement
                 key={recipe._id}
