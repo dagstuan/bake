@@ -7,7 +7,7 @@ import { IngredientUnit } from "../types";
 import { IngredientsCompletionState, RecipeState } from "./types";
 import { calculateTotalYield, getWeightInGramsForUnit } from "./utils";
 
-export const minServings = 1;
+export const minServings = 0.01;
 export const maxServings = 999;
 
 interface RecipeStore extends RecipeState {
