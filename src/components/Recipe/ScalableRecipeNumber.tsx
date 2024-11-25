@@ -6,9 +6,9 @@ import { ScalableRecipeNumber as ScalableRecipeNumberType } from "./types";
 import { Highlight } from "../PortableText/Highlight";
 import { useStore } from "zustand";
 
-type ScalableRecipeNumberProps = {
+interface ScalableRecipeNumberProps {
   value: NonNullable<ScalableRecipeNumberType>;
-};
+}
 
 export const ScalableRecipeNumber = (props: ScalableRecipeNumberProps) => {
   const { number = 0, suffix } = props.value;

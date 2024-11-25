@@ -51,7 +51,7 @@ export const ImageGalleryContent = ({
                   width={imageWidth}
                   height={imageHeight}
                   sizes="(max-width: 768px) 100vw, 70vw"
-                  src={url!}
+                  src={url ?? ""}
                   blurDataURL={image.asset?.metadata?.lqip ?? ""}
                 />
               </CarouselItem>

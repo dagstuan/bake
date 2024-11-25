@@ -50,7 +50,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const imageHeight = 600;
 
   const imageUrl = homeSeo?.seo?.openGraphImage
-    ? (urlForImage(homeSeo?.seo?.openGraphImage)
+    ? (urlForImage(homeSeo.seo.openGraphImage)
         ?.width(imageWidth)
         .height(imageHeight)
         .fit("max")

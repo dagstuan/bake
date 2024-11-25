@@ -10,11 +10,11 @@ export type ImageType = NonNullable<
 const width = 1200;
 const height = 800;
 
-type ImageDialogSingleProps = {
+interface ImageDialogSingleProps {
   title: string;
   description: string;
   image: ImageType;
-};
+}
 
 export const ImageDialogSingle = (props: ImageDialogSingleProps) => {
   const { title, description, image } = props;
@@ -31,7 +31,7 @@ export const ImageDialogSingle = (props: ImageDialogSingleProps) => {
         width={width}
         height={height}
         alt={image.alt ?? "Recipe"}
-        blurDataURL={image?.asset?.metadata?.lqip ?? undefined}
+        blurDataURL={image.asset?.metadata?.lqip ?? undefined}
         sizes="(max-width: 768px) 100vw, 70vw"
       />
     </ImageDialogContent>

@@ -6,9 +6,9 @@ import { Alert as AlertType } from "../../../sanity.types";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 import { PortableText } from "./PortableText";
 
-type PortableTextAlertProps = {
+interface PortableTextAlertProps {
   value: AlertType;
-};
+}
 
 export const PortableTextAlert = (props: PortableTextAlertProps) => {
   const {

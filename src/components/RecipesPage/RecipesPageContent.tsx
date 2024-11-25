@@ -10,12 +10,12 @@ import { RecipesFilters } from "./RecipesFilters";
 import { useTransition } from "react";
 import { TypographyH1 } from "../Typography/TypographyH1";
 
-export type RecipesGridWrapperProps = {
+export interface RecipesGridWrapperProps {
   categories: AllCategoriesQueryResult;
   recipes: RecipesListQueryResult;
   query: Nullable<string>;
   category: Nullable<string>;
-};
+}
 
 export const RecipesPageContent = ({
   categories,

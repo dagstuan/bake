@@ -41,10 +41,10 @@ export const homeType = defineType({
     select: {
       subtitle: "subtitle",
     },
-    prepare({ subtitle }) {
+    prepare(selection) {
       return {
         title: "Home",
-        subtitle,
+        subtitle: `${selection.subtitle}`,
       };
     },
   },

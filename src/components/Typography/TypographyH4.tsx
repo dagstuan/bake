@@ -4,7 +4,7 @@ import { TypographyProps } from "./types";
 export function TypographyH4({
   children,
   className,
-}: TypographyProps): JSX.Element {
+}: TypographyProps): React.JSX.Element {
   return (
     <h4
       className={cn(

@@ -8,10 +8,10 @@ import { formatDurationISO } from "@/utils/recipeUtils";
 import { RecipeQueryResult } from "../../../../sanity.types";
 import { creator, siteUrl } from "@/app/shared-metadata";
 
-type RecipePageProps = {
+interface RecipePageProps {
   params: { slug: string };
   data: RecipeQueryResult | null;
-};
+}
 
 export const RecipePage = (props: RecipePageProps) => {
   const { params, data: recipe } = props;

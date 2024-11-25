@@ -4,10 +4,10 @@ import { MainImage } from "./MainImage";
 
 type RQR = NonNullable<RecipeQueryResult>;
 
-export type RecipeHeaderProps = {
+export interface RecipeHeaderProps {
   title: RQR["title"];
   mainImage: RQR["mainImage"];
-};
+}
 
 export const RecipeHeader = ({ title, mainImage }: RecipeHeaderProps) => {
   return (

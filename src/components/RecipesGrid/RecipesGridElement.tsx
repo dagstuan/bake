@@ -12,12 +12,12 @@ import { stegaClean } from "next-sanity";
 const gridImageWidth = 360;
 const gridImageHeight = 202;
 
-type RecipesGridElementProps = {
+interface RecipesGridElementProps {
   recipe: ArrayElement<NonNullable<RecipesListQueryResult>>;
   prority?: boolean;
   "data-sanity"?: string;
   className?: string;
-};
+}
 
 export const RecipesGridElement = ({
   recipe,
@@ -50,9 +50,9 @@ export const RecipesGridElement = ({
                 .url() ?? ""
             }
             priority={prority}
-            alt={stegaClean(mainImage?.alt ?? "Recipe")}
+            alt={stegaClean(mainImage.alt ?? "Recipe")}
             className="aspect-video w-full rounded-t-lg object-cover"
-            blurDataURL={mainImage?.asset?.metadata?.lqip ?? undefined}
+            blurDataURL={mainImage.asset?.metadata?.lqip ?? undefined}
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 30vw"
           />
         ) : (

@@ -3,9 +3,9 @@ import { RecipeContent } from "./RecipeContent";
 import { notFound } from "next/navigation";
 import { RecipeContextProvider } from "./recipeContext";
 
-type RecipeProps = {
+interface RecipeProps {
   recipe: RecipeQueryResult;
-};
+}
 
 export const Recipe = ({ recipe }: RecipeProps) => {
   if (!recipe) {

@@ -1,4 +1,7 @@
-import { PortableText as SanityPortableText } from "next-sanity";
+import {
+  PortableTextMarkComponentProps,
+  PortableText as SanityPortableText,
+} from "next-sanity";
 import { ComponentProps, useMemo } from "react";
 import { TypographyH2 } from "../Typography/TypographyH2";
 import { TypographyH3 } from "../Typography/TypographyH3";
@@ -15,6 +18,7 @@ import {
 import { type BlockContentImageGallery } from "./ImageGallery/ImageGallery";
 import { TypographyH4 } from "../Typography/TypographyH4";
 import dynamic from "next/dynamic";
+import { TypedObject } from "sanity";
 
 const ImageBox = dynamic(() => import("./ImageBox"));
 
@@ -26,12 +30,12 @@ type SanityPortableTextProps = ComponentProps<typeof SanityPortableText>;
 
 type Components = NonNullable<SanityPortableTextProps["components"]>;
 
-export type PortableTextProps = {
+export interface PortableTextProps {
   value: SanityPortableTextProps["value"];
   types?: Components["types"];
   marks?: Components["marks"];
   block?: Components["block"];
-};
+}
 
 const components: Components = {
   list: {
@@ -63,11 +67,16 @@ const components: Components = {
       <strong className="font-semibold">{children}</strong>
     ),
     highlight: ({ children }) => <Highlight>{children}</Highlight>,
-    link: ({ value, children }) => {
-      const { href } = value;
+    link: ({
+      value,
+      children,
+    }: PortableTextMarkComponentProps<
+      TypedObject & { href: string | null }
+    >) => {
+      const { href } = value ?? {};
 
       return (
-        <TypographyLink href={href} type="external">
+        <TypographyLink href={href ?? ""} type="external">
           {children}
         </TypographyLink>
       );

@@ -28,13 +28,11 @@ const fields = [
 
         const percent = parent.percent;
 
-        if (percent === undefined || percent === null) {
+        if (percent === undefined) {
           return true;
         }
 
-        return value !== undefined && value !== null
-          ? true
-          : "Required if value is set";
+        return value !== undefined ? true : "Required if value is set";
       }),
   }),
   defineField({

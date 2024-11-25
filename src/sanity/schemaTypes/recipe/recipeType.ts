@@ -151,7 +151,7 @@ export const recipeType = defineType({
               return true;
             }
 
-            const instructions = parent?.instructions ?? [];
+            const instructions = parent.instructions ?? [];
             const ingredientRefsInInstructions = instructions
               .reduce<RecipeIngredientReference[]>((acc, block) => {
                 if (block._type === "block") {

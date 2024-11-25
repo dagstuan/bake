@@ -34,7 +34,7 @@ const getDecimalsForValueAndUnit = (
 export const formatAmount = (
   amount: number | null | undefined,
   unit: FormatAmountUnit = undefined,
-  defaultValue: string = "",
+  defaultValue = "",
 ): string => {
   const amountString = amount
     ? `${parseFloat(amount.toFixed(getDecimalsForValueAndUnit(amount, unit)))}`
@@ -66,7 +66,7 @@ const formatTimeValueISO = (timeValue: TimeValue): string => {
 
 export const formatDurationISO = (duration: Duration): string => {
   const { start, end } = duration;
-  const timeValueToFormat = end || start;
+  const timeValueToFormat = end ?? start;
 
   if (timeValueToFormat) {
     return formatTimeValueISO(timeValueToFormat);

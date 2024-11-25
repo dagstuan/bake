@@ -2,7 +2,9 @@ import { nb } from "date-fns/locale";
 import { formatDuration } from "date-fns/formatDuration";
 import { TimeValue, Duration as DurationType } from "../../sanity.types";
 
-export const formatTimeValue = (value: TimeValue): string => {
+export const formatTimeValue = (
+  value: TimeValue | null | undefined,
+): string => {
   if (!value) {
     return "";
   }
@@ -20,7 +22,7 @@ export const formatTimeValue = (value: TimeValue): string => {
 };
 
 const formatTimeValueShort = (value: TimeValue): string | null => {
-  if (!value?.time || value.time === 0 || !value.type) {
+  if (!value.time || value.time === 0 || !value.type) {
     return null;
   }
 

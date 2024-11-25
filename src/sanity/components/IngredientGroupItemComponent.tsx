@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Stack, Card } from "@sanity/ui";
 import { ReactElement, ReactPortal } from "react";
 import { ObjectItemProps, ObjectMember } from "sanity";
@@ -30,7 +33,7 @@ export const IngredientGroupItemComponent = (props: ObjectItemProps) => {
 };
 
 function getChildrenPreview(children: ReactElement | ReactPortal) {
-  const contentMember = children?.props?.children?.props?.members?.find(
+  const contentMember = children.props?.children?.props?.members?.find(
     (member: ObjectMember) => "name" in member && member.name === "ingredients",
   );
 

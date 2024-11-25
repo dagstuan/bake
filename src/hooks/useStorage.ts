@@ -1,6 +1,7 @@
 "use client";
 
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import { BaseIssue, BaseSchema, safeParse } from "valibot";
 
 type StorageType = "localStorage" | "sessionStorage";
 
@@ -10,6 +11,7 @@ export const getStorage = (type: StorageType): Storage =>
 export default function useStorage<T>(
   key: string,
   defaultValue: T,
+  schema: BaseSchema<unknown, unknown, BaseIssue<unknown>>,
   storageType: StorageType = "sessionStorage",
 ): [T, Dispatch<SetStateAction<T>>] {
   const isMounted = useRef(false);
@@ -18,8 +20,9 @@ export default function useStorage<T>(
   useEffect(() => {
     try {
       const item = getStorage(storageType).getItem(key);
-      if (item) {
-        setValue(JSON.parse(item));
+      const parsed = safeParse(schema, item);
+      if (parsed.success) {
+        setValue(parsed.output as T);
       }
     } catch (e) {
       console.log(e);
@@ -27,7 +30,7 @@ export default function useStorage<T>(
     return () => {
       isMounted.current = false;
     };
-  }, [key, storageType]);
+  }, [key, storageType, schema]);
 
   useEffect(() => {
     if (isMounted.current) {

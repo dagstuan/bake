@@ -1,4 +1,4 @@
-export type ArrayElement<T> = T extends Array<infer E> ? E : never;
+export type ArrayElement<T> = T extends (infer E)[] ? E : never;
 
 export type OmitStrict<ObjectType, KeysType extends keyof ObjectType> = Pick<
   ObjectType,

@@ -1,10 +1,10 @@
 import { cn } from "@/lib/utils";
 import { ReactNode } from "react";
 
-type HighlightProps = {
+interface HighlightProps {
   children: ReactNode;
   className?: string;
-};
+}
 
 export const Highlight = ({ children, className }: HighlightProps) => {
   return (

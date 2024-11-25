@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { createJSONStorage, persist, PersistStorage } from "zustand/middleware";
+import { createJSONStorage, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import { isDefined } from "@/utils/tsUtils";
 import { isEditableUnit } from "../utils";
@@ -40,9 +40,11 @@ const resetIngredientsCompletionState = (
 ): IngredientsCompletionState => {
   Object.keys(ingredientsCompletionState).forEach((ingredientId) => {
     const recipeIngredients = ingredientsCompletionState[ingredientId];
-    Object.keys(recipeIngredients).forEach((recipeIngredientKey) => {
-      recipeIngredients[recipeIngredientKey].completed = completed;
-    });
+    if (recipeIngredients) {
+      Object.keys(recipeIngredients).forEach((recipeIngredientKey) => {
+        recipeIngredients[recipeIngredientKey].completed = completed;
+      });
+    }
   });
   return ingredientsCompletionState;
 };
@@ -67,39 +69,46 @@ export const createRecipeStore = (
       immer((set) => ({
         ...initProps,
 
-        resetIngredientsCompletionState: (completed) =>
+        resetIngredientsCompletionState: (completed) => {
           set((state) => {
             state.ingredientsCompletion = resetIngredientsCompletionState(
               state.ingredientsCompletion,
               completed,
             );
-          }),
+          });
+        },
 
         onIngredientReferenceCompletionChange: (
           ingredientId,
           ingredientReferenceKey,
-        ) =>
+        ) => {
           set((state) => {
             const currentIngredient = state.ingredientsCompletion[ingredientId];
-            const currentKeyStatus =
-              currentIngredient[ingredientReferenceKey]?.completed ?? false;
+            if (currentIngredient) {
+              const currentKeyStatus =
+                currentIngredient[ingredientReferenceKey].completed;
 
-            currentIngredient[ingredientReferenceKey] = {
-              completed: !currentKeyStatus,
-            };
-          }),
+              currentIngredient[ingredientReferenceKey] = {
+                completed: !currentKeyStatus,
+              };
+            }
+          });
+        },
 
-        onIngredientCompletionChange: (ingredientId, completed) =>
+        onIngredientCompletionChange: (ingredientId, completed) => {
           set((state) => {
             const ingredientCompletion =
               state.ingredientsCompletion[ingredientId];
 
-            Object.values(ingredientCompletion).forEach((reference) => {
-              reference.completed = completed;
-            });
-          }),
+            if (ingredientCompletion) {
+              Object.values(ingredientCompletion).forEach((reference) => {
+                reference.completed = completed;
+              });
+            }
+          });
+        },
 
-        onAllIngredientsCompletionChange: (group, completed) =>
+        onAllIngredientsCompletionChange: (group, completed) => {
           set((state) => {
             const ingredientsToUpdate = state.ingredients.filter(
               (i) => i.group === group,
@@ -109,15 +118,19 @@ export const createRecipeStore = (
               const ingredientCompletion =
                 state.ingredientsCompletion[ingredient.id];
 
-              for (const recipeIngredientKey of Object.keys(
-                ingredientCompletion,
-              )) {
-                ingredientCompletion[recipeIngredientKey].completed = completed;
+              if (ingredientCompletion) {
+                for (const recipeIngredientKey of Object.keys(
+                  ingredientCompletion,
+                )) {
+                  ingredientCompletion[recipeIngredientKey].completed =
+                    completed;
+                }
               }
             }
-          }),
+          });
+        },
 
-        onServingsChange: (newServings) =>
+        onServingsChange: (newServings) => {
           set((state) => {
             if (
               newServings === 0 ||
@@ -141,9 +154,10 @@ export const createRecipeStore = (
               state.ingredientsCompletion,
               false,
             );
-          }),
+          });
+        },
 
-        onIngredientAmountChange: (ingredientId, newAmount) =>
+        onIngredientAmountChange: (ingredientId, newAmount) => {
           set((state) => {
             if (newAmount === 0 || isNaN(newAmount)) {
               return;
@@ -153,11 +167,7 @@ export const createRecipeStore = (
               (ingredient) => ingredient.id === ingredientId,
             );
 
-            if (
-              !ingredientToUpdate?.amount ||
-              !ingredientToUpdate.unit ||
-              !ingredientToUpdate.weights
-            ) {
+            if (!ingredientToUpdate?.amount || !ingredientToUpdate.unit) {
               return;
             }
 
@@ -170,11 +180,7 @@ export const createRecipeStore = (
             const scaleFactor = newAmountGrams / oldAmountGrams;
 
             state.ingredients.forEach((ingredient) => {
-              if (
-                !ingredient.amount ||
-                !ingredient.unit ||
-                !ingredient.weights
-              ) {
+              if (!ingredient.amount || !ingredient.unit) {
                 return;
               }
 
@@ -191,9 +197,10 @@ export const createRecipeStore = (
               state.ingredientsCompletion,
               false,
             );
-          }),
+          });
+        },
 
-        onIngredientUnitChange: (ingredientId, newUnit) =>
+        onIngredientUnitChange: (ingredientId, newUnit) => {
           set((state) => {
             const ingredientToUpdate = state.ingredients.find(
               (ingredient) => ingredient.id === ingredientId,
@@ -220,13 +227,14 @@ export const createRecipeStore = (
 
             ingredientToUpdate.amount = amountInGrams / newWeightInGrams;
             ingredientToUpdate.unit = newUnit;
-          }),
+          });
+        },
 
-        onAllIngredientsUnitChange: (newUnit) =>
+        onAllIngredientsUnitChange: (newUnit) => {
           set((state) => {
             state.ingredients.forEach((ingredient) => {
               if (
-                !ingredient?.amount ||
+                !ingredient.amount ||
                 !ingredient.unit ||
                 ingredient.unit === newUnit ||
                 !isEditableUnit(ingredient.unit)
@@ -247,12 +255,14 @@ export const createRecipeStore = (
               ingredient.amount = amountInGrams / newWeightInGrams;
               ingredient.unit = newUnit;
             });
-          }),
+          });
+        },
 
-        reset: (newState) =>
+        reset: (newState) => {
           set(() => ({
             ...newState,
-          })),
+          }));
+        },
       })),
       {
         name: storageKey,

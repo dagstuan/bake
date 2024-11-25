@@ -14,14 +14,14 @@ export type BlockContentImageGallery = Extract<
   { _type: "imageGallery" }
 >;
 
-type ImageGalleryProps = {
+interface ImageGalleryProps {
   value: BlockContentImageGallery;
-};
+}
 
 export const ImageGallery = (props: ImageGalleryProps) => {
   const { value } = props;
 
-  if (!value || !value.images || value.images.length === 0 || !value.columns) {
+  if (!value.images || value.images.length === 0 || !value.columns) {
     return null;
   }
 

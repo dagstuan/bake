@@ -15,9 +15,9 @@ import * as v from "valibot";
 import { editableUnits, formatUnit, isEditableUnit } from "../utils";
 import { useStore } from "zustand";
 
-type IngredientEditorProps = {
+interface IngredientEditorProps {
   ingredient: RecipeIngredientState;
-};
+}
 
 export const IngredientEditor = (props: IngredientEditorProps) => {
   const {
@@ -44,10 +44,6 @@ export const IngredientEditor = (props: IngredientEditorProps) => {
   };
 
   const unitOptions = editableUnits.filter((unit) => {
-    if (weights === undefined) {
-      return true;
-    }
-
     switch (unit) {
       case "g":
       case "kg":
@@ -93,7 +89,9 @@ export const IngredientEditor = (props: IngredientEditorProps) => {
         {isEditableUnit(unit) && unitOptions.length > 0 ? (
           <Select
             value={unit}
-            onValueChange={(v) => handleIngredientUnitChange(id, v)}
+            onValueChange={(v) => {
+              handleIngredientUnitChange(id, v);
+            }}
           >
             <SelectTrigger className="w-[120px]">
               <SelectValue />

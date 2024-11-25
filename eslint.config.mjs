@@ -1,14 +1,67 @@
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-import js from "@eslint/js";
-import { FlatCompat } from "@eslint/eslintrc";
+// @ts-check
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all,
-});
-const config = [...compat.extends("next/core-web-vitals", "next/typescript")];
-export default config;
+import js from "@eslint/js";
+import eslintConfigPrettier from "eslint-config-prettier";
+import tseslint from "typescript-eslint";
+import pluginReactHooks from "eslint-plugin-react-hooks";
+import pluginReact from "eslint-plugin-react";
+import globals from "globals";
+import pluginNext from "@next/eslint-plugin-next";
+
+export default [
+  js.configs.recommended,
+  eslintConfigPrettier,
+  ...tseslint.config({
+    extends: [
+      ...tseslint.configs.recommendedTypeChecked,
+      ...tseslint.configs.strictTypeChecked,
+      ...tseslint.configs.stylisticTypeChecked,
+    ],
+    languageOptions: {
+      parserOptions: {
+        projectService: {
+          allowDefaultProject: ["*.js", "*.mjs"],
+        },
+      },
+    },
+    rules: {
+      "@typescript-eslint/restrict-template-expressions": "off",
+    },
+  }),
+  {
+    ...pluginReact.configs.flat?.recommended,
+    languageOptions: {
+      ...pluginReact.configs.flat?.recommended.languageOptions,
+      globals: {
+        ...globals.serviceworker,
+      },
+    },
+  },
+  {
+    plugins: {
+      "@next/next": pluginNext,
+    },
+    rules: {
+      ...pluginNext.configs.recommended.rules,
+      ...pluginNext.configs["core-web-vitals"].rules,
+    },
+  },
+  {
+    plugins: {
+      "react-hooks": pluginReactHooks,
+    },
+    settings: {
+      react: {
+        version: "detect",
+      },
+    },
+    rules: {
+      ...pluginReactHooks.configs.recommended.rules,
+      "react/react-in-jsx-scope": "off",
+      "react/prop-types": "off",
+    },
+  },
+  {
+    ignores: ["dist/**", "sanity.types.ts"],
+  },
+];

@@ -41,7 +41,7 @@ export const formatUnit = (unit: IngredientUnit): string => {
   }
 };
 
-export const editableUnits: Array<IngredientUnit> = [
+export const editableUnits: IngredientUnit[] = [
   "g",
   "kg",
   "l",

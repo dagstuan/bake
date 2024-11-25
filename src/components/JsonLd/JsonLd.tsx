@@ -1,8 +1,8 @@
 import { Thing, WithContext } from "schema-dts";
 
-type JsonLdProps<T extends Thing> = {
+interface JsonLdProps<T extends Thing> {
   jsonLd: WithContext<T>;
-};
+}
 
 export const JsonLd = <T extends Thing>(props: JsonLdProps<T>) => {
   return (
