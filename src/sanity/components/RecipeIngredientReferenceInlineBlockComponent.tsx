@@ -1,4 +1,4 @@
-import { PreviewLayoutKey, PreviewProps } from "sanity";
+import { PreviewProps } from "sanity";
 import {
   Ingredient,
   Recipe,
@@ -8,13 +8,12 @@ import {
 import { useFormValue } from "./utils";
 import { formatAmount } from "@/utils/recipeUtils";
 
-type RecipeIngredientReferenceInlineBlockComponentProps =
-  PreviewProps<PreviewLayoutKey> & {
-    ingredientName: Ingredient["name"];
-    ingredientPercent: RecipeIngredient["percent"];
-    ingredientUnit: RecipeIngredient["unit"];
-    percentage: RecipeIngredientReference["percentage"];
-  };
+type RecipeIngredientReferenceInlineBlockComponentProps = PreviewProps & {
+  ingredientName: Ingredient["name"];
+  ingredientPercent: RecipeIngredient["percent"];
+  ingredientUnit: RecipeIngredient["unit"];
+  percentage: RecipeIngredientReference["percentage"];
+};
 
 const isRecipeIngredientReferenceInlineBlockComponentProps = (
   props: PreviewProps,
@@ -45,7 +44,7 @@ const formatTitle = (
 };
 
 export const RecipeIngredientReferenceInlineBlockComponent = (
-  props: PreviewProps<PreviewLayoutKey>,
+  props: PreviewProps,
 ) => {
   const sumBaseIngredients =
     useFormValue<Recipe["baseDryIngredients"]>(["baseDryIngredients"]) ?? 0;

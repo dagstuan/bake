@@ -12,9 +12,9 @@ const ImageDialogSingle = dynamic(() =>
   ),
 );
 
-export type MainImageProps = {
+export interface MainImageProps {
   mainImage: ComponentProps<typeof RecipeHeader>["mainImage"];
-};
+}
 
 const mainImageWidth = 1024;
 const mainImageHeight = 400;
@@ -43,9 +43,9 @@ export const MainImage = ({ mainImage }: MainImageProps) => {
           }
           width={mainImageWidth}
           height={mainImageHeight}
-          alt={mainImage.alt ?? title ?? "Recipe"}
+          alt={mainImage.alt ?? title}
           priority={true}
-          blurDataURL={mainImage?.asset?.metadata?.lqip ?? undefined}
+          blurDataURL={mainImage.asset?.metadata?.lqip ?? undefined}
           sizes="(max-width: 768px) 100vw, 70vw"
         />
       </DialogTrigger>

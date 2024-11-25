@@ -17,5 +17,5 @@ export const urlForImage = (
     return undefined;
   }
 
-  return imageBuilder?.image(imageSource).quality(75).auto("format");
+  return imageBuilder.image(imageSource).quality(75).auto("format");
 };

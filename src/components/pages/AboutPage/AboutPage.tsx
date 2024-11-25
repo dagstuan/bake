@@ -2,9 +2,9 @@ import { TypographyH1 } from "@/components/Typography/TypographyH1";
 import { AboutQueryResult } from "../../../../sanity.types";
 import { PortableText } from "@/components/PortableText/PortableText";
 
-type AboutPageProps = {
+interface AboutPageProps {
   data: AboutQueryResult;
-};
+}
 
 export const AboutPage = (props: AboutPageProps) => {
   const { data: aboutContent } = props;

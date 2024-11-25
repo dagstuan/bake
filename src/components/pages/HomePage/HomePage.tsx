@@ -11,9 +11,9 @@ import { createTypedDataAttribute } from "@/sanity/utils";
 import { RecipesGridWrapper } from "@/components/RecipesGrid/RecipesGridWrapper";
 import { RecipesGridElement } from "@/components/RecipesGrid/RecipesGridElement";
 
-type HomePageProps = {
+interface HomePageProps {
   data: HomePageQueryResult;
-};
+}
 
 const isHomePage = (data: SanityDocument): data is Home => {
   return data._type === "home" && (data as Home).recipes !== undefined;
@@ -31,7 +31,7 @@ export const HomePage = (props: HomePageProps) => {
       document.recipes
     ) {
       return document.recipes
-        .map((recipe) => currentRecipes?.find((r) => r._key === recipe?._key))
+        .map((recipe) => currentRecipes?.find((r) => r._key === recipe._key))
         .filter((r) => r !== undefined);
     }
 

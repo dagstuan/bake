@@ -38,7 +38,7 @@ export const Image = ({
         )}
         alt={alt}
         priority={priority}
-        onLoad={() => setIsLoaded(true)}
+        onLoad={() => { setIsLoaded(true); }}
       />
     </div>
   );

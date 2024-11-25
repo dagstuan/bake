@@ -1,23 +1,21 @@
 import { Grid, Stack } from "@sanity/ui";
 import { urlForImage } from "../lib/utils";
 import Image from "next/image";
-import { PreviewLayoutKey, PreviewProps } from "sanity";
+import { PreviewProps } from "sanity";
 import { ImageGallery } from "../../../sanity.types";
 
-type ImageGalleryPreviewProps = PreviewProps<PreviewLayoutKey> & {
+type ImageGalleryPreviewProps = PreviewProps & {
   images: ImageGallery["images"];
   columns: ImageGallery["columns"];
 };
 
 const isImageGalleryPreviewProps = (
-  props: PreviewProps<PreviewLayoutKey>,
+  props: PreviewProps,
 ): props is ImageGalleryPreviewProps => {
   return "images" in props && "columns" in props;
 };
 
-export default function ImageGalleryPreviewComponent(
-  props: PreviewProps<PreviewLayoutKey>,
-) {
+export default function ImageGalleryPreviewComponent(props: PreviewProps) {
   if (!isImageGalleryPreviewProps(props)) {
     return props.renderDefault(props);
   }
@@ -35,7 +33,7 @@ export default function ImageGalleryPreviewComponent(
       <>{props.renderDefault(modifiedProps)}</>
       <Grid columns={columns} gap={4}>
         {images?.map((image) => {
-          if (!image || !image.asset?._ref) {
+          if (!image.asset?._ref) {
             return null;
           }
 

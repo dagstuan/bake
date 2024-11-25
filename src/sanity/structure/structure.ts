@@ -4,12 +4,12 @@ import { apiVersion } from "../env";
 
 // https://www.sanity.io/docs/structure-builder-cheat-sheet
 export const resolveStructure = (
-  singletonItems: Array<DocumentDefinition>,
+  singletonItems: DocumentDefinition[],
 ): StructureResolver => {
   return (S) => {
     const singletonChilds = singletonItems.map((typeDef) => {
       return S.listItem()
-        .title(typeDef.title!)
+        .title(typeDef.title ?? typeDef.name)
         .icon(typeDef.icon)
         .child(
           S.defaultDocument({
@@ -64,7 +64,7 @@ export const resolveStructure = (
               "category",
               "recipeIngredient",
               ...singletonChilds.map((c) => c.getId()),
-            ].includes(item.getId()!),
+            ].includes(item.getId()),
         ),
       ]);
   };

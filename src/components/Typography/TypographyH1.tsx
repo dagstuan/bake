@@ -1,10 +1,11 @@
 import { cn } from "@/lib/utils";
 import { TypographyProps } from "./types";
+import React from "react";
 
 export function TypographyH1({
   children,
   className,
-}: TypographyProps): JSX.Element {
+}: TypographyProps): React.JSX.Element {
   return (
     <h1
       className={cn(

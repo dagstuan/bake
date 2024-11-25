@@ -5,16 +5,21 @@ import { useWakeLock } from "react-screen-wake-lock";
 import { Switch } from "../ui/switch";
 import { Label } from "../ui/label";
 import useStorage from "@/hooks/useStorage";
+import React from "react";
+import { literal, union } from "valibot";
+
+const schema = union([literal("true"), literal("false")]);
 
 const isServer = typeof window === "undefined";
 
-export const WakeLockToggle = (): JSX.Element | null => {
+export const WakeLockToggle = (): React.JSX.Element | null => {
   const [isClient, setIsClient] = useState(false);
   const hasInitializedStorage = useRef(false);
   const hasClicked = useRef(false);
   const [storageChecked, setStorageChecked] = useStorage<boolean>(
     "wakeLock",
     false,
+    schema,
     "localStorage",
   );
 
@@ -26,19 +31,28 @@ export const WakeLockToggle = (): JSX.Element | null => {
   const wakeLockActive = useRef(false);
 
   const { isSupported, request, release } = useWakeLock({
-    onRelease: () => setChecked(false),
-    onRequest: () => setChecked(true),
+    onRelease: () => {
+      setChecked(false);
+    },
+    onRequest: () => {
+      setChecked(true);
+    },
   });
 
   const handleCheckedChange = useCallback(
     (checked: boolean) => {
-      if (checked) {
-        wakeLockActive.current = true;
-        request();
-      } else {
-        wakeLockActive.current = false;
-        release();
-      }
+      const effect = async () => {
+        if (checked) {
+          wakeLockActive.current = true;
+          await request();
+        } else {
+          wakeLockActive.current = false;
+          await release();
+        }
+      };
+      effect().catch((err: unknown) => {
+        console.log(err);
+      });
     },
     [request, release],
   );
@@ -46,10 +60,15 @@ export const WakeLockToggle = (): JSX.Element | null => {
   useEffect(() => {
     if (!hasClicked.current) {
       const listener = () => {
-        hasClicked.current = true;
-        if (wakeLockActive.current && !checked) {
-          request();
-        }
+        const effect = async () => {
+          hasClicked.current = true;
+          if (wakeLockActive.current && !checked) {
+            await request();
+          }
+        };
+        effect().catch((err: unknown) => {
+          console.log(err);
+        });
       };
 
       document.addEventListener("click", listener);
@@ -62,13 +81,18 @@ export const WakeLockToggle = (): JSX.Element | null => {
 
   useEffect(() => {
     const listener = () => {
-      if (
-        document.visibilityState === "visible" &&
-        wakeLockActive.current &&
-        !checked
-      ) {
-        request();
-      }
+      const effect = async () => {
+        if (
+          document.visibilityState === "visible" &&
+          wakeLockActive.current &&
+          !checked
+        ) {
+          await request();
+        }
+      };
+      effect().catch((err: unknown) => {
+        console.log(err);
+      });
     };
 
     document.addEventListener("visibilitychange", listener);

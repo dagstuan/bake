@@ -9,9 +9,9 @@ import { Highlight } from "../PortableText/Highlight";
 import { useStore } from "zustand";
 import { useShallow } from "zustand/react/shallow";
 
-type RecipeIngredientReferenceResultProps = {
+interface RecipeIngredientReferenceResultProps {
   value: NonNullable<RecipeIngredientReference>;
-};
+}
 
 export const RecipeIngredientReferenceResult = ({
   value,
@@ -31,7 +31,7 @@ export const RecipeIngredientReferenceResult = ({
     ]),
   );
 
-  if (!value.ingredient || !value.ingredient._id) {
+  if (!value.ingredient?._id) {
     return null;
   }
 
@@ -57,10 +57,10 @@ export const RecipeIngredientReferenceResult = ({
   ) : (
     <HighlightWithCheckbox
       checked={ingredientsCompletion[_id]?.[value._key]?.completed ?? false}
-      title={`Marker ${labelText?.toLowerCase() ?? "ingrediensen"} som fullført`}
-      onCheckedChange={() =>
-        onIngredientReferenceCompletionChange(_id, value._key)
-      }
+      title={`Marker ${labelText.toLowerCase()} som fullført`}
+      onCheckedChange={() => {
+        onIngredientReferenceCompletionChange(_id, value._key);
+      }}
     >
       {labelText}
     </HighlightWithCheckbox>

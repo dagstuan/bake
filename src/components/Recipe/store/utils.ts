@@ -33,7 +33,7 @@ export const calculateTotalYield = (ingredients: RecipeIngredientsState) => {
   return ingredients.reduce((acc, currIngredient) => {
     const { amount, unit, weights } = currIngredient;
 
-    if (!amount || !unit || !weights) {
+    if (!amount || !unit) {
       return acc;
     }
 

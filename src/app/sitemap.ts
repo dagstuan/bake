@@ -24,7 +24,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
       return {
         url: `${siteUrl}/oppskrifter/${recipe.slug}`,
-        lastModified: recipe._updatedAt ?? new Date(),
+        lastModified: recipe._updatedAt,
         changeFrequency: "weekly",
         priority: 0.9,
       };

@@ -3,9 +3,9 @@ import { HeartCrackIcon } from "../icons/HeartCrackIcon";
 import { TypographyH2 } from "../Typography/TypographyH2";
 import { TypographyP } from "../Typography/TypographyP";
 
-type NoRecipesProps = {
+interface NoRecipesProps {
   isTransitionPending: boolean;
-};
+}
 
 export const NoRecipes = ({ isTransitionPending }: NoRecipesProps) => {
   return (

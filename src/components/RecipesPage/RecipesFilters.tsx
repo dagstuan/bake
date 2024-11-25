@@ -11,17 +11,17 @@ import { Button } from "../ui/button";
 export const categoryQueryParam = "category";
 export const searchQueryParam = "query";
 
-type RecipesFiltersProps = {
+interface RecipesFiltersProps {
   startTransition: TransitionStartFunction;
   categories: AllCategoriesQueryResult;
-};
+}
 
 export const RecipesFilters = (props: RecipesFiltersProps) => {
   const { categories, startTransition } = props;
 
   const searchParams = useSearchParams();
   const pathname = usePathname();
-  const { replace } = useRouter();
+  const router = useRouter();
 
   const categoryQuery = searchParams.get(categoryQueryParam);
 
@@ -36,7 +36,7 @@ export const RecipesFilters = (props: RecipesFiltersProps) => {
       params.delete(categoryQueryParam);
     }
     startTransition(() => {
-      replace(`${pathname}?${params.toString()}`, { scroll: false });
+      router.replace(`${pathname}?${params.toString()}`, { scroll: false });
     });
   };
 
@@ -49,7 +49,7 @@ export const RecipesFilters = (props: RecipesFiltersProps) => {
     }
 
     startTransition(() => {
-      replace(`${pathname}?${params.toString()}`, { scroll: false });
+      router.replace(`${pathname}?${params.toString()}`, { scroll: false });
     });
   }, 300);
 
@@ -78,7 +78,9 @@ export const RecipesFilters = (props: RecipesFiltersProps) => {
           />
           {inputValue && (
             <button
-              onClick={() => handleInputChange("")}
+              onClick={() => {
+                handleInputChange("");
+              }}
               className="absolute right-3 top-1/2 -translate-y-1/2 transform text-gray-400 hover:text-gray-600"
               aria-label="Clear search"
             >
@@ -98,7 +100,9 @@ export const RecipesFilters = (props: RecipesFiltersProps) => {
           return (
             <Button
               variant={categoryQuery === slug ? "default" : "outline"}
-              onClick={() => toggleCategory(slug)}
+              onClick={() => {
+                toggleCategory(slug);
+              }}
               key={_id}
             >
               {title}

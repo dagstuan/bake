@@ -25,10 +25,10 @@ const locations = {
       title: "title",
       slug: "slug.current",
     },
-    resolve: (doc) => ({
+    resolve: (doc: { title: string | null; slug: string | null } | null) => ({
       locations: [
         {
-          title: doc?.title || "Untitled",
+          title: doc?.title ?? "Untitled",
           href: `/oppskrifter/${doc?.slug}`,
         },
         {

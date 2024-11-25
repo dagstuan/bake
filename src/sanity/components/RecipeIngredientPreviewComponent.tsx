@@ -37,7 +37,7 @@ const formatTitle = (
     return baseTitle;
   }
 
-  const percent = props.percent ?? 100;
+  const percent = props.percent;
   const amount = sumBaseIngredients * (percent / 100);
 
   return `${baseTitle} - ${formatAmount(amount, props.unit)} (${formatAmount(percent, "%")})`;

@@ -2,11 +2,13 @@ import * as v from "valibot";
 
 const ingredientsCompletionSchema = v.record(
   v.string(),
-  v.record(
-    v.string(),
-    v.object({
-      completed: v.boolean(),
-    }),
+  v.nullable(
+    v.record(
+      v.string(),
+      v.object({
+        completed: v.boolean(),
+      }),
+    ),
   ),
 );
 export type IngredientsCompletionState = v.InferInput<

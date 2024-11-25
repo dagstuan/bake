@@ -30,7 +30,7 @@ export const IngredientsInputComponent = (props: ReferenceInputProps) => {
 
   const [initialPercent, setInitialPercent] = useState("");
 
-  const handleClick = useCallback(async () => {
+  const handleClick = useCallback(() => {
     const newDocumentId = uuid();
 
     const percent =
@@ -86,7 +86,9 @@ export const IngredientsInputComponent = (props: ReferenceInputProps) => {
         </Text>
         <Flex gap={3} direction={["column", "column", "row"]}>
           <TextInput
-            onChange={(event) => setInitialPercent(event.currentTarget.value)}
+            onChange={(event) => {
+              setInitialPercent(event.currentTarget.value);
+            }}
             value={initialPercent}
             type="number"
             placeholder="Initial amount"

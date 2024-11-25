@@ -32,10 +32,10 @@ const isIngredientComplete = (
   return Object.values(ingredient).every((x) => x.completed);
 };
 
-type IngredientsTableProps = {
+interface IngredientsTableProps {
   group: string | null;
-  ingredients: Array<RecipeIngredientState>;
-};
+  ingredients: RecipeIngredientState[];
+}
 
 export const IngredientsTable = (props: IngredientsTableProps) => {
   const { group, ingredients } = props;
@@ -62,13 +62,9 @@ export const IngredientsTable = (props: IngredientsTableProps) => {
     return isIngredientComplete(ingredientsCompletion, id);
   });
 
-  const anyIngredientsComplete = ingredientsCompletionMap.some(
-    (x) => x === true,
-  );
+  const anyIngredientsComplete = ingredientsCompletionMap.some((x) => x);
 
-  const allIngredientsComplete = ingredientsCompletionMap.every(
-    (x) => x === true,
-  );
+  const allIngredientsComplete = ingredientsCompletionMap.every((x) => x);
 
   const anyWithAmount = ingredients.some(({ amount }) => !!amount);
 

@@ -15,7 +15,7 @@ export default function Loading() {
 
           {/* Categories skeleton */}
           <div className="mx-auto flex justify-center gap-2 overflow-x-auto">
-            {[...Array(8)].map((_, i) => (
+            {[...(Array(8) as number[])].map((_, i) => (
               <Skeleton key={i} className="h-8 w-20 flex-shrink-0 rounded-md" />
             ))}
           </div>
@@ -23,7 +23,7 @@ export default function Loading() {
 
         {/* Recipe Grid skeleton */}
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3">
-          {[...Array(6)].map((_, i) => (
+          {[...(Array(6) as number[])].map((_, i) => (
             <div key={i} className="overflow-hidden rounded-lg border">
               <Skeleton className="aspect-video w-full rounded-b-none rounded-t-lg" />
               <div className="flex justify-between p-4">

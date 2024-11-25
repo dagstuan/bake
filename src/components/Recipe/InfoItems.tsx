@@ -6,11 +6,11 @@ import { InfoItem } from "./InfoItem";
 import { formatDurationType } from "./utils";
 import { Duration } from "../../../sanity.types";
 
-type InfoItemsProps = {
+interface InfoItemsProps {
   servings: number;
   activeTime: Duration | null;
   totalTime: Duration | null;
-};
+}
 
 export const InfoItems = ({
   servings,

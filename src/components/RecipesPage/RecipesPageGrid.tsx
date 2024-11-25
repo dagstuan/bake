@@ -12,12 +12,12 @@ import { RecipesGridWrapper } from "../RecipesGrid/RecipesGridWrapper";
 import { RecipesGridElement } from "../RecipesGrid/RecipesGridElement";
 import { cn } from "@/lib/utils";
 
-type RecipesPageGridProps = {
+interface RecipesPageGridProps {
   recipes: RecipesListQueryResult;
   query: Nullable<string>;
   category: Nullable<string>;
   isTransitionPending: boolean;
-};
+}
 
 export const RecipesPageGrid = ({
   recipes,
@@ -25,9 +25,8 @@ export const RecipesPageGrid = ({
   category,
   isTransitionPending,
 }: RecipesPageGridProps) => {
-  const [recipesList, setRecipesList] = useState<
-    NonNullable<RecipesListQueryResult>
-  >(recipes ?? []);
+  const [recipesList, setRecipesList] =
+    useState<NonNullable<RecipesListQueryResult>>(recipes);
   const [hasMore, setHasMore] = useState(recipesList.length >= amountPerFetch);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -77,7 +76,11 @@ export const RecipesPageGrid = ({
         <Button
           className="mx-auto max-w-max"
           disabled={isLoading}
-          onClick={fetchMore}
+          onClick={() => {
+            void (async () => {
+              await fetchMore();
+            })();
+          }}
         >
           {isLoading ? (
             <>

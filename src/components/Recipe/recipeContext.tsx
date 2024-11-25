@@ -4,24 +4,25 @@ import { createContext, useContext, useRef } from "react";
 import { RecipeQueryResult } from "../../../sanity.types";
 import { calcInitialState } from "./store/initialState";
 import { createRecipeStore } from "./store/recipeStore";
+import React from "react";
 
 type RecipeStore = ReturnType<typeof createRecipeStore>;
 
 const RecipeStoreContext = createContext<RecipeStore | null>(null);
 
-export type RecipeContextProviderProps = {
+export interface RecipeContextProviderProps {
   children: React.ReactNode;
   recipe: NonNullable<RecipeQueryResult>;
-};
+}
 
 export const RecipeContextProvider = ({
   recipe,
   children,
-}: RecipeContextProviderProps): JSX.Element => {
+}: RecipeContextProviderProps): React.JSX.Element => {
   const recipeStore = useRef<RecipeStore>(
     createRecipeStore(
       calcInitialState(recipe),
-      `recipe-${recipe?._id ?? "unknown"}`,
+      `recipe-${recipe._id}`,
       recipe._rev,
     ),
   ).current;

@@ -55,7 +55,7 @@ const mapIngredientReferenceToIngredient = (
 ): RecipeIngredientState | null => {
   const { _id, ingredient, percent, unit, comment } = ingredientRef ?? {};
 
-  if (!_id || !ingredient || !ingredient.name) {
+  if (!_id || !ingredient?.name) {
     return null;
   }
 
@@ -84,7 +84,7 @@ const calcInitialRecipeIngredientsState = (
   const ingredientsState =
     recipeIngredientsQueryResult
       ?.map((ingredientRef) => {
-        if (ingredientRef?._type === "reference") {
+        if (ingredientRef._type === "reference") {
           return [
             mapIngredientReferenceToIngredient(
               baseDryIngredients,

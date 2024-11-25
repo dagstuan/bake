@@ -9,11 +9,11 @@ import { Content as DialogPrimitiveContent } from "@radix-ui/react-dialog";
 import { VisuallyHidden } from "../ui/visuallyHidden";
 import { Cross2Icon } from "@radix-ui/react-icons";
 
-type ImageDialogContentProps = {
+interface ImageDialogContentProps {
   children: React.ReactNode;
   title: string;
   description: string;
-};
+}
 
 export const ImageDialogContent = (props: ImageDialogContentProps) => {
   const { children, title, description } = props;

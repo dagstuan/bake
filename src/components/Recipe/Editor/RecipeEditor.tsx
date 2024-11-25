@@ -29,10 +29,10 @@ import { TypographyH4 } from "@/components/Typography/TypographyH4";
 import { useStore } from "zustand";
 import { useShallow } from "zustand/react/shallow";
 
-type RecipeEditorProps = {
+interface RecipeEditorProps {
   triggerClassName?: string;
   onReset: () => void;
-};
+}
 
 export const RecipeEditor = ({
   onReset,
@@ -57,7 +57,9 @@ export const RecipeEditor = ({
     setIsOpen(false);
   };
 
-  const handleAllIngredientsToGramClick = () => onAllIngredientsUnitChange("g");
+  const handleAllIngredientsToGramClick = () => {
+    onAllIngredientsUnitChange("g");
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -86,7 +88,9 @@ export const RecipeEditor = ({
               <Button
                 variant="outline"
                 type="button"
-                onClick={() => onServingsChange(Math.ceil(servings - 1))}
+                onClick={() => {
+                  onServingsChange(Math.ceil(servings - 1));
+                }}
               >
                 <MinusIcon />
               </Button>
@@ -99,7 +103,9 @@ export const RecipeEditor = ({
               <Button
                 variant="outline"
                 type="button"
-                onClick={() => onServingsChange(Math.floor(servings + 1))}
+                onClick={() => {
+                  onServingsChange(Math.floor(servings + 1));
+                }}
               >
                 <PlusIcon />
               </Button>

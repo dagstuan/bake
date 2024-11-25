@@ -9,12 +9,12 @@ import {
 import { sanityFetch } from "@/sanity/lib/live";
 import { RecipePage } from "@/components/pages/RecipePage/RecipePage";
 
-type Props = {
+interface Props {
   params: Promise<{ slug: string }>;
-};
+}
 
 export async function generateStaticParams(): Promise<
-  Array<Awaited<Props["params"]>>
+  Awaited<Props["params"]>[]
 > {
   const { data: recipes } = await sanityFetch({
     query: allRecipesSlugQuery,
@@ -23,7 +23,7 @@ export async function generateStaticParams(): Promise<
   });
 
   return recipes
-    .map((r) => r?.slug)
+    .map((r) => r.slug)
     .filter((s) => s !== null)
     .map((slug) => ({
       slug,
