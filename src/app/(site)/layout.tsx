@@ -18,6 +18,7 @@ import Script from "next/script";
 import { DynamicDisableDraftMode } from "./DynamicDisableDraftMode";
 import dynamic from "next/dynamic";
 import { sanityFetch } from "@/sanity/lib/live";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 const SanityLive = dynamic(() =>
   import("@/sanity/lib/live").then((mod) => mod.SanityLive),
@@ -145,13 +146,21 @@ export default async function RootLayout({
   const draftModeEnabled = (await draftMode()).isEnabled;
 
   return (
-    <html lang="no">
+    <html lang="no" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col bg-zinc-50 text-black antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col bg-background text-foreground antialiased`}
       >
-        <Nav />
-        <div className="flex-1">{children}</div>
-        <Footer />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Nav />
+          <div className="flex-1">{children}</div>
+          <Footer />
+        </ThemeProvider>
+
         <JsonLd jsonLd={jsonLd} />
         <Script
           strategy="lazyOnload"

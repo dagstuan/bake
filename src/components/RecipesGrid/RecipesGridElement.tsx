@@ -51,7 +51,7 @@ export const RecipesGridElement = ({
             }
             priority={prority}
             alt={stegaClean(mainImage.alt ?? "Recipe")}
-            className="aspect-video w-full rounded-t-lg object-cover"
+            className="aspect-video w-full rounded-t-xl object-cover"
             blurDataURL={mainImage.asset?.metadata?.lqip ?? undefined}
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 30vw"
           />
@@ -61,7 +61,9 @@ export const RecipesGridElement = ({
           </div>
         )}
         <div className="flex justify-between p-4">
-          <h2 className="text-xl font-semibold">{stegaClean(title)}</h2>
+          <h2 className="text-xl font-semibold text-card-foreground">
+            {stegaClean(title)}
+          </h2>
           {duration && (
             <div className="flex items-center gap-1 text-sm text-muted-foreground">
               <ClockIcon /> {duration}

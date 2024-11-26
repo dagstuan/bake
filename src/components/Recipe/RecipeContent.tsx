@@ -31,6 +31,7 @@ import { InfoItems } from "./InfoItems";
 import { calcInitialState } from "./store/initialState";
 import { useStore } from "zustand";
 import { useShallow } from "zustand/react/shallow";
+import { Card } from "../ui/card";
 
 const RecipeEditor = dynamic(() =>
   import("./Editor/RecipeEditor").then((mod) => mod.RecipeEditor),
@@ -95,8 +96,8 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
       <div className="prose-lg prose container mx-auto flex max-w-5xl flex-col gap-8 pt-10 sm:pt-16">
         <RecipeHeader title={title} mainImage={mainImage} />
         <div className="grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-8">
-          <div className="col-span-full flex flex-col gap-6 md:col-span-4 md:gap-8">
-            <div className="flex flex-col gap-6 rounded-lg bg-primary/5 p-4">
+          <div className="col-span-full flex flex-col gap-6 md:col-span-4">
+            <Card className="flex flex-col gap-6 rounded-lg p-4">
               <div className="flex flex-col gap-2">
                 <div className="flex flex-wrap gap-2">
                   <RecipeEditor
@@ -121,9 +122,9 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
                 activeTime={activeTime}
                 totalTime={totalTime}
               />
-            </div>
+            </Card>
 
-            <div className="flex flex-col gap-2 rounded-lg bg-primary/5 p-4">
+            <Card className="flex flex-col gap-2 rounded-lg p-4">
               <TypographyH3 as="h2">Ingredienser</TypographyH3>
 
               <IngredientsTable
@@ -148,7 +149,7 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
                   </Fragment>
                 );
               })}
-            </div>
+            </Card>
           </div>
           <div className="col-span-full align-baseline md:col-span-8">
             <TypographyH2>Fremgangsmåte</TypographyH2>
