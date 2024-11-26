@@ -10,7 +10,7 @@ export const Highlight = ({ children, className }: HighlightProps) => {
   return (
     <span
       className={cn(
-        "inline-block rounded-md border border-gray-200 bg-accent px-1 text-base font-medium leading-6 text-accent-foreground",
+        "inline-block rounded-md border bg-secondary px-1 text-base font-medium leading-6 text-secondary-foreground",
         className,
       )}
     >
