@@ -21,8 +21,8 @@ export default function useStorage<T>(
     try {
       const item = getStorage(storageType).getItem(key);
       const parsed = safeParse(schema, item);
-      if (parsed.success) {
-        setValue(parsed.output as T);
+      if (item && parsed.success) {
+        setValue(JSON.parse(item) as T);
       }
     } catch (e) {
       console.log(e);
