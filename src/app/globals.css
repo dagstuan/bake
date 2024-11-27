@@ -4,7 +4,6 @@
 
 @layer base {
   :root {
-    --gradient: #603813;
     --background: 0 0% 100%;
     --foreground: 0 0% 0%;
     --muted: 31 6.7% 92.3%;
@@ -47,7 +46,6 @@
     --border: 29 30% 18%;
     --input: 29 30% 18%;
     --ring: 29 67% 22.5%;
-    --radius: 0.5rem;
   }
 }
 
