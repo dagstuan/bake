@@ -3,9 +3,10 @@
 import Link from "next/link";
 import { TypographyLink } from "../Typography/TypographyLink";
 import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
 import { ComponentProps } from "react";
 import { OmitStrict } from "@/utils/types";
+import { DarkModeToggle } from "../DarkModeToggle";
+import { Button } from "../ui/button";
 
 type NavLinkProps = {
   href: string;
@@ -17,15 +18,9 @@ type NavLinkProps = {
 >;
 
 const NavLink = ({ href, children, active = false }: NavLinkProps) => (
-  <TypographyLink
-    className={cn({
-      ["underline"]: active,
-    })}
-    type="internal"
-    href={href}
-  >
-    {children}
-  </TypographyLink>
+  <Button asChild variant={active ? "default" : "outline"}>
+    <Link href={href}>{children}</Link>
+  </Button>
 );
 
 export const Nav = () => {
@@ -37,7 +32,7 @@ export const Nav = () => {
         <Link href="/" className="text-4xl">
           🍞
         </Link>
-        <ul className="flex gap-4">
+        <ul className="flex items-center gap-2">
           <li>
             <NavLink href="/om" active={pathname === "/om"}>
               Om
@@ -51,6 +46,9 @@ export const Nav = () => {
             >
               Oppskrifter
             </NavLink>
+          </li>
+          <li>
+            <DarkModeToggle />
           </li>
         </ul>
       </div>
