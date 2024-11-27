@@ -10,8 +10,10 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
 import { cn } from "@/lib/utils";
+import { SunIcon } from "./icons/SunIcon";
+import { MoonIcon } from "./icons/MoonIcon";
+import { SunMoonIcon } from "./icons/SunMoonIcon";
 
 export function DarkModeToggle() {
   const { theme, setTheme } = useTheme();
@@ -34,7 +36,7 @@ export function DarkModeToggle() {
             setTheme("light");
           }}
         >
-          Lyst tema
+          <SunIcon /> Lyst tema
         </DropdownMenuItem>
         <DropdownMenuItem
           className={cn({
@@ -44,7 +46,7 @@ export function DarkModeToggle() {
             setTheme("dark");
           }}
         >
-          Mørkt tema
+          <MoonIcon /> Mørkt tema
         </DropdownMenuItem>
         <DropdownMenuItem
           className={cn({
@@ -54,7 +56,7 @@ export function DarkModeToggle() {
             setTheme("system");
           }}
         >
-          Systemstyrt
+          <SunMoonIcon /> Automatisk
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
