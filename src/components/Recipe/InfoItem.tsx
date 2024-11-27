@@ -12,7 +12,7 @@ interface InfoItemProps {
 
 export const InfoItem = ({ icon, label, value, info }: InfoItemProps) => (
   <Popover>
-    <PopoverAnchor className="flex items-center justify-between gap-2 rounded-lg border bg-background px-3 py-1 text-sm text-foreground shadow">
+    <PopoverAnchor className="flex items-center justify-between gap-2 rounded-lg border bg-background px-3 py-1 text-sm text-foreground">
       <div className="flex items-center space-x-2">
         {icon}
         <span className="font-medium">{label}:</span>
