@@ -170,7 +170,7 @@ const CarouselContent = forwardRef<
       <div
         ref={ref}
         className={cn(
-          "backface-hidden flex",
+          "flex backface-hidden",
           orientation === "horizontal" ? "-ml-4" : "-mt-4 flex-col",
           className,
         )}
