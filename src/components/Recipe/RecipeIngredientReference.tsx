@@ -4,7 +4,7 @@ import { RecipeIngredientReference } from "./types";
 import { useRecipeContext } from "./recipeContext";
 import { formatAmount } from "@/utils/recipeUtils";
 import { HighlightWithCheckbox } from "@/components/PortableText/HighlightWithCheckbox";
-import { isDefined } from "@/utils/tsUtils";
+import { isDefined, unCapitalize } from "@/utils/tsUtils";
 import { Highlight } from "../PortableText/Highlight";
 import { useStore } from "zustand";
 import { useShallow } from "zustand/react/shallow";
@@ -50,7 +50,7 @@ export const RecipeIngredientReferenceResult = ({
     ? `${formatAmount(mappedAmount, ingredientState?.unit)} `
     : "";
 
-  const labelText = `${amountLabel}${name}`;
+  const labelText = `${amountLabel}${unCapitalize(name)}${ingredientState?.comment ? ` (${ingredientState.comment})` : ""}`;
 
   return hideCheckbox ? (
     <Highlight>{labelText}</Highlight>
