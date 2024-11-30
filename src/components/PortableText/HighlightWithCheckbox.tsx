@@ -22,9 +22,9 @@ export const HighlightWithCheckbox = (props: HighlightWithCheckboxProps) => {
   return (
     <Highlight
       className={cn(
-        "bg-muted pl-0 pr-1 align-baseline focus-within:bg-secondary focus-within:ring-1 focus-within:ring-muted-foreground hover:cursor-pointer hover:bg-muted-foreground/20 dark:hover:bg-muted-foreground/25",
+        "pl-0 pr-1 align-baseline focus-within:bg-muted focus-within:ring-1 focus-within:ring-muted-foreground hover:cursor-pointer hover:bg-muted-foreground/20 dark:hover:bg-muted-foreground/25",
         {
-          ["bg-secondary text-muted-foreground hover:bg-muted"]: checked,
+          ["bg-muted text-muted-foreground hover:bg-secondary"]: checked,
         },
       )}
     >
