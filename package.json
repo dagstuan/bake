@@ -30,7 +30,7 @@
     "@sanity/icons": "^3.5.0",
     "@sanity/image-url": "^1.1.0",
     "@sanity/preview-url-secret": "^2.0.4",
-    "@sanity/ui": "^2.8.26",
+    "@sanity/ui": "^2.9.0",
     "@sanity/uuid": "^3.0.2",
     "@sanity/vision": "^3.65.1",
     "class-variance-authority": "^0.7.1",
@@ -54,16 +54,16 @@
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
     "use-debounce": "^10.0.4",
-    "valibot": "1.0.0-beta.8",
+    "valibot": "1.0.0-beta.9",
     "zustand": "^5.0.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
-    "@eslint/js": "^9.15.0",
+    "@eslint/js": "^9.16.0",
     "@types/node": "^22.10.1",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
-    "eslint": "^9.15.0",
+    "eslint": "^9.16.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-react": "^7.37.2",
     "eslint-plugin-react-hooks": "^5.0.0",
@@ -75,7 +75,7 @@
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.16.0"
   },
-  "packageManager": "pnpm@9.14.3",
+  "packageManager": "pnpm@9.14.4",
   "pnpm": {
     "peerDependencyRules": {
       "allowAny": [
