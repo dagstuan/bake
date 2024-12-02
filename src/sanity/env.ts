@@ -11,7 +11,7 @@ export const projectId = assertValue(
   "Missing environment variable: NEXT_PUBLIC_SANITY_PROJECT_ID",
 );
 
-export const studioUrl = "/studio";
+export const studioUrl = "/studio#";
 
 export const draftModeRoute = "/api/draft-mode/enable";
 
