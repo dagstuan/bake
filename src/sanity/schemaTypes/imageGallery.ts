@@ -17,7 +17,7 @@ const fields = [
             type: "string",
             title: "Caption",
             description:
-              "⚡ Optional but highly encouraged to contextualize readers as they navigate through your project's images.",
+              "⚡ Optional but highly encouraged to contextualize readers as they navigate through the gallery images.",
             validation: (rule) =>
               rule
                 .required()

@@ -15,7 +15,7 @@ const imageFields = /* groq */ `
     metadata {
       lqip
     }
-  },`;
+  }`;
 
 const recipesListFields = /* groq */ `
   _id,
@@ -119,7 +119,8 @@ export const recipeQuery =
       _type == "${imageGalleryTypeName}" => {
         ...,
         images[] {
-          ${imageFields}
+          ${imageFields},
+          caption
         }
       }
     },

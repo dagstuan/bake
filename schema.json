@@ -986,6 +986,21 @@
                   "type": "inline",
                   "name": "alert"
                 }
+              },
+              {
+                "type": "object",
+                "attributes": {
+                  "_key": {
+                    "type": "objectAttribute",
+                    "value": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "rest": {
+                  "type": "inline",
+                  "name": "imageGallery"
+                }
               }
             ]
           }
@@ -2490,6 +2505,21 @@
             "rest": {
               "type": "inline",
               "name": "alert"
+            }
+          },
+          {
+            "type": "object",
+            "attributes": {
+              "_key": {
+                "type": "objectAttribute",
+                "value": {
+                  "type": "string"
+                }
+              }
+            },
+            "rest": {
+              "type": "inline",
+              "name": "imageGallery"
             }
           }
         ]
