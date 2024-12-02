@@ -33,12 +33,18 @@ export const ImageGalleryContent = ({
       >
         <CarouselContent tabIndex={0} className="focus:outline-none">
           {images.map((image, index) => {
-            const url = urlForImage(image)
-              ?.width(imageWidth)
-              .height(imageHeight)
-              .dpr(2)
-              .fit("max")
-              .url();
+            const url = image.asset
+              ? urlForImage(image)
+                  ?.width(imageWidth)
+                  .height(imageHeight)
+                  .dpr(2)
+                  .fit("max")
+                  .url()
+              : null;
+
+            if (!url) {
+              return null;
+            }
 
             return (
               <CarouselItem
@@ -51,7 +57,7 @@ export const ImageGalleryContent = ({
                   width={imageWidth}
                   height={imageHeight}
                   sizes="(max-width: 768px) 100vw, 70vw"
-                  src={url ?? ""}
+                  src={url}
                   blurDataURL={image.asset?.metadata?.lqip ?? ""}
                 />
               </CarouselItem>

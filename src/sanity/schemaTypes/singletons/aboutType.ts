@@ -1,6 +1,6 @@
 import { ComposeIcon } from "@sanity/icons";
 import { defineField, defineType } from "sanity";
-import { blockContentType } from "../portableText/blockContentType";
+import { blockContentTypeName } from "../constants";
 
 export const aboutType = defineType({
   name: "about",
@@ -19,7 +19,7 @@ export const aboutType = defineType({
     defineField({
       name: "body",
       title: "Innhold",
-      type: blockContentType.name,
+      type: blockContentTypeName,
     }),
   ],
 });

@@ -50,11 +50,17 @@ export const ImageGallery = (props: ImageGalleryProps) => {
   return (
     <div className={`grid ${gridCols} my-6 gap-4`}>
       {images.map((image, index) => {
-        const url = urlForImage(image)
-          ?.width(gridSize)
-          .height(gridSize)
-          .fit("max")
-          .url();
+        const url = image.asset
+          ? urlForImage(image)
+              ?.width(gridSize)
+              .height(gridSize)
+              .fit("max")
+              .url()
+          : null;
+
+        if (!url) {
+          return null;
+        }
 
         return (
           <Dialog key={image.asset?._id ?? index}>
@@ -65,7 +71,7 @@ export const ImageGallery = (props: ImageGalleryProps) => {
                 width={gridSize}
                 height={gridSize}
                 sizes={sizes}
-                src={url ?? ""}
+                src={url}
                 blurDataURL={image.asset?.metadata?.lqip ?? ""}
               />
             </DialogTrigger>

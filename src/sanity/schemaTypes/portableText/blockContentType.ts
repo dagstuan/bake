@@ -4,7 +4,7 @@ import { alertType } from "../alertType";
 import { baseBlockStyles } from "./baseBlockStyles";
 import { baseBlockLists } from "./baseBlockLists";
 import { baseBlockMarks } from "./baseBlockMarks";
-import { imageGalleryTypeName } from "../constants";
+import { blockContentTypeName, imageGalleryTypeName } from "../constants";
 
 export const alertArrayMember = defineArrayMember({
   type: alertType.name,
@@ -31,7 +31,7 @@ export const imageGalleryArrayMember = defineArrayMember({
 
 export const blockContentType = defineType({
   title: "Block Content",
-  name: "blockContent",
+  name: blockContentTypeName,
   type: "array",
   of: [
     defineArrayMember({
@@ -42,5 +42,6 @@ export const blockContentType = defineType({
     }),
     imageArrayMember,
     alertArrayMember,
+    imageGalleryArrayMember,
   ],
 });

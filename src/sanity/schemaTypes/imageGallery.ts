@@ -31,6 +31,7 @@ const fields = [
               "Optional. If the caption above is descriptive enough, there's no need to fill this field. Else, consider adding alternative text to make content more accessible.",
           }),
         ],
+        validation: (rule) => rule.required(),
       }),
     ],
     options: {
