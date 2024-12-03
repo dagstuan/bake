@@ -8,7 +8,7 @@ import React from "react";
 
 type RecipeStore = ReturnType<typeof createRecipeStore>;
 
-const RecipeStoreContext = createContext<RecipeStore | null>(null);
+const RecipeStoreContext = createContext<(() => RecipeStore) | null>(null);
 
 export interface RecipeContextProviderProps {
   children: React.ReactNode;
@@ -19,29 +19,35 @@ export const RecipeContextProvider = ({
   recipe,
   children,
 }: RecipeContextProviderProps): React.JSX.Element => {
-  const recipeStore = useRef<RecipeStore>(
-    createRecipeStore(
-      calcInitialState(recipe),
-      `recipe-${recipe._id}`,
-      recipe._rev,
-    ),
-  ).current;
+  const recipeStore = useRef<RecipeStore | null>(null);
+
+  const getRecipeStore = () => {
+    if (!recipeStore.current) {
+      recipeStore.current = createRecipeStore(
+        calcInitialState(recipe),
+        `recipe-${recipe._id}`,
+        recipe._rev,
+      );
+    }
+
+    return recipeStore.current;
+  };
 
   return (
-    <RecipeStoreContext.Provider value={recipeStore}>
+    <RecipeStoreContext.Provider value={getRecipeStore}>
       {children}
     </RecipeStoreContext.Provider>
   );
 };
 
 export const useRecipeContext = () => {
-  const store = useContext(RecipeStoreContext);
+  const getRecipeStore = useContext(RecipeStoreContext);
 
-  if (!store) {
+  if (!getRecipeStore) {
     throw Error(
       "useRecipeContext must be used within a RecipeStoreContext.Provider",
     );
   }
 
-  return store;
+  return getRecipeStore();
 };

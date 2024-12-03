@@ -7,6 +7,7 @@ import pluginReactHooks from "eslint-plugin-react-hooks";
 import pluginReact from "eslint-plugin-react";
 import globals from "globals";
 import pluginNext from "@next/eslint-plugin-next";
+import reactCompiler from "eslint-plugin-react-compiler";
 
 export default [
   js.configs.recommended,
@@ -44,6 +45,15 @@ export default [
     rules: {
       ...pluginNext.configs.recommended.rules,
       ...pluginNext.configs["core-web-vitals"].rules,
+    },
+  },
+  {
+    name: "react-compiler/recommended",
+    plugins: {
+      "react-compiler": reactCompiler,
+    },
+    rules: {
+      "react-compiler/react-compiler": "error",
     },
   },
   {
