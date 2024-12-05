@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useRef } from "react";
+import { createContext, use, useRef } from "react";
 import { RecipeQueryResult } from "../../../sanity.types";
 import { calcInitialState } from "./store/initialState";
 import { createRecipeStore } from "./store/recipeStore";
@@ -34,19 +34,15 @@ export const RecipeContextProvider = ({
   };
 
   return (
-    <RecipeStoreContext.Provider value={getRecipeStore}>
-      {children}
-    </RecipeStoreContext.Provider>
+    <RecipeStoreContext value={getRecipeStore}>{children}</RecipeStoreContext>
   );
 };
 
 export const useRecipeContext = () => {
-  const getRecipeStore = useContext(RecipeStoreContext);
+  const getRecipeStore = use(RecipeStoreContext);
 
   if (!getRecipeStore) {
-    throw Error(
-      "useRecipeContext must be used within a RecipeStoreContext.Provider",
-    );
+    throw Error("useRecipeContext must be used within a RecipeStoreContext");
   }
 
   return getRecipeStore();

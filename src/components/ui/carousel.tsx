@@ -12,8 +12,8 @@ import {
   createContext,
   forwardRef,
   HTMLAttributes,
+  use,
   useCallback,
-  useContext,
   useEffect,
   useState,
   type KeyboardEvent,
@@ -43,7 +43,7 @@ type CarouselContextProps = {
 const CarouselContext = createContext<CarouselContextProps | null>(null);
 
 function useCarousel() {
-  const context = useContext(CarouselContext);
+  const context = use(CarouselContext);
 
   if (!context) {
     throw new Error("useCarousel must be used within a <Carousel />");
@@ -131,7 +131,7 @@ const Carousel = forwardRef<
     }, [api, onSelect]);
 
     return (
-      <CarouselContext.Provider
+      <CarouselContext
         value={{
           carouselRef,
           api: api,
@@ -153,7 +153,7 @@ const Carousel = forwardRef<
         >
           {children}
         </div>
-      </CarouselContext.Provider>
+      </CarouselContext>
     );
   },
 );
