@@ -1,9 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Stack, Card } from "@sanity/ui";
 import { ReactElement, ReactPortal } from "react";
-import { ObjectItemProps, ObjectMember } from "sanity";
+import { FieldMember, ObjectItemProps, ObjectMember } from "sanity";
 
 export const IngredientGroupItemComponent = (props: ObjectItemProps) => {
   if (
@@ -32,29 +29,55 @@ export const IngredientGroupItemComponent = (props: ObjectItemProps) => {
   );
 };
 
+const hasValidMembersProps = (
+  props: unknown,
+): props is { children: { props: { members: ObjectMember[] } } } => {
+  return (
+    !!props &&
+    typeof props === "object" &&
+    "children" in props &&
+    typeof props.children === "object" &&
+    !!props.children &&
+    "props" in props.children &&
+    typeof props.children.props === "object" &&
+    !!props.children.props &&
+    "members" in props.children.props &&
+    Array.isArray(props.children.props.members)
+  );
+};
+
+const isFieldMember = (member: ObjectMember): member is FieldMember => {
+  return member.kind === "field";
+};
+
 function getChildrenPreview(children: ReactElement | ReactPortal) {
-  const contentMember = children.props?.children?.props?.members?.find(
-    (member: ObjectMember) => "name" in member && member.name === "ingredients",
+  if (!hasValidMembersProps(children.props)) {
+    return null;
+  }
+
+  const contentMember = children.props.children.props.members.find(
+    (member: ObjectMember) =>
+      member.kind === "field" &&
+      "name" in member &&
+      member.name === "ingredients",
   );
 
-  if (!contentMember) {
+  if (!contentMember || !isFieldMember(contentMember)) {
     return children;
   }
 
-  const members = contentMember
-    ? [
-        {
-          ...contentMember,
-          field: {
-            ...contentMember.field,
-            schemaType: {
-              ...contentMember.field.schemaType,
-              title: " ", // Empty string to hide original field title
-            },
-          },
+  const members = [
+    {
+      ...contentMember,
+      field: {
+        ...contentMember.field,
+        schemaType: {
+          ...contentMember.field.schemaType,
+          title: " ", // Empty string to hide original field title
         },
-      ]
-    : [];
+      },
+    },
+  ];
 
   // Deep clone object so the regular modal view is unaffected
   // while showing only the "inner" modular content, and removing its "title" via empty string

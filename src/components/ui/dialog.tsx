@@ -22,7 +22,7 @@ const DialogPortal = DialogPrimitivePortal;
 const DialogClose = DialogPrimitiveClose;
 
 const DialogOverlay = forwardRef<
-  React.ElementRef<typeof DialogPrimitiveOverlay>,
+  React.ComponentRef<typeof DialogPrimitiveOverlay>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitiveOverlay>
 >(({ className, ...props }, ref) => (
   <DialogPrimitiveOverlay
@@ -37,7 +37,7 @@ const DialogOverlay = forwardRef<
 DialogOverlay.displayName = DialogPrimitiveOverlay.displayName;
 
 const DialogContent = forwardRef<
-  React.ElementRef<typeof DialogPrimitiveContent>,
+  React.ComponentRef<typeof DialogPrimitiveContent>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitiveContent>
 >(({ className, children, ...props }, ref) => (
   <DialogPortal>
@@ -90,7 +90,7 @@ const DialogFooter = ({
 DialogFooter.displayName = "DialogFooter";
 
 const DialogTitle = forwardRef<
-  React.ElementRef<typeof DialogPrimitiveTitle>,
+  React.ComponentRef<typeof DialogPrimitiveTitle>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitiveTitle>
 >(({ className, ...props }, ref) => (
   <DialogPrimitiveTitle
@@ -105,7 +105,7 @@ const DialogTitle = forwardRef<
 DialogTitle.displayName = DialogPrimitiveTitle.displayName;
 
 const DialogDescription = forwardRef<
-  React.ElementRef<typeof DialogPrimitiveDescription>,
+  React.ComponentRef<typeof DialogPrimitiveDescription>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitiveDescription>
 >(({ className, ...props }, ref) => (
   <DialogPrimitiveDescription
