@@ -15,10 +15,13 @@ import {
   twitterMetadata,
 } from "../shared-metadata";
 import Script from "next/script";
-import { DynamicDisableDraftMode } from "./DynamicDisableDraftMode";
 import dynamic from "next/dynamic";
 import { sanityFetch } from "@/sanity/lib/live";
-import { ThemeProvider } from "@/components/ThemeProvider";
+import { ThemeProvider } from "next-themes";
+
+const DisableDraftMode = dynamic(() =>
+  import("@/components/DisableDraftMode").then((mod) => mod.DisableDraftMode),
+);
 
 const SanityLive = dynamic(() =>
   import("@/sanity/lib/live").then((mod) => mod.SanityLive),
@@ -169,7 +172,7 @@ export default async function RootLayout({
         <SanityLive />
         {draftModeEnabled && (
           <>
-            <DynamicDisableDraftMode />
+            <DisableDraftMode />
             <VisualEditing />
           </>
         )}

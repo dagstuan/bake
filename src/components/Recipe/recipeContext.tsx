@@ -19,7 +19,7 @@ export const RecipeContextProvider = ({
   recipe,
   children,
 }: RecipeContextProviderProps): React.JSX.Element => {
-  const recipeStore = useRef<RecipeStore | null>(null);
+  const recipeStore = useRef<RecipeStore>(null);
 
   const getRecipeStore = () => {
     if (!recipeStore.current) {

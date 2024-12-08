@@ -54,6 +54,7 @@ export const IngredientsTable = (props: IngredientsTableProps) => {
       s.onAllIngredientsCompletionChange,
     ]),
   );
+
   if (ingredients.length === 0) {
     return null;
   }
