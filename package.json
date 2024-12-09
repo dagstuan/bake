@@ -65,11 +65,11 @@
     "@types/node": "^22.10.1",
     "@types/react": "19.0.1",
     "@types/react-dom": "19.0.2",
-    "babel-plugin-react-compiler": "19.0.0-beta-df7b47d-20241124",
+    "babel-plugin-react-compiler": "19.0.0-beta-37ed2a7-20241206",
     "eslint": "^9.16.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-react": "^7.37.2",
-    "eslint-plugin-react-compiler": "19.0.0-beta-df7b47d-20241124",
+    "eslint-plugin-react-compiler": "19.0.0-beta-37ed2a7-20241206",
     "eslint-plugin-react-hooks": "^5.1.0",
     "globals": "^15.13.0",
     "postcss": "^8.4.49",
@@ -88,8 +88,8 @@
       ]
     },
     "overrides": {
-      "@types/react": "^19.0.0",
-      "@types/react-dom": "^19.0.0"
+      "@types/react": "^19.0.1",
+      "@types/react-dom": "^19.0.1"
     }
   }
 }
