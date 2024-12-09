@@ -28,10 +28,10 @@
     "@radix-ui/react-switch": "^1.1.1",
     "@radix-ui/react-visually-hidden": "^1.1.0",
     "@sanity/client": "^6.24.1",
-    "@sanity/icons": "^3.5.0",
+    "@sanity/icons": "^3.5.2",
     "@sanity/image-url": "^1.1.0",
     "@sanity/preview-url-secret": "^2.0.5",
-    "@sanity/ui": "^2.10.1",
+    "@sanity/ui": "^2.10.4",
     "@sanity/uuid": "^3.0.2",
     "@sanity/vision": "^3.66.1",
     "class-variance-authority": "^0.7.1",
@@ -77,7 +77,7 @@
     "prettier-plugin-tailwindcss": "^0.6.9",
     "tailwindcss": "^3.4.16",
     "typescript": "^5.7.2",
-    "typescript-eslint": "^8.17.0"
+    "typescript-eslint": "^8.18.0"
   },
   "packageManager": "pnpm@9.15.0",
   "pnpm": {
