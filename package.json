@@ -11,7 +11,8 @@
     "typegen": "sanity schema extract && sanity typegen generate",
     "prettier": "prettier --write .",
     "tsc": "tsc --noEmit --incremental",
-    "analyze": "ANALYZE=true pnpm run build"
+    "analyze": "ANALYZE=true pnpm run build",
+    "bump:compiler": "pnpm install -D babel-plugin-react-compiler@beta eslint-plugin-react-compiler@beta"
   },
   "dependencies": {
     "@next/bundle-analyzer": "15.1.0",
@@ -28,10 +29,10 @@
     "@radix-ui/react-switch": "^1.1.2",
     "@radix-ui/react-visually-hidden": "^1.1.1",
     "@sanity/client": "^6.24.1",
-    "@sanity/icons": "^3.5.2",
+    "@sanity/icons": "^3.5.3",
     "@sanity/image-url": "^1.1.0",
     "@sanity/preview-url-secret": "^2.0.5",
-    "@sanity/ui": "^2.10.9",
+    "@sanity/ui": "^2.10.10",
     "@sanity/uuid": "^3.0.2",
     "@sanity/vision": "^3.67.1",
     "class-variance-authority": "^0.7.1",
@@ -64,11 +65,11 @@
     "@types/node": "^22.10.2",
     "@types/react": "19.0.1",
     "@types/react-dom": "19.0.2",
-    "babel-plugin-react-compiler": "19.0.0-beta-37ed2a7-20241206",
+    "babel-plugin-react-compiler": "19.0.0-beta-201e55d-20241215",
     "eslint": "^9.17.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-react": "^7.37.2",
-    "eslint-plugin-react-compiler": "19.0.0-beta-37ed2a7-20241206",
+    "eslint-plugin-react-compiler": "19.0.0-beta-201e55d-20241215",
     "eslint-plugin-react-hooks": "^5.1.0",
     "globals": "^15.13.0",
     "postcss": "^8.4.49",
@@ -76,7 +77,7 @@
     "prettier-plugin-tailwindcss": "^0.6.9",
     "tailwindcss": "^3.4.16",
     "typescript": "^5.7.2",
-    "typescript-eslint": "^8.18.0"
+    "typescript-eslint": "^8.18.1"
   },
   "packageManager": "pnpm@9.15.0",
   "pnpm": {
