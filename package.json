@@ -34,19 +34,19 @@
     "@sanity/preview-url-secret": "^2.0.5",
     "@sanity/ui": "^2.10.12",
     "@sanity/uuid": "^3.0.2",
-    "@sanity/vision": "^3.68.1",
+    "@sanity/vision": "^3.68.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "embla-carousel-react": "^8.5.1",
     "immer": "^10.1.1",
     "next": "15.1.2",
-    "next-sanity": "^9.8.28",
+    "next-sanity": "^9.8.29",
     "next-themes": "^0.4.4",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-screen-wake-lock": "^3.0.2",
-    "sanity": "^3.68.1",
+    "sanity": "^3.68.3",
     "sanity-plugin-documents-pane": "^2.3.0",
     "sanity-plugin-iframe-pane": "^3.1.6",
     "sanity-plugin-media": "^2.3.2",
@@ -79,7 +79,7 @@
     "typescript": "^5.7.2",
     "typescript-eslint": "^8.18.1"
   },
-  "packageManager": "pnpm@9.15.0",
+  "packageManager": "pnpm@9.15.1",
   "pnpm": {
     "peerDependencyRules": {
       "allowAny": [
