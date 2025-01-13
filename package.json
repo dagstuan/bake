@@ -56,7 +56,7 @@
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
     "use-debounce": "^10.0.4",
-    "valibot": "1.0.0-beta.10",
+    "valibot": "1.0.0-beta.11",
     "zustand": "^5.0.2"
   },
   "devDependencies": {
