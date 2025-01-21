@@ -1,15 +1,15 @@
 import { createPreviewSecret } from "@sanity/preview-url-secret/create-secret";
 import {
-  type SanityClient,
-  type SanityDocumentLike,
   type DocumentPluginOptions,
   type ResolveProductionUrlContext,
+  type SanityClient,
+  type SanityDocumentLike,
 } from "sanity";
 import { apiVersion, draftModeRoute } from "../env";
-import { pageSlugQuery } from "./queries";
-import { homeType } from "../schemaTypes/singletons/homeType";
-import { aboutType } from "../schemaTypes/singletons/aboutType";
 import { recipeTypeName } from "../schemaTypes/recipe/constants";
+import { aboutType } from "../schemaTypes/singletons/aboutType";
+import { homeType } from "../schemaTypes/singletons/homeType";
+import { pageSlugQuery } from "./queries";
 
 const resolvableDocumentTypes = [recipeTypeName, "category", "home"];
 
@@ -67,7 +67,7 @@ async function generatePagePreviewUrl(
 
   const { secret } = await createPreviewSecret(
     client,
-    "@sanity/presentation",
+    "sanity/presentation",
     typeof window === "undefined" ? "" : location.href,
   );
 
