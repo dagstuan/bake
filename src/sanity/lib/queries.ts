@@ -28,13 +28,15 @@ const recipesListFields = /* groq */ `
   totalTime,
 `;
 
-export const allRecipesSlugQuery = defineQuery(`*[_type == "recipe"]
+export const allRecipesSlugQuery =
+  defineQuery(`*[_type == "recipe" && visible == true]
   {
     "slug": slug.current,
   }`);
 
 export const recipesListQuery = defineQuery(`*[
   _type == "${recipeTypeName}" &&
+  visible == true &&
   (!defined($lastCreatedAt) || (_createdAt < $lastCreatedAt || (_createdAt == $lastCreatedAt && _id < $lastId))) &&
   (pt::text(instructions) match $searchQuery || title match $searchQuery) &&
   (!defined($categories) || (count((categories[]->slug.current)[@ in $categories]) > 0))
@@ -162,7 +164,8 @@ export const aboutSitemapQuery = defineQuery(`*[_type == "about"][0]{
   ${sitemapFields}
 }`);
 
-export const recipesSitemapQuery = defineQuery(`*[_type == "recipe"] {
+export const recipesSitemapQuery =
+  defineQuery(`*[_type == "recipe" && visible == true] {
   ${sitemapFields}
 }`);
 

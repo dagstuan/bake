@@ -256,6 +256,7 @@ export type Recipe = {
   _rev: string;
   title?: string;
   slug?: Slug;
+  visible?: boolean;
   mainImage?: {
     asset?: {
       _ref: string;
@@ -520,12 +521,12 @@ export type AllSanitySchemaTypes =
 export declare const internalGroqTypeReferenceTo: unique symbol;
 // Source: ./src/sanity/lib/queries.ts
 // Variable: allRecipesSlugQuery
-// Query: *[_type == "recipe"]  {    "slug": slug.current,  }
+// Query: *[_type == "recipe" && visible == true]  {    "slug": slug.current,  }
 export type AllRecipesSlugQueryResult = Array<{
   slug: string | null;
 }>;
 // Variable: recipesListQuery
-// Query: *[  _type == "recipe" &&  (!defined($lastCreatedAt) || (_createdAt < $lastCreatedAt || (_createdAt == $lastCreatedAt && _id < $lastId))) &&  (pt::text(instructions) match $searchQuery || title match $searchQuery) &&  (!defined($categories) || (count((categories[]->slug.current)[@ in $categories]) > 0))]|order(_createdAt desc)|score(pt::text(instructions) match $searchQuery, boost(title match $searchQuery, 3))|order(_score desc)[0...$amount]{    _id,  _createdAt,  title,  "slug": slug.current,  mainImage {      hotspot,  crop,  alt,  asset->{    _id,    metadata {      lqip    }  }  },  totalTime,}
+// Query: *[  _type == "recipe" &&  visible == true &&  (!defined($lastCreatedAt) || (_createdAt < $lastCreatedAt || (_createdAt == $lastCreatedAt && _id < $lastId))) &&  (pt::text(instructions) match $searchQuery || title match $searchQuery) &&  (!defined($categories) || (count((categories[]->slug.current)[@ in $categories]) > 0))]|order(_createdAt desc)|score(pt::text(instructions) match $searchQuery, boost(title match $searchQuery, 3))|order(_score desc)[0...$amount]{    _id,  _createdAt,  title,  "slug": slug.current,  mainImage {      hotspot,  crop,  alt,  asset->{    _id,    metadata {      lqip    }  }  },  totalTime,}
 export type RecipesListQueryResult = Array<{
   _id: string;
   _createdAt: string;
@@ -852,7 +853,7 @@ export type AboutSitemapQueryResult = {
   _updatedAt: string;
 } | null;
 // Variable: recipesSitemapQuery
-// Query: *[_type == "recipe"] {    "slug": slug.current,  _updatedAt,}
+// Query: *[_type == "recipe" && visible == true] {    "slug": slug.current,  _updatedAt,}
 export type RecipesSitemapQueryResult = Array<{
   slug: string | null;
   _updatedAt: string;
@@ -880,8 +881,8 @@ export type AllIngredientsQueryResult = Array<{
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
-    '*[_type == "recipe"]\n  {\n    "slug": slug.current,\n  }': AllRecipesSlugQueryResult;
-    '*[\n  _type == "recipe" &&\n  (!defined($lastCreatedAt) || (_createdAt < $lastCreatedAt || (_createdAt == $lastCreatedAt && _id < $lastId))) &&\n  (pt::text(instructions) match $searchQuery || title match $searchQuery) &&\n  (!defined($categories) || (count((categories[]->slug.current)[@ in $categories]) > 0))\n]\n|order(_createdAt desc)\n|score(pt::text(instructions) match $searchQuery, boost(title match $searchQuery, 3))\n|order(_score desc)\n[0...$amount]\n{\n  \n  _id,\n  _createdAt,\n  title,\n  "slug": slug.current,\n  mainImage {\n    \n  hotspot,\n  crop,\n  alt,\n  asset->{\n    _id,\n    metadata {\n      lqip\n    }\n  }\n  },\n  totalTime,\n\n}': RecipesListQueryResult;
+    '*[_type == "recipe" && visible == true]\n  {\n    "slug": slug.current,\n  }': AllRecipesSlugQueryResult;
+    '*[\n  _type == "recipe" &&\n  visible == true &&\n  (!defined($lastCreatedAt) || (_createdAt < $lastCreatedAt || (_createdAt == $lastCreatedAt && _id < $lastId))) &&\n  (pt::text(instructions) match $searchQuery || title match $searchQuery) &&\n  (!defined($categories) || (count((categories[]->slug.current)[@ in $categories]) > 0))\n]\n|order(_createdAt desc)\n|score(pt::text(instructions) match $searchQuery, boost(title match $searchQuery, 3))\n|order(_score desc)\n[0...$amount]\n{\n  \n  _id,\n  _createdAt,\n  title,\n  "slug": slug.current,\n  mainImage {\n    \n  hotspot,\n  crop,\n  alt,\n  asset->{\n    _id,\n    metadata {\n      lqip\n    }\n  }\n  },\n  totalTime,\n\n}': RecipesListQueryResult;
     '*[_type == "category"]\n  |order(title asc)\n  {\n    _id,\n    title,\n    "slug": slug.current,\n  }': AllCategoriesQueryResult;
     '*[_type == "recipe" && slug.current == $slug][0]{\n    _id,\n    _createdAt,\n    _rev,\n    title,\n    mainImage {\n      \n  hotspot,\n  crop,\n  alt,\n  asset->{\n    _id,\n    metadata {\n      lqip\n    }\n  }\n    },\n    categories[]->{\n      title,\n    },\n    ingredients[]{\n      _type == "reference" => @->{\n        "_type": "reference",\n        \n  _id,\n  "ingredient": ingredient->{\n    name,\n    weights\n  },\n  unit,\n  percent,\n  comment,\n\n      },\n      _type == "ingredientGroup" => {\n        "_type": "ingredientGroup",\n        _type,\n        title,\n        ingredients[]->{\n          \n  _id,\n  "ingredient": ingredient->{\n    name,\n    weights\n  },\n  unit,\n  percent,\n  comment,\n\n        }\n      }\n    },\n    activeTime,\n    totalTime,\n    baseDryIngredients,\n    servings,\n    instructions[]{\n      ...,\n      _type == "block" => {\n        ...,\n        children[]{\n          ...,\n          _type == "recipeIngredientReference" => {\n            ...,\n            "ingredient": @.ingredient->{\n              _id,\n              "name": ingredient->.name,\n              percent,\n              unit,\n            },\n          },\n        }\n      },\n      _type == "image" => {\n        \n  hotspot,\n  crop,\n  alt,\n  asset->{\n    _id,\n    metadata {\n      lqip\n    }\n  }\n      },\n      _type == "imageGallery" => {\n        ...,\n        images[] {\n          \n  hotspot,\n  crop,\n  alt,\n  asset->{\n    _id,\n    metadata {\n      lqip\n    }\n  },\n          caption\n        }\n      }\n    },\n    seo\n}': RecipeQueryResult;
     '*[_id == $pageId][0]{\n  _type,\n  "slug": slug.current,\n}': PageSlugQueryResult;
@@ -889,7 +890,7 @@ declare module "@sanity/client" {
     '*[_type == "about"][0]{\n  title,\n  body,\n}': AboutQueryResult;
     '*[_type == "home"][0]{\n  \n  "slug": slug.current,\n  _updatedAt,\n\n}': HomeSitemapQueryResult;
     '*[_type == "about"][0]{\n  \n  "slug": slug.current,\n  _updatedAt,\n\n}': AboutSitemapQueryResult;
-    '*[_type == "recipe"] {\n  \n  "slug": slug.current,\n  _updatedAt,\n\n}': RecipesSitemapQueryResult;
+    '*[_type == "recipe" && visible == true] {\n  \n  "slug": slug.current,\n  _updatedAt,\n\n}': RecipesSitemapQueryResult;
     '*[_type == "home"][0]{\n  seo\n}': HomeSeoQueryResult;
     '*[_type == "ingredient"]': AllIngredientsQueryResult;
   }
