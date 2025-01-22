@@ -1,6 +1,6 @@
-import { nb } from "date-fns/locale";
 import { formatDuration } from "date-fns/formatDuration";
-import { TimeValue, Duration as DurationType } from "../../sanity.types";
+import { nb } from "date-fns/locale";
+import { Duration as DurationType, TimeValue } from "../../sanity.types";
 
 export const formatTimeValue = (
   value: TimeValue | null | undefined,
@@ -34,9 +34,9 @@ const formatTimeValueShort = (value: TimeValue): string | null => {
       if (time === 2) return "To dager";
       return "Over to dager";
     case "hours":
-      if (time === 1) return "En time";
-      if (time === 2) return "To timer";
-      if (time === 3) return "Tre timer";
+      if (time <= 1) return "En time";
+      if (time <= 2) return "To timer";
+      if (time <= 3) return "Tre timer";
       return "Over tre timer";
     case "minutes":
       return `${time} min`;
