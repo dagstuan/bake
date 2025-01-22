@@ -2,11 +2,11 @@
 
 import { Cross2Icon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Input } from "../ui/input";
-import { AllCategoriesQueryResult } from "../../../sanity.types";
-import { useDebouncedCallback } from "use-debounce";
 import { TransitionStartFunction, useState } from "react";
+import { useDebouncedCallback } from "use-debounce";
+import { AllCategoriesQueryResult } from "../../../sanity.types";
 import { Button } from "../ui/button";
+import { Input } from "../ui/input";
 
 export const categoryQueryParam = "category";
 export const searchQueryParam = "query";
@@ -25,16 +25,17 @@ export const RecipesFilters = (props: RecipesFiltersProps) => {
 
   const categoryQuery = searchParams.get(categoryQueryParam);
 
-  const toggleCategory = (category: string) => {
+  const setCategory = (newCategory: string | null) => {
     const params = new URLSearchParams(searchParams);
 
-    const newCategory = categoryQuery === category ? "" : category;
+    if (newCategory === categoryQuery) return;
 
-    if (newCategory.length > 0) {
-      params.set(categoryQueryParam, category);
-    } else {
+    if (!newCategory) {
       params.delete(categoryQueryParam);
+    } else if (categoryQuery !== newCategory) {
+      params.set(categoryQueryParam, newCategory);
     }
+
     startTransition(() => {
       router.replace(`${pathname}?${params.toString()}`, { scroll: false });
     });
@@ -90,6 +91,14 @@ export const RecipesFilters = (props: RecipesFiltersProps) => {
         </div>
       </div>
       <div className="-mb-3 flex max-w-full gap-2 overflow-y-auto p-1 pb-3 sm:mb-0 sm:gap-4 sm:p-1">
+        <Button
+          variant={!categoryQuery ? "default" : "outline"}
+          onClick={() => {
+            setCategory(null);
+          }}
+        >
+          Alle
+        </Button>
         {categories.map((category) => {
           const { _id, title, slug } = category;
 
@@ -101,7 +110,7 @@ export const RecipesFilters = (props: RecipesFiltersProps) => {
             <Button
               variant={categoryQuery === slug ? "default" : "outline"}
               onClick={() => {
-                toggleCategory(slug);
+                setCategory(slug);
               }}
               key={_id}
             >
