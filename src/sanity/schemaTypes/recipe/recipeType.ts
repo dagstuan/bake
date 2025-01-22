@@ -6,16 +6,19 @@ import {
   ValidationError,
 } from "sanity";
 
-import { recipeIngredientReferenceType } from "./recipeIngredientReference";
-import { scalableRecipeNumberType } from "./scalableRecipeNumberType";
+import { IngredientItemComponent } from "@/sanity/components/IngredientItemComponent";
+import { IngredientsInputComponent } from "@/sanity/components/IngredientsInputComponent";
+import { isDefined } from "@/utils/tsUtils";
 import { ComposeIcon, SearchIcon } from "@sanity/icons";
+import { Recipe, RecipeIngredientReference } from "../../../../sanity.types";
 import { baseBlockLists } from "../portableText/baseBlockLists";
 import { baseBlockMarks } from "../portableText/baseBlockMarks";
 import { baseBlockStyles } from "../portableText/baseBlockStyles";
-import { IngredientsInputComponent } from "@/sanity/components/IngredientsInputComponent";
-import { Recipe, RecipeIngredientReference } from "../../../../sanity.types";
-import { isDefined } from "@/utils/tsUtils";
-import { isRecipe } from "./utils";
+import {
+  alertArrayMember,
+  imageArrayMember,
+  imageGalleryArrayMember,
+} from "../portableText/blockContentType";
 import {
   baseDryIngredientsName,
   ingredientGroupTypeName,
@@ -23,12 +26,9 @@ import {
   IngredientsNameType,
   recipeTypeName,
 } from "./constants";
-import { IngredientItemComponent } from "@/sanity/components/IngredientItemComponent";
-import {
-  alertArrayMember,
-  imageArrayMember,
-  imageGalleryArrayMember,
-} from "../portableText/blockContentType";
+import { recipeIngredientReferenceType } from "./recipeIngredientReference";
+import { scalableRecipeNumberType } from "./scalableRecipeNumberType";
+import { isRecipe } from "./utils";
 
 export const recipeIngredientArrayMember = defineArrayMember({
   type: "reference",
@@ -85,6 +85,14 @@ export const recipeType = defineType({
       options: {
         source: "title",
       },
+    }),
+    defineField({
+      name: "visible",
+      type: "boolean",
+      group: ["content"],
+      description:
+        "Set to visible when this recipe should be visible on the front-end.",
+      initialValue: false,
     }),
     defineField({
       name: "mainImage",
