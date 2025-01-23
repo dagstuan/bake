@@ -56,7 +56,7 @@ export const RecipesGridElement = ({
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 30vw"
           />
         ) : (
-          <div className="flex aspect-video w-full flex-grow items-center justify-center bg-secondary text-7xl">
+          <div className="flex aspect-video w-full grow items-center justify-center bg-secondary text-7xl">
             🍞
           </div>
         )}

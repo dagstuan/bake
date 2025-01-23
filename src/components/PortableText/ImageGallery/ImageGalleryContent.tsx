@@ -32,7 +32,7 @@ export const ImageGalleryContent = ({
           startIndex: initialIndex,
         }}
       >
-        <CarouselContent tabIndex={0} className="focus:outline-none">
+        <CarouselContent tabIndex={0} className="focus:outline-hidden">
           {images.map((image, index) => {
             const url = image.asset
               ? urlForImage(image)
@@ -53,7 +53,7 @@ export const ImageGalleryContent = ({
                 key={image.asset?._id ?? index}
               >
                 <Image
-                  className="pointer-events-none aspect-[3/2] h-full max-h-[90vh] w-full rounded-lg object-cover"
+                  className="pointer-events-none aspect-3/2 h-full max-h-[90vh] w-full rounded-lg object-cover"
                   alt={image.alt ?? "image"}
                   width={imageWidth}
                   height={imageHeight}

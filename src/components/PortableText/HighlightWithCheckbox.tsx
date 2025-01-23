@@ -41,7 +41,7 @@ export const HighlightWithCheckbox = (props: HighlightWithCheckboxProps) => {
           checked={checked}
           onCheckedChange={onCheckedChange}
           className={
-            "peer flex h-[14px] w-[14px] shrink-0 items-center justify-center rounded-[2px] border border-accent-foreground bg-transparent shadow-sm focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:border-transparent data-[state=checked]:shadow-none"
+            "peer flex h-[14px] w-[14px] shrink-0 items-center justify-center rounded-[2px] border border-accent-foreground bg-transparent shadow-xs focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:border-transparent data-[state=checked]:shadow-none"
           }
         >
           <CheckboxPrimitiveIndicator

@@ -5,7 +5,7 @@ export function TypographyP({ children, className }: TypographyProps) {
   return (
     <p
       className={cn(
-        "text-pretty leading-7 [&:not(:first-child)]:mt-2 [&:not(:last-child)]:mb-4",
+        "text-pretty leading-7 not-first:mt-2 not-last:mb-4",
         className,
       )}
     >

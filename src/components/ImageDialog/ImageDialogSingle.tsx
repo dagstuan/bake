@@ -26,7 +26,7 @@ export const ImageDialogSingle = (props: ImageDialogSingleProps) => {
   return (
     <ImageDialogContent title={title} description={description}>
       <Image
-        className="pointer-events-none aspect-[3/2] h-full max-h-[90vh] w-full rounded-lg object-cover"
+        className="pointer-events-none aspect-3/2 h-full max-h-[90vh] w-full rounded-lg object-cover"
         src={url}
         width={width}
         height={height}

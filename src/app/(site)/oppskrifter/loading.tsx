@@ -16,7 +16,7 @@ export default function Loading() {
           {/* Categories skeleton */}
           <div className="mx-auto flex justify-center gap-2 overflow-x-auto">
             {[...(Array(8) as number[])].map((_, i) => (
-              <Skeleton key={i} className="h-8 w-20 flex-shrink-0 rounded-md" />
+              <Skeleton key={i} className="h-8 w-20 shrink-0 rounded-md" />
             ))}
           </div>
         </div>

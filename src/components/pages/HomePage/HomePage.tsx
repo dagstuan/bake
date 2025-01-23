@@ -1,15 +1,15 @@
 "use client";
 
+import { RecipesGridElement } from "@/components/RecipesGrid/RecipesGridElement";
+import { RecipesGridWrapper } from "@/components/RecipesGrid/RecipesGridWrapper";
 import { TypographyH1 } from "@/components/Typography/TypographyH1";
 import { TypographyH2 } from "@/components/Typography/TypographyH2";
 import { TypographyLink } from "@/components/Typography/TypographyLink";
-import { ArrowRightIcon } from "@radix-ui/react-icons";
-import { Home, HomePageQueryResult } from "../../../../sanity.types";
-import { useOptimistic } from "next-sanity/hooks";
-import { SanityDocument } from "next-sanity";
 import { createTypedDataAttribute } from "@/sanity/utils";
-import { RecipesGridWrapper } from "@/components/RecipesGrid/RecipesGridWrapper";
-import { RecipesGridElement } from "@/components/RecipesGrid/RecipesGridElement";
+import { ArrowRightIcon } from "@radix-ui/react-icons";
+import { SanityDocument } from "next-sanity";
+import { useOptimistic } from "next-sanity/hooks";
+import { Home, HomePageQueryResult } from "../../../../sanity.types";
 
 interface HomePageProps {
   data: HomePageQueryResult;
@@ -39,7 +39,7 @@ export const HomePage = (props: HomePageProps) => {
   });
 
   return (
-    <main className="sm:mt-35 mt-8 flex flex-col gap-10 px-6 sm:mt-16 sm:items-center sm:gap-16">
+    <main className="mt-8 flex flex-col gap-10 px-6 sm:mt-16 sm:items-center sm:gap-16">
       <div className="flex max-w-3xl flex-col gap-3 sm:text-center">
         <TypographyH1>
           Bak<span className="text-4xl font-extralight text-gray-400">&</span>
