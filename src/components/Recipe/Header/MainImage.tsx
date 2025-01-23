@@ -22,7 +22,7 @@ const mainImageHeight = 400;
 export const MainImage = ({ mainImage }: MainImageProps) => {
   if (!mainImage) {
     return (
-      <div className="flex aspect-[16/3] w-full items-center justify-center rounded-lg bg-secondary text-2xl sm:text-7xl">
+      <div className="flex aspect-16/3 w-full items-center justify-center rounded-lg bg-secondary text-2xl sm:text-7xl">
         🍞🍰🧑‍🍳
       </div>
     );

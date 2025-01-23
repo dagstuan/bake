@@ -75,7 +75,7 @@ export const IngredientsTable = (props: IngredientsTableProps) => {
         <TableRow>
           <TableHead className="flex items-center">
             <Checkbox
-              className="!transform-none"
+              className="transform-none!"
               checked={
                 anyIngredientsComplete && !allIngredientsComplete
                   ? "indeterminate"

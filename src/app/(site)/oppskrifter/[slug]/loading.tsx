@@ -8,7 +8,7 @@ export default function Loading() {
         <Skeleton className="mx-auto h-12 w-64 sm:mb-8" />
 
         {/* Main Image skeleton */}
-        <Skeleton className="flex aspect-[1024/400] w-full items-center justify-center rounded-lg" />
+        <Skeleton className="flex aspect-1024/400 w-full items-center justify-center rounded-lg" />
 
         {/* Recipe contents skeleton */}
         <div className="grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-8">
