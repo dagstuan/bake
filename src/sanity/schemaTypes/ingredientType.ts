@@ -1,5 +1,5 @@
 import { defineField, defineType } from "sanity";
-import { ingredientTypeName } from "./constants";
+import { ingredientConversionTypeName, ingredientTypeName } from "./constants";
 import { MatpratNameInput } from "../components/MatpratNameInput";
 
 const fields = [
@@ -34,6 +34,11 @@ const fields = [
   defineField({
     name: "weights",
     type: "ingredientWeights",
+  }),
+  defineField({
+    name: "conversions",
+    type: "array",
+    of: [{ type: ingredientConversionTypeName }],
   }),
 ];
 

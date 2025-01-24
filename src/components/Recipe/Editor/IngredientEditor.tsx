@@ -1,8 +1,4 @@
 import { Label } from "@/components/ui/label";
-import { ingredientUnit, RecipeIngredientState } from "../store/types";
-import { DeferredNumberInput } from "../DeferredNumberInput";
-import { formatAmount } from "@/utils/recipeUtils";
-import { useRecipeContext } from "../recipeContext";
 import {
   Select,
   SelectContent,
@@ -11,9 +7,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { TableCell, TableRow } from "@/components/ui/table";
+import { formatAmount } from "@/utils/recipeUtils";
 import * as v from "valibot";
-import { editableUnits, formatUnit, isEditableUnit } from "../utils";
 import { useStore } from "zustand";
+import { DeferredNumberInput } from "../DeferredNumberInput";
+import { useRecipeContext } from "../recipeContext";
+import { ingredientUnit, RecipeIngredientState } from "../store/types";
+import { editableUnits, formatUnit, isEditableUnit } from "../utils";
 
 interface IngredientEditorProps {
   ingredient: RecipeIngredientState;
@@ -21,7 +21,7 @@ interface IngredientEditorProps {
 
 export const IngredientEditor = (props: IngredientEditorProps) => {
   const {
-    ingredient: { id, name, amount, unit, weights },
+    ingredient: { id, name, amount, unit, weights, conversions },
   } = props;
 
   const recipeStore = useRecipeContext();
@@ -32,6 +32,10 @@ export const IngredientEditor = (props: IngredientEditorProps) => {
   const onIngredientUnitChange = useStore(
     recipeStore,
     (s) => s.onIngredientUnitChange,
+  );
+  const onConvertIngredient = useStore(
+    recipeStore,
+    (s) => s.onConvertIngredient,
   );
 
   const handleIngredientUnitChange = (
@@ -63,14 +67,38 @@ export const IngredientEditor = (props: IngredientEditorProps) => {
   return (
     <TableRow>
       <TableCell>
-        <Label htmlFor={`ingredient-${id}`} className="text-left">
-          {name}
-        </Label>
+        {conversions.length === 0 ? (
+          <Label htmlFor={`ingredient-${id}`} className="text-left">
+            {name}
+          </Label>
+        ) : (
+          <Select
+            value={name}
+            onValueChange={(newValue) => {
+              onConvertIngredient(id, newValue);
+            }}
+          >
+            <SelectTrigger className="text-md">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {conversions
+                .map((c) => c.to)
+                .concat(name)
+                .sort()
+                .map((name) => (
+                  <SelectItem key={name} value={name}>
+                    {name}
+                  </SelectItem>
+                ))}
+            </SelectContent>
+          </Select>
+        )}
       </TableCell>
       <TableCell>
         <DeferredNumberInput
           id={`ingredient-${id}`}
-          className="w-full text-right [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+          className="w-full [appearance:textfield] text-right [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
           value={parseFloat(formatAmount(amount, unit))}
           min={0.00001}
           max={100000}

@@ -1,13 +1,13 @@
 "use client";
 
-import { RecipeIngredientReference } from "./types";
-import { useRecipeContext } from "./recipeContext";
-import { formatAmount } from "@/utils/recipeUtils";
 import { HighlightWithCheckbox } from "@/components/PortableText/HighlightWithCheckbox";
+import { formatAmount } from "@/utils/recipeUtils";
 import { isDefined, unCapitalize } from "@/utils/tsUtils";
-import { Highlight } from "../PortableText/Highlight";
 import { useStore } from "zustand";
 import { useShallow } from "zustand/react/shallow";
+import { Highlight } from "../PortableText/Highlight";
+import { useRecipeContext } from "./recipeContext";
+import { RecipeIngredientReference } from "./types";
 
 interface RecipeIngredientReferenceResultProps {
   value: NonNullable<RecipeIngredientReference>;
@@ -37,7 +37,7 @@ export const RecipeIngredientReferenceResult = ({
 
   const { percentage: referencePercentage, hideCheckbox } = value;
 
-  const { _id, name } = value.ingredient;
+  const { _id } = value.ingredient;
 
   const ingredientState = ingredients.find((i) => i.id === _id);
 
@@ -50,7 +50,7 @@ export const RecipeIngredientReferenceResult = ({
     ? `${formatAmount(mappedAmount, ingredientState?.unit)} `
     : "";
 
-  const labelText = `${amountLabel}${unCapitalize(name)}${ingredientState?.comment ? ` (${ingredientState.comment})` : ""}`;
+  const labelText = `${amountLabel}${unCapitalize(ingredientState?.name)}${ingredientState?.comment ? ` (${ingredientState.comment})` : ""}`;
 
   return hideCheckbox ? (
     <Highlight>{labelText}</Highlight>
