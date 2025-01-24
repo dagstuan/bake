@@ -121,7 +121,7 @@ export const IngredientEditor = (props: IngredientEditorProps) => {
               handleIngredientUnitChange(id, v);
             }}
           >
-            <SelectTrigger className="w-[120px]">
+            <SelectTrigger>
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
