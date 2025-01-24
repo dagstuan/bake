@@ -1,10 +1,10 @@
+import { isDefined } from "@/utils/tsUtils";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
-import { isDefined } from "@/utils/tsUtils";
-import { isEditableUnit } from "../utils";
 import { IngredientUnit } from "../types";
-import { IngredientsCompletionState, RecipeState } from "./types";
+import { isEditableUnit } from "../utils";
+import { Conversions, IngredientsCompletionState, RecipeState } from "./types";
 import { calculateTotalYield, getWeightInGramsForUnit } from "./utils";
 
 export const minServings = 0.01;
@@ -31,6 +31,7 @@ interface RecipeStore extends RecipeState {
     newUnit: IngredientUnit,
   ) => void;
   onAllIngredientsUnitChange: (newUnit: IngredientUnit) => void;
+  onConvertIngredient: (ingredientId: string, newIngredientId: string) => void;
   reset: (newState: RecipeState) => void;
 }
 
@@ -255,6 +256,62 @@ export const createRecipeStore = (
               ingredient.amount = amountInGrams / newWeightInGrams;
               ingredient.unit = newUnit;
             });
+          });
+        },
+
+        onConvertIngredient: (ingredientId, newIngredientId) => {
+          set((state) => {
+            const ingredientToConvert = state.ingredients.find(
+              (ingredient) => ingredient.id === ingredientId,
+            );
+
+            const newIngredient = ingredientToConvert?.conversions.find(
+              (c) => c.to === newIngredientId,
+            );
+
+            if (!ingredientToConvert || !newIngredient) {
+              return;
+            }
+
+            const newConversions: Conversions = ingredientToConvert.conversions
+              .filter((c) => c.to !== newIngredient.to)
+              .map((c) => ({
+                to: c.to,
+                rate: c.rate / newIngredient.rate,
+                weights: {
+                  l: c.weights.l,
+                  ss: c.weights.ss,
+                  ts: c.weights.ts,
+                },
+              }))
+              .concat([
+                {
+                  to: ingredientToConvert.name,
+                  rate: 1 / newIngredient.rate,
+                  weights: {
+                    l: ingredientToConvert.weights.l,
+                    ss: ingredientToConvert.weights.ss,
+                    ts: ingredientToConvert.weights.ts,
+                  },
+                },
+              ]);
+
+            ingredientToConvert.name = newIngredient.to;
+
+            if (ingredientToConvert.amount && ingredientToConvert.unit) {
+              const oldWeightInGrams = getWeightInGramsForUnit(
+                ingredientToConvert.weights,
+                ingredientToConvert.unit,
+              );
+              const amountInGrams =
+                ingredientToConvert.amount * oldWeightInGrams;
+
+              ingredientToConvert.amount = amountInGrams * newIngredient.rate;
+              ingredientToConvert.unit = "g";
+            }
+
+            ingredientToConvert.weights = newIngredient.weights;
+            ingredientToConvert.conversions = newConversions;
           });
         },
 

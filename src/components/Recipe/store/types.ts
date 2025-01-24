@@ -32,6 +32,21 @@ export const ingredientUnit = v.union([
   v.literal("l"),
 ]);
 
+const weights = v.object({
+  l: v.nullable(v.number()),
+  ss: v.nullable(v.number()),
+  ts: v.nullable(v.number()),
+});
+
+const conversions = v.array(
+  v.object({
+    to: v.string(),
+    rate: v.number(),
+    weights: weights,
+  }),
+);
+export type Conversions = v.InferInput<typeof conversions>;
+
 const recipeIngredientStateSchema = v.object({
   id: v.string(),
   name: v.string(),
@@ -39,13 +54,11 @@ const recipeIngredientStateSchema = v.object({
   percent: v.optional(v.number()),
   amount: v.optional(v.number()),
   unit: v.optional(v.union([ingredientUnit, v.undefined(), v.null()])),
-  weights: v.object({
-    l: v.nullable(v.number()),
-    ss: v.nullable(v.number()),
-    ts: v.nullable(v.number()),
-  }),
+  weights: weights,
   comment: v.optional(v.nullable(v.string())),
+  conversions,
 });
+
 export type RecipeIngredientState = v.InferInput<
   typeof recipeIngredientStateSchema
 >;

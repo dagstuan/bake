@@ -1,17 +1,17 @@
 import { OmitStrict } from "@/utils/types";
 import { RecipeQueryResult } from "../../../../sanity.types";
 import {
+  RecipeIngredient,
+  RecipeIngredients,
+  RecipeInstructions,
+} from "../types";
+import {
   IngredientsCompletionState,
   IngredientsGroupOrder,
   RecipeIngredientsState,
   RecipeIngredientState,
   RecipeState,
 } from "./types";
-import {
-  RecipeIngredient,
-  RecipeIngredients,
-  RecipeInstructions,
-} from "../types";
 import { calcIngredientAmount, calculateTotalYield } from "./utils";
 
 const calcInitialIngredientsCompletionState = (
@@ -71,6 +71,16 @@ const mapIngredientReferenceToIngredient = (
       ss: ingredient.weights?.tablespoon ?? null,
       ts: ingredient.weights?.teaspoon ?? null,
     },
+    conversions:
+      ingredient.conversions?.map((c) => ({
+        to: c.to?.name ?? "Unknown",
+        rate: c.rate ?? 1,
+        weights: {
+          l: c.to?.weights?.liter ?? null,
+          ss: c.to?.weights?.tablespoon ?? null,
+          ts: c.to?.weights?.teaspoon ?? null,
+        },
+      })) ?? [],
     comment: comment,
   };
 };
