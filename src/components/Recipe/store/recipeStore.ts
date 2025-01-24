@@ -4,7 +4,12 @@ import { createJSONStorage, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import { IngredientUnit } from "../types";
 import { isEditableUnit } from "../utils";
-import { Conversions, IngredientsCompletionState, RecipeState } from "./types";
+import {
+  Conversions,
+  IngredientsCompletionState,
+  RecipeState,
+  recipeStateSchema,
+} from "./types";
 import { calculateTotalYield, getWeightInGramsForUnit } from "./utils";
 
 export const minServings = 0.01;
@@ -324,7 +329,8 @@ export const createRecipeStore = (
       {
         name: storageKey,
         storage: createJSONStorage(() => localStorage),
-        version: hashString(version),
+        version:
+          hashString(version) + hashString(JSON.stringify(recipeStateSchema)),
         migrate: () => null,
       },
     ),
