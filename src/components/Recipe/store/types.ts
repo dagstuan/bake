@@ -36,6 +36,7 @@ const weights = v.object({
   l: v.nullable(v.number()),
   ss: v.nullable(v.number()),
   ts: v.nullable(v.number()),
+  stk: v.nullable(v.number()),
 });
 
 const conversions = v.array(

@@ -262,6 +262,7 @@ export type IngredientWeights = {
   liter?: number;
   tablespoon?: number;
   teaspoon?: number;
+  piece?: number;
 };
 
 export type Recipe = {

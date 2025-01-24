@@ -70,6 +70,7 @@ const mapIngredientReferenceToIngredient = (
       l: ingredient.weights?.liter ?? null,
       ss: ingredient.weights?.tablespoon ?? null,
       ts: ingredient.weights?.teaspoon ?? null,
+      stk: ingredient.weights?.piece ?? null,
     },
     conversions:
       ingredient.conversions?.map((c) => ({
@@ -79,6 +80,7 @@ const mapIngredientReferenceToIngredient = (
           l: c.to?.weights?.liter ?? null,
           ss: c.to?.weights?.tablespoon ?? null,
           ts: c.to?.weights?.teaspoon ?? null,
+          stk: c.to?.weights?.piece ?? null,
         },
       })) ?? [],
     comment: comment,

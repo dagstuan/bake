@@ -287,6 +287,7 @@ export const createRecipeStore = (
                   l: c.weights.l,
                   ss: c.weights.ss,
                   ts: c.weights.ts,
+                  stk: c.weights.stk,
                 },
               }))
               .concat([
@@ -297,6 +298,7 @@ export const createRecipeStore = (
                     l: ingredientToConvert.weights.l,
                     ss: ingredientToConvert.weights.ss,
                     ts: ingredientToConvert.weights.ts,
+                    stk: ingredientToConvert.weights.stk,
                   },
                 },
               ]);

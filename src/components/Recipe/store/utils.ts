@@ -24,6 +24,8 @@ export const getWeightInGramsForUnit = (
       return weights.ts ?? 1;
     case "ss":
       return weights.ss ?? 1;
+    case "stk":
+      return weights.stk ?? 1;
     default:
       return 1;
   }

@@ -51,7 +51,7 @@ export const IngredientEditor = (props: IngredientEditorProps) => {
     switch (unit) {
       case "g":
       case "kg":
-        return !!weights.l || !!weights.ss || !!weights.ts;
+        return !!weights.l || !!weights.ss || !!weights.ts || !!weights.stk;
       case "dl":
       case "l":
         return !!weights.l;
@@ -59,6 +59,8 @@ export const IngredientEditor = (props: IngredientEditorProps) => {
         return !!weights.ts;
       case "ss":
         return !!weights.ss;
+      case "stk":
+        return !!weights.stk;
       default:
         return false;
     }

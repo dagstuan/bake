@@ -1,8 +1,8 @@
-import { Duration as DurationType } from "../../../sanity.types";
 import { formatTimeValue } from "@/utils/durationUtils";
 import { capitalize } from "@/utils/tsUtils";
-import { IngredientUnit } from "./types";
+import { Duration as DurationType } from "../../../sanity.types";
 import { RecipeIngredientState } from "./store/types";
+import { IngredientUnit } from "./types";
 
 export const formatDurationType = (duration: DurationType): string => {
   const { start, end } = duration;
@@ -27,7 +27,7 @@ export const formatUnit = (unit: IngredientUnit): string => {
     case "g":
       return "gram";
     case "kg":
-      return "kilogram";
+      return "kg";
     case "l":
       return "liter";
     case "dl":
@@ -48,6 +48,7 @@ export const editableUnits: IngredientUnit[] = [
   "dl",
   "ss",
   "ts",
+  "stk",
 ];
 
 export const isEditableUnit = (

@@ -1553,6 +1553,13 @@
             "type": "number"
           },
           "optional": true
+        },
+        "piece": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "number"
+          },
+          "optional": true
         }
       }
     }

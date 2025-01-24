@@ -25,6 +25,11 @@ const fields = [
       return !!document?.matpratName;
     },
   }),
+  defineField({
+    name: "piece",
+    type: "number",
+    description: "Amount of grams in one piece. (stk)",
+  }),
 ];
 
 export const ingredientWeightsType = defineType({
