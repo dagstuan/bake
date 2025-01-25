@@ -1,37 +1,37 @@
 "use client";
 
-import { RecipeQueryResult } from "../../../sanity.types";
-import { Button } from "../ui/button";
-import { TypographyP } from "../Typography/TypographyP";
-import { WakeLockToggle } from "./WakeLockToggle";
-import { useRecipeContext } from "./recipeContext";
-import { RecipeIngredientReferenceResult } from "./RecipeIngredientReference";
-import {
-  RecipeIngredientReference,
-  ScalableRecipeNumber as ScalableRecipeNumberType,
-} from "./types";
-import { ComponentProps, Fragment } from "react";
-import { PortableText } from "../PortableText/PortableText";
-import { formatAmount } from "@/utils/recipeUtils";
-import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
-import { InfoCircledIcon } from "@radix-ui/react-icons";
-import { ScalableRecipeNumber } from "./ScalableRecipeNumber";
-import { TypographyH3 } from "../Typography/TypographyH3";
-import { TypographyLink } from "../Typography/TypographyLink";
-import { IngredientsTable } from "./IngredientsTable";
-import { TypographyH4 } from "../Typography/TypographyH4";
-import { TypographyH2 } from "../Typography/TypographyH2";
 import {
   recipeIngredientReferenceTypeName,
   scalableRecipeNumberTypeName,
 } from "@/sanity/schemaTypes/recipe/constants";
+import { formatAmount } from "@/utils/recipeUtils";
+import { InfoCircledIcon } from "@radix-ui/react-icons";
 import dynamic from "next/dynamic";
-import { RecipeHeader } from "./Header/RecipeHeader";
-import { InfoItems } from "./InfoItems";
-import { calcInitialState } from "./store/initialState";
+import { ComponentProps, Fragment } from "react";
 import { useStore } from "zustand";
 import { useShallow } from "zustand/react/shallow";
+import { RecipeQueryResult } from "../../../sanity.types";
+import { PortableText } from "../PortableText/PortableText";
+import { TypographyH2 } from "../Typography/TypographyH2";
+import { TypographyH3 } from "../Typography/TypographyH3";
+import { TypographyH4 } from "../Typography/TypographyH4";
+import { TypographyLink } from "../Typography/TypographyLink";
+import { TypographyP } from "../Typography/TypographyP";
+import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
+import { Button } from "../ui/button";
 import { Card } from "../ui/card";
+import { RecipeHeader } from "./Header/RecipeHeader";
+import { InfoItems } from "./InfoItems";
+import { IngredientsTable } from "./IngredientsTable";
+import { useRecipeContext } from "./recipeContext";
+import { RecipeIngredientReferenceResult } from "./RecipeIngredientReference";
+import { ScalableRecipeNumber } from "./ScalableRecipeNumber";
+import { calcInitialState } from "./store/initialState";
+import {
+  RecipeIngredientReference,
+  ScalableRecipeNumber as ScalableRecipeNumberType,
+} from "./types";
+import { WakeLockToggle } from "./WakeLockToggle";
 
 const RecipeEditor = dynamic(() =>
   import("./Editor/RecipeEditor").then((mod) => mod.RecipeEditor),
@@ -159,7 +159,7 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
                 <InfoCircledIcon />
                 <AlertTitle>Skalert oppskrift</AlertTitle>
                 <AlertDescription>
-                  Denne oppskriften er skalert{" "}
+                  Du har skalert denne oppskriften{" "}
                   {scaleFactor > 100 ? "opp til" : "ned til"}{" "}
                   {formatAmount(scaleFactor, "%", "0")} av original oppskrift.{" "}
                   <TypographyLink
