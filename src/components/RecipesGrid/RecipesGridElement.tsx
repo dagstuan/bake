@@ -56,7 +56,7 @@ export const RecipesGridElement = ({
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 30vw"
           />
         ) : (
-          <div className="bg-secondary from-primary/80 dark:from-primary/70 to-primary flex aspect-video w-full grow items-center justify-center rounded-t-xl bg-radial-[at_25%_25%] to-75% text-7xl"></div>
+          <div className="bg-secondary from-primary/80 to-primary flex aspect-video w-full grow items-center justify-center rounded-t-xl bg-radial-[at_25%_25%] to-75% text-7xl"></div>
         )}
         <div className="flex h-full items-center justify-between p-4">
           <h2 className="text-card-foreground text-xl font-semibold">
