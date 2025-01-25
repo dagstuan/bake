@@ -1,10 +1,10 @@
-import { urlForImage } from "@/sanity/lib/utils";
-import { title } from "process";
-import { Image } from "../../Image/Image";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-import { ComponentProps } from "react";
-import { RecipeHeader } from "./RecipeHeader";
+import { urlForImage } from "@/sanity/lib/utils";
 import dynamic from "next/dynamic";
+import { title } from "process";
+import { ComponentProps } from "react";
+import { Image } from "../../Image/Image";
+import { RecipeHeader } from "./RecipeHeader";
 
 const ImageDialogSingle = dynamic(() =>
   import("@/components/ImageDialog/ImageDialogSingle").then(
@@ -21,11 +21,7 @@ const mainImageHeight = 400;
 
 export const MainImage = ({ mainImage }: MainImageProps) => {
   if (!mainImage) {
-    return (
-      <div className="flex aspect-16/3 w-full items-center justify-center rounded-lg bg-secondary text-2xl sm:text-7xl">
-        🍞🍰🧑‍🍳
-      </div>
-    );
+    return null;
   }
 
   return (

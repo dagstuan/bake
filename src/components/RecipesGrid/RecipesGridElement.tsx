@@ -1,13 +1,13 @@
-import { urlForImage } from "@/sanity/lib/utils";
-import Link from "next/link";
-import { Card } from "../ui/card";
-import { Image } from "../Image/Image";
-import { ClockIcon } from "@radix-ui/react-icons";
-import { RecipesListQueryResult } from "../../../sanity.types";
-import { ArrayElement } from "@/utils/types";
-import { formatDurationShort } from "@/utils/durationUtils";
 import { cn } from "@/lib/utils";
+import { urlForImage } from "@/sanity/lib/utils";
+import { formatDurationShort } from "@/utils/durationUtils";
+import { ArrayElement } from "@/utils/types";
+import { ClockIcon } from "@radix-ui/react-icons";
 import { stegaClean } from "next-sanity";
+import Link from "next/link";
+import { RecipesListQueryResult } from "../../../sanity.types";
+import { Image } from "../Image/Image";
+import { Card } from "../ui/card";
 
 const gridImageWidth = 360;
 const gridImageHeight = 202;
@@ -36,7 +36,7 @@ export const RecipesGridElement = ({
       key={_id}
       className={cn("flex flex-col justify-between", className)}
     >
-      <Card className="transition-shadow hover:shadow-md">
+      <Card className="flex h-full flex-col transition-shadow hover:shadow-md">
         {mainImage ? (
           <Image
             width={gridImageWidth}
@@ -56,16 +56,14 @@ export const RecipesGridElement = ({
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 30vw"
           />
         ) : (
-          <div className="flex aspect-video w-full grow items-center justify-center bg-secondary text-7xl">
-            🍞
-          </div>
+          <div className="bg-secondary from-primary/80 dark:from-primary/70 to-primary flex aspect-video w-full grow items-center justify-center rounded-t-xl bg-radial-[at_25%_25%] to-75% text-7xl"></div>
         )}
-        <div className="flex justify-between p-4">
-          <h2 className="text-xl font-semibold text-card-foreground">
+        <div className="flex h-full items-center justify-between p-4">
+          <h2 className="text-card-foreground text-xl font-semibold">
             {stegaClean(title)}
           </h2>
           {duration && (
-            <div className="flex items-center gap-1 text-sm text-muted-foreground">
+            <div className="text-muted-foreground flex items-center gap-2 text-sm">
               <ClockIcon /> {duration}
             </div>
           )}
