@@ -221,6 +221,7 @@ export type RecipeIngredientReference = {
   };
   percentage?: number;
   hideCheckbox?: boolean;
+  hideComment?: boolean;
 };
 
 export type RecipeIngredient = {
@@ -704,6 +705,7 @@ export type RecipeQueryResult = {
               } | null;
               percentage?: number;
               hideCheckbox?: boolean;
+              hideComment?: boolean;
             }
           | {
               _key: string;

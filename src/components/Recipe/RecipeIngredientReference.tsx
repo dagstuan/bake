@@ -35,7 +35,7 @@ export const RecipeIngredientReferenceResult = ({
     return null;
   }
 
-  const { percentage: referencePercentage, hideCheckbox } = value;
+  const { percentage: referencePercentage, hideCheckbox, hideComment } = value;
 
   const { _id } = value.ingredient;
 
@@ -50,7 +50,12 @@ export const RecipeIngredientReferenceResult = ({
     ? `${formatAmount(mappedAmount, ingredientState?.unit)} `
     : "";
 
-  const labelText = `${amountLabel}${unCapitalize(ingredientState?.name)}${ingredientState?.comment ? ` (${ingredientState.comment})` : ""}`;
+  const comment =
+    !hideComment && ingredientState?.comment
+      ? ` (${ingredientState.comment})`
+      : "";
+
+  const labelText = `${amountLabel}${unCapitalize(ingredientState?.name)}${comment}`;
 
   return hideCheckbox ? (
     <Highlight>{labelText}</Highlight>

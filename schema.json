@@ -1288,6 +1288,13 @@
             "type": "boolean"
           },
           "optional": true
+        },
+        "hideComment": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "boolean"
+          },
+          "optional": true
         }
       }
     }
