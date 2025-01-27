@@ -95,8 +95,8 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
     <main className="px-6">
       <div className="prose-lg prose container mx-auto flex max-w-5xl flex-col gap-8 pt-10 sm:pt-16">
         <RecipeHeader title={title} mainImage={mainImage} />
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-12 md:gap-8">
-          <div className="col-span-full flex flex-col gap-6 md:col-span-4">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-[minmax(320px,_1fr)_3fr] md:gap-8">
+          <div className="col-span-full flex flex-col gap-6 md:col-span-1">
             <Card className="flex flex-col gap-6 rounded-lg p-4">
               <div className="flex flex-col gap-2">
                 <div className="flex flex-wrap gap-2">
@@ -151,7 +151,7 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
               })}
             </Card>
           </div>
-          <div className="col-span-full align-baseline md:col-span-8">
+          <div className="col-span-full align-baseline md:col-span-1">
             <TypographyH2>Fremgangsmåte</TypographyH2>
 
             {parseFloat(scaleFactor.toFixed(2)) !== 100 && (
