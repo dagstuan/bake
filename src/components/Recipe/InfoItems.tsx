@@ -32,6 +32,15 @@ export const InfoItems = ({ activeTime, totalTime }: InfoItemsProps) => {
         info="Antall porsjoner du får."
       />
 
+      {yieldPerServing && totalYield && (
+        <InfoItem
+          icon={<Weight size="1rem" />}
+          label="Vekt"
+          value={`${formatAmount(yieldPerServing, "g")} / ${formatAmount(totalYield, "g")}`}
+          info="Vekt per porsjon som lages. For eksempel vekt per bolle hvis du lager boller. Samt totalvekt for hele oppskriften."
+        />
+      )}
+
       {activeTime && (
         <InfoItem
           icon={<CookingPotIcon />}
@@ -47,15 +56,6 @@ export const InfoItems = ({ activeTime, totalTime }: InfoItemsProps) => {
           label="Total tid"
           value={formatDurationType(totalTime)}
           info="Total tidsbruk fra du starter til retten er ferdig."
-        />
-      )}
-
-      {totalYield && yieldPerServing && (
-        <InfoItem
-          icon={<Weight size="1rem" />}
-          label="Vekt"
-          value={`${formatAmount(totalYield, "g")} / ${formatAmount(yieldPerServing, "g")}`}
-          info="Total vekt av alle ingredienser, og vekt per porsjon som lages."
         />
       )}
     </div>
