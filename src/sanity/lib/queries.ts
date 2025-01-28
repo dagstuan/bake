@@ -73,6 +73,7 @@ export const recipeIngredientReferenceFields = /* groq */ `
   unit,
   percent,
   comment,
+  excludeFromTotalYield,
 `;
 
 export const recipeQuery =

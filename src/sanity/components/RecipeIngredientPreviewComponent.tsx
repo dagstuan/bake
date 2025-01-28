@@ -2,17 +2,18 @@ import { PreviewProps } from "sanity";
 import { Recipe, RecipeIngredient } from "../../../sanity.types";
 
 import { formatAmount } from "@/utils/recipeUtils";
-import { useFormValue } from "./utils";
 import {
   baseDryIngredientsName,
   ingredientsName,
 } from "../schemaTypes/recipe/constants";
+import { useFormValue } from "./utils";
 
 type RecipeIngredientPreviewProps = PreviewProps & { _id: string } & {
   title: string | null;
   percent: RecipeIngredient["percent"];
   unit: RecipeIngredient["unit"];
   comment: RecipeIngredient["comment"];
+  excludeFromTotalYield: RecipeIngredient["excludeFromTotalYield"];
 };
 
 const isRecipeIngredientPreviewProps = (
@@ -23,7 +24,8 @@ const isRecipeIngredientPreviewProps = (
     "title" in props &&
     "percent" in props &&
     "unit" in props &&
-    "comment" in props
+    "comment" in props &&
+    "excludeFromTotalYield" in props
   );
 };
 
@@ -80,7 +82,7 @@ export const RecipeIngredientPreviewComponent = (props: PreviewProps) => {
       {props.renderDefault({
         ...props,
         title: formatTitle(props, sumBaseIngredients),
-        subtitle: parentIngredient?.group,
+        subtitle: `${parentIngredient?.group ?? ""}${props.excludeFromTotalYield ? " (excluded from yield)" : ""}`,
       })}
     </div>
   );

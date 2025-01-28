@@ -1422,6 +1422,13 @@
           "type": "string"
         },
         "optional": true
+      },
+      "excludeFromTotalYield": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "boolean"
+        },
+        "optional": true
       }
     }
   },

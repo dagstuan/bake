@@ -148,6 +148,7 @@ export const createRecipeStore = (
             }
 
             const changePercent = newServings / state.servings;
+            state.totalYield = newServings * state.yieldPerServing;
             state.servings = newServings;
 
             state.ingredients.forEach((ingredient) => {
@@ -198,6 +199,7 @@ export const createRecipeStore = (
             });
 
             const updatedTotalYield = calculateTotalYield(state.ingredients);
+            state.totalYield = updatedTotalYield;
             state.servings = updatedTotalYield / state.yieldPerServing;
             state.ingredientsCompletion = resetIngredientsCompletionState(
               state.ingredientsCompletion,
