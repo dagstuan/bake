@@ -55,7 +55,7 @@ export const InfoItems = ({ activeTime, totalTime }: InfoItemsProps) => {
           icon={<Weight size="1rem" />}
           label="Vekt"
           value={`${formatAmount(totalYield, "g")} / ${formatAmount(yieldPerServing, "g")}`}
-          info="Total vekt av alle ingredienser, og vekt per enhet."
+          info="Total vekt av alle ingredienser, og vekt per porsjon som lages."
         />
       )}
     </div>
