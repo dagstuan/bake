@@ -53,7 +53,8 @@ const mapIngredientReferenceToIngredient = (
   group: string | null,
   ingredientRef: OmitStrict<RecipeIngredient, "_type"> | null,
 ): RecipeIngredientState | null => {
-  const { _id, ingredient, percent, unit, comment } = ingredientRef ?? {};
+  const { _id, ingredient, percent, unit, comment, excludeFromTotalYield } =
+    ingredientRef ?? {};
 
   if (!_id || !ingredient?.name) {
     return null;
@@ -84,6 +85,7 @@ const mapIngredientReferenceToIngredient = (
         },
       })) ?? [],
     comment: comment,
+    excludeFromTotalYield: excludeFromTotalYield ?? false,
   };
 };
 
@@ -148,6 +150,7 @@ export const calcInitialState = (
     ingredientsGroupOrder: groupOrder,
     ingredientsCompletion: calcInitialIngredientsCompletionState(instructions),
     ingredients: ingredientsState,
+    totalYield: totalYield,
     yieldPerServing: totalYield / initialServingsNum,
   };
 };

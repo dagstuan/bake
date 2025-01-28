@@ -117,11 +117,7 @@ export const RecipeContent = ({ recipe }: RecipeContentProps) => {
                 <WakeLockToggle />
               </div>
 
-              <InfoItems
-                servings={servings}
-                activeTime={activeTime}
-                totalTime={totalTime}
-              />
+              <InfoItems activeTime={activeTime} totalTime={totalTime} />
             </Card>
 
             <Card className="flex flex-col gap-2 rounded-lg p-4">

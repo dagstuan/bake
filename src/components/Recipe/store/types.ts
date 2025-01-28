@@ -57,6 +57,7 @@ const recipeIngredientStateSchema = v.object({
   unit: v.optional(v.union([ingredientUnit, v.undefined(), v.null()])),
   weights: weights,
   comment: v.optional(v.nullable(v.string())),
+  excludeFromTotalYield: v.boolean(),
   conversions,
 });
 
@@ -76,6 +77,7 @@ export const recipeStateSchema = v.object({
   ingredientsCompletion: ingredientsCompletionSchema,
   ingredientsGroupOrder: ingredientsGroupOrderSchema,
   ingredients: recipeIngredientsStateSchema,
+  totalYield: v.number(),
   yieldPerServing: v.number(),
 });
 

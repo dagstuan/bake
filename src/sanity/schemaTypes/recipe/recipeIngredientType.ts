@@ -1,7 +1,7 @@
 import { RecipeIngredientPreviewComponent } from "@/sanity/components/RecipeIngredientPreviewComponent";
 import { defineField, defineType } from "sanity";
-import { isRecipeIngredient } from "./utils";
 import { recipeIngredientTypeName } from "./constants";
+import { isRecipeIngredient } from "./utils";
 
 const fields = [
   defineField({
@@ -42,6 +42,13 @@ const fields = [
       "Shown in parenthesis after the ingredient in the recipe table.",
     validation: (rule) => rule.max(50).error("Max 50 characters"),
   }),
+  defineField({
+    name: "excludeFromTotalYield",
+    type: "boolean",
+    title: "Exclude from total yield",
+    description:
+      "If checked, the weight of this ingredient will not be included in the total yield.",
+  }),
 ];
 
 export const recipeIngredientType = defineType({
@@ -56,6 +63,7 @@ export const recipeIngredientType = defineType({
       percent: "percent",
       unit: "unit",
       comment: "comment",
+      excludeFromTotalYield: "excludeFromTotalYield",
     },
   },
   components: {

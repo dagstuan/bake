@@ -33,9 +33,9 @@ export const getWeightInGramsForUnit = (
 
 export const calculateTotalYield = (ingredients: RecipeIngredientsState) => {
   return ingredients.reduce((acc, currIngredient) => {
-    const { amount, unit, weights } = currIngredient;
+    const { amount, unit, weights, excludeFromTotalYield } = currIngredient;
 
-    if (!amount || !unit) {
+    if (!amount || !unit || excludeFromTotalYield) {
       return acc;
     }
 
