@@ -1,3 +1,4 @@
+import { CookingPot, X } from "lucide-react";
 import { DocumentDefinition } from "sanity";
 import type { StructureResolver } from "sanity/structure";
 import { apiVersion } from "../env";
@@ -28,7 +29,7 @@ export const resolveStructure = (
         S.documentTypeListItem("ingredient").title("Ingredients"),
         S.listItem()
           .title("Recipe ingredients by recipe")
-          .icon(() => "🥘")
+          .icon(() => <CookingPot size={16} />)
           .child(
             S.documentTypeList("recipe")
               .title("Recipes")
@@ -46,7 +47,7 @@ export const resolveStructure = (
         S.divider(),
         S.listItem()
           .title("Unused documents")
-          .icon(() => "❌")
+          .icon(() => <X size={16} />)
           .child(
             S.documentList()
               .title("Unused documents")

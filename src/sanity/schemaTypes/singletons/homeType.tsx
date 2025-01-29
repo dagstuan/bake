@@ -1,13 +1,14 @@
-import { defineArrayMember, defineField, defineType } from "sanity";
-import { recipeType } from "../recipe/recipeType";
 import { ComposeIcon, SearchIcon } from "@sanity/icons";
+import { House } from "lucide-react";
+import { defineArrayMember, defineField, defineType } from "sanity";
 import { homeTypeName } from "../constants";
+import { recipeType } from "../recipe/recipeType";
 
 export const homeType = defineType({
   name: homeTypeName,
   title: "Home",
   type: "document",
-  icon: () => "🏠",
+  icon: () => <House size={16} />,
   groups: [
     { name: "content", title: "Content", icon: ComposeIcon, default: true },
     { name: "seo", title: "SEO", icon: SearchIcon },
