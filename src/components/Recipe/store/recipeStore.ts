@@ -140,7 +140,7 @@ export const createRecipeStore = (
         onServingsChange: (newServings) => {
           set((state) => {
             if (
-              newServings === 0 ||
+              newServings <= 0 ||
               isNaN(newServings) ||
               newServings < minServings ||
               newServings >= maxServings
@@ -167,7 +167,7 @@ export const createRecipeStore = (
 
         onTotalYieldChange: (newTotalYield) => {
           set((state) => {
-            if (newTotalYield < 0 || isNaN(newTotalYield)) {
+            if (newTotalYield <= 0 || isNaN(newTotalYield)) {
               return;
             }
 
