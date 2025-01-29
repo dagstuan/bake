@@ -167,7 +167,7 @@ export const createRecipeStore = (
 
         onTotalYieldChange: (newTotalYield) => {
           set((state) => {
-            if (newTotalYield === 0 || isNaN(newTotalYield)) {
+            if (newTotalYield < 0 || isNaN(newTotalYield)) {
               return;
             }
 
