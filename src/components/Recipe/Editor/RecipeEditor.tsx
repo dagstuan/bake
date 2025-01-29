@@ -78,7 +78,7 @@ export const RecipeEditor = ({
           Rediger oppskrift
         </Button>
       </DialogTrigger>
-      <DialogContent className="my-10 sm:max-w-lg">
+      <DialogContent className="my-10 max-w-full sm:max-w-lg">
         <DialogHeader>
           <DialogTitle>Rediger oppskrift</DialogTitle>
           <DialogDescription>
@@ -90,14 +90,21 @@ export const RecipeEditor = ({
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-8 py-4">
-          <div className="grid grid-cols-[max-content_1fr] items-center gap-4">
-            <Label htmlFor="servings" className="flex items-center gap-2">
-              <CakeSliceIcon /> Antall porsjoner
+          <div className="grid grid-cols-[minmax(100px,_max-content)_1fr] items-center gap-4">
+            <Label
+              htmlFor="servings"
+              className="flex items-center gap-2 overflow-hidden text-nowrap text-ellipsis"
+            >
+              <CakeSliceIcon />{" "}
+              <span className="overflow-hidden text-nowrap text-ellipsis">
+                Antall porsjoner
+              </span>
             </Label>
             <div className="flex items-center gap-2">
               <Button
                 variant="outline"
                 type="button"
+                className="p-3 sm:p-4"
                 onClick={() => {
                   onServingsChange(Math.ceil(servings - 1));
                 }}
@@ -114,6 +121,7 @@ export const RecipeEditor = ({
               <Button
                 variant="outline"
                 type="button"
+                className="p-3 sm:p-4"
                 onClick={() => {
                   onServingsChange(Math.floor(servings + 1));
                 }}
@@ -122,12 +130,16 @@ export const RecipeEditor = ({
               </Button>
             </div>
             <Label htmlFor="totalYield" className="flex items-center gap-2">
-              <Weight size={16} /> Totalvekt i gram
+              <Weight size={16} />{" "}
+              <span className="overflow-hidden text-nowrap text-ellipsis">
+                Totalvekt i gram
+              </span>
             </Label>
             <div className="flex items-center gap-2">
               <Button
                 variant="outline"
                 type="button"
+                className="p-3 sm:p-4"
                 onClick={() => {
                   onTotalYieldChange(Math.ceil(totalYield - 1));
                 }}
@@ -144,6 +156,7 @@ export const RecipeEditor = ({
               <Button
                 variant="outline"
                 type="button"
+                className="p-3 sm:p-4"
                 onClick={() => {
                   onTotalYieldChange(Math.floor(totalYield + 1));
                 }}
