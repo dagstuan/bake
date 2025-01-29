@@ -30,6 +30,7 @@ interface RecipeStore extends RecipeState {
     completed: boolean,
   ) => void;
   onServingsChange: (newServings: number) => void;
+  onTotalYieldChange: (newTotalYield: number) => void;
   onIngredientAmountChange: (ingredientId: string, newAmount: number) => void;
   onIngredientUnitChange: (
     ingredientId: string,
@@ -150,6 +151,29 @@ export const createRecipeStore = (
             const changePercent = newServings / state.servings;
             state.totalYield = newServings * state.yieldPerServing;
             state.servings = newServings;
+
+            state.ingredients.forEach((ingredient) => {
+              if (isDefined(ingredient.amount)) {
+                ingredient.amount *= changePercent;
+              }
+            });
+
+            state.ingredientsCompletion = resetIngredientsCompletionState(
+              state.ingredientsCompletion,
+              false,
+            );
+          });
+        },
+
+        onTotalYieldChange: (newTotalYield) => {
+          set((state) => {
+            if (newTotalYield === 0 || isNaN(newTotalYield)) {
+              return;
+            }
+
+            const changePercent = newTotalYield / state.totalYield;
+            state.totalYield = newTotalYield;
+            state.servings = newTotalYield / state.yieldPerServing;
 
             state.ingredients.forEach((ingredient) => {
               if (isDefined(ingredient.amount)) {
@@ -321,6 +345,10 @@ export const createRecipeStore = (
 
             ingredientToConvert.weights = newIngredient.weights;
             ingredientToConvert.conversions = newConversions;
+
+            const updatedTotalYield = calculateTotalYield(state.ingredients);
+            state.totalYield = updatedTotalYield;
+            state.yieldPerServing = updatedTotalYield / state.servings;
           });
         },
 

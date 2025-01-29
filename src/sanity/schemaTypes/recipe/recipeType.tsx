@@ -10,6 +10,7 @@ import { IngredientItemComponent } from "@/sanity/components/IngredientItemCompo
 import { IngredientsInputComponent } from "@/sanity/components/IngredientsInputComponent";
 import { isDefined } from "@/utils/tsUtils";
 import { ComposeIcon, SearchIcon } from "@sanity/icons";
+import { ChefHat } from "lucide-react";
 import { Recipe, RecipeIngredientReference } from "../../../../sanity.types";
 import { baseBlockLists } from "../portableText/baseBlockLists";
 import { baseBlockMarks } from "../portableText/baseBlockMarks";
@@ -67,7 +68,7 @@ export const recipeType = defineType({
   name: recipeTypeName,
   title: "Recipe",
   type: "document",
-  icon: () => "📜",
+  icon: () => <ChefHat size={16} />,
   groups: [
     { name: "content", title: "Content", icon: ComposeIcon, default: true },
     { name: "seo", title: "SEO", icon: SearchIcon },

@@ -1,10 +1,11 @@
+import { Tag } from "lucide-react";
 import { defineField, defineType } from "sanity";
 
 export const categoryType = defineType({
   name: "category",
   title: "Category",
   type: "document",
-  icon: () => "🏷️",
+  icon: () => <Tag size={16} />,
   fields: [
     defineField({
       name: "title",

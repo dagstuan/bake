@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { CakeSliceIcon } from "@/components/icons/CakeSliceIcon";
+import { TypographyH4 } from "@/components/Typography/TypographyH4";
 import {
   Dialog,
   DialogContent,
@@ -10,14 +11,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "../../ui/button";
-import { useRecipeContext } from "../recipeContext";
-import { formatAmount } from "@/utils/recipeUtils";
-import { Label } from "@radix-ui/react-label";
-import { DeferredNumberInput } from "../DeferredNumberInput";
-import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
-import { isDefined } from "@/utils/tsUtils";
-import { IngredientEditor } from "./IngredientEditor";
 import {
   Table,
   TableBody,
@@ -25,9 +18,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { TypographyH4 } from "@/components/Typography/TypographyH4";
+import { formatAmount } from "@/utils/recipeUtils";
+import { isDefined } from "@/utils/tsUtils";
+import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
+import { Label } from "@radix-ui/react-label";
+import { Weight } from "lucide-react";
+import { useState } from "react";
 import { useStore } from "zustand";
 import { useShallow } from "zustand/react/shallow";
+import { Button } from "../../ui/button";
+import { DeferredNumberInput } from "../DeferredNumberInput";
+import { useRecipeContext } from "../recipeContext";
+import { IngredientEditor } from "./IngredientEditor";
 
 interface RecipeEditorProps {
   triggerClassName?: string;
@@ -42,16 +44,24 @@ export const RecipeEditor = ({
 
   const recipeStore = useRecipeContext();
 
-  const [servings, ingredients, onServingsChange, onAllIngredientsUnitChange] =
-    useStore(
-      recipeStore,
-      useShallow((s) => [
-        s.servings,
-        s.ingredients,
-        s.onServingsChange,
-        s.onAllIngredientsUnitChange,
-      ]),
-    );
+  const [
+    servings,
+    ingredients,
+    totalYield,
+    onServingsChange,
+    onTotalYieldChange,
+    onAllIngredientsUnitChange,
+  ] = useStore(
+    recipeStore,
+    useShallow((s) => [
+      s.servings,
+      s.ingredients,
+      s.totalYield,
+      s.onServingsChange,
+      s.onTotalYieldChange,
+      s.onAllIngredientsUnitChange,
+    ]),
+  );
 
   const handleSave = () => {
     setIsOpen(false);
@@ -80,11 +90,11 @@ export const RecipeEditor = ({
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-8 py-4">
-          <div className="flex items-center gap-4">
-            <Label htmlFor="servings" className="text-right">
-              Antall
+          <div className="grid grid-cols-[max-content_1fr] items-center gap-4">
+            <Label htmlFor="servings" className="flex items-center gap-2">
+              <CakeSliceIcon /> Antall porsjoner
             </Label>
-            <div className="col-span-3 flex items-center gap-2">
+            <div className="flex items-center gap-2">
               <Button
                 variant="outline"
                 type="button"
@@ -97,6 +107,7 @@ export const RecipeEditor = ({
               <DeferredNumberInput
                 id="servings"
                 value={parseFloat(formatAmount(servings))}
+                min={0}
                 onChange={onServingsChange}
                 className="w-20 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
               />
@@ -110,7 +121,38 @@ export const RecipeEditor = ({
                 <PlusIcon />
               </Button>
             </div>
+            <Label htmlFor="totalYield" className="flex items-center gap-2">
+              <Weight size={16} /> Totalvekt i gram
+            </Label>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                type="button"
+                onClick={() => {
+                  onTotalYieldChange(Math.ceil(totalYield - 1));
+                }}
+              >
+                <MinusIcon />
+              </Button>
+              <DeferredNumberInput
+                id="totalYield"
+                value={parseFloat(totalYield.toFixed(0))}
+                onChange={onTotalYieldChange}
+                min={0}
+                className="w-20 [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+              />
+              <Button
+                variant="outline"
+                type="button"
+                onClick={() => {
+                  onTotalYieldChange(Math.floor(totalYield + 1));
+                }}
+              >
+                <PlusIcon />
+              </Button>
+            </div>
           </div>
+
           <div className="border-t pt-8">
             <div className="mb-4 flex items-center justify-between">
               <TypographyH4 as="h3">Ingredienser</TypographyH4>

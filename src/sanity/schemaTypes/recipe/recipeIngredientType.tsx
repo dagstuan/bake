@@ -1,4 +1,5 @@
 import { RecipeIngredientPreviewComponent } from "@/sanity/components/RecipeIngredientPreviewComponent";
+import { Wheat } from "lucide-react";
 import { defineField, defineType } from "sanity";
 import { recipeIngredientTypeName } from "./constants";
 import { isRecipeIngredient } from "./utils";
@@ -55,7 +56,7 @@ export const recipeIngredientType = defineType({
   name: recipeIngredientTypeName,
   title: "Recipe Ingredient",
   type: "document",
-  icon: () => "🍌",
+  icon: () => <Wheat size={16} />,
   fields,
   preview: {
     select: {

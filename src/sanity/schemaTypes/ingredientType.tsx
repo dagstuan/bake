@@ -1,6 +1,7 @@
+import { Carrot } from "lucide-react";
 import { defineField, defineType } from "sanity";
-import { ingredientConversionTypeName, ingredientTypeName } from "./constants";
 import { MatpratNameInput } from "../components/MatpratNameInput";
+import { ingredientConversionTypeName, ingredientTypeName } from "./constants";
 
 const fields = [
   defineField({
@@ -46,6 +47,6 @@ export const ingredientType = defineType({
   name: ingredientTypeName,
   title: "Ingredient",
   type: "document",
-  icon: () => "🥒",
+  icon: () => <Carrot size={16} />,
   fields,
 });
