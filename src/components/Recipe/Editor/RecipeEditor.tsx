@@ -141,7 +141,7 @@ export const RecipeEditor = ({
                 type="button"
                 className="p-3 sm:p-4"
                 onClick={() => {
-                  onTotalYieldChange(Math.ceil(totalYield - 1));
+                  onTotalYieldChange(Math.ceil(totalYield - 50));
                 }}
               >
                 <MinusIcon />
@@ -158,7 +158,7 @@ export const RecipeEditor = ({
                 type="button"
                 className="p-3 sm:p-4"
                 onClick={() => {
-                  onTotalYieldChange(Math.floor(totalYield + 1));
+                  onTotalYieldChange(Math.floor(totalYield + 50));
                 }}
               >
                 <PlusIcon />
