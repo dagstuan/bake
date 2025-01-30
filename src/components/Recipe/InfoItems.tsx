@@ -37,7 +37,7 @@ export const InfoItems = ({ activeTime, totalTime }: InfoItemsProps) => {
           icon={<Weight size="1rem" />}
           label="Vekt"
           value={`${formatAmount(yieldPerServing, "g")} / ${formatAmount(totalYield, "g")}`}
-          info="Vekt per hele porsjon som lages. For eksempel vekt per bolle hvis du lager boller. Samt totalvekt for hele oppskriften."
+          info="Vekt per hele porsjon som lages, når alle ingrediensene regnes om til gram. F.eks. vekt per bolle hvis du lager boller. Samt totalvekt for hele oppskriften."
         />
       )}
 

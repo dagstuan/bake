@@ -1,7 +1,7 @@
 import { QuestionMarkCircledIcon } from "@radix-ui/react-icons";
+import { PopoverAnchor } from "@radix-ui/react-popover";
 import { Button } from "../ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { PopoverAnchor } from "@radix-ui/react-popover";
 
 interface InfoItemProps {
   icon: React.ReactNode;
@@ -12,7 +12,7 @@ interface InfoItemProps {
 
 export const InfoItem = ({ icon, label, value, info }: InfoItemProps) => (
   <Popover>
-    <PopoverAnchor className="flex items-center justify-between gap-2 rounded-lg border bg-background px-3 py-1 text-sm text-foreground">
+    <PopoverAnchor className="bg-background text-foreground flex items-center justify-between gap-2 rounded-lg border px-3 py-1 text-sm">
       <div className="flex items-center space-x-2">
         {icon}
         <span className="font-medium">{label}:</span>
@@ -23,14 +23,20 @@ export const InfoItem = ({ icon, label, value, info }: InfoItemProps) => (
         <Button
           variant="ghost"
           size="icon"
-          className="h-6 w-6 text-muted-foreground"
+          className="text-muted-foreground h-6 w-6"
           title="Mer informasjon"
         >
           <QuestionMarkCircledIcon className="h-4 w-4" />
         </Button>
       </PopoverTrigger>
     </PopoverAnchor>
-    <PopoverContent sideOffset={8} collisionPadding={8} className="w-80">
+    <PopoverContent
+      sideOffset={8}
+      collisionPadding={8}
+      side="bottom"
+      align="start"
+      className="max-w-(--radix-popover-content-available-width)"
+    >
       <p className="text-sm">{info}</p>
     </PopoverContent>
   </Popover>
