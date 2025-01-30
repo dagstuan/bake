@@ -1,23 +1,23 @@
-import { draftMode } from "next/headers";
-import type { Metadata } from "next";
-import localFont from "next/font/local";
-import "../globals.css";
-import { Nav } from "@/components/Nav/Nav";
 import { Footer } from "@/components/Footer/Footer";
-import { SearchAction, WebSite, WithContext } from "schema-dts";
 import { JsonLd } from "@/components/JsonLd/JsonLd";
+import { Nav } from "@/components/Nav/Nav";
+import { sanityFetch } from "@/sanity/lib/live";
 import { homeSeoQuery } from "@/sanity/lib/queries";
 import { urlForImage } from "@/sanity/lib/utils";
+import type { Metadata } from "next";
+import { ThemeProvider } from "next-themes";
+import dynamic from "next/dynamic";
+import localFont from "next/font/local";
+import { draftMode } from "next/headers";
+import Script from "next/script";
+import { SearchAction, WebSite, WithContext } from "schema-dts";
+import "../globals.css";
 import {
   openGraphMetadata,
   siteName,
   siteUrl,
   twitterMetadata,
 } from "../shared-metadata";
-import Script from "next/script";
-import dynamic from "next/dynamic";
-import { sanityFetch } from "@/sanity/lib/live";
-import { ThemeProvider } from "next-themes";
 
 const DisableDraftMode = dynamic(() =>
   import("@/components/DisableDraftMode").then((mod) => mod.DisableDraftMode),
@@ -151,7 +151,7 @@ export default async function RootLayout({
   return (
     <html lang="no" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col bg-background text-foreground antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} bg-background text-foreground flex min-h-screen flex-col antialiased`}
       >
         <ThemeProvider
           attribute="class"
@@ -167,6 +167,7 @@ export default async function RootLayout({
         <JsonLd jsonLd={jsonLd} />
         <Script
           strategy="lazyOnload"
+          crossOrigin="anonymous"
           src="https://app.tinyanalytics.io/pixel/YRE2eBbx3BUYqOdv"
         />
         <SanityLive />
