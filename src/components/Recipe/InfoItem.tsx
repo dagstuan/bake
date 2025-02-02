@@ -35,7 +35,7 @@ export const InfoItem = ({ icon, label, value, info }: InfoItemProps) => (
       collisionPadding={8}
       side="bottom"
       align="start"
-      className="max-w-(--radix-popover-content-available-width)"
+      className="max-w-(--radix-popover-content-available-width) min-w-(--radix-popover-trigger-width)"
     >
       <p className="text-sm">{info}</p>
     </PopoverContent>
