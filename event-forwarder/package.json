@@ -13,5 +13,8 @@
   "dependencies": {
     "@sanity/client": "^6.27.2",
     "tsx": "^4.19.2"
+  },
+  "devDependencies": {
+    "@flydotio/dockerfile": "^0.7.4"
   }
 }
