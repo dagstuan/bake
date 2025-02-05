@@ -1,0 +1,17 @@
+{
+  "name": "event-forwarder",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "tsx --env-file=.env index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@sanity/client": "^6.27.2",
+    "tsx": "^4.19.2"
+  }
+}
