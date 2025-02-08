@@ -9,7 +9,6 @@ import { ThemeProvider } from "next-themes";
 import dynamic from "next/dynamic";
 import localFont from "next/font/local";
 import { draftMode } from "next/headers";
-import Script from "next/script";
 import { SearchAction, WebSite, WithContext } from "schema-dts";
 import "../globals.css";
 import {
@@ -165,11 +164,6 @@ export default async function RootLayout({
         </ThemeProvider>
 
         <JsonLd jsonLd={jsonLd} />
-        <Script
-          strategy="lazyOnload"
-          crossOrigin="anonymous"
-          src="https://app.tinyanalytics.io/pixel/YRE2eBbx3BUYqOdv"
-        />
         <SanityLive />
         {draftModeEnabled && (
           <>
