@@ -1,12 +1,8 @@
-import { fetchRecipes } from "@/components/RecipesPage/fetchRecipes";
 import {
   categoryQueryParam,
   searchQueryParam,
-} from "@/components/RecipesPage/RecipesFilters";
-import { RecipesPageContent } from "@/components/RecipesPage/RecipesPageContent";
-import { amountPerFetch } from "@/components/RecipesPage/utils";
-import { sanityFetch } from "@/sanity/lib/live";
-import { allCategoriesQuery } from "@/sanity/lib/queries";
+} from "@/components/RecipesPage/Filters/RecipesFiltersContent";
+import { RecipesPage } from "@/components/RecipesPage/RecipesPage";
 import { Metadata } from "next/types";
 
 export const metadata: Metadata = {
@@ -23,17 +19,5 @@ export default async function Page(props: {
   const query = searchParams?.query;
   const category = searchParams?.category;
 
-  const [{ data: categories }, recipes] = await Promise.all([
-    sanityFetch({ query: allCategoriesQuery }),
-    fetchRecipes(query, category, amountPerFetch),
-  ]);
-
-  return (
-    <RecipesPageContent
-      categories={categories}
-      recipes={recipes}
-      query={query}
-      category={category}
-    />
-  );
+  return <RecipesPage query={query} category={category} />;
 }

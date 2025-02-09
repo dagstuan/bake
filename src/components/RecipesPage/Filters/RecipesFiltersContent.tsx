@@ -2,26 +2,28 @@
 
 import { Cross2Icon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { TransitionStartFunction, useState } from "react";
+import { use, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
-import { AllCategoriesQueryResult } from "../../../sanity.types";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
+import { AllCategoriesQueryResult } from "../../../../sanity.types";
+import { Button } from "../../ui/button";
+import { Input } from "../../ui/input";
+import { TransitionContext } from "../TransitionContext";
 
 export const categoryQueryParam = "category";
 export const searchQueryParam = "query";
 
-interface RecipesFiltersProps {
-  startTransition: TransitionStartFunction;
+interface RecipesFiltersContentProps {
   categories: AllCategoriesQueryResult;
 }
 
-export const RecipesFilters = (props: RecipesFiltersProps) => {
-  const { categories, startTransition } = props;
+export const RecipesFiltersContent = (props: RecipesFiltersContentProps) => {
+  const { categories } = props;
 
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const router = useRouter();
+
+  const { startTransition } = use(TransitionContext);
 
   const categoryQuery = searchParams.get(categoryQueryParam);
 
@@ -37,7 +39,7 @@ export const RecipesFilters = (props: RecipesFiltersProps) => {
     }
 
     startTransition(() => {
-      router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+      router.push(`${pathname}?${params.toString()}`, { scroll: false });
     });
   };
 
@@ -67,7 +69,7 @@ export const RecipesFilters = (props: RecipesFiltersProps) => {
     <div className="flex w-full flex-col items-center gap-4 sm:gap-6">
       <div className="mx-auto w-full max-w-3xl">
         <div className="relative">
-          <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 transform text-gray-500" />
+          <MagnifyingGlassIcon className="absolute top-1/2 left-3 -translate-y-1/2 transform text-gray-500" />
           <Input
             type="text"
             placeholder="Søk..."
@@ -82,7 +84,7 @@ export const RecipesFilters = (props: RecipesFiltersProps) => {
               onClick={() => {
                 handleInputChange("");
               }}
-              className="absolute right-3 top-1/2 -translate-y-1/2 transform text-gray-400 hover:text-gray-600"
+              className="absolute top-1/2 right-3 -translate-y-1/2 transform text-gray-400 hover:text-gray-600"
               aria-label="Clear search"
             >
               <Cross2Icon />
@@ -92,6 +94,7 @@ export const RecipesFilters = (props: RecipesFiltersProps) => {
       </div>
       <div className="-mb-3 flex max-w-full gap-2 overflow-y-auto p-1 pb-3 sm:mb-0 sm:gap-4 sm:p-1">
         <Button
+          className="hover:cursor-pointer"
           variant={!categoryQuery ? "default" : "outline"}
           onClick={() => {
             setCategory(null);
@@ -108,6 +111,7 @@ export const RecipesFilters = (props: RecipesFiltersProps) => {
 
           return (
             <Button
+              className="hover:cursor-pointer"
               variant={categoryQuery === slug ? "default" : "outline"}
               onClick={() => {
                 setCategory(slug);

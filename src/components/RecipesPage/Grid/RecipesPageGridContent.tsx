@@ -1,30 +1,30 @@
 "use client";
 
-import { Button } from "../ui/button";
-import { useState } from "react";
-import { fetchRecipes } from "./fetchRecipes";
-import { SpinnerIcon } from "../icons/SpinnerIcon";
-import { amountPerFetch } from "./utils";
-import { RecipesListQueryResult } from "../../../sanity.types";
+import { Button } from "../../ui/button";
+import { use, useState } from "react";
+import { fetchRecipes } from "../fetchRecipes";
+import { SpinnerIcon } from "../../icons/SpinnerIcon";
+import { amountPerFetch } from "../utils";
+import { RecipesListQueryResult } from "../../../../sanity.types";
 import { Nullable } from "@/utils/types";
-import { NoRecipes } from "../RecipesGrid/NoRecipes";
-import { RecipesGridWrapper } from "../RecipesGrid/RecipesGridWrapper";
-import { RecipesGridElement } from "../RecipesGrid/RecipesGridElement";
+import { NoRecipes } from "../../RecipesGrid/NoRecipes";
+import { RecipesGridWrapper } from "../../RecipesGrid/RecipesGridWrapper";
+import { RecipesGridElement } from "../../RecipesGrid/RecipesGridElement";
 import { cn } from "@/lib/utils";
+import { TransitionContext } from "../TransitionContext";
 
-interface RecipesPageGridProps {
+interface RecipesPageGridContentProps {
   recipes: RecipesListQueryResult;
   query: Nullable<string>;
   category: Nullable<string>;
-  isTransitionPending: boolean;
 }
 
-export const RecipesPageGrid = ({
+export const RecipesPageGridContent = ({
   recipes,
   query,
   category,
-  isTransitionPending,
-}: RecipesPageGridProps) => {
+}: RecipesPageGridContentProps) => {
+  const { isPending } = use(TransitionContext);
   const [recipesList, setRecipesList] =
     useState<NonNullable<RecipesListQueryResult>>(recipes);
   const [hasMore, setHasMore] = useState(recipesList.length >= amountPerFetch);
@@ -54,7 +54,7 @@ export const RecipesPageGrid = ({
   return (
     <div className="flex flex-col gap-10">
       {recipesList.length === 0 ? (
-        <NoRecipes isTransitionPending={isTransitionPending} />
+        <NoRecipes isTransitionPending={isPending} />
       ) : (
         <RecipesGridWrapper>
           {recipesList.map((recipe, i) => {
@@ -64,7 +64,7 @@ export const RecipesPageGrid = ({
                 recipe={recipe}
                 prority={i < 3}
                 className={cn({
-                  ["opacity-60"]: isTransitionPending,
+                  ["opacity-60"]: isPending,
                 })}
               />
             );
@@ -91,7 +91,7 @@ export const RecipesPageGrid = ({
           )}
         </Button>
       ) : recipesList.length > 0 ? (
-        <p className="mx-auto flex h-9 items-center text-muted-foreground">
+        <p className="text-muted-foreground mx-auto flex h-9 items-center">
           Ingen flere oppskrifter.
         </p>
       ) : null}
