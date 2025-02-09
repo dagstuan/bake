@@ -15,7 +15,7 @@ export interface RecipesGridWrapperProps {
 export const RecipesPage = ({ query, category }: RecipesGridWrapperProps) => {
   return (
     <TransitionContextProvider>
-      <div className="px-6">
+      <main className="px-6">
         <div className="mx-auto mt-8 flex max-w-6xl flex-1 flex-col justify-center gap-12 sm:mt-16">
           <TypographyH1 className="mx-auto">Alle oppskrifter</TypographyH1>
 
@@ -31,7 +31,7 @@ export const RecipesPage = ({ query, category }: RecipesGridWrapperProps) => {
             />
           </Suspense>
         </div>
-      </div>
+      </main>
     </TransitionContextProvider>
   );
 };

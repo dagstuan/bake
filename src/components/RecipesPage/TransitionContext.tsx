@@ -28,8 +28,8 @@ export const TransitionContextProvider = (
   const [isPending, startTransition] = useTransition();
 
   return (
-    <TransitionContext.Provider value={{ isPending, startTransition }}>
+    <TransitionContext value={{ isPending, startTransition }}>
       {props.children}
-    </TransitionContext.Provider>
+    </TransitionContext>
   );
 };
