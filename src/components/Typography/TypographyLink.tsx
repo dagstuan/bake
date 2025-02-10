@@ -27,7 +27,7 @@ export const TypographyLink = ({
     <Elem
       href={href}
       className={cn(
-        "font-medium text-secondary-foreground underline-offset-4 hover:underline active:no-underline",
+        "text-secondary-foreground font-medium underline-offset-4 hover:underline active:no-underline",
         className,
       )}
     >

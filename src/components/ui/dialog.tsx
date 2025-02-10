@@ -28,7 +28,7 @@ const DialogOverlay = forwardRef<
   <DialogPrimitiveOverlay
     ref={ref}
     className={cn(
-      "fixed inset-0 bottom-0 left-0 right-0 top-0 z-50 grid place-items-center overflow-y-auto bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+      "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 top-0 right-0 bottom-0 left-0 z-50 grid place-items-center overflow-y-auto bg-black/80",
       className,
     )}
     {...props}
@@ -45,13 +45,13 @@ const DialogContent = forwardRef<
       <DialogPrimitiveContent
         ref={ref}
         className={cn(
-          "relative z-50 grid w-full gap-4 rounded-lg border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 sm:max-w-lg",
+          "bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 relative z-50 grid w-full gap-4 rounded-lg border p-6 shadow-lg duration-200 sm:max-w-lg",
           className,
         )}
         {...props}
       >
         {children}
-        <DialogPrimitiveClose className="absolute right-4 top-4 rounded-sm bg-background opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-hidden focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+        <DialogPrimitiveClose className="bg-background ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none">
           <Cross2Icon className="h-6 w-6" />
           <span className="sr-only">Close</span>
         </DialogPrimitiveClose>
@@ -96,7 +96,7 @@ const DialogTitle = forwardRef<
   <DialogPrimitiveTitle
     ref={ref}
     className={cn(
-      "text-xl font-semibold leading-none tracking-tight",
+      "text-xl leading-none font-semibold tracking-tight",
       className,
     )}
     {...props}
@@ -110,7 +110,7 @@ const DialogDescription = forwardRef<
 >(({ className, ...props }, ref) => (
   <DialogPrimitiveDescription
     ref={ref}
-    className={cn("text-base text-muted-foreground", className)}
+    className={cn("text-muted-foreground text-base", className)}
     {...props}
   />
 ));

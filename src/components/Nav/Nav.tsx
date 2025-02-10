@@ -27,7 +27,7 @@ export const Nav = () => {
   const pathname = usePathname();
 
   return (
-    <nav className="border-b bg-secondary px-6">
+    <nav className="bg-secondary border-b px-6">
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between py-4 sm:py-5">
         <Link href="/" className="text-4xl">
           🍞

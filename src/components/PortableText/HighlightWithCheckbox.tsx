@@ -22,7 +22,7 @@ export const HighlightWithCheckbox = (props: HighlightWithCheckboxProps) => {
   return (
     <Highlight
       className={cn(
-        "pl-0 pr-1 align-baseline focus-within:bg-muted focus-within:ring-1 focus-within:ring-muted-foreground hover:cursor-pointer hover:bg-muted-foreground/20 dark:hover:bg-muted-foreground/25",
+        "focus-within:bg-muted focus-within:ring-muted-foreground hover:bg-muted-foreground/20 dark:hover:bg-muted-foreground/25 pr-1 pl-0 align-baseline focus-within:ring-1 hover:cursor-pointer",
         {
           ["bg-muted text-muted-foreground hover:bg-secondary"]: checked,
         },
@@ -31,7 +31,7 @@ export const HighlightWithCheckbox = (props: HighlightWithCheckboxProps) => {
       <span className="inline-flex items-center justify-center gap-1">
         <LabelPrimitiveRoot
           htmlFor={checkboxId}
-          className="mr-[calc(-14px_-_0.25rem_-_0.25rem)] pl-1 pr-[calc(14px_+_0.25rem_+_0.25rem)] hover:cursor-pointer"
+          className="mr-[calc(-14px_-_0.25rem_-_0.25rem)] pr-[calc(14px_+_0.25rem_+_0.25rem)] pl-1 hover:cursor-pointer"
         >
           {children}
         </LabelPrimitiveRoot>
@@ -41,7 +41,7 @@ export const HighlightWithCheckbox = (props: HighlightWithCheckboxProps) => {
           checked={checked}
           onCheckedChange={onCheckedChange}
           className={
-            "peer flex h-[14px] w-[14px] shrink-0 items-center justify-center rounded-[2px] border border-accent-foreground bg-transparent shadow-xs focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:border-transparent data-[state=checked]:shadow-none"
+            "peer border-accent-foreground flex h-[14px] w-[14px] shrink-0 items-center justify-center rounded-[2px] border bg-transparent shadow-xs focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:border-transparent data-[state=checked]:shadow-none"
           }
         >
           <CheckboxPrimitiveIndicator

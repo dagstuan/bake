@@ -12,7 +12,7 @@ export function DisableDraftMode() {
 
   return (
     <a
-      className="fixed bottom-0 right-0 m-4 bg-blue-500 p-4 text-white"
+      className="fixed right-0 bottom-0 m-4 bg-blue-500 p-4 text-white"
       href="/api/draft-mode/disable"
     >
       Disable preview mode

@@ -7,11 +7,11 @@ import Link from "next/link";
 
 export const Footer = () => {
   return (
-    <footer className="mt-24 bg-secondary px-8 py-8">
+    <footer className="bg-secondary mt-24 px-8 py-8">
       <div className="container mx-auto max-w-6xl">
         <div className="flex flex-col items-center justify-between md:flex-row">
           <div className="mb-4 md:mb-0">
-            <p className="text-base text-secondary-foreground">
+            <p className="text-secondary-foreground text-base">
               Laget av Dag Stuan
             </p>
           </div>

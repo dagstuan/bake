@@ -122,7 +122,7 @@ export const WakeLockToggle = (): React.JSX.Element | null => {
   }, [checked, isClient, setStorageChecked, storageChecked]);
 
   return (
-    <div className="flex items-center justify-between rounded-lg border bg-background px-4 py-2">
+    <div className="bg-background flex items-center justify-between rounded-lg border px-4 py-2">
       <Label htmlFor="wake-lock-toggle">Behold skjermen på</Label>
       <Switch
         id="wake-lock-toggle"

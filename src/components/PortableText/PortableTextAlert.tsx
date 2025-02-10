@@ -20,10 +20,7 @@ export const PortableTextAlert = (props: PortableTextAlertProps) => {
   }
 
   return (
-    <Alert
-      variant={variant}
-      className="not-first:mt-4 not-last:mb-4"
-    >
+    <Alert variant={variant} className="not-first:mt-4 not-last:mb-4">
       {variant === "default" ? (
         <InfoCircledIcon />
       ) : (

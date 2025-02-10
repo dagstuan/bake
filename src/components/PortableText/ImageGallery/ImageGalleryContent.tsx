@@ -63,7 +63,7 @@ export const ImageGalleryContent = ({
                 />
                 {image.caption && (
                   <div className="absolute inset-0 hidden flex-col justify-end px-12 py-8 sm:flex">
-                    <div className="max-w-max rounded-2xl bg-primary/25 px-6 py-4 text-primary-foreground backdrop-blur-md dark:bg-secondary/35">
+                    <div className="bg-primary/25 text-primary-foreground dark:bg-secondary/35 max-w-max rounded-2xl px-6 py-4 backdrop-blur-md">
                       <TypographyP>{image.caption}</TypographyP>
                     </div>
                   </div>

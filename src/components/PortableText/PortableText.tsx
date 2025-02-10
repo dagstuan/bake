@@ -40,7 +40,7 @@ export interface PortableTextProps {
 const components: Components = {
   list: {
     bullet: ({ children }) => (
-      <ul className="my-4 ml-6 list-disc marker:text-primary [&>li]:mt-2">
+      <ul className="marker:text-primary my-4 ml-6 list-disc [&>li]:mt-2">
         {children}
       </ul>
     ),

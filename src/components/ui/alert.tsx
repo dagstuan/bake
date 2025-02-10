@@ -39,7 +39,7 @@ const AlertTitle = forwardRef<
   <h5
     ref={ref}
     className={cn(
-      "mb-1 text-base font-semibold leading-normal tracking-tight",
+      "mb-1 text-base leading-normal font-semibold tracking-tight",
       className,
     )}
     {...props}
