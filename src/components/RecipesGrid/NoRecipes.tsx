@@ -14,11 +14,11 @@ export const NoRecipes = ({ isTransitionPending }: NoRecipesProps) => {
         ["opacity-50"]: isTransitionPending,
       })}
     >
-      <HeartCrackIcon className="text-primary-foreground mx-auto h-12 w-12" />
-      <TypographyH2 className="text-primary-foreground">
+      <HeartCrackIcon className="text-foreground mx-auto h-12 w-12" />
+      <TypographyH2 className="text-foreground">
         Ingen oppskrifter funnet!
       </TypographyH2>
-      <TypographyP className="text-primary-foreground/70 mt-2">
+      <TypographyP className="text-foreground/70 mt-2">
         Klarte ikke å finne noen oppskrifter som passer til det du søkte etter.
       </TypographyP>
     </div>
