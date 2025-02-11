@@ -1,4 +1,3 @@
-import { Nullable } from "@/utils/types";
 import { Suspense } from "react";
 import { TypographyH1 } from "../Typography/TypographyH1";
 import { RecipesPageGrid } from "./Grid/RecipesPageGrid";
@@ -6,13 +5,13 @@ import { RecipesPageGridSkeleton } from "./Grid/RecipesPageGridSkeleton";
 import { TransitionContextProvider } from "./TransitionContext";
 import { RecipesFiltersSkeleton } from "./Filters/RecipesFiltersSkeleton";
 import { RecipesFilters } from "./Filters/RecipesFilters";
+import { RecipesPageSearchParams } from "./types";
 
 export interface RecipesGridWrapperProps {
-  query: Nullable<string>;
-  category: Nullable<string>;
+  searchParams: Promise<RecipesPageSearchParams>;
 }
 
-export const RecipesPage = ({ query, category }: RecipesGridWrapperProps) => {
+export const RecipesPage = ({ searchParams }: RecipesGridWrapperProps) => {
   return (
     <TransitionContextProvider>
       <main className="px-6">
@@ -24,11 +23,7 @@ export const RecipesPage = ({ query, category }: RecipesGridWrapperProps) => {
           </Suspense>
 
           <Suspense fallback={<RecipesPageGridSkeleton />}>
-            <RecipesPageGrid
-              key={`${query}-${category}`}
-              query={query}
-              category={category}
-            />
+            <RecipesPageGrid searchParams={searchParams} />
           </Suspense>
         </div>
       </main>
