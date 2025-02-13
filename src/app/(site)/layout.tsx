@@ -1,7 +1,7 @@
 import { Footer } from "@/components/Footer/Footer";
 import { JsonLd } from "@/components/JsonLd/JsonLd";
 import { Nav } from "@/components/Nav/Nav";
-import { sanityFetch } from "@/sanity/lib/live";
+import { sanityFetch, SanityLive } from "@/sanity/lib/live";
 import { homeSeoQuery } from "@/sanity/lib/queries";
 import { urlForImage } from "@/sanity/lib/utils";
 import type { Metadata } from "next";
@@ -20,10 +20,6 @@ import {
 
 const DisableDraftMode = dynamic(() =>
   import("@/components/DisableDraftMode").then((mod) => mod.DisableDraftMode),
-);
-
-const SanityLive = dynamic(() =>
-  import("@/sanity/lib/live").then((mod) => mod.SanityLive),
 );
 
 const VisualEditing = dynamic(() =>
