@@ -9,7 +9,7 @@ import { BlockContentImageGallery } from "./ImageGallery";
 import { Image } from "../../Image/Image";
 import { urlForImage } from "@/sanity/lib/utils";
 import { ImageDialogContent } from "../../ImageDialog/ImageDialogContent";
-import { TypographyP } from "@/components/Typography/TypographyP";
+import { ImageCaption } from "@/components/ui/image-caption";
 
 const imageWidth = 1200;
 const imageHeight = 800;
@@ -61,13 +61,7 @@ export const ImageGalleryContent = ({
                   src={url}
                   blurDataURL={image.asset?.metadata?.lqip ?? ""}
                 />
-                {image.caption && (
-                  <div className="absolute inset-0 hidden flex-col justify-end px-12 py-8 sm:flex">
-                    <div className="bg-primary/25 text-primary-foreground dark:bg-secondary/35 max-w-max rounded-2xl px-6 py-4 backdrop-blur-md">
-                      <TypographyP>{image.caption}</TypographyP>
-                    </div>
-                  </div>
-                )}
+                {image.caption && <ImageCaption>{image.caption}</ImageCaption>}
               </CarouselItem>
             );
           })}
