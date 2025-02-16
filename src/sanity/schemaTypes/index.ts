@@ -18,9 +18,11 @@ import { initialValueTemplates } from "./initialValueTemplates";
 import { imageGalleryType } from "./imageGallery";
 import { ingredientWeightsType } from "./ingredientWeightsType";
 import { ingredientConversionType } from "./ingredientConversionType";
+import { linkType } from "./linkType";
 
 export const schema: SchemaPluginOptions = {
   types: [
+    linkType,
     blockContentType,
     categoryType,
     recipeType,

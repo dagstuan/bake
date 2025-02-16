@@ -1,5 +1,5 @@
 import { defineQuery } from "next-sanity";
-import { imageGalleryTypeName } from "../schemaTypes/constants";
+import { imageGalleryTypeName, linkTypeName } from "../schemaTypes/constants";
 import {
   ingredientGroupTypeName,
   recipeIngredientReferenceTypeName,
@@ -16,6 +16,22 @@ const imageFields = /* groq */ `
       lqip
     }
   }`;
+
+export const linkFields = /* groq */ `
+  linkType,
+  href,
+  internalReference->{
+    _type,
+    "slug": slug.current,
+  },
+`;
+
+export const blockMarkDefsFields = /* groq */ `
+  ...,
+  _type == "${linkTypeName}" => {
+    ${linkFields}
+  }
+`;
 
 const recipesListFields = /* groq */ `
   _id,
@@ -121,6 +137,9 @@ export const recipeQuery =
               unit,
             },
           },
+        },
+        markDefs[] {
+          ${blockMarkDefsFields}
         }
       },
       _type == "image" => {
@@ -156,7 +175,15 @@ export const homePageQuery = defineQuery(`*[_type == "home"][0]{
 
 export const aboutQuery = defineQuery(`*[_type == "about"][0]{
   title,
-  body,
+  body[] {
+    ...,
+    _type == "block" => {
+      ...,
+      markDefs[] {
+        ${blockMarkDefsFields}
+      }
+    }
+  },
 }`);
 
 const sitemapFields = /* groq */ `

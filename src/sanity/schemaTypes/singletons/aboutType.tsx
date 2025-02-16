@@ -1,10 +1,10 @@
 import { ComposeIcon } from "@sanity/icons";
 import { User } from "lucide-react";
 import { defineField, defineType } from "sanity";
-import { blockContentTypeName } from "../constants";
+import { aboutTypeName, blockContentTypeName } from "../constants";
 
 export const aboutType = defineType({
-  name: "about",
+  name: aboutTypeName,
   type: "document",
   title: "About",
   icon: () => <User size={16} />,

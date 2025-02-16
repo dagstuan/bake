@@ -111,11 +111,11 @@ export type Alert = {
     }>;
     style?: "normal";
     listItem?: never;
-    markDefs?: Array<{
-      href?: string;
-      _type: "link";
-      _key: string;
-    }>;
+    markDefs?: Array<
+      {
+        _key: string;
+      } & Link
+    >;
     level?: number;
     _type: "block";
     _key: string;
@@ -132,71 +132,6 @@ export type IngredientGroup = {
     _key: string;
     [internalGroqTypeReferenceTo]?: "recipeIngredient";
   }>;
-};
-
-export type About = {
-  _id: string;
-  _type: "about";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title?: string;
-  body?: Array<
-    | {
-        children?: Array<{
-          marks?: Array<string>;
-          text?: string;
-          _type: "span";
-          _key: string;
-        }>;
-        style?: "normal" | "h2" | "h3" | "h4" | "blockquote";
-        listItem?: "bullet" | "number";
-        markDefs?: Array<{
-          href?: string;
-          _type: "link";
-          _key: string;
-        }>;
-        level?: number;
-        _type: "block";
-        _key: string;
-      }
-    | {
-        asset?: {
-          _ref: string;
-          _type: "reference";
-          _weak?: boolean;
-          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-        };
-        hotspot?: SanityImageHotspot;
-        crop?: SanityImageCrop;
-        alt?: string;
-        _type: "image";
-        _key: string;
-      }
-    | ({
-        _key: string;
-      } & Alert)
-    | ({
-        _key: string;
-      } & ImageGallery)
-  >;
-};
-
-export type Home = {
-  _id: string;
-  _type: "home";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  subtitle?: string;
-  recipes?: Array<{
-    _ref: string;
-    _type: "reference";
-    _weak?: boolean;
-    _key: string;
-    [internalGroqTypeReferenceTo]?: "recipe";
-  }>;
-  seo?: Seo;
 };
 
 export type TimeValue = {
@@ -267,6 +202,109 @@ export type IngredientWeights = {
   piece?: number;
 };
 
+export type Category = {
+  _id: string;
+  _type: "category";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  slug?: Slug;
+  description?: string;
+};
+
+export type BlockContent = Array<
+  | {
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "normal" | "h2" | "h3" | "h4" | "blockquote";
+      listItem?: "bullet" | "number";
+      markDefs?: Array<
+        {
+          _key: string;
+        } & Link
+      >;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }
+  | {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      alt?: string;
+      _type: "image";
+      _key: string;
+    }
+  | ({
+      _key: string;
+    } & Alert)
+  | ({
+      _key: string;
+    } & ImageGallery)
+>;
+
+export type Link = {
+  _type: "link";
+  linkType?: "internal" | "external";
+  internalReference?:
+    | {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "recipe";
+      }
+    | {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "about";
+      }
+    | {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "home";
+      };
+  href?: string;
+};
+
+export type Home = {
+  _id: string;
+  _type: "home";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  subtitle?: string;
+  recipes?: Array<{
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    _key: string;
+    [internalGroqTypeReferenceTo]?: "recipe";
+  }>;
+  seo?: Seo;
+};
+
+export type About = {
+  _id: string;
+  _type: "about";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  body?: BlockContent;
+};
+
 export type Recipe = {
   _id: string;
   _type: "recipe";
@@ -329,11 +367,11 @@ export type Recipe = {
         >;
         style?: "normal" | "h3" | "h4" | "blockquote";
         listItem?: "bullet" | "number";
-        markDefs?: Array<{
-          href?: string;
-          _type: "link";
-          _key: string;
-        }>;
+        markDefs?: Array<
+          {
+            _key: string;
+          } & Link
+        >;
         level?: number;
         _type: "block";
         _key: string;
@@ -384,57 +422,6 @@ export type Duration = {
   start?: TimeValue;
   end?: TimeValue;
 };
-
-export type Category = {
-  _id: string;
-  _type: "category";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title?: string;
-  slug?: Slug;
-  description?: string;
-};
-
-export type BlockContent = Array<
-  | {
-      children?: Array<{
-        marks?: Array<string>;
-        text?: string;
-        _type: "span";
-        _key: string;
-      }>;
-      style?: "normal" | "h2" | "h3" | "h4" | "blockquote";
-      listItem?: "bullet" | "number";
-      markDefs?: Array<{
-        href?: string;
-        _type: "link";
-        _key: string;
-      }>;
-      level?: number;
-      _type: "block";
-      _key: string;
-    }
-  | {
-      asset?: {
-        _ref: string;
-        _type: "reference";
-        _weak?: boolean;
-        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
-      };
-      hotspot?: SanityImageHotspot;
-      crop?: SanityImageCrop;
-      alt?: string;
-      _type: "image";
-      _key: string;
-    }
-  | ({
-      _key: string;
-    } & Alert)
-  | ({
-      _key: string;
-    } & ImageGallery)
->;
 
 export type SanityImageCrop = {
   _type: "sanity.imageCrop";
@@ -518,19 +505,20 @@ export type AllSanitySchemaTypes =
   | ImageGallery
   | Alert
   | IngredientGroup
-  | About
-  | Home
   | TimeValue
   | ScalableRecipeNumber
   | RecipeIngredientReference
   | RecipeIngredient
   | Ingredient
   | IngredientWeights
+  | Category
+  | BlockContent
+  | Link
+  | Home
+  | About
   | Recipe
   | Seo
   | Duration
-  | Category
-  | BlockContent
   | SanityImageCrop
   | SanityImageHotspot
   | SanityImageAsset
@@ -573,7 +561,7 @@ export type AllCategoriesQueryResult = Array<{
   slug: string | null;
 }>;
 // Variable: recipeQuery
-// Query: *[_type == "recipe" && slug.current == $slug][0]{    _id,    _createdAt,    _rev,    title,    mainImage {        hotspot,  crop,  alt,  asset->{    _id,    metadata {      lqip    }  }    },    categories[]->{      title,    },    ingredients[]{      _type == "reference" => @->{        "_type": "reference",          _id,  "ingredient": ingredient->{    name,    weights,    conversions[] {      to->{        name,        weights,      },      rate,    }  },  unit,  percent,  comment,  excludeFromTotalYield,      },      _type == "ingredientGroup" => {        "_type": "ingredientGroup",        _type,        title,        ingredients[]->{            _id,  "ingredient": ingredient->{    name,    weights,    conversions[] {      to->{        name,        weights,      },      rate,    }  },  unit,  percent,  comment,  excludeFromTotalYield,        }      }    },    activeTime,    totalTime,    baseDryIngredients,    servings,    instructions[]{      ...,      _type == "block" => {        ...,        children[]{          ...,          _type == "recipeIngredientReference" => {            ...,            "ingredient": @.ingredient->{              _id,              "name": ingredient->.name,              percent,              unit,            },          },        }      },      _type == "image" => {          hotspot,  crop,  alt,  asset->{    _id,    metadata {      lqip    }  }      },      _type == "imageGallery" => {        ...,        images[] {            hotspot,  crop,  alt,  asset->{    _id,    metadata {      lqip    }  },          caption        }      }    },    seo}
+// Query: *[_type == "recipe" && slug.current == $slug][0]{    _id,    _createdAt,    _rev,    title,    mainImage {        hotspot,  crop,  alt,  asset->{    _id,    metadata {      lqip    }  }    },    categories[]->{      title,    },    ingredients[]{      _type == "reference" => @->{        "_type": "reference",          _id,  "ingredient": ingredient->{    name,    weights,    conversions[] {      to->{        name,        weights,      },      rate,    }  },  unit,  percent,  comment,  excludeFromTotalYield,      },      _type == "ingredientGroup" => {        "_type": "ingredientGroup",        _type,        title,        ingredients[]->{            _id,  "ingredient": ingredient->{    name,    weights,    conversions[] {      to->{        name,        weights,      },      rate,    }  },  unit,  percent,  comment,  excludeFromTotalYield,        }      }    },    activeTime,    totalTime,    baseDryIngredients,    servings,    instructions[]{      ...,      _type == "block" => {        ...,        children[]{          ...,          _type == "recipeIngredientReference" => {            ...,            "ingredient": @.ingredient->{              _id,              "name": ingredient->.name,              percent,              unit,            },          },        },        markDefs[] {            ...,  _type == "link" => {      linkType,  href,  internalReference->{    _type,    "slug": slug.current,  },  }        }      },      _type == "image" => {          hotspot,  crop,  alt,  asset->{    _id,    metadata {      lqip    }  }      },      _type == "imageGallery" => {        ...,        images[] {            hotspot,  crop,  alt,  asset->{    _id,    metadata {      lqip    }  },          caption        }      }    },    seo}
 export type RecipeQueryResult = {
   _id: string;
   _createdAt: string;
@@ -675,11 +663,11 @@ export type RecipeQueryResult = {
           }>;
           style?: "normal";
           listItem?: never;
-          markDefs?: Array<{
-            href?: string;
-            _type: "link";
-            _key: string;
-          }>;
+          markDefs?: Array<
+            {
+              _key: string;
+            } & Link
+          >;
           level?: number;
           _type: "block";
           _key: string;
@@ -725,11 +713,26 @@ export type RecipeQueryResult = {
         > | null;
         style?: "blockquote" | "h3" | "h4" | "normal";
         listItem?: "bullet" | "number";
-        markDefs?: Array<{
-          href?: string;
-          _type: "link";
+        markDefs: Array<{
           _key: string;
-        }>;
+          _type: "link";
+          linkType: "external" | "internal" | null;
+          internalReference:
+            | {
+                _type: "about";
+                slug: null;
+              }
+            | {
+                _type: "home";
+                slug: null;
+              }
+            | {
+                _type: "recipe";
+                slug: string | null;
+              }
+            | null;
+          href: string | null;
+        }> | null;
         level?: number;
         _type: "block";
         _key: string;
@@ -834,16 +837,34 @@ export type HomePageQueryResult = {
   }> | null;
 } | null;
 // Variable: aboutQuery
-// Query: *[_type == "about"][0]{  title,  body,}
+// Query: *[_type == "about"][0]{  title,  body[] {    ...,    _type == "block" => {      ...,      markDefs[] {          ...,  _type == "link" => {      linkType,  href,  internalReference->{    _type,    "slug": slug.current,  },  }      }    }  },}
 export type AboutQueryResult = {
   title: string | null;
   body: Array<
-    | ({
+    | {
         _key: string;
-      } & Alert)
-    | ({
-        _key: string;
-      } & ImageGallery)
+        _type: "alert";
+        variant?: "default" | "destructive";
+        title?: string;
+        body?: Array<{
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "normal";
+          listItem?: never;
+          markDefs?: Array<
+            {
+              _key: string;
+            } & Link
+          >;
+          level?: number;
+          _type: "block";
+          _key: string;
+        }>;
+      }
     | {
         children?: Array<{
           marks?: Array<string>;
@@ -853,11 +874,26 @@ export type AboutQueryResult = {
         }>;
         style?: "blockquote" | "h2" | "h3" | "h4" | "normal";
         listItem?: "bullet" | "number";
-        markDefs?: Array<{
-          href?: string;
-          _type: "link";
+        markDefs: Array<{
           _key: string;
-        }>;
+          _type: "link";
+          linkType: "external" | "internal" | null;
+          internalReference:
+            | {
+                _type: "about";
+                slug: null;
+              }
+            | {
+                _type: "home";
+                slug: null;
+              }
+            | {
+                _type: "recipe";
+                slug: string | null;
+              }
+            | null;
+          href: string | null;
+        }> | null;
         level?: number;
         _type: "block";
         _key: string;
@@ -874,6 +910,25 @@ export type AboutQueryResult = {
         alt?: string;
         _type: "image";
         _key: string;
+      }
+    | {
+        _key: string;
+        _type: "imageGallery";
+        images?: Array<{
+          asset?: {
+            _ref: string;
+            _type: "reference";
+            _weak?: boolean;
+            [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+          };
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          caption?: string;
+          alt?: string;
+          _type: "image";
+          _key: string;
+        }>;
+        columns?: number;
       }
   > | null;
 } | null;
@@ -926,10 +981,10 @@ declare module "@sanity/client" {
     '*[_type == "recipe" && visible == true]\n  {\n    "slug": slug.current,\n  }': AllRecipesSlugQueryResult;
     '*[\n  _type == "recipe" &&\n  visible == true &&\n  (!defined($lastCreatedAt) || (_createdAt < $lastCreatedAt || (_createdAt == $lastCreatedAt && _id < $lastId))) &&\n  (pt::text(instructions) match $searchQuery || title match $searchQuery) &&\n  (!defined($categories) || (count((categories[]->slug.current)[@ in $categories]) > 0))\n]\n|order(_createdAt desc)\n|score(pt::text(instructions) match $searchQuery, boost(title match $searchQuery, 3))\n|order(_score desc)\n[0...$amount]\n{\n  \n  _id,\n  _createdAt,\n  title,\n  "slug": slug.current,\n  mainImage {\n    \n  hotspot,\n  crop,\n  alt,\n  asset->{\n    _id,\n    metadata {\n      lqip\n    }\n  }\n  },\n  totalTime,\n\n}': RecipesListQueryResult;
     '*[_type == "category"]\n  |order(title asc)\n  {\n    _id,\n    title,\n    "slug": slug.current,\n  }': AllCategoriesQueryResult;
-    '*[_type == "recipe" && slug.current == $slug][0]{\n    _id,\n    _createdAt,\n    _rev,\n    title,\n    mainImage {\n      \n  hotspot,\n  crop,\n  alt,\n  asset->{\n    _id,\n    metadata {\n      lqip\n    }\n  }\n    },\n    categories[]->{\n      title,\n    },\n    ingredients[]{\n      _type == "reference" => @->{\n        "_type": "reference",\n        \n  _id,\n  "ingredient": ingredient->{\n    name,\n    weights,\n    conversions[] {\n      to->{\n        name,\n        weights,\n      },\n      rate,\n    }\n  },\n  unit,\n  percent,\n  comment,\n  excludeFromTotalYield,\n\n      },\n      _type == "ingredientGroup" => {\n        "_type": "ingredientGroup",\n        _type,\n        title,\n        ingredients[]->{\n          \n  _id,\n  "ingredient": ingredient->{\n    name,\n    weights,\n    conversions[] {\n      to->{\n        name,\n        weights,\n      },\n      rate,\n    }\n  },\n  unit,\n  percent,\n  comment,\n  excludeFromTotalYield,\n\n        }\n      }\n    },\n    activeTime,\n    totalTime,\n    baseDryIngredients,\n    servings,\n    instructions[]{\n      ...,\n      _type == "block" => {\n        ...,\n        children[]{\n          ...,\n          _type == "recipeIngredientReference" => {\n            ...,\n            "ingredient": @.ingredient->{\n              _id,\n              "name": ingredient->.name,\n              percent,\n              unit,\n            },\n          },\n        }\n      },\n      _type == "image" => {\n        \n  hotspot,\n  crop,\n  alt,\n  asset->{\n    _id,\n    metadata {\n      lqip\n    }\n  }\n      },\n      _type == "imageGallery" => {\n        ...,\n        images[] {\n          \n  hotspot,\n  crop,\n  alt,\n  asset->{\n    _id,\n    metadata {\n      lqip\n    }\n  },\n          caption\n        }\n      }\n    },\n    seo\n}': RecipeQueryResult;
+    '*[_type == "recipe" && slug.current == $slug][0]{\n    _id,\n    _createdAt,\n    _rev,\n    title,\n    mainImage {\n      \n  hotspot,\n  crop,\n  alt,\n  asset->{\n    _id,\n    metadata {\n      lqip\n    }\n  }\n    },\n    categories[]->{\n      title,\n    },\n    ingredients[]{\n      _type == "reference" => @->{\n        "_type": "reference",\n        \n  _id,\n  "ingredient": ingredient->{\n    name,\n    weights,\n    conversions[] {\n      to->{\n        name,\n        weights,\n      },\n      rate,\n    }\n  },\n  unit,\n  percent,\n  comment,\n  excludeFromTotalYield,\n\n      },\n      _type == "ingredientGroup" => {\n        "_type": "ingredientGroup",\n        _type,\n        title,\n        ingredients[]->{\n          \n  _id,\n  "ingredient": ingredient->{\n    name,\n    weights,\n    conversions[] {\n      to->{\n        name,\n        weights,\n      },\n      rate,\n    }\n  },\n  unit,\n  percent,\n  comment,\n  excludeFromTotalYield,\n\n        }\n      }\n    },\n    activeTime,\n    totalTime,\n    baseDryIngredients,\n    servings,\n    instructions[]{\n      ...,\n      _type == "block" => {\n        ...,\n        children[]{\n          ...,\n          _type == "recipeIngredientReference" => {\n            ...,\n            "ingredient": @.ingredient->{\n              _id,\n              "name": ingredient->.name,\n              percent,\n              unit,\n            },\n          },\n        },\n        markDefs[] {\n          \n  ...,\n  _type == "link" => {\n    \n  linkType,\n  href,\n  internalReference->{\n    _type,\n    "slug": slug.current,\n  },\n\n  }\n\n        }\n      },\n      _type == "image" => {\n        \n  hotspot,\n  crop,\n  alt,\n  asset->{\n    _id,\n    metadata {\n      lqip\n    }\n  }\n      },\n      _type == "imageGallery" => {\n        ...,\n        images[] {\n          \n  hotspot,\n  crop,\n  alt,\n  asset->{\n    _id,\n    metadata {\n      lqip\n    }\n  },\n          caption\n        }\n      }\n    },\n    seo\n}': RecipeQueryResult;
     '*[_id == $pageId][0]{\n  _type,\n  "slug": slug.current,\n}': PageSlugQueryResult;
     '*[_type == "home"][0]{\n  _id,\n  _type,\n  subtitle,\n  recipes[]{\n    _key,\n    ...(@->{\n      \n  _id,\n  _createdAt,\n  title,\n  "slug": slug.current,\n  mainImage {\n    \n  hotspot,\n  crop,\n  alt,\n  asset->{\n    _id,\n    metadata {\n      lqip\n    }\n  }\n  },\n  totalTime,\n\n    })\n  },\n}': HomePageQueryResult;
-    '*[_type == "about"][0]{\n  title,\n  body,\n}': AboutQueryResult;
+    '*[_type == "about"][0]{\n  title,\n  body[] {\n    ...,\n    _type == "block" => {\n      ...,\n      markDefs[] {\n        \n  ...,\n  _type == "link" => {\n    \n  linkType,\n  href,\n  internalReference->{\n    _type,\n    "slug": slug.current,\n  },\n\n  }\n\n      }\n    }\n  },\n}': AboutQueryResult;
     '*[_type == "home"][0]{\n  \n  "slug": slug.current,\n  _updatedAt,\n\n}': HomeSitemapQueryResult;
     '*[_type == "about"][0]{\n  \n  "slug": slug.current,\n  _updatedAt,\n\n}': AboutSitemapQueryResult;
     '*[_type == "recipe" && visible == true] {\n  \n  "slug": slug.current,\n  _updatedAt,\n\n}': RecipesSitemapQueryResult;
