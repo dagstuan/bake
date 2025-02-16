@@ -2,6 +2,7 @@ import { RecipeQueryResult } from "../../../sanity.types";
 import { ImageDialogContent } from "./ImageDialogContent";
 import { Image } from "../Image/Image";
 import { urlForImage } from "@/sanity/lib/utils";
+import { ImageCaption } from "../ui/image-caption";
 
 export type ImageType = NonNullable<
   NonNullable<RecipeQueryResult>["mainImage"]
@@ -34,6 +35,7 @@ export const ImageDialogSingle = (props: ImageDialogSingleProps) => {
         blurDataURL={image.asset?.metadata?.lqip ?? undefined}
         sizes="(max-width: 768px) 100vw, 70vw"
       />
+      {image.caption && <ImageCaption>{image.caption}</ImageCaption>}
     </ImageDialogContent>
   );
 };

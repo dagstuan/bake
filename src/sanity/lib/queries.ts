@@ -14,6 +14,7 @@ const imageFields = /* groq */ `
   hotspot,
   crop,
   alt,
+  caption,
   asset->{
     _id,
     metadata {

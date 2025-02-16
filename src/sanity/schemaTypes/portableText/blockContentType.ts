@@ -17,6 +17,12 @@ export const imageArrayMember = defineArrayMember({
   options: { hotspot: true },
   fields: [
     defineField({
+      name: "caption",
+      type: "string",
+      title: "Caption",
+      description: "Optional caption for the image.",
+    }),
+    defineField({
       name: "alt",
       type: "string",
       title: "Alternative Text",
