@@ -75,7 +75,7 @@ const fields = [
   defineField({
     name: "percentage",
     type: "number",
-    title: "Percentage!",
+    title: "Percentage",
     initialValue: 100,
     validation: (rule) => rule.required(),
   }),

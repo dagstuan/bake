@@ -5,11 +5,15 @@ import { formatAmount } from "@/utils/recipeUtils";
 import {
   baseDryIngredientsName,
   ingredientsName,
+  recipeTypeName,
 } from "../schemaTypes/recipe/constants";
 import { useFormValue } from "./utils";
+import { ingredientTypeName } from "../schemaTypes/constants";
 
 type RecipeIngredientPreviewProps = PreviewProps & { _id: string } & {
-  title: string | null;
+  ingredientType: typeof ingredientTypeName | typeof recipeTypeName;
+  ingredientName: string | null;
+  ingredientTitle: string | null;
   percent: RecipeIngredient["percent"];
   unit: RecipeIngredient["unit"];
   comment: RecipeIngredient["comment"];
@@ -21,7 +25,9 @@ const isRecipeIngredientPreviewProps = (
 ): props is RecipeIngredientPreviewProps => {
   return (
     "_id" in props &&
-    "title" in props &&
+    "ingredientType" in props &&
+    "ingredientName" in props &&
+    "ingredientTitle" in props &&
     "percent" in props &&
     "unit" in props &&
     "comment" in props &&
@@ -33,7 +39,12 @@ const formatTitle = (
   props: RecipeIngredientPreviewProps,
   sumBaseIngredients: number,
 ) => {
-  const baseTitle = `${props.title}${props.comment ? ` (${props.comment})` : ""}`;
+  const title =
+    props.ingredientType === recipeTypeName
+      ? props.ingredientTitle
+      : props.ingredientName;
+
+  const baseTitle = `${title}${props.comment ? ` (${props.comment})` : ""}`;
 
   if (!props.percent) {
     return baseTitle;
@@ -53,6 +64,7 @@ export const RecipeIngredientPreviewComponent = (props: PreviewProps) => {
   ]);
 
   if (!isRecipeIngredientPreviewProps(props)) {
+    console.log("ret", props);
     return props.renderDefault(props);
   }
 

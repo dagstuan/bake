@@ -18,6 +18,7 @@ import {
 } from "./store/types";
 import { useStore } from "zustand";
 import { useShallow } from "zustand/react/shallow";
+import { TypographyLink } from "../Typography/TypographyLink";
 
 const isIngredientComplete = (
   ingredientsCompletion: IngredientsCompletionState,
@@ -98,10 +99,14 @@ export const IngredientsTable = (props: IngredientsTableProps) => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {ingredients.map(({ id, name, amount, unit, comment }) => {
+        {ingredients.map(({ id, type, slug, name, amount, unit, comment }) => {
           const isComplete = isIngredientComplete(ingredientsCompletion, id);
 
           const checkboxId = `ingredient-${id}-complete`;
+
+          const isIngredientARecipe = type === "recipe";
+
+          const labelContent = `${name}${comment ? ` (${comment})` : ""}`;
 
           return (
             <TableRow key={id}>
@@ -121,7 +126,16 @@ export const IngredientsTable = (props: IngredientsTableProps) => {
               </TableCell>
               <TableCell className="w-full">
                 <Label htmlFor={checkboxId} className="hover:cursor-pointer">
-                  {`${name}${comment ? ` (${comment})` : ""}`}
+                  {isIngredientARecipe ? (
+                    <TypographyLink
+                      href={`/oppskrifter/${slug}`}
+                      type="internal"
+                    >
+                      {labelContent}
+                    </TypographyLink>
+                  ) : (
+                    labelContent
+                  )}
                 </Label>
               </TableCell>
               {anyWithAmount && (

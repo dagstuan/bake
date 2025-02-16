@@ -25,6 +25,7 @@ import {
   ingredientGroupTypeName,
   ingredientsName,
   IngredientsNameType,
+  recipeIngredientTypeName,
   recipeTypeName,
 } from "./constants";
 import { recipeIngredientReferenceType } from "./recipeIngredientReference";
@@ -32,8 +33,9 @@ import { scalableRecipeNumberType } from "./scalableRecipeNumberType";
 import { isRecipe } from "./utils";
 
 export const recipeIngredientArrayMember = defineArrayMember({
+  title: "Ingredient",
   type: "reference",
-  to: { type: "recipeIngredient" },
+  to: { type: recipeIngredientTypeName },
   options: {
     filter: ({ document }) => {
       return {
@@ -41,7 +43,7 @@ export const recipeIngredientArrayMember = defineArrayMember({
           && count(*[references(^._id) && !(_id in [$nonDraftDocumentId, $documentId])]) == 0
           && !(_id in *[_id == $documentId].ingredients[]._ref)`,
         params: {
-          type: "recipeIngredient",
+          type: recipeIngredientTypeName,
           documentId: document._id,
           nonDraftDocumentId: document._id.replace(/^drafts\./, ""),
         },
