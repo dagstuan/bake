@@ -1,14 +1,15 @@
 import { RecipeIngredientPreviewComponent } from "@/sanity/components/RecipeIngredientPreviewComponent";
 import { Wheat } from "lucide-react";
 import { defineField, defineType } from "sanity";
-import { recipeIngredientTypeName } from "./constants";
+import { recipeIngredientTypeName, recipeTypeName } from "./constants";
 import { isRecipeIngredient } from "./utils";
+import { ingredientTypeName } from "../constants";
 
 const fields = [
   defineField({
     name: "ingredient",
     type: "reference",
-    to: { type: "ingredient" },
+    to: [{ type: ingredientTypeName }, { type: recipeTypeName }],
     validation: (rule) => rule.required(),
   }),
   defineField({
@@ -60,11 +61,21 @@ export const recipeIngredientType = defineType({
   fields,
   preview: {
     select: {
-      title: "ingredient.name",
+      ingredientType: "ingredient._type",
+      ingredientName: "ingredient.name",
+      ingredientTitle: "ingredient.title",
       percent: "percent",
       unit: "unit",
       comment: "comment",
       excludeFromTotalYield: "excludeFromTotalYield",
+    },
+    prepare: (selection) => {
+      return {
+        ...selection,
+        title: String(
+          selection.ingredientName ?? selection.ingredientTitle ?? "Untitled",
+        ),
+      };
     },
   },
   components: {

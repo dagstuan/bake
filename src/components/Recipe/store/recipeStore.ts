@@ -239,7 +239,8 @@ export const createRecipeStore = (
             );
 
             if (
-              !ingredientToUpdate?.amount ||
+              ingredientToUpdate?.type !== "ingredient" ||
+              !ingredientToUpdate.amount ||
               !ingredientToUpdate.unit ||
               ingredientToUpdate.unit === newUnit ||
               !isEditableUnit(ingredientToUpdate.unit)
@@ -266,6 +267,7 @@ export const createRecipeStore = (
           set((state) => {
             state.ingredients.forEach((ingredient) => {
               if (
+                ingredient.type !== "ingredient" ||
                 !ingredient.amount ||
                 !ingredient.unit ||
                 ingredient.unit === newUnit ||
@@ -296,11 +298,15 @@ export const createRecipeStore = (
               (ingredient) => ingredient.id === ingredientId,
             );
 
-            const newIngredient = ingredientToConvert?.conversions.find(
+            if (ingredientToConvert?.type !== "ingredient") {
+              return;
+            }
+
+            const newIngredient = ingredientToConvert.conversions.find(
               (c) => c.to === newIngredientId,
             );
 
-            if (!ingredientToConvert || !newIngredient) {
+            if (!newIngredient) {
               return;
             }
 

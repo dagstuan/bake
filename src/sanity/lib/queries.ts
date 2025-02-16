@@ -1,5 +1,9 @@
 import { defineQuery } from "next-sanity";
-import { imageGalleryTypeName, linkTypeName } from "../schemaTypes/constants";
+import {
+  imageGalleryTypeName,
+  ingredientTypeName,
+  linkTypeName,
+} from "../schemaTypes/constants";
 import {
   ingredientGroupTypeName,
   recipeIngredientReferenceTypeName,
@@ -76,14 +80,21 @@ export const allCategoriesQuery = defineQuery(`*[_type == "category"]
 export const recipeIngredientReferenceFields = /* groq */ `
   _id,
   "ingredient": ingredient->{
-    name,
-    weights,
-    conversions[] {
-      to->{
-        name,
-        weights,
-      },
-      rate,
+    _type,
+    _type == "${ingredientTypeName}" => {
+      name,
+      weights,
+      conversions[] {
+        to->{
+          name,
+          weights,
+        },
+        rate,
+      }
+    },
+    _type == "${recipeTypeName}" => {
+      title,
+      "slug": slug.current,
     }
   },
   unit,
@@ -132,7 +143,14 @@ export const recipeQuery =
             ...,
             "ingredient": @.ingredient->{
               _id,
-              "name": ingredient->.name,
+              ingredient->{
+                _type == "${ingredientTypeName}" => {
+                  name,
+                },
+                _type == "${recipeTypeName}" => {
+                  "name": title,
+                }
+              },
               percent,
               unit,
             },

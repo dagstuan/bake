@@ -60,7 +60,7 @@ export const defaultDocumentNode: DefaultDocumentNodeResolver = (
             query:
               '*[_type == "recipe" && count((ingredients[]._ref)[@ in *[references($id)]._id]) > 0]',
             params: { id: `_id` },
-            options: { perspective: "previewDrafts" },
+            options: { perspective: "drafts" },
           })
           .title("Used in recipes"),
       ]);
@@ -73,7 +73,7 @@ export const defaultDocumentNode: DefaultDocumentNodeResolver = (
           .options({
             query: "*[references($id)]",
             params: { id: `_id` },
-            options: { perspective: "previewDrafts" },
+            options: { perspective: "drafts" },
           })
           .title("Used in recipes"),
       ]);
@@ -86,7 +86,7 @@ export const defaultDocumentNode: DefaultDocumentNodeResolver = (
           .options({
             query: '*[_type == "recipe" && references($id)]',
             params: { id: `_id` },
-            options: { perspective: "previewDrafts" },
+            options: { perspective: "drafts" },
           })
           .title("Recipes"),
       ]);

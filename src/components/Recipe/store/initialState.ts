@@ -9,7 +9,6 @@ import {
   IngredientsCompletionState,
   IngredientsGroupOrder,
   RecipeIngredientsState,
-  RecipeIngredientState,
   RecipeState,
 } from "./types";
 import { calcIngredientAmount, calculateTotalYield } from "./utils";
@@ -52,41 +51,73 @@ const mapIngredientReferenceToIngredient = (
   baseDryIngredients: number,
   group: string | null,
   ingredientRef: OmitStrict<RecipeIngredient, "_type"> | null,
-): RecipeIngredientState | null => {
+): RecipeIngredientsState[number] | null => {
   const { _id, ingredient, percent, unit, comment, excludeFromTotalYield } =
     ingredientRef ?? {};
 
-  if (!_id || !ingredient?.name) {
+  if (!_id || !ingredient?._type) {
     return null;
   }
 
-  return {
-    id: _id,
-    name: ingredient.name,
-    percent: percent ?? undefined,
-    group: group,
-    amount: calcIngredientAmount(percent, baseDryIngredients) ?? undefined,
-    unit: unit,
-    weights: {
-      l: ingredient.weights?.liter ?? null,
-      ss: ingredient.weights?.tablespoon ?? null,
-      ts: ingredient.weights?.teaspoon ?? null,
-      stk: ingredient.weights?.piece ?? null,
-    },
-    conversions:
-      ingredient.conversions?.map((c) => ({
-        to: c.to?.name ?? "Unknown",
-        rate: c.rate ?? 1,
-        weights: {
-          l: c.to?.weights?.liter ?? null,
-          ss: c.to?.weights?.tablespoon ?? null,
-          ts: c.to?.weights?.teaspoon ?? null,
-          stk: c.to?.weights?.piece ?? null,
-        },
-      })) ?? [],
-    comment: comment,
-    excludeFromTotalYield: excludeFromTotalYield ?? false,
-  };
+  switch (ingredient._type) {
+    case "ingredient":
+      return ingredient.name
+        ? {
+            type: "ingredient",
+            id: _id,
+            name: ingredient.name,
+            percent: percent ?? undefined,
+            group: group,
+            amount:
+              calcIngredientAmount(percent, baseDryIngredients) ?? undefined,
+            unit: unit,
+            weights: {
+              l: ingredient.weights?.liter ?? null,
+              ss: ingredient.weights?.tablespoon ?? null,
+              ts: ingredient.weights?.teaspoon ?? null,
+              stk: ingredient.weights?.piece ?? null,
+            },
+            conversions:
+              ingredient.conversions?.map((c) => ({
+                to: c.to?.name ?? "Unknown",
+                rate: c.rate ?? 1,
+                weights: {
+                  l: c.to?.weights?.liter ?? null,
+                  ss: c.to?.weights?.tablespoon ?? null,
+                  ts: c.to?.weights?.teaspoon ?? null,
+                  stk: c.to?.weights?.piece ?? null,
+                },
+              })) ?? [],
+            comment: comment,
+            excludeFromTotalYield: excludeFromTotalYield ?? false,
+          }
+        : null;
+    case "recipe":
+      return ingredient.title
+        ? {
+            type: "recipe",
+            id: _id,
+            name: ingredient.title,
+            slug: ingredient.slug,
+            percent: percent ?? undefined,
+            group: group,
+            amount:
+              calcIngredientAmount(percent, baseDryIngredients) ?? undefined,
+            unit: unit,
+            weights: {
+              l: null,
+              ss: null,
+              ts: null,
+              stk: null,
+            },
+            conversions: [],
+            comment: comment,
+            excludeFromTotalYield: excludeFromTotalYield ?? false,
+          }
+        : null;
+    default:
+      return null;
+  }
 };
 
 const calcInitialRecipeIngredientsState = (

@@ -50,6 +50,8 @@ export type Conversions = v.InferInput<typeof conversions>;
 
 const recipeIngredientStateSchema = v.object({
   id: v.string(),
+  type: v.union([v.literal("ingredient"), v.literal("recipe")]),
+  slug: v.optional(v.nullable(v.string())),
   name: v.string(),
   group: v.nullable(v.string()),
   percent: v.optional(v.number()),
