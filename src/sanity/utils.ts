@@ -30,3 +30,9 @@ export const createTypedDataAttribute = <T>(
     path,
   }).toString();
 };
+
+export const hasField = <TFieldName extends string>(
+  obj: unknown,
+  fieldName: TFieldName,
+): obj is Record<TFieldName, unknown> =>
+  typeof obj === "object" && obj !== null && fieldName in obj;

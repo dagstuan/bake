@@ -1,6 +1,7 @@
 import { CodeBlockIcon } from "@sanity/icons";
 import { BlockDecoratorDefinition, BlockMarksDefinition } from "sanity";
 import { HighlightDecorator } from "../decorators/highlight";
+import { linkTypeName } from "../constants";
 
 const baseBlockDecorators: BlockDecoratorDefinition[] = [
   { title: "Strong", value: "strong" },
@@ -15,16 +16,9 @@ const baseBlockDecorators: BlockDecoratorDefinition[] = [
 
 const baseBlockAnnotations: BlockMarksDefinition["annotations"] = [
   {
-    title: "URL",
     name: "link",
-    type: "object",
-    fields: [
-      {
-        title: "URL",
-        name: "href",
-        type: "url",
-      },
-    ],
+    title: "Link",
+    type: linkTypeName,
   },
 ];
 
