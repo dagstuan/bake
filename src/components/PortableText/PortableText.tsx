@@ -11,11 +11,13 @@ import {
   alertTypeName,
   imageGalleryTypeName,
   linkTypeName,
+  recipeCardTypeName,
 } from "@/sanity/schemaTypes/constants";
 import { type BlockContentImageGallery } from "./ImageGallery/ImageGallery";
 import { TypographyH4 } from "../Typography/TypographyH4";
 import dynamic from "next/dynamic";
 import { PortableTextMarkLink } from "./PortableTextMarkLink";
+import { RecipeCard } from "./RecipeCard";
 
 const ImageBox = dynamic(() => import("./ImageBox"));
 
@@ -58,6 +60,9 @@ const components: Components = {
     }: {
       value: BlockContentImageGallery;
     }) => <ImageGallery value={value} />,
+    [recipeCardTypeName]: ({ value }) => (
+      <RecipeCard value={value as unknown} />
+    ),
   },
   marks: {
     strong: ({ children }) => (

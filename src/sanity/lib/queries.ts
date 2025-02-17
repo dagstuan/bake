@@ -3,6 +3,7 @@ import {
   imageGalleryTypeName,
   ingredientTypeName,
   linkTypeName,
+  recipeCardTypeName,
 } from "../schemaTypes/constants";
 import {
   ingredientGroupTypeName,
@@ -104,6 +105,36 @@ export const recipeIngredientReferenceFields = /* groq */ `
   excludeFromTotalYield,
 `;
 
+export const recipeCardFields = /* groq */ `
+  recipe->{
+    _id,
+    title,
+    "slug": slug.current,
+    mainImage {
+      ${imageFields}
+    },
+    totalTime
+  },
+`;
+
+const basePortableTextFields = /* groq */ `
+  _key,
+  _type,
+  _type == "image" => {
+    ${imageFields}
+  },
+  _type == "${imageGalleryTypeName}" => {
+    ...,
+    images[] {
+      ${imageFields},
+      caption
+    }
+  },
+  _type == "${recipeCardTypeName}" => {
+    ${recipeCardFields}
+  }
+`;
+
 export const recipeQuery =
   defineQuery(`*[_type == "${recipeTypeName}" && slug.current == $slug][0]{
     _id,
@@ -135,7 +166,6 @@ export const recipeQuery =
     baseDryIngredients,
     servings,
     instructions[]{
-      ...,
       _type == "block" => {
         ...,
         children[]{
@@ -161,16 +191,7 @@ export const recipeQuery =
           ${blockMarkDefsFields}
         }
       },
-      _type == "image" => {
-        ${imageFields}
-      },
-      _type == "${imageGalleryTypeName}" => {
-        ...,
-        images[] {
-          ${imageFields},
-          caption
-        }
-      }
+      ${basePortableTextFields}
     },
     seo
 }`);
@@ -195,13 +216,13 @@ export const homePageQuery = defineQuery(`*[_type == "home"][0]{
 export const aboutQuery = defineQuery(`*[_type == "about"][0]{
   title,
   body[] {
-    ...,
     _type == "block" => {
       ...,
       markDefs[] {
         ${blockMarkDefsFields}
       }
-    }
+    },
+    ${basePortableTextFields}
   },
 }`);
 

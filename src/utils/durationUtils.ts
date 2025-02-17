@@ -2,6 +2,10 @@ import formatDuration from "date-fns/formatDuration";
 import { nb } from "date-fns/locale";
 import { Duration as DurationType, TimeValue } from "../../sanity.types";
 
+const capitalize = (str: string): string => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
+
 export const formatTimeValue = (
   value: TimeValue | null | undefined,
 ): string => {
@@ -11,13 +15,15 @@ export const formatTimeValue = (
 
   const { time, type } = value;
 
-  return formatDuration(
-    {
-      days: type === "days" ? time : undefined,
-      hours: type === "hours" ? time : undefined,
-      minutes: type === "minutes" ? time : undefined,
-    },
-    { locale: nb },
+  return capitalize(
+    formatDuration(
+      {
+        days: type === "days" ? time : undefined,
+        hours: type === "hours" ? time : undefined,
+        minutes: type === "minutes" ? time : undefined,
+      },
+      { locale: nb },
+    ),
   );
 };
 
@@ -62,3 +68,54 @@ export const formatDurationShort = (
 
   return null;
 };
+
+export function formatDurationLong(
+  duration: DurationType | null,
+): string | null {
+  if (!duration) {
+    return null;
+  }
+
+  const { start, end } = duration;
+
+  // If only one of start or end is present, return its formatted value
+  if (!(start?.time && start.type) && end?.time && end.type)
+    return formatTimeValue(end);
+  if (start?.time && start.type && !(end?.time && end.type))
+    return formatTimeValue(start);
+  if (!start || !end || !start.time || !end.time || !start.type || !end.type)
+    return null;
+
+  // If both values have the same unit, format as "x-y [unit]"
+  if (start.type === end.type) {
+    return `${start.time}-${end.time} ${getNorwegianUnit(end.time, end.type)}`;
+  }
+
+  // Otherwise, format as "x [unit] til y [unit]"
+  const formattedStart = `${formatNumber(start.time, start.type)} ${getNorwegianUnit(start.time, start.type)}`;
+  const formattedEnd = `${formatNumber(end.time, end.type)} ${getNorwegianUnit(end.time, end.type)}`;
+
+  return `${formattedStart} til ${formattedEnd}`;
+}
+
+function getNorwegianUnit(
+  value: number,
+  unit: "hours" | "minutes" | "days",
+): string {
+  const translations: Record<string, { singular: string; plural: string }> = {
+    hours: { singular: "time", plural: "timer" },
+    minutes: { singular: "minutt", plural: "minutter" },
+    days: { singular: "dag", plural: "dager" },
+  };
+
+  return value === 1 ? translations[unit].singular : translations[unit].plural;
+}
+
+function formatNumber(
+  value: number,
+  unit: NonNullable<TimeValue["type"]>,
+): string {
+  if (value === 1 && getNorwegianUnit(value, unit) === "minutt") return "Ett";
+  if (value === 1) return "En";
+  return `${value}`;
+}

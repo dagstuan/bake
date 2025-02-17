@@ -19,6 +19,7 @@ import {
   alertArrayMember,
   imageArrayMember,
   imageGalleryArrayMember,
+  recipeCardArrayMember,
 } from "../portableText/blockContentType";
 import {
   baseDryIngredientsName,
@@ -244,6 +245,7 @@ export const recipeType = defineType({
         alertArrayMember,
         imageArrayMember,
         imageGalleryArrayMember,
+        recipeCardArrayMember,
       ],
     }),
     defineField({

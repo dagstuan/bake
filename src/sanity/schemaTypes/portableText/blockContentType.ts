@@ -4,7 +4,12 @@ import { alertType } from "../alertType";
 import { baseBlockStyles } from "./baseBlockStyles";
 import { baseBlockLists } from "./baseBlockLists";
 import { baseBlockMarks } from "./baseBlockMarks";
-import { blockContentTypeName, imageGalleryTypeName } from "../constants";
+import {
+  blockContentTypeName,
+  imageGalleryTypeName,
+  recipeCardTypeName,
+} from "../constants";
+import { recipeTypeName } from "../recipe/constants";
 
 export const alertArrayMember = defineArrayMember({
   type: alertType.name,
@@ -31,6 +36,19 @@ export const imageArrayMember = defineArrayMember({
   ],
 });
 
+export const recipeCardArrayMember = defineArrayMember({
+  name: recipeCardTypeName,
+  type: "object",
+  title: "Recipe Card",
+  fields: [
+    defineField({
+      type: "reference",
+      name: "recipe",
+      to: [{ type: recipeTypeName }],
+    }),
+  ],
+});
+
 export const imageGalleryArrayMember = defineArrayMember({
   type: imageGalleryTypeName,
 });
@@ -49,5 +67,6 @@ export const blockContentType = defineType({
     imageArrayMember,
     alertArrayMember,
     imageGalleryArrayMember,
+    recipeCardArrayMember,
   ],
 });
