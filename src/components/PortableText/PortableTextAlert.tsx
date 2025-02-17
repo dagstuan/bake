@@ -2,15 +2,19 @@ import {
   ExclamationTriangleIcon,
   InfoCircledIcon,
 } from "@radix-ui/react-icons";
-import { Alert as AlertType } from "../../../sanity.types";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 import { PortableText } from "./PortableText";
+import { isPortableTextAlert } from "./types";
 
 interface PortableTextAlertProps {
-  value: AlertType;
+  value: unknown;
 }
 
 export const PortableTextAlert = (props: PortableTextAlertProps) => {
+  if (!isPortableTextAlert(props.value)) {
+    return null;
+  }
+
   const {
     value: { variant = "default", title, body },
   } = props;

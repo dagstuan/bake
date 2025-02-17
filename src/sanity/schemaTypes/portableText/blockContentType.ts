@@ -47,6 +47,12 @@ export const recipeCardArrayMember = defineArrayMember({
       to: [{ type: recipeTypeName }],
     }),
   ],
+  preview: {
+    select: {
+      title: "recipe.title",
+      media: "recipe.mainImage",
+    },
+  },
 });
 
 export const imageGalleryArrayMember = defineArrayMember({

@@ -1,5 +1,6 @@
 import { defineQuery } from "next-sanity";
 import {
+  alertTypeName,
   imageGalleryTypeName,
   ingredientTypeName,
   linkTypeName,
@@ -122,6 +123,16 @@ const basePortableTextFields = /* groq */ `
   _type,
   _type == "image" => {
     ${imageFields}
+  },
+  _type == "${alertTypeName}" => {
+    variant,
+    title,
+    body[] {
+      ...,
+      markDefs[] {
+        ${blockMarkDefsFields}
+      }
+    },
   },
   _type == "${imageGalleryTypeName}" => {
     ...,

@@ -3,9 +3,7 @@ import { ComponentProps, useMemo } from "react";
 import { TypographyH2 } from "../Typography/TypographyH2";
 import { TypographyH3 } from "../Typography/TypographyH3";
 import { TypographyP } from "../Typography/TypographyP";
-import { type BlockContentImage } from "./ImageBox";
 import { Highlight } from "./Highlight";
-import { Alert } from "../../../sanity.types";
 import { PortableTextAlert } from "./PortableTextAlert";
 import {
   alertTypeName,
@@ -13,7 +11,6 @@ import {
   linkTypeName,
   recipeCardTypeName,
 } from "@/sanity/schemaTypes/constants";
-import { type BlockContentImageGallery } from "./ImageGallery/ImageGallery";
 import { TypographyH4 } from "../Typography/TypographyH4";
 import dynamic from "next/dynamic";
 import { PortableTextMarkLink } from "./PortableTextMarkLink";
@@ -49,17 +46,15 @@ const components: Components = {
   },
   listItem: ({ children }) => <li>{children}</li>,
   types: {
-    image: ({ value }: { value: BlockContentImage }) => {
-      return <ImageBox image={value} />;
+    image: ({ value }) => {
+      return <ImageBox image={value as unknown} />;
     },
-    [alertTypeName]: ({ value }: { value: Alert }) => (
-      <PortableTextAlert value={value} />
+    [alertTypeName]: ({ value }) => (
+      <PortableTextAlert value={value as unknown} />
     ),
-    [imageGalleryTypeName]: ({
-      value,
-    }: {
-      value: BlockContentImageGallery;
-    }) => <ImageGallery value={value} />,
+    [imageGalleryTypeName]: ({ value }) => (
+      <ImageGallery value={value as unknown} />
+    ),
     [recipeCardTypeName]: ({ value }) => (
       <RecipeCard value={value as unknown} />
     ),

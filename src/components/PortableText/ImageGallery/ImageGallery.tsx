@@ -4,6 +4,7 @@ import { Dialog, DialogTrigger } from "../../ui/dialog";
 import { Image } from "../../Image/Image";
 import { ArrayElement } from "@/utils/types";
 import dynamic from "next/dynamic";
+import { isImageGallery } from "../types";
 
 const ImageGalleryContent = dynamic(() =>
   import("./ImageGalleryContent").then((mod) => mod.ImageGalleryContent),
@@ -15,10 +16,14 @@ export type BlockContentImageGallery = Extract<
 >;
 
 interface ImageGalleryProps {
-  value: BlockContentImageGallery;
+  value: unknown;
 }
 
 export const ImageGallery = (props: ImageGalleryProps) => {
+  if (!isImageGallery(props.value)) {
+    return null;
+  }
+
   const { value } = props;
 
   if (!value.images || value.images.length === 0 || !value.columns) {

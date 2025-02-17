@@ -6,6 +6,7 @@ import { AspectRatio } from "../ui/aspect-ratio";
 import { Dialog, DialogTrigger } from "../ui/dialog";
 import { Image } from "../Image/Image";
 import dynamic from "next/dynamic";
+import { isPortableTextImage } from "./types";
 
 const ImageDialogSingle = dynamic(() =>
   import("../ImageDialog/ImageDialogSingle").then(
@@ -19,7 +20,7 @@ export type BlockContentImage = Extract<
 >;
 
 interface ImageBoxProps {
-  image?: BlockContentImage;
+  image?: unknown;
   className?: string;
   width?: number;
   height?: number;
@@ -34,7 +35,7 @@ export default function ImageBox({
   height = 682,
   ...props
 }: ImageBoxProps) {
-  if (!image) {
+  if (!isPortableTextImage(image)) {
     return null;
   }
 

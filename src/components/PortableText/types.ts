@@ -1,6 +1,8 @@
 import { isTypedObject } from "sanity";
 import { AboutQueryResult } from "../../../sanity.types";
 import {
+  alertTypeName,
+  imageGalleryTypeName,
   linkTypeName,
   recipeCardTypeName,
 } from "@/sanity/schemaTypes/constants";
@@ -25,4 +27,19 @@ export const isPortableTextMarkLink = (
 export type RecipeCard = PortableTextType<typeof recipeCardTypeName>;
 export const isRecipeCard = (obj: unknown): obj is RecipeCard => {
   return isTypedObject(obj) && obj._type === recipeCardTypeName;
+};
+
+export type PortableTextAlert = PortableTextType<typeof alertTypeName>;
+export const isPortableTextAlert = (obj: unknown): obj is PortableTextAlert => {
+  return isTypedObject(obj) && obj._type === alertTypeName;
+};
+
+export type ImageGallery = PortableTextType<typeof imageGalleryTypeName>;
+export const isImageGallery = (obj: unknown): obj is ImageGallery => {
+  return isTypedObject(obj) && obj._type === imageGalleryTypeName;
+};
+
+export type PortableTextImage = PortableTextType<"image">;
+export const isPortableTextImage = (obj: unknown): obj is PortableTextImage => {
+  return isTypedObject(obj) && obj._type === "image";
 };
