@@ -1,6 +1,9 @@
 import { isTypedObject } from "sanity";
 import { AboutQueryResult } from "../../../sanity.types";
-import { linkTypeName } from "@/sanity/schemaTypes/constants";
+import {
+  linkTypeName,
+  recipeCardTypeName,
+} from "@/sanity/schemaTypes/constants";
 
 type QueriedAbout = NonNullable<NonNullable<AboutQueryResult>["body"]>;
 
@@ -17,4 +20,9 @@ export const isPortableTextMarkLink = (
   obj: unknown,
 ): obj is PortableTextMarkLink => {
   return isTypedObject(obj) && obj._type === linkTypeName;
+};
+
+export type RecipeCard = PortableTextType<typeof recipeCardTypeName>;
+export const isRecipeCard = (obj: unknown): obj is RecipeCard => {
+  return isTypedObject(obj) && obj._type === recipeCardTypeName;
 };
