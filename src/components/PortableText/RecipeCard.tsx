@@ -25,7 +25,7 @@ export const RecipeCard = ({ value }: RecipeCardProps) => {
   return (
     <Link
       href={`/oppskrifter/${slug}`}
-      className="bg-accent dark:bg-secondary dark:hover:bg-muted hover:bg-muted flex gap-4 rounded-2xl px-4 py-3 not-first:mt-4 not-last:mb-4"
+      className="bg-accent dark:bg-secondary dark:hover:bg-muted hover:bg-muted flex gap-4 rounded-2xl p-3 not-first:mt-4 not-last:mb-4"
     >
       <div className="relative size-20 overflow-hidden rounded-xl border-1">
         {mainImage ? (
