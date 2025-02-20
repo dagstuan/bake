@@ -49,6 +49,15 @@ export const defaultDocumentNode: DefaultDocumentNodeResolver = (
           .icon(EyeOpenIcon)
           .options(createIframeOptions(S.context))
           .title("Preview"),
+        S.view
+          .component(DocumentsPane)
+          .icon(() => "📜")
+          .options({
+            query: "*[references($id)]",
+            params: { id: `_id` },
+            options: { perspective: "drafts" },
+          })
+          .title("Referenced by"),
       ]);
     case ingredientType.name:
       return S.document().views([
