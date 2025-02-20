@@ -56,17 +56,14 @@ const formatTitle = (
   return `${baseTitle} - ${formatAmount(amount, props.unit)} (${formatAmount(percent, "%")})`;
 };
 
-export const RecipeIngredientPreviewComponent = (props: PreviewProps) => {
+const RecipeIngredientPreviewComponentInner = (
+  props: RecipeIngredientPreviewProps,
+) => {
   const sumBaseIngredients =
     useFormValue<Recipe["baseDryIngredients"]>([baseDryIngredientsName]) ?? 0;
   const parentIngredients = useFormValue<Recipe["ingredients"]>([
     ingredientsName,
   ]);
-
-  if (!isRecipeIngredientPreviewProps(props)) {
-    console.log("ret", props);
-    return props.renderDefault(props);
-  }
 
   const parentIngredient = parentIngredients
     ?.map((ingredient) => {
@@ -98,4 +95,12 @@ export const RecipeIngredientPreviewComponent = (props: PreviewProps) => {
       })}
     </div>
   );
+};
+
+export const RecipeIngredientPreviewComponent = (props: PreviewProps) => {
+  if (props.layout === "block" || !isRecipeIngredientPreviewProps(props)) {
+    return props.renderDefault(props);
+  }
+
+  return <RecipeIngredientPreviewComponentInner {...props} />;
 };
