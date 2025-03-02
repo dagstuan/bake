@@ -2,7 +2,7 @@
 
 import { Cross2Icon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { use, useState } from "react";
+import { use, useState, FocusEvent } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { AllCategoriesQueryResult } from "../../../../sanity.types";
 import { Button } from "../../ui/button";
@@ -65,6 +65,12 @@ export const RecipesFiltersContent = (props: RecipesFiltersContentProps) => {
     handleSearch(newValue);
   };
 
+  const handleInputFocus = (event: FocusEvent<HTMLInputElement>) => {
+    if (window.matchMedia("(max-width: 40rem)").matches) {
+      event.target.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <div className="flex w-full flex-col items-center gap-4 sm:gap-6">
       <div className="mx-auto w-full max-w-3xl">
@@ -73,10 +79,11 @@ export const RecipesFiltersContent = (props: RecipesFiltersContentProps) => {
           <Input
             type="text"
             placeholder="Søk..."
-            className="w-full pl-10"
+            className="w-full scroll-mt-6 pl-10"
             onChange={(e) => {
               handleInputChange(e.target.value);
             }}
+            onFocus={handleInputFocus}
             value={inputValue}
           />
           {inputValue && (
