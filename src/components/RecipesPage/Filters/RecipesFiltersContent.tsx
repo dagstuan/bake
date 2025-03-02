@@ -67,7 +67,7 @@ export const RecipesFiltersContent = (props: RecipesFiltersContentProps) => {
 
   const handleInputFocus = (event: FocusEvent<HTMLInputElement>) => {
     if (window.matchMedia("(max-width: 40rem)").matches) {
-      event.target.scrollIntoView({ behavior: "smooth" });
+      event.target.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   };
 
