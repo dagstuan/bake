@@ -5,6 +5,7 @@ import { Image } from "../../Image/Image";
 import { ArrayElement } from "@/utils/types";
 import dynamic from "next/dynamic";
 import { isImageGallery } from "../types";
+import { getImageDimensionsForAspectRatio } from "@/utils/imageUtils";
 
 const ImageGalleryContent = dynamic(() =>
   import("./ImageGalleryContent").then((mod) => mod.ImageGalleryContent),
@@ -59,7 +60,8 @@ export const ImageGallery = (props: ImageGalleryProps) => {
           ? urlForImage(image)
               ?.width(gridSize)
               .height(gridSize)
-              .fit("max")
+              .fit("crop")
+              .auto("format")
               .url()
           : null;
 
@@ -77,6 +79,19 @@ export const ImageGallery = (props: ImageGalleryProps) => {
                 height={gridSize}
                 sizes={sizes}
                 src={url}
+                loader={({ width }) => {
+                  const [calculatedWidth, calculatedHeight] =
+                    getImageDimensionsForAspectRatio(width, 1);
+
+                  return (
+                    urlForImage(image)
+                      ?.width(calculatedWidth)
+                      .height(calculatedHeight)
+                      .fit("crop")
+                      .auto("format")
+                      .url() ?? ""
+                  );
+                }}
                 blurDataURL={image.asset?.metadata?.lqip ?? ""}
               />
             </DialogTrigger>

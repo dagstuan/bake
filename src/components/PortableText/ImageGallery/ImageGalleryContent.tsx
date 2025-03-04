@@ -10,9 +10,11 @@ import { Image } from "../../Image/Image";
 import { urlForImage } from "@/sanity/lib/utils";
 import { ImageDialogContent } from "../../ImageDialog/ImageDialogContent";
 import { ImageCaption } from "@/components/ui/image-caption";
+import { getImageDimensionsForAspectRatio } from "@/utils/imageUtils";
 
 const imageWidth = 1200;
 const imageHeight = 800;
+const aspectRatio = imageWidth / imageHeight;
 
 export const ImageGalleryContent = ({
   images,
@@ -38,8 +40,8 @@ export const ImageGalleryContent = ({
               ? urlForImage(image)
                   ?.width(imageWidth)
                   .height(imageHeight)
-                  .dpr(2)
-                  .fit("max")
+                  .fit("crop")
+                  .auto("format")
                   .url()
               : null;
 
@@ -59,6 +61,19 @@ export const ImageGalleryContent = ({
                   height={imageHeight}
                   sizes="(max-width: 768px) 100vw, 70vw"
                   src={url}
+                  loader={({ width }) => {
+                    const [calculatedWidth, calculatedHeight] =
+                      getImageDimensionsForAspectRatio(width, aspectRatio);
+
+                    return (
+                      urlForImage(image)
+                        ?.width(calculatedWidth)
+                        .height(calculatedHeight)
+                        .fit("crop")
+                        .auto("format")
+                        .url() ?? ""
+                    );
+                  }}
                   blurDataURL={image.asset?.metadata?.lqip ?? ""}
                 />
                 {image.caption && <ImageCaption>{image.caption}</ImageCaption>}

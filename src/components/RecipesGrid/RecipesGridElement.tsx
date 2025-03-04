@@ -8,9 +8,11 @@ import Link from "next/link";
 import { RecipesListQueryResult } from "../../../sanity.types";
 import { Image } from "../Image/Image";
 import { Card } from "../ui/card";
+import { getImageDimensionsForAspectRatio } from "@/utils/imageUtils";
 
 const gridImageWidth = 360;
 const gridImageHeight = 202;
+const aspectRatio = gridImageWidth / gridImageHeight;
 
 interface RecipesGridElementProps {
   recipe: ArrayElement<NonNullable<RecipesListQueryResult>>;
@@ -45,10 +47,23 @@ export const RecipesGridElement = ({
               urlForImage(mainImage)
                 ?.width(gridImageWidth)
                 .height(gridImageHeight)
-                .fit("max")
-                .dpr(2)
+                .fit("crop")
+                .auto("format")
                 .url() ?? ""
             }
+            loader={({ width }) => {
+              const [calculatedWidth, calculatedHeight] =
+                getImageDimensionsForAspectRatio(width, aspectRatio);
+
+              return (
+                urlForImage(mainImage)
+                  ?.width(calculatedWidth)
+                  .height(calculatedHeight)
+                  .fit("crop")
+                  .auto("format")
+                  .url() ?? ""
+              );
+            }}
             priority={prority}
             alt={stegaClean(mainImage.alt ?? "Recipe")}
             className="aspect-video w-full rounded-t-xl object-cover"

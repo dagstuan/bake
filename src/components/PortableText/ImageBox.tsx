@@ -7,6 +7,7 @@ import { Dialog, DialogTrigger } from "../ui/dialog";
 import { Image } from "../Image/Image";
 import dynamic from "next/dynamic";
 import { isPortableTextImage } from "./types";
+import { getImageDimensionsForAspectRatio } from "@/utils/imageUtils";
 
 const ImageDialogSingle = dynamic(() =>
   import("../ImageDialog/ImageDialogSingle").then(
@@ -39,11 +40,12 @@ export default function ImageBox({
     return null;
   }
 
+  const aspectRatio = width / height;
   const imageUrl = urlForImage(image)
     ?.width(width)
     .height(height)
-    .dpr(2)
-    .fit("max")
+    .fit("crop")
+    .auto("format")
     .url();
 
   if (!imageUrl) {
@@ -69,6 +71,19 @@ export default function ImageBox({
               height={height}
               sizes="(max-width: 768px) 90vw, 50vw"
               src={imageUrl}
+              loader={({ width }) => {
+                const [calculatedWidth, calculatedHeight] =
+                  getImageDimensionsForAspectRatio(width, aspectRatio);
+
+                return (
+                  urlForImage(image)
+                    ?.width(calculatedWidth)
+                    .height(calculatedHeight)
+                    .fit("crop")
+                    .auto("format")
+                    .url() ?? ""
+                );
+              }}
               blurDataURL={image.asset?.metadata?.lqip ?? ""}
             />
           )}

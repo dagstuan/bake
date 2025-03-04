@@ -5,6 +5,7 @@ import { title } from "process";
 import { ComponentProps } from "react";
 import { Image } from "../../Image/Image";
 import { RecipeHeader } from "./RecipeHeader";
+import { getImageDimensionsForAspectRatio } from "@/utils/imageUtils";
 
 const ImageDialogSingle = dynamic(() =>
   import("@/components/ImageDialog/ImageDialogSingle").then(
@@ -18,6 +19,7 @@ export interface MainImageProps {
 
 const mainImageWidth = 1024;
 const mainImageHeight = 400;
+const aspectRatio = mainImageWidth / mainImageHeight;
 
 export const MainImage = ({ mainImage }: MainImageProps) => {
   if (!mainImage) {
@@ -33,10 +35,23 @@ export const MainImage = ({ mainImage }: MainImageProps) => {
             urlForImage(mainImage)
               ?.width(mainImageWidth)
               .height(mainImageHeight)
-              .fit("max")
-              .dpr(2)
+              .fit("crop")
+              .auto("format")
               .url() ?? ""
           }
+          loader={({ width }) => {
+            const [calculatedWidth, calculatedHeight] =
+              getImageDimensionsForAspectRatio(width, aspectRatio);
+
+            return (
+              urlForImage(mainImage)
+                ?.width(calculatedWidth)
+                .height(calculatedHeight)
+                .fit("crop")
+                .auto("format")
+                .url() ?? ""
+            );
+          }}
           width={mainImageWidth}
           height={mainImageHeight}
           alt={mainImage.alt ?? title}

@@ -3,6 +3,7 @@ import { ImageDialogContent } from "./ImageDialogContent";
 import { Image } from "../Image/Image";
 import { urlForImage } from "@/sanity/lib/utils";
 import { ImageCaption } from "../ui/image-caption";
+import { getImageDimensionsForAspectRatio } from "@/utils/imageUtils";
 
 export type ImageType = NonNullable<
   NonNullable<RecipeQueryResult>["mainImage"]
@@ -10,6 +11,7 @@ export type ImageType = NonNullable<
 
 const width = 1200;
 const height = 800;
+const aspectRatio = width / height;
 
 interface ImageDialogSingleProps {
   title: string;
@@ -20,15 +22,31 @@ interface ImageDialogSingleProps {
 export const ImageDialogSingle = (props: ImageDialogSingleProps) => {
   const { title, description, image } = props;
 
-  const url =
-    urlForImage(image)?.width(width).height(height).fit("max").dpr(2).url() ??
-    "";
-
   return (
     <ImageDialogContent title={title} description={description}>
       <Image
         className="pointer-events-none aspect-3/2 h-full max-h-[90vh] w-full rounded-lg object-cover"
-        src={url}
+        src={
+          urlForImage(image)
+            ?.width(width)
+            .height(height)
+            .fit("crop")
+            .auto("format")
+            .url() ?? ""
+        }
+        loader={({ width }) => {
+          const [calculatedWidth, calculatedHeight] =
+            getImageDimensionsForAspectRatio(width, aspectRatio);
+
+          return (
+            urlForImage(image)
+              ?.width(calculatedWidth)
+              .height(calculatedHeight)
+              .fit("crop")
+              .auto("format")
+              .url() ?? ""
+          );
+        }}
         width={width}
         height={height}
         alt={image.alt ?? "Recipe"}
