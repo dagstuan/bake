@@ -1,3 +1,5 @@
+"use client";
+
 import { RecipeQueryResult } from "../../../../sanity.types";
 import { urlForImage } from "@/sanity/lib/utils";
 import { Dialog, DialogTrigger } from "../../ui/dialog";
