@@ -27,12 +27,7 @@ export const ImageDialogSingle = (props: ImageDialogSingleProps) => {
       <Image
         className="pointer-events-none aspect-3/2 h-full max-h-[90vh] w-full rounded-lg object-cover"
         src={
-          urlForImage(image)
-            ?.width(width)
-            .height(height)
-            .fit("crop")
-            .auto("format")
-            .url() ?? ""
+          urlForImage(image)?.width(width).height(height).fit("max").url() ?? ""
         }
         loader={({ width }) => {
           const [calculatedWidth, calculatedHeight] =
@@ -43,7 +38,6 @@ export const ImageDialogSingle = (props: ImageDialogSingleProps) => {
               ?.width(calculatedWidth)
               .height(calculatedHeight)
               .fit("crop")
-              .auto("format")
               .url() ?? ""
           );
         }}

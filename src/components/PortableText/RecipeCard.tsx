@@ -31,12 +31,8 @@ export const RecipeCard = ({ value }: RecipeCardProps) => {
         {mainImage ? (
           <Image
             src={
-              urlForImage(mainImage)
-                ?.width(80)
-                .height(80)
-                .fit("crop")
-                .auto("format")
-                .url() ?? ""
+              urlForImage(mainImage)?.width(80).height(80).fit("crop").url() ??
+              ""
             }
             alt={mainImage.alt ?? ""}
             fill

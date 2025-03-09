@@ -62,8 +62,7 @@ export const ImageGallery = (props: ImageGalleryProps) => {
           ? urlForImage(image)
               ?.width(gridSize)
               .height(gridSize)
-              .fit("crop")
-              .auto("format")
+              .fit("max")
               .url()
           : null;
 
@@ -90,7 +89,6 @@ export const ImageGallery = (props: ImageGalleryProps) => {
                       ?.width(calculatedWidth)
                       .height(calculatedHeight)
                       .fit("crop")
-                      .auto("format")
                       .url() ?? ""
                   );
                 }}

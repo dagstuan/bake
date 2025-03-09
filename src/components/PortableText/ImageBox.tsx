@@ -44,8 +44,7 @@ export default function ImageBox({
   const imageUrl = urlForImage(image)
     ?.width(width)
     .height(height)
-    .fit("crop")
-    .auto("format")
+    .fit("max")
     .url();
 
   if (!imageUrl) {
@@ -80,7 +79,6 @@ export default function ImageBox({
                     ?.width(calculatedWidth)
                     .height(calculatedHeight)
                     .fit("crop")
-                    .auto("format")
                     .url() ?? ""
                 );
               }}

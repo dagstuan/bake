@@ -35,8 +35,7 @@ export const MainImage = ({ mainImage }: MainImageProps) => {
             urlForImage(mainImage)
               ?.width(mainImageWidth)
               .height(mainImageHeight)
-              .fit("crop")
-              .auto("format")
+              .fit("max")
               .url() ?? ""
           }
           loader={({ width }) => {
@@ -48,7 +47,6 @@ export const MainImage = ({ mainImage }: MainImageProps) => {
                 ?.width(calculatedWidth)
                 .height(calculatedHeight)
                 .fit("crop")
-                .auto("format")
                 .url() ?? ""
             );
           }}

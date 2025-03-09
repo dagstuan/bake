@@ -36,14 +36,11 @@ export const ImageGalleryContent = ({
       >
         <CarouselContent tabIndex={0} className="focus:outline-hidden">
           {images.map((image, index) => {
-            const url = image.asset
-              ? urlForImage(image)
-                  ?.width(imageWidth)
-                  .height(imageHeight)
-                  .fit("crop")
-                  .auto("format")
-                  .url()
-              : null;
+            const url = urlForImage(image)
+              ?.width(imageWidth)
+              .height(imageHeight)
+              .fit("max")
+              .url();
 
             if (!url) {
               return null;
@@ -70,7 +67,6 @@ export const ImageGalleryContent = ({
                         ?.width(calculatedWidth)
                         .height(calculatedHeight)
                         .fit("crop")
-                        .auto("format")
                         .url() ?? ""
                     );
                   }}

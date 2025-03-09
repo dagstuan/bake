@@ -47,8 +47,7 @@ export const RecipesGridElement = ({
               urlForImage(mainImage)
                 ?.width(gridImageWidth)
                 .height(gridImageHeight)
-                .fit("crop")
-                .auto("format")
+                .fit("max")
                 .url() ?? ""
             }
             loader={({ width }) => {
@@ -60,7 +59,6 @@ export const RecipesGridElement = ({
                   ?.width(calculatedWidth)
                   .height(calculatedHeight)
                   .fit("crop")
-                  .auto("format")
                   .url() ?? ""
               );
             }}
