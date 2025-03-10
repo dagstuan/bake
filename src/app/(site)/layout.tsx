@@ -7,6 +7,7 @@ import { urlForImage } from "@/sanity/lib/utils";
 import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
 import dynamic from "next/dynamic";
+import { Inter } from "next/font/google";
 import { draftMode } from "next/headers";
 import { SearchAction, WebSite, WithContext } from "schema-dts";
 import "../globals.css";
@@ -16,6 +17,7 @@ import {
   siteUrl,
   twitterMetadata,
 } from "../shared-metadata";
+import { cn } from "@/lib/utils";
 
 const DisableDraftMode = dynamic(() =>
   import("@/components/DisableDraftMode").then((mod) => mod.DisableDraftMode),
@@ -24,6 +26,13 @@ const DisableDraftMode = dynamic(() =>
 const VisualEditing = dynamic(() =>
   import("next-sanity").then((mod) => mod.VisualEditing),
 );
+
+const inter = Inter({
+  preload: true,
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+});
 
 export async function generateMetadata(): Promise<Metadata> {
   const { data: homeSeo } = await sanityFetch({
@@ -134,7 +143,10 @@ export default async function RootLayout({
   return (
     <html lang="no" suppressHydrationWarning>
       <body
-        className={`bg-background text-foreground flex min-h-screen flex-col antialiased`}
+        className={cn(
+          inter.variable,
+          `bg-background text-foreground flex min-h-screen flex-col font-sans antialiased`,
+        )}
       >
         <ThemeProvider
           attribute="class"

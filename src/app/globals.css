@@ -4,6 +4,10 @@
 
 @plugin "tailwindcss-animate";
 
+@theme inline {
+  --font-sans: var(--font-inter);
+}
+
 @theme {
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
