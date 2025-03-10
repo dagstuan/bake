@@ -1,7 +1,6 @@
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { urlForImage } from "@/sanity/lib/utils";
 import dynamic from "next/dynamic";
-import { title } from "process";
 import { ComponentProps } from "react";
 import { Image } from "../../Image/Image";
 import { RecipeHeader } from "./RecipeHeader";
@@ -52,8 +51,8 @@ export const MainImage = ({ mainImage }: MainImageProps) => {
           }}
           width={mainImageWidth}
           height={mainImageHeight}
-          alt={mainImage.alt ?? title}
-          priority={true}
+          alt={mainImage.alt ?? "Hovedbilde"}
+          priority
           blurDataURL={mainImage.asset?.metadata?.lqip ?? undefined}
           sizes="(max-width: 768px) 100vw, 70vw"
         />
