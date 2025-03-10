@@ -21,7 +21,7 @@ export const RecipesGridElement = ({
   "data-sanity": dataSanity,
   className,
 }: RecipesGridElementProps) => {
-  const { _id, slug, title, mainImage, totalTime } = recipe;
+  const { slug, title, mainImage, totalTime } = recipe;
 
   const duration = formatDurationShort(totalTime);
 
@@ -29,7 +29,6 @@ export const RecipesGridElement = ({
     <Link
       data-sanity={dataSanity}
       href={`/oppskrifter/${slug}`}
-      key={_id}
       className={cn("flex flex-col justify-between", className)}
     >
       <Card className="flex h-full flex-col transition-shadow hover:shadow-md">

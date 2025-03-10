@@ -34,8 +34,9 @@ export const RecipeCard = ({ value }: RecipeCardProps) => {
               urlForImage(mainImage)?.width(80).height(80).fit("crop").url() ??
               ""
             }
+            width={80}
+            height={80}
             alt={mainImage.alt ?? ""}
-            fill
           />
         ) : (
           <MissingImage className="h-full w-full" />

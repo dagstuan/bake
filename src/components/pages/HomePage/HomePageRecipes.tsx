@@ -14,7 +14,7 @@ interface HomePageRecipesProps {
 export const HomePageRecipes = (props: HomePageRecipesProps) => {
   const { documentId, documentType, recipes } = props;
 
-  if (!documentId || !documentType) {
+  if (!documentId || !documentType || !recipes) {
     return null;
   }
 
@@ -29,12 +29,10 @@ export const HomePageRecipes = (props: HomePageRecipesProps) => {
   return (
     <RecipesGridWrapper data-sanity={dataAttribute.toString()}>
       <OptimisticSortOrder id={documentId} path={path}>
-        {recipes?.map((recipe, i) => {
+        {recipes.map((recipe, i) => {
           return (
             <RecipesGridElement
-              data-sanity={dataAttribute
-                .scope(`[_key=="${recipe._key}"]`)
-                .toString()}
+              data-sanity={dataAttribute(`[_key=="${recipe._key}"]`).toString()}
               key={recipe._key}
               recipe={recipe}
               priority={i < 3}

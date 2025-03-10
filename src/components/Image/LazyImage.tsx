@@ -5,38 +5,28 @@ import NextImage from "next/image";
 import { cn } from "@/lib/utils";
 import { OmitStrict } from "@/utils/types";
 
-type ImageProps = OmitStrict<
+type LazyImageProps = OmitStrict<
   ComponentProps<typeof NextImage>,
-  "placeholder" | "priority"
+  "placeholder" | "priority" | "blurDataURL"
 >;
 
-export const LazyImage = ({ blurDataURL, className, ...props }: ImageProps) => {
+export const LazyImage = ({ className, ...props }: LazyImageProps) => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   return (
-    <div
+    <NextImage
+      {...props}
       className={cn(
-        "bg-cover bg-center bg-no-repeat text-transparent",
+        {
+          ["opacity-0"]: !isLoaded,
+          ["opacity-100"]: isLoaded,
+        },
+        "transition-opacity",
         className,
       )}
-      style={{
-        backgroundImage: blurDataURL ? `url('${blurDataURL}')` : undefined,
+      onLoad={() => {
+        setIsLoaded(true);
       }}
-    >
-      <NextImage
-        {...props}
-        className={cn(
-          {
-            ["opacity-0"]: !isLoaded,
-            ["opacity-100"]: isLoaded,
-          },
-          "transition-opacity",
-          className,
-        )}
-        onLoad={() => {
-          setIsLoaded(true);
-        }}
-      />
-    </div>
+    />
   );
 };
