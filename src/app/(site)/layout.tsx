@@ -28,7 +28,6 @@ const VisualEditing = dynamic(() =>
 );
 
 const inter = Inter({
-  preload: true,
   subsets: ["latin"],
   display: "swap",
   variable: "--font-inter",
