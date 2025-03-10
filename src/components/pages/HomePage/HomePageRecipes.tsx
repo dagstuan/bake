@@ -1,15 +1,9 @@
-"use client";
-
 import { RecipesGridElement } from "@/components/RecipesGrid/RecipesGridElement";
 import { RecipesGridWrapper } from "@/components/RecipesGrid/RecipesGridWrapper";
-import { createTypedDataAttribute } from "@/sanity/utils";
 import { Home, HomePageQueryResult } from "../../../../sanity.types";
-import { useOptimistic } from "next-sanity/hooks";
-import { SanityDocument } from "next-sanity";
-
-const isHomePage = (data: SanityDocument): data is Home => {
-  return data._type === "home" && (data as Home).recipes !== undefined;
-};
+import { OptimisticSortOrder } from "@/components/OptimisticSortOrder/OptimisticSortOrder";
+import { createPath } from "@/utils/pathUtils";
+import { createDataAttribute } from "next-sanity";
 
 interface HomePageRecipesProps {
   documentId: string | undefined;
@@ -18,48 +12,36 @@ interface HomePageRecipesProps {
 }
 
 export const HomePageRecipes = (props: HomePageRecipesProps) => {
-  const { documentId, documentType, recipes: initialRecipes } = props;
-
-  const recipes = useOptimistic(initialRecipes, (currentRecipes, action) => {
-    const document = action.document;
-    if (
-      action.id === documentId &&
-      action.type === "mutate" &&
-      isHomePage(document) &&
-      document.recipes
-    ) {
-      return document.recipes
-        .map((recipe) => currentRecipes?.find((r) => r._key === recipe._key))
-        .filter((r) => r !== undefined);
-    }
-
-    return currentRecipes;
-  });
+  const { documentId, documentType, recipes } = props;
 
   if (!documentId || !documentType) {
     return null;
   }
 
-  const dataAttribute = createTypedDataAttribute<Home>({
+  const path = createPath<Home>("recipes");
+
+  const dataAttribute = createDataAttribute({
     id: documentId,
     type: documentType,
-    path: "recipes",
+    path,
   });
 
   return (
     <RecipesGridWrapper data-sanity={dataAttribute.toString()}>
-      {recipes?.map((recipe, i) => {
-        return (
-          <RecipesGridElement
-            data-sanity={dataAttribute
-              .scope(`[_key=="${recipe._key}"]`)
-              .toString()}
-            key={recipe._key}
-            recipe={recipe}
-            prority={i < 3}
-          />
-        );
-      })}
+      <OptimisticSortOrder id={documentId} path={path}>
+        {recipes?.map((recipe, i) => {
+          return (
+            <RecipesGridElement
+              data-sanity={dataAttribute
+                .scope(`[_key=="${recipe._key}"]`)
+                .toString()}
+              key={recipe._key}
+              recipe={recipe}
+              priority={i < 3}
+            />
+          );
+        })}
+      </OptimisticSortOrder>
     </RecipesGridWrapper>
   );
 };
