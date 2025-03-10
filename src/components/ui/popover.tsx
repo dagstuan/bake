@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Root as PopoverPrimitiveRoot,
   Trigger as PopoverPrimitiveTrigger,
