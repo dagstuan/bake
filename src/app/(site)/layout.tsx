@@ -7,7 +7,6 @@ import { urlForImage } from "@/sanity/lib/utils";
 import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
 import dynamic from "next/dynamic";
-import localFont from "next/font/local";
 import { draftMode } from "next/headers";
 import { SearchAction, WebSite, WithContext } from "schema-dts";
 import "../globals.css";
@@ -25,17 +24,6 @@ const DisableDraftMode = dynamic(() =>
 const VisualEditing = dynamic(() =>
   import("next-sanity").then((mod) => mod.VisualEditing),
 );
-
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
 
 export async function generateMetadata(): Promise<Metadata> {
   const { data: homeSeo } = await sanityFetch({
@@ -146,7 +134,7 @@ export default async function RootLayout({
   return (
     <html lang="no" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} bg-background text-foreground flex min-h-screen flex-col antialiased`}
+        className={`bg-background text-foreground flex min-h-screen flex-col antialiased`}
       >
         <ThemeProvider
           attribute="class"
