@@ -139,7 +139,7 @@ export const IngredientsTable = (props: IngredientsTableProps) => {
                 </Label>
               </TableCell>
               {anyWithAmount && (
-                <TableCell className="text-right">
+                <TableCell className="text-right tabular-nums">
                   {amount ? formatAmount(amount, unit) : ""}
                 </TableCell>
               )}

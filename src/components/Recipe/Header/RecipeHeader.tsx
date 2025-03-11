@@ -12,9 +12,7 @@ export interface RecipeHeaderProps {
 export const RecipeHeader = ({ title, mainImage }: RecipeHeaderProps) => {
   return (
     <>
-      {title ? (
-        <TypographyH1 className="text-center sm:mb-8">{title}</TypographyH1>
-      ) : null}
+      <TypographyH1 className="text-center sm:mb-8">{title}</TypographyH1>
       <MainImage mainImage={mainImage} />
     </>
   );

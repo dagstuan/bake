@@ -3,6 +3,7 @@
 import React, { ComponentProps, useState } from "react";
 import { Input } from "../ui/input";
 import { OmitStrict } from "@/utils/types";
+import { cn } from "@/lib/utils";
 
 type DeferredNumberInputProps = OmitStrict<
   ComponentProps<typeof Input>,
@@ -19,6 +20,7 @@ export const DeferredNumberInput = ({
   min = Number.MIN_SAFE_INTEGER,
   max = Number.MAX_SAFE_INTEGER,
   onChange,
+  className,
   ...rest
 }: DeferredNumberInputProps) => {
   const stringValue = String(value);
@@ -57,6 +59,7 @@ export const DeferredNumberInput = ({
   return (
     <Input
       {...rest}
+      className={cn("tabular-nums", className)}
       type="number"
       value={inputValue}
       onChange={handleChange}

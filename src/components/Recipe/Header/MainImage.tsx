@@ -1,3 +1,5 @@
+"use client";
+
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { urlForImage } from "@/sanity/lib/utils";
 import dynamic from "next/dynamic";
