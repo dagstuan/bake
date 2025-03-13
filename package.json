@@ -34,7 +34,7 @@
     "@sanity/icons": "^3.7.0",
     "@sanity/image-url": "^1.1.0",
     "@sanity/preview-url-secret": "^2.1.6",
-    "@sanity/ui": "^2.15.5",
+    "@sanity/ui": "^2.15.6",
     "@sanity/util": "^3.79.0",
     "@sanity/uuid": "^3.0.2",
     "@sanity/vision": "^3.79.0",
@@ -45,7 +45,7 @@
     "immer": "^10.1.1",
     "lucide-react": "^0.479.0",
     "next": "15.3.0-canary.2",
-    "next-sanity": "^9.9.0",
+    "next-sanity": "^9.9.2",
     "next-themes": "^0.4.6",
     "react": "19.0.0",
     "react-dom": "19.0.0",
@@ -66,7 +66,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.0",
     "@eslint/js": "^9.22.0",
-    "@tailwindcss/postcss": "^4.0.13",
+    "@tailwindcss/postcss": "^4.0.14",
     "@types/node": "^22.13.10",
     "@types/react": "19.0.10",
     "@types/react-dom": "19.0.4",
@@ -80,11 +80,11 @@
     "postcss": "^8.5.3",
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.11",
-    "tailwindcss": "^4.0.13",
+    "tailwindcss": "^4.0.14",
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.26.1"
   },
-  "packageManager": "pnpm@10.6.2",
+  "packageManager": "pnpm@10.6.3",
   "pnpm": {
     "peerDependencyRules": {
       "allowAny": [
