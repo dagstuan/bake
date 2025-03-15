@@ -11,10 +11,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@sanity/client": "^6.27.2",
-    "tsx": "^4.19.2"
+    "@sanity/client": "^6.28.3",
+    "tsx": "^4.19.3"
   },
   "devDependencies": {
-    "@flydotio/dockerfile": "^0.7.4"
+    "@flydotio/dockerfile": "^0.7.8"
   }
 }
