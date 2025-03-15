@@ -62,7 +62,7 @@ export const RecipesPageGridContent = ({
               <RecipesGridElement
                 key={recipe._id}
                 recipe={recipe}
-                priority={i < 3}
+                priority={i === 0}
                 className={cn({
                   ["opacity-60"]: isPending,
                 })}

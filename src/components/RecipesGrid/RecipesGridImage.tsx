@@ -47,7 +47,7 @@ export const RecipesGridImage = ({
       alt={stegaClean(image.alt ?? "Recipe")}
       className="aspect-video w-full rounded-t-xl object-cover"
       blurDataURL={image.asset?.metadata?.lqip ?? undefined}
-      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 30vw"
+      sizes="(max-width: 480px) 88vw, (max-width: 768px) 92vw, (max-width: 1024px) 50vw, 30vw"
     />
   ) : (
     <div className="from-primary/80 to-primary dark:from-primary/40 dark:to-secondary flex aspect-video w-full grow items-center justify-center rounded-t-xl bg-radial-[at_25%_25%] to-75% text-7xl"></div>

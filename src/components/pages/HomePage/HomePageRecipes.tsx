@@ -35,7 +35,7 @@ export const HomePageRecipes = (props: HomePageRecipesProps) => {
               data-sanity={dataAttribute(`[_key=="${recipe._key}"]`).toString()}
               key={recipe._key}
               recipe={recipe}
-              priority={i < 3}
+              priority={i === 0}
             />
           );
         })}

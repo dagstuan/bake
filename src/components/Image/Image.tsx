@@ -28,7 +28,7 @@ export const Image = ({
           priority
           className={className}
           loading="eager"
-          decoding="auto"
+          decoding="sync"
           fetchPriority="high"
         />
       ) : (
