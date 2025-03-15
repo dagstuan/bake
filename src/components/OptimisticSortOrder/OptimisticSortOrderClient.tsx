@@ -1,21 +1,9 @@
 "use client";
 
 import { Children, isValidElement } from "react";
-import { Path } from "sanity";
 import { useOptimistic } from "next-sanity/hooks";
 import { get } from "@sanity/util/paths";
-
-export interface OptimisticSortOrderProps {
-  children: React.ReactNode;
-  /**
-   * The id is needed to enable the optimistic state reducer to know if the document being mutated is relevant to the action
-   */
-  id: string;
-  /**
-   * Where from the source document we're applying optimistic state
-   */
-  path: Path;
-}
+import { OptimisticSortOrderProps } from "./types";
 
 /**
  * This component is used to apply optimistic state to a list of children. It is used to

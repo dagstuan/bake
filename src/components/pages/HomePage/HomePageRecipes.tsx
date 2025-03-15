@@ -1,7 +1,6 @@
 import { RecipesGridElement } from "@/components/RecipesGrid/RecipesGridElement";
 import { RecipesGridWrapper } from "@/components/RecipesGrid/RecipesGridWrapper";
 import { Home, HomePageQueryResult } from "../../../../sanity.types";
-import { OptimisticSortOrder } from "@/components/OptimisticSortOrder/OptimisticSortOrder";
 import { createPath } from "@/utils/pathUtils";
 import { createDataAttribute } from "next-sanity";
 
@@ -28,18 +27,16 @@ export const HomePageRecipes = (props: HomePageRecipesProps) => {
 
   return (
     <RecipesGridWrapper data-sanity={dataAttribute.toString()}>
-      <OptimisticSortOrder id={documentId} path={path}>
-        {recipes.map((recipe, i) => {
-          return (
-            <RecipesGridElement
-              data-sanity={dataAttribute(`[_key=="${recipe._key}"]`).toString()}
-              key={recipe._key}
-              recipe={recipe}
-              priority={i === 0}
-            />
-          );
-        })}
-      </OptimisticSortOrder>
+      {recipes.map((recipe, i) => {
+        return (
+          <RecipesGridElement
+            data-sanity={dataAttribute(`[_key=="${recipe._key}"]`).toString()}
+            key={recipe._key}
+            recipe={recipe}
+            priority={i === 0}
+          />
+        );
+      })}
     </RecipesGridWrapper>
   );
 };

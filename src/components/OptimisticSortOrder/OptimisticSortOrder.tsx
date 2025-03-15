@@ -1,6 +1,6 @@
 import { draftMode } from "next/headers";
 import { lazy, Suspense } from "react";
-import type { OptimisticSortOrderProps } from "./OptimisticSortOrderClient";
+import { OptimisticSortOrderProps } from "./types";
 
 const LazyOptimisticSortOrder = lazy(
   () => import("./OptimisticSortOrderClient"),
