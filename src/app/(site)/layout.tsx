@@ -123,10 +123,14 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { data: homeSeo } = await sanityFetch({
-    query: homeSeoQuery,
-    stega: false,
-  });
+  const [{ data: homeSeo }, { isEnabled: draftModeEnabled }] =
+    await Promise.all([
+      sanityFetch({
+        query: homeSeoQuery,
+        stega: false,
+      }),
+      draftMode(),
+    ]);
 
   const jsonLd: WithContext<WebSite> = {
     "@context": "https://schema.org",
@@ -136,8 +140,6 @@ export default async function RootLayout({
     url: siteUrl,
     potentialAction: searchAction,
   };
-
-  const draftModeEnabled = (await draftMode()).isEnabled;
 
   return (
     <html lang="no" suppressHydrationWarning>
