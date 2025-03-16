@@ -38,6 +38,7 @@
     "@sanity/util": "^3.79.0",
     "@sanity/uuid": "^3.0.2",
     "@sanity/vision": "^3.79.0",
+    "@vercel/analytics": "^1.5.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",

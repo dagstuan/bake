@@ -19,6 +19,7 @@ import {
 } from "../shared-metadata";
 import { cn } from "@/lib/utils";
 import { Suspense } from "react";
+import { Analytics } from "@vercel/analytics/next";
 
 const DisableDraftMode = dynamic(() =>
   import("@/components/DisableDraftMode").then((mod) => mod.DisableDraftMode),
@@ -166,6 +167,7 @@ export default async function RootLayout({
         </ThemeProvider>
 
         <JsonLd jsonLd={jsonLd} />
+        <Analytics />
         <Suspense>
           <SanityLive />
           {draftModeEnabled && (
