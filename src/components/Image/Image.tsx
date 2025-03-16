@@ -23,13 +23,7 @@ export const Image = ({
       }}
     >
       {priority ? (
-        <NextImage
-          {...props}
-          priority
-          className={className}
-          decoding="sync"
-          fetchPriority="high"
-        />
+        <NextImage {...props} priority className={className} />
       ) : (
         <LazyImage {...props} className={className} />
       )}
