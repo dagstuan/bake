@@ -18,6 +18,24 @@ const nextConfig: NextConfig = {
     reactCompiler: true,
     ppr: "incremental",
   },
+  // eslint-disable-next-line @typescript-eslint/require-await
+  async headers() {
+    return [
+      {
+        source: "/_vercel/insights/script.js",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+          {
+            key: "Content-Type",
+            value: "application/javascript; charset=utf-8",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 const withBundleAnalyzer = nextBundleAnalyzer();
