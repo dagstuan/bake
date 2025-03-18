@@ -1,9 +1,10 @@
 import { draftMode } from "next/headers";
-import { lazy, Suspense } from "react";
+import { Suspense } from "react";
 import { OptimisticSortOrderProps } from "./types";
+import dynamic from "next/dynamic";
 
-const LazyOptimisticSortOrder = lazy(
-  () => import("./OptimisticSortOrderClient"),
+const OptimisticSortOrderClientWrapper = dynamic(
+  () => import("./OptimisticSortOrderClientWrapper"),
 );
 
 /**
@@ -25,9 +26,9 @@ export async function OptimisticSortOrder(
 
   return (
     <Suspense fallback={children}>
-      <LazyOptimisticSortOrder id={id} path={path}>
+      <OptimisticSortOrderClientWrapper id={id} path={path}>
         {children}
-      </LazyOptimisticSortOrder>
+      </OptimisticSortOrderClientWrapper>
     </Suspense>
   );
 }
