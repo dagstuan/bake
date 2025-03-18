@@ -1,7 +1,7 @@
 import { Footer } from "@/components/Footer/Footer";
 import { JsonLd } from "@/components/JsonLd/JsonLd";
 import { Nav } from "@/components/Nav/Nav";
-import { sanityFetch } from "@/sanity/lib/live";
+import { sanityFetch, SanityLive } from "@/sanity/lib/live";
 import { homeSeoQuery } from "@/sanity/lib/queries";
 import { urlForImage } from "@/sanity/lib/utils";
 import type { Metadata } from "next";
@@ -18,7 +18,6 @@ import {
   twitterMetadata,
 } from "../shared-metadata";
 import { cn } from "@/lib/utils";
-import { Suspense } from "react";
 import { Analytics } from "@vercel/analytics/next";
 
 const DisableDraftMode = dynamic(() =>
@@ -27,10 +26,6 @@ const DisableDraftMode = dynamic(() =>
 
 const VisualEditing = dynamic(() =>
   import("next-sanity").then((mod) => mod.VisualEditing),
-);
-
-const SanityLive = dynamic(() =>
-  import("@/sanity/lib/live").then((mod) => mod.SanityLive),
 );
 
 const inter = Inter({
@@ -168,15 +163,13 @@ export default async function RootLayout({
 
         <JsonLd jsonLd={jsonLd} />
         <Analytics />
-        <Suspense>
-          <SanityLive />
-          {draftModeEnabled && (
-            <>
-              <DisableDraftMode />
-              <VisualEditing />
-            </>
-          )}
-        </Suspense>
+        <SanityLive />
+        {draftModeEnabled && (
+          <>
+            <DisableDraftMode />
+            <VisualEditing />
+          </>
+        )}
       </body>
     </html>
   );
