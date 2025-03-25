@@ -33,9 +33,7 @@ const calcInitialIngredientsCompletionState = (
           return;
         }
 
-        if (!state[ingredientId]) {
-          state[ingredientId] = {};
-        }
+        state[ingredientId] ??= {};
 
         const recipeInstructionKey = recipeInstruction._key;
         state[ingredientId][recipeInstructionKey] = {

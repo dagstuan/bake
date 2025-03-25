@@ -22,13 +22,11 @@ export const RecipeContextProvider = ({
   const recipeStore = useRef<RecipeStore>(null);
 
   const getRecipeStore = () => {
-    if (!recipeStore.current) {
-      recipeStore.current = createRecipeStore(
-        calcInitialState(recipe),
-        `recipe-${recipe._id}`,
-        recipe._rev,
-      );
-    }
+    recipeStore.current ??= createRecipeStore(
+      calcInitialState(recipe),
+      `recipe-${recipe._id}`,
+      recipe._rev,
+    );
 
     return recipeStore.current;
   };
