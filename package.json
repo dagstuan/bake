@@ -46,7 +46,7 @@
     "immer": "^10.1.1",
     "lucide-react": "^0.484.0",
     "next": "15.3.0-canary.21",
-    "next-sanity": "^9.9.5",
+    "next-sanity": "^9.9.6",
     "next-themes": "^0.4.6",
     "react": "19.0.0",
     "react-dom": "19.0.0",
@@ -67,7 +67,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.23.0",
-    "@tailwindcss/postcss": "^4.0.16",
+    "@tailwindcss/postcss": "^4.0.17",
     "@types/node": "^22.13.13",
     "@types/react": "19.0.12",
     "@types/react-dom": "19.0.4",
@@ -81,11 +81,11 @@
     "postcss": "^8.5.3",
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.11",
-    "tailwindcss": "^4.0.16",
+    "tailwindcss": "^4.0.17",
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.28.0"
   },
-  "packageManager": "pnpm@10.6.5",
+  "packageManager": "pnpm@10.7.0",
   "pnpm": {
     "peerDependencyRules": {
       "allowAny": [
