@@ -170,7 +170,7 @@ export const RecipeEditor = ({
             <div className="mb-4 flex items-center justify-between">
               <TypographyH4 as="h3">Ingredienser</TypographyH4>
               <Button
-                variant="outline"
+                variant="secondary"
                 onClick={handleAllIngredientsToGramClick}
               >
                 Sett alle til gram
@@ -199,11 +199,11 @@ export const RecipeEditor = ({
           </div>
         </div>
         <DialogFooter>
-          <Button type="button" variant="outline" onClick={onReset}>
-            Tilbakestill
+          <Button type="button" variant="secondary" onClick={onReset}>
+            Tilbakestill endringer
           </Button>
           <Button type="submit" onClick={handleSave}>
-            Lagre
+            Lagre og lukk
           </Button>
         </DialogFooter>
       </DialogContent>

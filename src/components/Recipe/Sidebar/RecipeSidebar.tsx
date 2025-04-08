@@ -45,7 +45,7 @@ export const RecipeSidebar = ({ recipe }: RecipeSidebarProps) => {
               variant="outline"
               onClick={handleReset}
             >
-              Tilbakestill
+              Tilbakestill endringer
             </Button>
           </div>
 
