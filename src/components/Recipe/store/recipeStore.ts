@@ -2,6 +2,7 @@ import { isDefined } from "@/utils/tsUtils";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
+import * as v from "valibot";
 import { IngredientUnit } from "../types";
 import { isEditableUnit } from "../utils";
 import {
@@ -64,6 +65,83 @@ const hashString = (str: string) => {
     hash = hash & hash; // Convert to 32-bit integer
   }
   return Math.abs(hash);
+};
+
+const ONE_WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+
+const isStateExpired = (persistedAt?: number): boolean => {
+  if (!persistedAt) return true; // If no timestamp, consider it expired
+  const now = Date.now();
+  return now - persistedAt > ONE_WEEK_MS;
+};
+
+const storageSchema = v.object({
+  state: v.object({
+    ...recipeStateSchema.entries,
+    persistedAt: v.number(),
+  }),
+  version: v.optional(v.number()),
+});
+
+const setStorageSchema = v.object({
+  state: recipeStateSchema,
+  version: v.optional(v.number()),
+});
+
+// Custom storage that automatically adds timestamp when persisting
+const createTimestampedStorage = () => {
+  const originalStorage = localStorage;
+
+  return {
+    getItem: (name: string): string | null => {
+      const item = originalStorage.getItem(name);
+      if (!item) return null;
+
+      const parsedData = v.safeParse(storageSchema, JSON.parse(item));
+
+      if (
+        !parsedData.success ||
+        isStateExpired(parsedData.output.state.persistedAt)
+      ) {
+        originalStorage.removeItem(name);
+        return null;
+      }
+
+      return item;
+    },
+
+    setItem: (name: string, value: string): void => {
+      try {
+        const parsed: unknown = JSON.parse(value);
+
+        try {
+          const validatedData = v.parse(setStorageSchema, parsed);
+
+          const dataWithTimestamp = {
+            ...validatedData,
+            state: {
+              ...validatedData.state,
+              persistedAt: Date.now(),
+            },
+          };
+
+          originalStorage.setItem(name, JSON.stringify(dataWithTimestamp));
+        } catch (validationError) {
+          console.warn(
+            "Invalid data structure when setting localStorage:",
+            validationError,
+          );
+          originalStorage.setItem(name, value);
+        }
+      } catch {
+        originalStorage.setItem(name, value);
+      }
+    },
+
+    removeItem: (name: string): void => {
+      originalStorage.removeItem(name);
+    },
+  };
 };
 
 export const createRecipeStore = (
@@ -366,10 +444,9 @@ export const createRecipeStore = (
       })),
       {
         name: storageKey,
-        storage: createJSONStorage(() => localStorage),
+        storage: createJSONStorage(() => createTimestampedStorage()),
         version:
           hashString(version) + hashString(JSON.stringify(recipeStateSchema)),
-        migrate: () => null,
       },
     ),
   );
