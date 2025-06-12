@@ -1,6 +1,6 @@
 import { isDefined } from "@/utils/tsUtils";
 import { create } from "zustand";
-import { createJSONStorage, persist } from "zustand/middleware";
+import { createJSONStorage, persist, StateStorage } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import * as v from "valibot";
 import { IngredientUnit } from "../types";
@@ -89,56 +89,70 @@ const setStorageSchema = v.object({
 });
 
 // Custom storage that automatically adds timestamp when persisting
-const createTimestampedStorage = () => {
+const createTimestampedStorage = (): StateStorage => {
   const originalStorage = localStorage;
 
   return {
-    getItem: (name: string): string | null => {
+    getItem: (name) => {
       const item = originalStorage.getItem(name);
       if (!item) return null;
 
       const parsedData = v.safeParse(storageSchema, JSON.parse(item));
 
-      if (
-        !parsedData.success ||
-        isStateExpired(parsedData.output.state.persistedAt)
-      ) {
+      if (!parsedData.success) {
         originalStorage.removeItem(name);
         return null;
+      }
+
+      // If state is expired, only reset ingredientsCompletion while keeping the rest
+      if (isStateExpired(parsedData.output.state.persistedAt)) {
+        const expiredState = parsedData.output.state;
+
+        const updatedData = {
+          ...parsedData.output,
+          state: {
+            ...expiredState,
+            ingredientsCompletion: resetIngredientsCompletionState(
+              expiredState.ingredientsCompletion,
+              false,
+            ),
+            persistedAt: Date.now(), // Update timestamp
+          },
+        };
+
+        // Save the updated data back to storage
+        originalStorage.setItem(name, JSON.stringify(updatedData));
+
+        return JSON.stringify(updatedData);
       }
 
       return item;
     },
 
-    setItem: (name: string, value: string): void => {
-      try {
-        const parsed: unknown = JSON.parse(value);
+    setItem: (name, value) => {
+      const validateResult = v.safeParse(setStorageSchema, JSON.parse(value));
 
-        try {
-          const validatedData = v.parse(setStorageSchema, parsed);
-
-          const dataWithTimestamp = {
-            ...validatedData,
-            state: {
-              ...validatedData.state,
-              persistedAt: Date.now(),
-            },
-          };
-
-          originalStorage.setItem(name, JSON.stringify(dataWithTimestamp));
-        } catch (validationError) {
-          console.warn(
-            "Invalid data structure when setting localStorage:",
-            validationError,
-          );
-          originalStorage.setItem(name, value);
-        }
-      } catch {
+      if (!validateResult.success) {
+        console.warn(
+          "Invalid data structure when setting localStorage:",
+          validateResult.issues,
+        );
         originalStorage.setItem(name, value);
+        return;
       }
+
+      const dataWithTimestamp: v.InferOutput<typeof storageSchema> = {
+        ...validateResult.output,
+        state: {
+          ...validateResult.output.state,
+          persistedAt: Date.now(),
+        },
+      };
+
+      originalStorage.setItem(name, JSON.stringify(dataWithTimestamp));
     },
 
-    removeItem: (name: string): void => {
+    removeItem: (name) => {
       originalStorage.removeItem(name);
     },
   };
