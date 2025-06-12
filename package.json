@@ -57,7 +57,6 @@
     "sanity-plugin-media": "^3.0.3",
     "schema-dts": "^1.1.5",
     "server-only": "^0.0.1",
-    "styled-components": "^6.1.18",
     "tailwind-merge": "^3.3.1",
     "tailwindcss-animate": "^1.0.7",
     "use-debounce": "^10.0.5",
@@ -67,8 +66,8 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.28.0",
-    "@tailwindcss/postcss": "^4.1.9",
-    "@types/node": "^24.0.0",
+    "@tailwindcss/postcss": "^4.1.10",
+    "@types/node": "^24.0.1",
     "@types/react": "19.1.8",
     "@types/react-dom": "19.1.6",
     "babel-plugin-react-compiler": "19.1.0-rc.2",
@@ -80,7 +79,7 @@
     "postcss": "^8.5.5",
     "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.12",
-    "tailwindcss": "^4.1.9",
+    "tailwindcss": "^4.1.10",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.34.0"
   },
