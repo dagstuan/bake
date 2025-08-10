@@ -32,7 +32,7 @@ export const HomePageRecipes = (props: HomePageRecipesProps) => {
         {recipes.map((recipe, i) => {
           return (
             <RecipesGridElement
-              data-sanity={dataAttribute(`[_key=="${recipe._key}"]`).toString()}
+              data-sanity={dataAttribute(`[_key=="${recipe._key}"]`)}
               key={recipe._key}
               recipe={recipe}
               priority={i === 0}
