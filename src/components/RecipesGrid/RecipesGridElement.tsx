@@ -33,7 +33,7 @@ export const RecipesGridElement = ({
     >
       <Card className="flex h-full flex-col transition-shadow hover:shadow-md">
         <RecipesGridImage image={mainImage} priority={priority} />
-        <div className="flex h-full items-center justify-between p-4">
+        <div className="flex h-full items-center justify-between gap-4 p-4">
           <h2 className="text-card-foreground text-xl font-semibold">
             {stegaClean(title)}
           </h2>
