@@ -72,6 +72,11 @@ export type RecipeIngredientsState = v.InferInput<
   typeof recipeIngredientsStateSchema
 >;
 
+const ingredientsOriginalUnitsSchema = v.record(v.string(), ingredientUnit);
+export type IngredientsOriginalUnits = v.InferInput<
+  typeof ingredientsOriginalUnitsSchema
+>;
+
 export const recipeStateSchema = v.object({
   recipeRevision: v.string(),
   initialServings: v.number(),
@@ -81,6 +86,7 @@ export const recipeStateSchema = v.object({
   ingredients: recipeIngredientsStateSchema,
   totalYield: v.number(),
   yieldPerServing: v.number(),
+  ingredientsOriginalUnits: ingredientsOriginalUnitsSchema,
 });
 
 export type RecipeState = v.InferInput<typeof recipeStateSchema>;

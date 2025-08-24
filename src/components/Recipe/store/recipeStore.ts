@@ -17,6 +17,8 @@ export const minServings = 0.01;
 export const maxServings = 999;
 
 interface RecipeStore extends RecipeState {
+  convertAllToGrams: () => void;
+  restoreOriginalUnits: () => void;
   resetIngredientsCompletionState: (completed: boolean) => void;
   onIngredientReferenceCompletionChange: (
     ingredientId: string,
@@ -165,8 +167,42 @@ export const createRecipeStore = (
 ) => {
   return create<RecipeStore>()(
     persist(
-      immer((set) => ({
+      immer((set, get) => ({
         ...initProps,
+        convertAllToGrams: () => {
+          set((state) => {
+            state.ingredients.forEach((ingredient) => {
+              if (
+                ingredient.type === "ingredient" &&
+                ingredient.unit &&
+                ingredient.unit !== "g"
+              ) {
+                state.ingredientsOriginalUnits[ingredient.id] = ingredient.unit;
+              }
+            });
+          });
+
+          get().onAllIngredientsUnitChange("g");
+        },
+
+        restoreOriginalUnits: () => {
+          const state = get();
+          state.ingredients.forEach((ingredient) => {
+            const original = state.ingredientsOriginalUnits[ingredient.id];
+            if (
+              ingredient.type === "ingredient" &&
+              ingredient.amount &&
+              ingredient.unit &&
+              ingredient.unit === "g" &&
+              original !== "g"
+            ) {
+              get().onIngredientUnitChange(
+                ingredient.id,
+                original as IngredientUnit,
+              );
+            }
+          });
+        },
 
         resetIngredientsCompletionState: (completed) => {
           set((state) => {
@@ -352,6 +388,8 @@ export const createRecipeStore = (
 
             ingredientToUpdate.amount = amountInGrams / newWeightInGrams;
             ingredientToUpdate.unit = newUnit;
+
+            state.ingredientsOriginalUnits[ingredientId] = newUnit;
           });
         },
 
@@ -380,6 +418,10 @@ export const createRecipeStore = (
 
               ingredient.amount = amountInGrams / newWeightInGrams;
               ingredient.unit = newUnit;
+
+              if (newUnit !== "g") {
+                state.ingredientsOriginalUnits[ingredient.id] = newUnit;
+              }
             });
           });
         },
@@ -443,6 +485,8 @@ export const createRecipeStore = (
 
             ingredientToConvert.weights = newIngredient.weights;
             ingredientToConvert.conversions = newConversions;
+
+            state.ingredientsOriginalUnits[ingredientId] = "g";
 
             const updatedTotalYield = calculateTotalYield(state.ingredients);
             state.totalYield = updatedTotalYield;
