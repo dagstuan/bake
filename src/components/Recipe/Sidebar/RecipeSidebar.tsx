@@ -1,6 +1,6 @@
 "use client";
 
-import { Fragment } from "react";
+import { Fragment, useId, useMemo } from "react";
 import { useStore } from "zustand";
 import { useShallow } from "zustand/react/shallow";
 import { RecipeQueryResult } from "../../../../sanity.types";
@@ -14,6 +14,8 @@ import { useRecipeContext } from "../recipeContext";
 import { calcInitialState } from "../store/initialState";
 import { WakeLockToggle } from "../WakeLockToggle";
 import { RecipeEditor } from "../Editor/RecipeEditor";
+import { Switch } from "../../ui/switch";
+import { Label } from "../../ui/label";
 
 interface RecipeSidebarProps {
   recipe: NonNullable<RecipeQueryResult>;
@@ -23,15 +25,43 @@ export const RecipeSidebar = ({ recipe }: RecipeSidebarProps) => {
   const { activeTime, totalTime } = recipe;
 
   const recipeStore = useRecipeContext();
-
-  const [ingredients, ingredientsGroupOrder, reset] = useStore(
+  const [
+    ingredients,
+    ingredientsGroupOrder,
+    reset,
+    convertAllToGrams,
+    restoreOriginalUnits,
+    ingredientsOriginalUnits,
+  ] = useStore(
     recipeStore,
-    useShallow((s) => [s.ingredients, s.ingredientsGroupOrder, s.reset]),
+    useShallow((s) => [
+      s.ingredients,
+      s.ingredientsGroupOrder,
+      s.reset,
+      s.convertAllToGrams,
+      s.restoreOriginalUnits,
+      s.ingredientsOriginalUnits,
+    ]),
+  );
+
+  const ingredientsWithUnit = ingredients.filter(
+    (i) => i.type === "ingredient" && i.unit,
+  );
+
+  const isAllIngredientsInGrams =
+    ingredientsWithUnit.length > 0 &&
+    ingredientsWithUnit.every((i) => i.unit === "g");
+
+  const shouldShowGramsToggle = useMemo(
+    () => Object.values(ingredientsOriginalUnits).some((unit) => unit !== "g"),
+    [ingredientsOriginalUnits],
   );
 
   const handleReset = () => {
     reset(calcInitialState(recipe));
   };
+
+  const ingredientsGramToggleId = useId();
 
   return (
     <div className="col-span-full flex flex-col gap-6 md:col-span-1">
@@ -56,7 +86,38 @@ export const RecipeSidebar = ({ recipe }: RecipeSidebarProps) => {
       </Card>
 
       <Card className="flex flex-col gap-2 rounded-lg p-4">
-        <TypographyH3 as="h2">Ingredienser</TypographyH3>
+        <div className="flex items-center justify-between gap-4">
+          <TypographyH3 as="h2" className="m-0">
+            Ingredienser
+          </TypographyH3>
+          {shouldShowGramsToggle && (
+            <div className="flex items-center gap-2">
+              <Label
+                htmlFor={ingredientsGramToggleId}
+                className="text-xs font-normal"
+                title="Vis alle mengder i gram"
+              >
+                Gram
+              </Label>
+              <Switch
+                id={ingredientsGramToggleId}
+                checked={isAllIngredientsInGrams}
+                title={
+                  isAllIngredientsInGrams
+                    ? "Viser mengder i gram. Klikk for å vise original enhet."
+                    : "Viser originale enheter. Klikk for å vise i gram."
+                }
+                onCheckedChange={(checked) => {
+                  if (checked) {
+                    convertAllToGrams();
+                  } else {
+                    restoreOriginalUnits();
+                  }
+                }}
+              />
+            </div>
+          )}
+        </div>
 
         <IngredientsTable
           group={null}

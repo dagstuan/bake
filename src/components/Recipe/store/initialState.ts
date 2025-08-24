@@ -8,6 +8,7 @@ import {
 import {
   IngredientsCompletionState,
   IngredientsGroupOrder,
+  IngredientsOriginalUnits,
   RecipeIngredientsState,
   RecipeState,
 } from "./types";
@@ -181,5 +182,14 @@ export const calcInitialState = (
     ingredients: ingredientsState,
     totalYield: totalYield,
     yieldPerServing: totalYield / initialServingsNum,
+    ingredientsOriginalUnits: ingredientsState.reduce<IngredientsOriginalUnits>(
+      (acc, i) => {
+        if (i.type === "ingredient" && i.unit) {
+          acc[i.id] = i.unit;
+        }
+        return acc;
+      },
+      {},
+    ),
   };
 };
