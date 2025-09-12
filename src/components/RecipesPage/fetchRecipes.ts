@@ -12,6 +12,8 @@ export const fetchRecipes = async (
   lastId: Nullable<string> = null,
   lastCreatedAt: Nullable<string> = null,
 ): Promise<RecipesListQueryResult> => {
+  "use cache";
+
   const { data: recipes } = await sanityFetch({
     query: recipesListQuery,
     params: {

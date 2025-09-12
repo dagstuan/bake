@@ -1,3 +1,5 @@
+"use cache";
+
 import { recipeQuery, allRecipesSlugQuery } from "@/sanity/lib/queries";
 import { Metadata } from "next";
 import { urlForImage } from "@/sanity/lib/utils";

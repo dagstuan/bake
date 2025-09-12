@@ -16,7 +16,7 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     reactCompiler: true,
-    ppr: "incremental",
+    cacheComponents: true,
   },
   // eslint-disable-next-line @typescript-eslint/require-await
   async headers() {

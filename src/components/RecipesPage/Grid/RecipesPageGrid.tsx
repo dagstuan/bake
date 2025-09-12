@@ -8,6 +8,8 @@ interface RecipesPageGridProps {
 }
 
 export const RecipesPageGrid = async (props: RecipesPageGridProps) => {
+  "use cache";
+
   const { query, category } = await props.searchParams;
 
   const recipes = await fetchRecipes(query, category, amountPerFetch);

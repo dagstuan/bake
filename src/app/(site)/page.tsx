@@ -1,3 +1,5 @@
+"use cache";
+
 import { HomePage } from "@/components/pages/HomePage/HomePage";
 import { sanityFetch } from "@/sanity/lib/live";
 import { homePageQuery } from "@/sanity/lib/queries";
