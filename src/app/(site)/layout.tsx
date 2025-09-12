@@ -25,7 +25,7 @@ const DisableDraftMode = dynamic(() =>
 );
 
 const VisualEditing = dynamic(() =>
-  import("next-sanity").then((mod) => mod.VisualEditing),
+  import("next-sanity/visual-editing").then((mod) => mod.VisualEditing),
 );
 
 const inter = Inter({
