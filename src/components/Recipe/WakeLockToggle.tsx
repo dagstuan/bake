@@ -31,11 +31,18 @@ export const WakeLockToggle = (): React.JSX.Element | null => {
   const wakeLockActive = useRef(false);
 
   const { isSupported, request, release } = useWakeLock({
+    reacquireOnPageVisible: true,
     onRelease: () => {
-      setChecked(false);
+      if (isClient) {
+        wakeLockActive.current = false;
+        setChecked(false);
+      }
     },
     onRequest: () => {
-      setChecked(true);
+      if (isClient) {
+        wakeLockActive.current = true;
+        setChecked(true);
+      }
     },
   });
 
@@ -105,6 +112,7 @@ export const WakeLockToggle = (): React.JSX.Element | null => {
   useEffect(() => {
     if (isClient && !hasInitializedStorage.current) {
       hasInitializedStorage.current = true;
+      wakeLockActive.current = storageChecked;
       if (storageChecked !== checked) {
         handleCheckedChange(storageChecked);
       }
