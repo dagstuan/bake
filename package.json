@@ -52,7 +52,7 @@
     "react-dom": "19.1.1",
     "react-screen-wake-lock": "^3.1.1",
     "sanity": "^4.8.1",
-    "sanity-plugin-documents-pane": "^2.4.1",
+    "sanity-plugin-documents-pane": "^3.0.0",
     "sanity-plugin-iframe-pane": "^4.0.0",
     "sanity-plugin-media": "^4.0.0",
     "schema-dts": "^1.1.5",
@@ -67,8 +67,8 @@
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.35.0",
     "@tailwindcss/postcss": "^4.1.13",
-    "@types/node": "^24.3.1",
-    "@types/react": "19.1.12",
+    "@types/node": "^24.4.0",
+    "@types/react": "19.1.13",
     "@types/react-dom": "19.1.9",
     "babel-plugin-react-compiler": "19.1.0-rc.3",
     "eslint": "^9.35.0",
@@ -81,9 +81,9 @@
     "prettier-plugin-tailwindcss": "^0.6.14",
     "tailwindcss": "^4.1.13",
     "typescript": "^5.9.2",
-    "typescript-eslint": "^8.43.0"
+    "typescript-eslint": "^8.44.0"
   },
-  "packageManager": "pnpm@10.16.0",
+  "packageManager": "pnpm@10.16.1",
   "pnpm": {
     "peerDependencyRules": {
       "allowAny": [
@@ -92,7 +92,7 @@
       ]
     },
     "overrides": {
-      "@types/react": "19.1.12",
+      "@types/react": "19.1.13",
       "@types/react-dom": "19.1.9",
       "framer-motion": "12.7.4",
       "motion-dom": "12.7.4"
