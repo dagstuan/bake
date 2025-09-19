@@ -1,5 +1,3 @@
-"use cache";
-
 import { Footer } from "@/components/Footer/Footer";
 import { JsonLd } from "@/components/JsonLd/JsonLd";
 import { Nav } from "@/components/Nav/Nav";
