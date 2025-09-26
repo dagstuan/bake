@@ -17,8 +17,8 @@
     "bump": "pnpm run bump:compiler && pnpm run bump:next"
   },
   "dependencies": {
-    "@next/bundle-analyzer": "15.5.3",
-    "@next/eslint-plugin-next": "15.5.3",
+    "@next/bundle-analyzer": "15.5.4",
+    "@next/eslint-plugin-next": "15.5.4",
     "@radix-ui/react-aspect-ratio": "^1.1.7",
     "@radix-ui/react-checkbox": "^1.3.3",
     "@radix-ui/react-dialog": "^1.1.15",
@@ -34,10 +34,10 @@
     "@sanity/icons": "^3.7.4",
     "@sanity/image-url": "^1.2.0",
     "@sanity/preview-url-secret": "^2.1.15",
-    "@sanity/ui": "^3.1.4",
-    "@sanity/util": "^4.9.0",
+    "@sanity/ui": "^3.1.7",
+    "@sanity/util": "^4.10.1",
     "@sanity/uuid": "^3.0.2",
-    "@sanity/vision": "^4.9.0",
+    "@sanity/vision": "^4.10.1",
     "@vercel/analytics": "^1.5.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -45,13 +45,13 @@
     "embla-carousel-react": "^8.6.0",
     "immer": "^10.1.3",
     "lucide-react": "^0.544.0",
-    "next": "15.6.0-canary.2",
-    "next-sanity": "^11.1.1",
+    "next": "15.6.0-canary.31",
+    "next-sanity": "^11.4.2",
     "next-themes": "^0.4.6",
     "react": "19.1.1",
     "react-dom": "19.1.1",
     "react-screen-wake-lock": "^3.1.1",
-    "sanity": "^4.9.0",
+    "sanity": "^4.10.1",
     "sanity-plugin-documents-pane": "^3.0.0",
     "sanity-plugin-iframe-pane": "^4.0.0",
     "sanity-plugin-media": "^4.0.0",
@@ -68,7 +68,7 @@
     "@eslint/js": "^9.36.0",
     "@tailwindcss/postcss": "^4.1.13",
     "@types/node": "^24.5.2",
-    "@types/react": "19.1.13",
+    "@types/react": "19.1.14",
     "@types/react-dom": "19.1.9",
     "babel-plugin-react-compiler": "19.1.0-rc.3",
     "eslint": "^9.36.0",
@@ -81,9 +81,9 @@
     "prettier-plugin-tailwindcss": "^0.6.14",
     "tailwindcss": "^4.1.13",
     "typescript": "^5.9.2",
-    "typescript-eslint": "^8.44.0"
+    "typescript-eslint": "^8.44.1"
   },
-  "packageManager": "pnpm@10.17.0",
+  "packageManager": "pnpm@10.17.1",
   "pnpm": {
     "peerDependencyRules": {
       "allowAny": [
@@ -92,7 +92,7 @@
       ]
     },
     "overrides": {
-      "@types/react": "19.1.13",
+      "@types/react": "19.1.14",
       "@types/react-dom": "19.1.9",
       "framer-motion": "12.7.4",
       "motion-dom": "12.7.4"

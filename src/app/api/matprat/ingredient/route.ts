@@ -2,8 +2,6 @@ import { notFound } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
 import * as v from "valibot";
 
-export const revalidate = 3600;
-
 const unit = v.nullable(
   v.object({
     name: v.string(),
