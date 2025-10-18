@@ -23,9 +23,9 @@ export const WakeLockToggle = (): React.JSX.Element | null => {
     "localStorage",
   );
 
-  useEffect(() => {
+  if (!isClient && !isServer) {
     setIsClient(true);
-  }, []);
+  }
 
   const [checked, setChecked] = useState(false);
   const wakeLockActive = useRef(false);

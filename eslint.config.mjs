@@ -7,11 +7,12 @@ import pluginReactHooks from "eslint-plugin-react-hooks";
 import pluginReact from "eslint-plugin-react";
 import globals from "globals";
 import pluginNext from "@next/eslint-plugin-next";
+import { defineConfig } from "eslint/config";
 
 export default [
   js.configs.recommended,
   eslintConfigPrettier,
-  ...tseslint.config({
+  ...defineConfig({
     extends: [
       ...tseslint.configs.recommendedTypeChecked,
       ...tseslint.configs.strictTypeChecked,
@@ -47,21 +48,18 @@ export default [
     },
   },
   {
-    plugins: {
-      "react-hooks": pluginReactHooks,
-    },
     settings: {
       react: {
         version: "detect",
       },
     },
     rules: {
-      ...pluginReactHooks.configs.recommended.rules,
       "react/react-in-jsx-scope": "off",
       "react/prop-types": "off",
     },
   },
+  pluginReactHooks.configs.flat["recommended-latest"],
   {
-    ignores: ["dist/**", "sanity.types.ts"],
+    ignores: [".next/**",  "dist/**", "sanity.types.ts"],
   },
 ];

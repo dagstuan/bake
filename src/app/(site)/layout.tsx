@@ -19,6 +19,7 @@ import {
 } from "../shared-metadata";
 import { cn } from "@/lib/utils";
 import { Analytics } from "@vercel/analytics/next";
+import { Suspense } from "react";
 
 const DisableDraftMode = dynamic(() =>
   import("@/components/DisableDraftMode").then((mod) => mod.DisableDraftMode),
@@ -124,6 +125,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  "use cache";
+
   const [{ data: homeSeo }, { isEnabled: draftModeEnabled }] =
     await Promise.all([
       sanityFetch({
@@ -157,7 +160,9 @@ export default async function RootLayout({
           disableTransitionOnChange
         >
           <Nav />
-          <div className="flex-1">{children}</div>
+          <Suspense>
+            <div className="flex-1">{children}</div>
+          </Suspense>
           <Footer />
         </ThemeProvider>
 

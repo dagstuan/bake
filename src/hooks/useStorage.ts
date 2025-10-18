@@ -15,24 +15,30 @@ export default function useStorage<T>(
   storageType: StorageType = "sessionStorage",
 ): [T, Dispatch<SetStateAction<T>>] {
   const isMounted = useRef(false);
-  const [value, setValue] = useState<T>(defaultValue);
+  const [value, setValue] = useState<T>(() => {
+    // Skip storage access during SSR
+    if (typeof window === "undefined") {
+      return defaultValue;
+    }
 
-  useEffect(() => {
     try {
       const item = getStorage(storageType).getItem(key);
       const parsed = safeParse(schema, item);
       if (item && parsed.success) {
-        setValue(JSON.parse(item) as T);
+        return JSON.parse(item) as T;
       }
     } catch (e) {
       console.log(e);
     }
-    return () => {
-      isMounted.current = false;
-    };
-  }, [key, storageType, schema]);
+    return defaultValue;
+  });
 
   useEffect(() => {
+    // Skip storage access during SSR
+    if (typeof window === "undefined") {
+      return;
+    }
+
     if (isMounted.current) {
       getStorage(storageType).setItem(key, JSON.stringify(value));
     } else {

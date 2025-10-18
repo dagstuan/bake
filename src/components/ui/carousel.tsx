@@ -78,13 +78,13 @@ const Carousel = forwardRef<
     const [canScrollPrev, setCanScrollPrev] = useState(false);
     const [canScrollNext, setCanScrollNext] = useState(false);
 
-    const onSelect = useCallback((api: CarouselApi) => {
-      if (!api) {
+    const onSelect = useCallback((emblaApi: CarouselApi) => {
+      if (!emblaApi) {
         return;
       }
 
-      setCanScrollPrev(api.canScrollPrev());
-      setCanScrollNext(api.canScrollNext());
+      setCanScrollPrev(emblaApi.canScrollPrev());
+      setCanScrollNext(emblaApi.canScrollNext());
     }, []);
 
     const scrollPrev = useCallback(() => {
@@ -121,12 +121,17 @@ const Carousel = forwardRef<
         return;
       }
 
-      onSelect(api);
-      api.on("reInit", onSelect);
-      api.on("select", onSelect);
+      const handleSelect = () => {
+        onSelect(api);
+      };
+
+      handleSelect();
+      api.on("reInit", handleSelect);
+      api.on("select", handleSelect);
 
       return () => {
-        api.off("select", onSelect);
+        api.off("reInit", handleSelect);
+        api.off("select", handleSelect);
       };
     }, [api, onSelect]);
 
