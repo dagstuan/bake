@@ -61,7 +61,13 @@ export const recipesListQuery = defineQuery(`*[
   _type == "${recipeTypeName}" &&
   visible == true &&
   (!defined($lastCreatedAt) || (_createdAt < $lastCreatedAt || (_createdAt == $lastCreatedAt && _id < $lastId))) &&
-  (pt::text(instructions) match $searchQuery || title match $searchQuery || searchTerms[] match $searchQuery) &&
+  (
+    pt::text(instructions) match $searchQuery ||
+    title match $searchQuery ||
+    searchTerms[] match $searchQuery ||
+    ingredients[]->ingredient->name match $searchQuery ||
+    ingredients[].ingredients[]->ingredient->name match $searchQuery
+  ) &&
   (!defined($categories) || (count((categories[]->slug.current)[@ in $categories]) > 0))
 ]
 |order(_createdAt desc)
