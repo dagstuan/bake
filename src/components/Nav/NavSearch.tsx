@@ -29,7 +29,7 @@ export const NavSearch = () => {
     }
 
     startTransition(async () => {
-      const results = await fetchRecipes(term, null, 10);
+      const results = await fetchRecipes(term, null, 8);
       setSearchResults(results);
       setIsOpen(true);
       setIsSearching(false);

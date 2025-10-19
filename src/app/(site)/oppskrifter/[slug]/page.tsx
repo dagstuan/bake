@@ -39,7 +39,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   });
 
   if (recipe) {
-    const { title, mainImage, seo } = recipe;
+    const { title, mainImage, seo, searchTerms } = recipe;
 
     const imageWidth = 800;
     const imageHeight = 600;
@@ -56,6 +56,7 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
     return {
       title: seo?.metaTitle ?? title ?? "",
       description: seo?.metaDescription ?? "",
+      keywords: searchTerms ?? undefined,
       openGraph: {
         ...openGraphMetadata,
         title: seo?.metaTitle ?? title ?? "",

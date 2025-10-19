@@ -249,6 +249,16 @@ export const recipeType = defineType({
       ],
     }),
     defineField({
+      name: "searchTerms",
+      type: "array",
+      title: "Search Terms",
+      group: ["seo"],
+      description:
+        "Additional search terms that should have priority when searching for this recipe",
+      of: [defineArrayMember({ type: "string" })],
+      validation: (rule) => rule.unique(),
+    }),
+    defineField({
       name: "seo",
       type: "seo",
       group: ["seo"],

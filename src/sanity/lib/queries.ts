@@ -61,11 +61,15 @@ export const recipesListQuery = defineQuery(`*[
   _type == "${recipeTypeName}" &&
   visible == true &&
   (!defined($lastCreatedAt) || (_createdAt < $lastCreatedAt || (_createdAt == $lastCreatedAt && _id < $lastId))) &&
-  (pt::text(instructions) match $searchQuery || title match $searchQuery) &&
+  (pt::text(instructions) match $searchQuery || title match $searchQuery || searchTerms[] match $searchQuery) &&
   (!defined($categories) || (count((categories[]->slug.current)[@ in $categories]) > 0))
 ]
 |order(_createdAt desc)
-|score(pt::text(instructions) match $searchQuery, boost(title match $searchQuery, 3))
+|score(
+  pt::text(instructions) match $searchQuery,
+  boost(searchTerms[] match $searchQuery, 2),
+  boost(title match $searchQuery, 3)
+)
 |order(_score desc)
 [0...$amount]
 {
@@ -204,6 +208,7 @@ export const recipeQuery =
       },
       ${basePortableTextFields}
     },
+    searchTerms,
     seo
 }`);
 
