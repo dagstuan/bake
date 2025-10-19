@@ -56,9 +56,12 @@ export const RecipesFiltersContent = (props: RecipesFiltersContentProps) => {
     });
   }, 300);
 
-  const [inputValue, setInputValue] = useState(
-    searchParams.get(searchQueryParam)?.toString() ?? "",
-  );
+  const queryFromUrl = searchParams.get(searchQueryParam)?.toString();
+  const [inputValue, setInputValue] = useState(queryFromUrl);
+
+  if (queryFromUrl && inputValue !== queryFromUrl) {
+    setInputValue(queryFromUrl);
+  }
 
   const handleInputChange = (newValue: string) => {
     setInputValue(newValue);
