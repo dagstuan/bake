@@ -48,7 +48,7 @@ export const NavSearchResults = ({
                   onResultClick(slug);
                 }}
                 className={cn(
-                  "hover:bg-accent flex cursor-pointer items-center gap-3 border-b bg-white p-3 text-left transition-colors last:border-b-0",
+                  "hover:bg-accent bg-background flex cursor-pointer items-center gap-3 border-b p-3 text-left transition-colors last:border-b-0",
                   isSelected && "bg-accent",
                 )}
               >

@@ -29,7 +29,7 @@ export const NavSearch = () => {
     }
 
     startTransition(async () => {
-      const results = await fetchRecipes(term, null, 8);
+      const results = await fetchRecipes(term, null, 6);
       setSearchResults(results);
       setIsOpen(true);
       setIsSearching(false);
@@ -108,12 +108,12 @@ export const NavSearch = () => {
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <div className="relative w-full">
         <div className="relative">
-          <MagnifyingGlassIcon className="absolute top-1/2 left-3 -translate-y-1/2 transform text-gray-500" />
+          <MagnifyingGlassIcon className="text-accent-foreground absolute top-1/2 left-3 -translate-y-1/2 transform" />
           <PopoverAnchor asChild>
             <Input
               type="text"
               placeholder="Søk..."
-              className="w-full bg-white pr-10 pl-10"
+              className="bg-background text-accent-foreground w-full pr-10 pl-10"
               onChange={(e) => {
                 handleInputChange(e.target.value);
               }}
@@ -129,7 +129,7 @@ export const NavSearch = () => {
           {inputValue && (
             <button
               onClick={handleClear}
-              className="absolute top-1/2 right-3 -translate-y-1/2 transform text-gray-400 hover:text-gray-600"
+              className="text-accent-foreground absolute top-1/2 right-3 -translate-y-1/2 transform hover:cursor-pointer"
               aria-label="Clear search"
             >
               <Cross2Icon />
