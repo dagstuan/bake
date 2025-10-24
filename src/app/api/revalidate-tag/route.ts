@@ -21,7 +21,7 @@ export const POST = async (request: NextRequest) => {
 
   for (const _tag of tags) {
     const tag = `sanity:${_tag}`;
-    revalidateTag(tag);
+    revalidateTag(tag, "max");
 
     console.log(`revalidated tag: ${tag}`);
   }

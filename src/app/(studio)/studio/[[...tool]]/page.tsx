@@ -2,7 +2,6 @@ import { NextStudio } from "next-sanity/studio";
 import config from "../../../../../sanity.config";
 
 export const maxDuration = 60;
-export const experimental_ppr = false;
 
 export { metadata, viewport } from "next-sanity/studio";
 

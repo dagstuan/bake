@@ -1,7 +1,5 @@
 import "../globals.css";
 
-export const experimental_ppr = false;
-
 export default function RootLayout({
   children,
 }: {
