@@ -1,7 +1,6 @@
-import { Suspense } from "react";
+import { Suspense, ViewTransition } from "react";
 import { TypographyH1 } from "../Typography/TypographyH1";
 import { RecipesPageGrid } from "./Grid/RecipesPageGrid";
-import { RecipesPageGridSkeleton } from "./Grid/RecipesPageGridSkeleton";
 import { TransitionContextProvider } from "./TransitionContext";
 import { RecipesFiltersSkeleton } from "./Filters/RecipesFiltersSkeleton";
 import { RecipesFilters } from "./Filters/RecipesFilters";
@@ -22,9 +21,9 @@ export const RecipesPage = ({ searchParams }: RecipesGridWrapperProps) => {
             <RecipesFilters />
           </Suspense>
 
-          <Suspense fallback={<RecipesPageGridSkeleton />}>
+          <ViewTransition>
             <RecipesPageGrid searchParams={searchParams} />
-          </Suspense>
+          </ViewTransition>
         </div>
       </main>
     </TransitionContextProvider>

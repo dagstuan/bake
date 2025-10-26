@@ -116,7 +116,7 @@ export const RecipePage = (props: RecipePageProps) => {
 
   return (
     <>
-      <Recipe recipe={recipe} />
+      <Recipe recipe={recipe} slug={params.slug} />
       <JsonLd jsonLd={jsonLd} />
     </>
   );

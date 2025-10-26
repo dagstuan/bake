@@ -2,7 +2,7 @@
 
 import { Cross2Icon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { use, useState, FocusEvent } from "react";
+import { use, useState, FocusEvent, useRef, useLayoutEffect } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { AllCategoriesQueryResult } from "../../../../sanity.types";
 import { Button } from "../../ui/button";
@@ -57,16 +57,23 @@ export const RecipesFiltersContent = (props: RecipesFiltersContentProps) => {
   }, 300);
 
   const queryFromUrl = searchParams.get(searchQueryParam)?.toString();
+  const inputRef = useRef<HTMLInputElement>(null);
   const [inputValue, setInputValue] = useState(queryFromUrl);
-
-  if (queryFromUrl && inputValue !== queryFromUrl) {
-    setInputValue(queryFromUrl);
-  }
 
   const handleInputChange = (newValue: string) => {
     setInputValue(newValue);
     handleSearch(newValue);
   };
+
+  useLayoutEffect(() => {
+    const input = inputRef.current;
+
+    return () => {
+      if (input) {
+        input.value = "";
+      }
+    };
+  }, []);
 
   const handleInputFocus = (event: FocusEvent<HTMLInputElement>) => {
     if (window.matchMedia("(max-width: 40rem)").matches) {
@@ -90,6 +97,7 @@ export const RecipesFiltersContent = (props: RecipesFiltersContentProps) => {
             }}
             onFocus={handleInputFocus}
             value={inputValue}
+            ref={inputRef}
           />
           {inputValue && (
             <button

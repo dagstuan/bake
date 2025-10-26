@@ -16,6 +16,10 @@ const nextConfig: NextConfig = {
   },
   reactCompiler: true,
   cacheComponents: true,
+  experimental: {
+    turbopackFileSystemCacheForDev: true,
+    viewTransition: true,
+  },
   // eslint-disable-next-line @typescript-eslint/require-await
   async headers() {
     return [
