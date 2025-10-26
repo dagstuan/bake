@@ -121,3 +121,15 @@
     @apply bg-background text-foreground;
   }
 }
+
+::view-transition-old(.recipe-main-image) {
+  height: 100%;
+  object-fit: cover;
+  overflow: clip;
+}
+
+::view-transition-new(.recipe-main-image) {
+  height: 100%;
+  object-fit: cover;
+  overflow: clip;
+}

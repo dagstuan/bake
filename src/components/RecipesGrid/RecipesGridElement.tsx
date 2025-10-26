@@ -33,15 +33,16 @@ export const RecipesGridElement = ({
       className={cn("flex flex-col justify-between", className)}
     >
       <Card className="flex h-full flex-col border-none bg-transparent transition-shadow hover:shadow-md">
-        <ViewTransition name={`recipe-image-${slug}`}>
+        <ViewTransition
+          default="recipe-main-image"
+          name={`recipe-image-${slug}`}
+        >
           <RecipesGridImage image={mainImage} priority={priority} />
         </ViewTransition>
         <div className="flex h-full items-center justify-between gap-4 p-4">
-          <ViewTransition name={`recipe-title-${slug}`}>
-            <h2 className="text-card-foreground text-xl font-semibold">
-              {stegaClean(title)}
-            </h2>
-          </ViewTransition>
+          <h2 className="text-card-foreground text-xl font-semibold">
+            {stegaClean(title)}
+          </h2>
           {duration && (
             <div className="text-muted-foreground flex items-center gap-2 text-sm">
               <ClockIcon /> {duration}

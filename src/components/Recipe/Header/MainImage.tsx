@@ -32,7 +32,10 @@ export const MainImage = ({ mainImage, slug }: MainImageProps) => {
   return (
     <Dialog>
       <DialogTrigger>
-        <ViewTransition name={`recipe-image-${slug}`}>
+        <ViewTransition
+          default="recipe-main-image"
+          name={`recipe-image-${slug}`}
+        >
           <Image
             className="w-full cursor-zoom-in rounded-lg"
             src={
