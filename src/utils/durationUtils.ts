@@ -1,6 +1,6 @@
-import formatDuration from "date-fns/formatDuration";
 import { nb } from "date-fns/locale";
 import { Duration as DurationType, TimeValue } from "../../sanity.types";
+import { formatDuration } from "date-fns";
 
 const capitalize = (str: string): string => {
   return str.charAt(0).toUpperCase() + str.slice(1);
