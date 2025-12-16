@@ -11,7 +11,7 @@ import { IngredientsInputComponent } from "@/sanity/components/IngredientsInputC
 import { isDefined } from "@/utils/tsUtils";
 import { ComposeIcon, SearchIcon } from "@sanity/icons";
 import { ChefHat } from "lucide-react";
-import { Recipe, RecipeIngredientReference } from "../../../../sanity.types";
+import { Recipe, RecipeIngredientReference_2 } from "../../../../sanity.types";
 import { baseBlockLists } from "../portableText/baseBlockLists";
 import { baseBlockMarks } from "../portableText/baseBlockMarks";
 import { baseBlockStyles } from "../portableText/baseBlockStyles";
@@ -171,7 +171,7 @@ export const recipeType = defineType({
 
             const instructions = parent.instructions ?? [];
             const ingredientRefsInInstructions = instructions
-              .reduce<RecipeIngredientReference[]>((acc, block) => {
+              .reduce<RecipeIngredientReference_2[]>((acc, block) => {
                 if (block._type === "block") {
                   const children = block.children ?? [];
 

@@ -3,7 +3,7 @@ import {
   Ingredient,
   Recipe,
   RecipeIngredient,
-  RecipeIngredientReference,
+  RecipeIngredientReference_2,
 } from "../../../sanity.types";
 import { useFormValue } from "./utils";
 import { formatAmount } from "@/utils/recipeUtils";
@@ -12,7 +12,7 @@ type RecipeIngredientReferenceInlineBlockComponentProps = PreviewProps & {
   ingredientName: Ingredient["name"];
   ingredientPercent: RecipeIngredient["percent"];
   ingredientUnit: RecipeIngredient["unit"];
-  percentage: RecipeIngredientReference["percentage"];
+  percentage: RecipeIngredientReference_2["percentage"];
 };
 
 const isRecipeIngredientReferenceInlineBlockComponentProps = (
