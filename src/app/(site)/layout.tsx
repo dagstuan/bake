@@ -120,21 +120,11 @@ const searchAction = {
   "query-input": "required name=search_term_string",
 } satisfies SearchAction & { "query-input": string };
 
-export default async function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
-  "use cache";
-
-  const [{ data: homeSeo }, { isEnabled: draftModeEnabled }] =
-    await Promise.all([
-      sanityFetch({
-        query: homeSeoQuery,
-        stega: false,
-      }),
-      draftMode(),
-    ]);
+async function RootJsonLd() {
+  const { data: homeSeo } = await sanityFetch({
+    query: homeSeoQuery,
+    stega: false,
+  });
 
   const jsonLd: WithContext<WebSite> = {
     "@context": "https://schema.org",
@@ -144,6 +134,16 @@ export default async function RootLayout({
     url: siteUrl,
     potentialAction: searchAction,
   };
+
+  return <JsonLd jsonLd={jsonLd} />;
+}
+
+export default async function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  const { isEnabled: draftModeEnabled } = await draftMode();
 
   return (
     <html lang="no" suppressHydrationWarning>
@@ -166,9 +166,13 @@ export default async function RootLayout({
           <Footer />
         </ThemeProvider>
 
-        <JsonLd jsonLd={jsonLd} />
+        <Suspense>
+          <RootJsonLd />
+        </Suspense>
         <Analytics />
-        <SanityLive />
+        <Suspense>
+          <SanityLive />
+        </Suspense>
         {draftModeEnabled && (
           <>
             <DisableDraftMode />

@@ -33,7 +33,7 @@ const getDecimalsForValueAndUnit = (
 
 export const formatAmount = (
   amount: number | null | undefined,
-  unit: FormatAmountUnit = undefined,
+  unit: FormatAmountUnit,
   defaultValue = "",
 ): string => {
   const amountString = amount
