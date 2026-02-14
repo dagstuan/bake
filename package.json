@@ -34,25 +34,25 @@
     "@sanity/image-url": "^2.0.3",
     "@sanity/preview-url-secret": "^4.0.3",
     "@sanity/ui": "^3.1.11",
-    "@sanity/util": "^5.8.1",
+    "@sanity/util": "^5.9.0",
     "@sanity/uuid": "^3.0.2",
-    "@sanity/vision": "^5.8.1",
+    "@sanity/vision": "^5.9.0",
     "@vercel/analytics": "^1.6.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "embla-carousel-react": "^8.6.0",
-    "immer": "^11.1.3",
-    "lucide-react": "^0.563.0",
+    "immer": "^11.1.4",
+    "lucide-react": "^0.564.0",
     "next": "16.1.6",
     "next-sanity": "^12.1.0",
     "next-themes": "^0.4.6",
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "react-screen-wake-lock": "^3.1.1",
-    "sanity": "^5.8.1",
+    "sanity": "^5.9.0",
     "sanity-plugin-documents-pane": "^3.0.2",
-    "sanity-plugin-iframe-pane": "^5.0.5",
+    "sanity-plugin-iframe-pane": "^5.0.6",
     "sanity-plugin-media": "^4.1.1",
     "schema-dts": "^1.1.5",
     "server-only": "^0.0.1",
@@ -66,8 +66,8 @@
     "@eslint/eslintrc": "^3.3.3",
     "@eslint/js": "^9.39.2",
     "@tailwindcss/postcss": "^4.1.18",
-    "@types/node": "^25.2.1",
-    "@types/react": "19.2.13",
+    "@types/node": "^25.2.3",
+    "@types/react": "19.2.14",
     "@types/react-dom": "19.2.3",
     "babel-plugin-react-compiler": "1.0.0",
     "baseline-browser-mapping": "^2.9.19",
@@ -82,9 +82,9 @@
     "prettier-plugin-tailwindcss": "^0.7.2",
     "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.54.0"
+    "typescript-eslint": "^8.55.0"
   },
-  "packageManager": "pnpm@10.28.2",
+  "packageManager": "pnpm@10.29.3",
   "pnpm": {
     "peerDependencyRules": {
       "allowAny": [
@@ -93,7 +93,7 @@
       ]
     },
     "overrides": {
-      "@types/react": "19.2.13",
+      "@types/react": "19.2.14",
       "@types/react-dom": "19.2.3",
       "framer-motion": "12.7.4",
       "motion-dom": "12.7.4"
