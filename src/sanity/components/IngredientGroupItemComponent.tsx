@@ -31,18 +31,12 @@ export const IngredientGroupItemComponent = (props: ObjectItemProps) => {
 
 const hasValidMembersProps = (
   props: unknown,
-): props is { children: { props: { members: ObjectMember[] } } } => {
+): props is { members: ObjectMember[] } => {
   return (
     !!props &&
     typeof props === "object" &&
-    "children" in props &&
-    typeof props.children === "object" &&
-    !!props.children &&
-    "props" in props.children &&
-    typeof props.children.props === "object" &&
-    !!props.children.props &&
-    "members" in props.children.props &&
-    Array.isArray(props.children.props.members)
+    "members" in props &&
+    Array.isArray(props.members)
   );
 };
 
@@ -55,7 +49,7 @@ function getChildrenPreview(children: ReactElement | ReactPortal) {
     return null;
   }
 
-  const contentMember = children.props.children.props.members.find(
+  const contentMember = children.props.members.find(
     (member: ObjectMember) =>
       member.kind === "field" &&
       "name" in member &&
@@ -86,9 +80,7 @@ function getChildrenPreview(children: ReactElement | ReactPortal) {
     props: {
       ...children.props,
       children: {
-        ...children.props.children,
         props: {
-          ...children.props.children.props,
           members,
         },
       },
