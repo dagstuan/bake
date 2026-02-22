@@ -4,10 +4,9 @@ import { Image } from "../Image/Image";
 import { urlForImage } from "@/sanity/lib/utils";
 import { ImageCaption } from "../ui/image-caption";
 import { getImageDimensionsForAspectRatio } from "@/utils/imageUtils";
+import type { Get } from "@sanity/codegen";
 
-export type ImageType = NonNullable<
-  NonNullable<RecipeQueryResult>["mainImage"]
->;
+export type ImageType = NonNullable<Get<RecipeQueryResult, "mainImage">>;
 
 const width = 1200;
 const height = 800;

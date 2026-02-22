@@ -1,26 +1,28 @@
-import { ArrayElement } from "@/utils/types";
 import { RecipeQueryResult } from "../../../sanity.types";
+import { FilterByType, Get } from "@sanity/codegen";
 
-export type RecipeInstructions = NonNullable<RecipeQueryResult>["instructions"];
-export type RecipeIngredients = NonNullable<RecipeQueryResult>["ingredients"];
+export type RecipeInstructions = Get<RecipeQueryResult, "instructions">;
+export type RecipeIngredients = Get<RecipeQueryResult, "ingredients">;
 
-type RecipeInstructionsBlockChilds = ArrayElement<
-  Extract<ArrayElement<RecipeInstructions>, { _type: "block" }>["children"]
+type RecipeInstructionsBlockChilds = Get<
+  FilterByType<Get<RecipeInstructions, number>, "block">,
+  "children",
+  number
 >;
 
-export type RecipeIngredientReference = Extract<
+export type RecipeIngredientReference = FilterByType<
   RecipeInstructionsBlockChilds,
-  { _type: "recipeIngredientReference" }
+  "recipeIngredientReference"
 >;
 
-export type ScalableRecipeNumber = Extract<
+export type ScalableRecipeNumber = FilterByType<
   RecipeInstructionsBlockChilds,
-  { _type: "scalableRecipeNumber" }
+  "scalableRecipeNumber"
 >;
 
-export type RecipeIngredient = Extract<
-  ArrayElement<RecipeIngredients>,
-  { _type: "reference" }
+export type RecipeIngredient = FilterByType<
+  Get<RecipeIngredients, number>,
+  "reference"
 >;
 
-export type IngredientUnit = NonNullable<RecipeIngredient["unit"]>;
+export type IngredientUnit = NonNullable<Get<RecipeIngredient, "unit">>;

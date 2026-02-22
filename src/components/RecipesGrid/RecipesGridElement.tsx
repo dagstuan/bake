@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils";
 import { formatDurationShort } from "@/utils/durationUtils";
-import { ArrayElement } from "@/utils/types";
 import { ClockIcon } from "@radix-ui/react-icons";
 import { stegaClean } from "next-sanity";
 import Link from "next/link";
@@ -8,9 +7,10 @@ import { RecipesListQueryResult } from "../../../sanity.types";
 import { Card } from "../ui/card";
 import { RecipesGridImage } from "./RecipesGridImage";
 import { ViewTransition } from "react";
+import { Get } from "@sanity/codegen";
 
 interface RecipesGridElementProps {
-  recipe: ArrayElement<NonNullable<RecipesListQueryResult>>;
+  recipe: Get<RecipesListQueryResult, number>;
   priority?: boolean;
   "data-sanity"?: string;
   className?: string;

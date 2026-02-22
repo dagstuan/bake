@@ -1,6 +1,5 @@
 import { urlForImage } from "@/sanity/lib/utils";
 import { RecipeQueryResult } from "../../../sanity.types";
-import { ArrayElement } from "@/utils/types";
 import { cn } from "@/lib/utils";
 import { AspectRatio } from "../ui/aspect-ratio";
 import { Dialog, DialogTrigger } from "../ui/dialog";
@@ -8,6 +7,7 @@ import { Image } from "../Image/Image";
 import dynamic from "next/dynamic";
 import { isPortableTextImage } from "./types";
 import { getImageDimensionsForAspectRatio } from "@/utils/imageUtils";
+import { FilterByType, Get } from "@sanity/codegen";
 
 const ImageDialogSingle = dynamic(() =>
   import("../ImageDialog/ImageDialogSingle").then(
@@ -15,9 +15,9 @@ const ImageDialogSingle = dynamic(() =>
   ),
 );
 
-export type BlockContentImage = Extract<
-  ArrayElement<NonNullable<RecipeQueryResult>["instructions"]>,
-  { _type: "image" }
+export type BlockContentImage = FilterByType<
+  Get<RecipeQueryResult, "instructions", number>,
+  "image"
 >;
 
 interface ImageBoxProps {

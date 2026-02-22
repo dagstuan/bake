@@ -4,18 +4,18 @@ import { RecipeQueryResult } from "../../../../sanity.types";
 import { urlForImage } from "@/sanity/lib/utils";
 import { Dialog, DialogTrigger } from "../../ui/dialog";
 import { Image } from "../../Image/Image";
-import { ArrayElement } from "@/utils/types";
 import dynamic from "next/dynamic";
 import { isImageGallery } from "../types";
 import { getImageDimensionsForAspectRatio } from "@/utils/imageUtils";
+import { FilterByType, Get } from "@sanity/codegen";
 
 const ImageGalleryContent = dynamic(() =>
   import("./ImageGalleryContent").then((mod) => mod.ImageGalleryContent),
 );
 
-export type BlockContentImageGallery = Extract<
-  ArrayElement<NonNullable<RecipeQueryResult>["instructions"]>,
-  { _type: "imageGallery" }
+export type BlockContentImageGallery = FilterByType<
+  Get<RecipeQueryResult, "instructions", number>,
+  "imageGallery"
 >;
 
 interface ImageGalleryProps {

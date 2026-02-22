@@ -4,11 +4,12 @@ import { Home, HomePageQueryResult } from "../../../../sanity.types";
 import { OptimisticSortOrder } from "@/components/OptimisticSortOrder/OptimisticSortOrder";
 import { createPath } from "@/utils/pathUtils";
 import { createDataAttribute } from "next-sanity";
+import { Get } from "@sanity/codegen";
 
 interface HomePageRecipesProps {
   documentId: string | undefined;
   documentType: string | undefined;
-  recipes: NonNullable<HomePageQueryResult>["recipes"] | undefined;
+  recipes: Get<HomePageQueryResult, "recipes"> | undefined;
 }
 
 export const HomePageRecipes = (props: HomePageRecipesProps) => {

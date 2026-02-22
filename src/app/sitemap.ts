@@ -3,7 +3,6 @@ import {
   homeSitemapQuery,
   recipesSitemapQuery,
 } from "@/sanity/lib/queries";
-import { ArrayElement } from "@/utils/types";
 import { MetadataRoute } from "next";
 import { siteUrl } from "./shared-metadata";
 import { sanityFetch } from "@/sanity/lib/live";
@@ -17,7 +16,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ]);
 
   const mappedRecipes = recipes
-    .map<ArrayElement<MetadataRoute.Sitemap> | null>((recipe) => {
+    .map<MetadataRoute.Sitemap[number] | null>((recipe) => {
       if (!recipe.slug) {
         return null;
       }

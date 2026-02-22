@@ -6,8 +6,9 @@ import {
   linkTypeName,
   recipeCardTypeName,
 } from "@/sanity/schemaTypes/constants";
+import { Get } from "@sanity/codegen";
 
-type QueriedAbout = NonNullable<NonNullable<AboutQueryResult>["body"]>;
+type QueriedAbout = NonNullable<Get<AboutQueryResult, "body">>;
 
 type PortableTextType<T extends QueriedAbout[number]["_type"]> = Extract<
   QueriedAbout[number],

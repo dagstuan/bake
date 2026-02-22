@@ -1,18 +1,18 @@
 "use client";
 
-import { ArrayElement } from "@/utils/types";
 import { RecipesListQueryResult } from "../../../sanity.types";
 import { Image } from "../Image/Image";
 import { urlForImage } from "@/sanity/lib/utils";
 import { getImageDimensionsForAspectRatio } from "@/utils/imageUtils";
 import { stegaClean } from "next-sanity";
+import { Get } from "@sanity/codegen";
 
 const gridImageWidth = 360;
 const gridImageHeight = 202;
 const aspectRatio = gridImageWidth / gridImageHeight;
 
 interface RecipesGridImageProps {
-  image: ArrayElement<NonNullable<RecipesListQueryResult>>["mainImage"];
+  image: Get<RecipesListQueryResult, number, "mainImage">;
   priority: boolean;
 }
 
