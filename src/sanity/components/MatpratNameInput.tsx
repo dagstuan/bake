@@ -86,6 +86,7 @@ export function MatpratNameInput(props: StringInputProps) {
     <Stack space={3}>
       <TextInput
         {...elementProps}
+        style={{}}
         onChange={handleChange}
         value={value}
         placeholder="Enter Matprat ingredient name"
