@@ -8,6 +8,8 @@ export const metadata: Metadata = {
 };
 
 export default async function Page() {
+  "use cache";
+
   const initial = await sanityFetch({ query: aboutQuery });
 
   return <AboutPage data={initial.data} />;

@@ -16,6 +16,8 @@ interface Props {
 export async function generateStaticParams(): Promise<
   Awaited<Props["params"]>[]
 > {
+  "use cache";
+
   const { data: recipes } = await sanityFetch({
     query: allRecipesSlugQuery,
     perspective: "published",
@@ -31,6 +33,8 @@ export async function generateStaticParams(): Promise<
 }
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
+  "use cache";
+
   const params = await props.params;
   const { data: recipe } = await sanityFetch({
     query: recipeQuery,
@@ -92,6 +96,8 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 }
 
 export default async function Page(props: Props) {
+  "use cache";
+
   const params = await props.params;
   const initial = await sanityFetch({ query: recipeQuery, params });
 

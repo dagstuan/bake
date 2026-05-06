@@ -1,11 +1,11 @@
 "use client";
 
-import { useTheme } from "next-themes";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 import { SunIcon } from "../icons/SunIcon";
 import { MoonIcon } from "../icons/MoonIcon";
 import { SunMoonIcon } from "../icons/SunMoonIcon";
+import { useTheme } from "@wrksz/themes/client";
 
 export const DarkModeToggleContent = () => {
   const { theme, setTheme } = useTheme();

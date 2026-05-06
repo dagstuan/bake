@@ -5,7 +5,7 @@ import { sanityFetch, SanityLive } from "@/sanity/lib/live";
 import { homeSeoQuery } from "@/sanity/lib/queries";
 import { urlForImage } from "@/sanity/lib/utils";
 import type { Metadata } from "next";
-import { ThemeProvider } from "next-themes";
+import { ThemeProvider } from "@wrksz/themes/next";
 import dynamic from "next/dynamic";
 import { Inter } from "next/font/google";
 import { draftMode } from "next/headers";
@@ -36,6 +36,8 @@ const inter = Inter({
 });
 
 export async function generateMetadata(): Promise<Metadata> {
+  "use cache";
+
   const { data: homeSeo } = await sanityFetch({
     query: homeSeoQuery,
     stega: false,
@@ -121,6 +123,8 @@ const searchAction = {
 } satisfies SearchAction & { "query-input": string };
 
 async function RootJsonLd() {
+  "use cache";
+
   const { data: homeSeo } = await sanityFetch({
     query: homeSeoQuery,
     stega: false,
