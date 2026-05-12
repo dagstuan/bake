@@ -83,7 +83,7 @@ export function MatpratNameInput(props: StringInputProps) {
   );
 
   return (
-    <Stack space={3}>
+    <Stack gap={3}>
       <TextInput
         {...elementProps}
         style={{}}

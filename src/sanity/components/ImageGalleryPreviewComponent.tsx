@@ -29,9 +29,9 @@ export default function ImageGalleryPreviewComponent(props: PreviewProps) {
   };
 
   return (
-    <Stack space={[1]}>
+    <Stack gap={[1]}>
       <>{props.renderDefault(modifiedProps)}</>
-      <Grid columns={columns} gap={4}>
+      <Grid gridTemplateColumns={columns} gap={4}>
         {images?.map((image) => {
           if (!image.asset?._ref) {
             return null;

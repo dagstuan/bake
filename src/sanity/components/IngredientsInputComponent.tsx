@@ -77,10 +77,10 @@ export const IngredientsInputComponent = (props: ReferenceInputProps) => {
   ]);
 
   return (
-    <Stack space={4}>
+    <Stack gap={4}>
       {props.renderDefault(props)}
 
-      <Stack space={3}>
+      <Stack gap={3}>
         <Text size={1} weight="medium">
           New with initial amount
         </Text>

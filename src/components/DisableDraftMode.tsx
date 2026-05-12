@@ -11,6 +11,7 @@ export function DisableDraftMode() {
   }
 
   return (
+    // oxlint-disable-next-line nextjs/no-html-link-for-pages -- intentional <a> for API route
     <a
       className="fixed right-0 bottom-0 m-4 bg-blue-500 p-4 text-white"
       href="/api/draft-mode/disable"
