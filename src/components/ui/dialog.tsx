@@ -1,65 +1,81 @@
-import {
-  Root as DialogPrimitiveRoot,
-  Trigger as DialogPrimitiveTrigger,
-  Portal as DialogPrimitivePortal,
-  Close as DialogPrimitiveClose,
-  Overlay as DialogPrimitiveOverlay,
-  Content as DialogPrimitiveContent,
-  Title as DialogPrimitiveTitle,
-  Description as DialogPrimitiveDescription,
-} from "@radix-ui/react-dialog";
-import { Cross2Icon } from "@radix-ui/react-icons";
+import { Dialog as DialogPrimitive } from "@base-ui/react/dialog";
+import { X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { forwardRef } from "react";
+import { type ComponentProps, type ReactNode } from "react";
 
-const Dialog = DialogPrimitiveRoot;
+const Dialog = DialogPrimitive.Root;
 
-const DialogTrigger = DialogPrimitiveTrigger;
+const DialogTrigger = (
+  props: ComponentProps<typeof DialogPrimitive.Trigger>,
+) => <DialogPrimitive.Trigger {...props} />;
 
-const DialogPortal = DialogPrimitivePortal;
+const DialogPortal = DialogPrimitive.Portal;
 
-const DialogClose = DialogPrimitiveClose;
+const DialogClose = DialogPrimitive.Close;
 
-const DialogOverlay = forwardRef<
-  React.ComponentRef<typeof DialogPrimitiveOverlay>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitiveOverlay>
->(({ className, ...props }, ref) => (
-  <DialogPrimitiveOverlay
-    ref={ref}
+interface DialogOverlayProps extends Omit<
+  ComponentProps<typeof DialogPrimitive.Backdrop>,
+  "children"
+> {
+  children?: ReactNode;
+}
+
+const DialogOverlay = ({
+  className,
+  children,
+  ...props
+}: DialogOverlayProps) => (
+  <>
+    <DialogPrimitive.Backdrop
+      className={cn(
+        "data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 fixed inset-0 bg-black/80",
+        className,
+      )}
+      {...props}
+    />
+    <DialogPrimitive.Viewport className="fixed inset-0 grid place-items-center overflow-y-auto p-4">
+      {children}
+    </DialogPrimitive.Viewport>
+  </>
+);
+DialogOverlay.displayName = "DialogOverlay";
+
+const DialogPopup = ({
+  className,
+  children,
+  ...props
+}: ComponentProps<typeof DialogPrimitive.Popup>) => (
+  <DialogPrimitive.Popup
     className={cn(
-      "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 top-0 right-0 bottom-0 left-0 z-50 grid place-items-center overflow-y-auto bg-black/80",
+      "bg-background data-open:animate-in data-closed:animate-out data-closed:fade-out-0 data-open:fade-in-0 data-closed:zoom-out-95 data-open:zoom-in-95 relative grid w-full gap-4 rounded-lg border p-6 shadow-lg duration-200 sm:max-w-lg",
       className,
     )}
     {...props}
-  />
-));
-DialogOverlay.displayName = DialogPrimitiveOverlay.displayName;
+  >
+    {children}
+  </DialogPrimitive.Popup>
+);
+DialogPopup.displayName = "DialogPopup";
 
-const DialogContent = forwardRef<
-  React.ComponentRef<typeof DialogPrimitiveContent>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitiveContent>
->(({ className, children, ...props }, ref) => (
+const DialogContent = ({
+  className,
+  children,
+  ...props
+}: ComponentProps<typeof DialogPopup>) => (
   <DialogPortal>
     <DialogOverlay>
-      <DialogPrimitiveContent
-        ref={ref}
-        className={cn(
-          "bg-background data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 relative z-50 grid w-full gap-4 rounded-lg border p-6 shadow-lg duration-200 sm:max-w-lg",
-          className,
-        )}
-        {...props}
-      >
+      <DialogPopup className={className} {...props}>
         {children}
-        <DialogPrimitiveClose className="bg-background ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-muted-foreground absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none">
-          <Cross2Icon className="h-6 w-6" />
+        <DialogPrimitive.Close className="bg-background ring-offset-background focus:ring-ring absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none">
+          <X className="h-6 w-6" />
           <span className="sr-only">Close</span>
-        </DialogPrimitiveClose>
-      </DialogPrimitiveContent>
+        </DialogPrimitive.Close>
+      </DialogPopup>
     </DialogOverlay>
   </DialogPortal>
-));
-DialogContent.displayName = DialogPrimitiveContent.displayName;
+);
+DialogContent.displayName = "DialogContent";
 
 const DialogHeader = ({
   className,
@@ -86,37 +102,36 @@ const DialogFooter = ({
 );
 DialogFooter.displayName = "DialogFooter";
 
-const DialogTitle = forwardRef<
-  React.ComponentRef<typeof DialogPrimitiveTitle>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitiveTitle>
->(({ className, ...props }, ref) => (
-  <DialogPrimitiveTitle
-    ref={ref}
+const DialogTitle = ({
+  className,
+  ...props
+}: ComponentProps<typeof DialogPrimitive.Title>) => (
+  <DialogPrimitive.Title
     className={cn(
       "text-xl leading-none font-semibold tracking-tight",
       className,
     )}
     {...props}
   />
-));
-DialogTitle.displayName = DialogPrimitiveTitle.displayName;
+);
+DialogTitle.displayName = "DialogTitle";
 
-const DialogDescription = forwardRef<
-  React.ComponentRef<typeof DialogPrimitiveDescription>,
-  React.ComponentPropsWithoutRef<typeof DialogPrimitiveDescription>
->(({ className, ...props }, ref) => (
-  <DialogPrimitiveDescription
-    ref={ref}
+const DialogDescription = ({
+  className,
+  ...props
+}: ComponentProps<typeof DialogPrimitive.Description>) => (
+  <DialogPrimitive.Description
     className={cn("text-muted-foreground text-base", className)}
     {...props}
   />
-));
-DialogDescription.displayName = DialogPrimitiveDescription.displayName;
+);
+DialogDescription.displayName = "DialogDescription";
 
 export {
   Dialog,
   DialogPortal,
   DialogOverlay,
+  DialogPopup,
   DialogTrigger,
   DialogClose,
   DialogContent,

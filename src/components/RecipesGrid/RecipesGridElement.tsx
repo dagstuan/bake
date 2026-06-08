@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { formatDurationShort } from "@/utils/durationUtils";
-import { ClockIcon } from "@radix-ui/react-icons";
+import { Clock3 } from "lucide-react";
 import { stegaClean } from "next-sanity";
 import Link from "next/link";
 import { RecipesListQueryResult } from "../../../sanity.types";
@@ -45,7 +45,7 @@ export const RecipesGridElement = ({
           </h2>
           {duration && (
             <div className="text-muted-foreground flex items-center gap-2 text-sm">
-              <ClockIcon /> {duration}
+              <Clock3 className="h-4 w-4" /> {duration}
             </div>
           )}
         </div>

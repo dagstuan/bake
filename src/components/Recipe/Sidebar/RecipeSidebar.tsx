@@ -87,7 +87,7 @@ export const RecipeSidebar = ({ recipe }: RecipeSidebarProps) => {
 
       <Card className="flex flex-col gap-2 rounded-lg p-4">
         <div className="flex items-center justify-between gap-4">
-          <TypographyH3 as="h2" className="m-0">
+          <TypographyH3 render={(props) => <h2 {...props} />} className="m-0">
             Ingredienser
           </TypographyH3>
           {shouldShowGramsToggle && (
@@ -131,7 +131,9 @@ export const RecipeSidebar = ({ recipe }: RecipeSidebarProps) => {
 
           return (
             <Fragment key={group}>
-              <TypographyH4 as="h3">{group}</TypographyH4>
+              <TypographyH4 render={(props) => <h3 {...props} />}>
+                {group}
+              </TypographyH4>
               <IngredientsTable group={group} ingredients={groupIngredients} />
             </Fragment>
           );

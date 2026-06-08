@@ -20,9 +20,8 @@ import {
 } from "@/components/ui/table";
 import { formatAmount } from "@/utils/recipeUtils";
 import { isDefined } from "@/utils/tsUtils";
-import { MinusIcon, PlusIcon } from "@radix-ui/react-icons";
-import { Label } from "@radix-ui/react-label";
-import { Weight } from "lucide-react";
+import { Label } from "@/components/ui/label";
+import { Minus, Plus, Weight } from "lucide-react";
 import { useState } from "react";
 import { useStore } from "zustand";
 import { useShallow } from "zustand/react/shallow";
@@ -73,10 +72,10 @@ export const RecipeEditor = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <Button variant="default" className={triggerClassName}>
-          Rediger oppskrift
-        </Button>
+      <DialogTrigger
+        render={<Button variant="default" className={triggerClassName} />}
+      >
+        Rediger oppskrift
       </DialogTrigger>
       <DialogContent className="my-10 max-w-full sm:max-w-lg">
         <DialogHeader>
@@ -90,7 +89,7 @@ export const RecipeEditor = ({
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-8 py-4">
-          <div className="grid grid-cols-[minmax(100px,_max-content)_1fr] items-center gap-4">
+          <div className="grid grid-cols-[minmax(100px,max-content)_1fr] items-center gap-4">
             <Label
               htmlFor="servings"
               className="flex items-center gap-2 overflow-hidden text-nowrap text-ellipsis"
@@ -109,7 +108,7 @@ export const RecipeEditor = ({
                   onServingsChange(Math.ceil(servings - 1));
                 }}
               >
-                <MinusIcon />
+                <Minus className="h-4 w-4" />
               </Button>
               <DeferredNumberInput
                 id="servings"
@@ -126,7 +125,7 @@ export const RecipeEditor = ({
                   onServingsChange(Math.floor(servings + 1));
                 }}
               >
-                <PlusIcon />
+                <Plus className="h-4 w-4" />
               </Button>
             </div>
             <Label htmlFor="totalYield" className="flex items-center gap-2">
@@ -144,7 +143,7 @@ export const RecipeEditor = ({
                   onTotalYieldChange(Math.ceil(totalYield - 50));
                 }}
               >
-                <MinusIcon />
+                <Minus className="h-4 w-4" />
               </Button>
               <DeferredNumberInput
                 id="totalYield"
@@ -161,14 +160,16 @@ export const RecipeEditor = ({
                   onTotalYieldChange(Math.floor(totalYield + 50));
                 }}
               >
-                <PlusIcon />
+                <Plus className="h-4 w-4" />
               </Button>
             </div>
           </div>
 
           <div className="border-t pt-8">
             <div className="mb-4 flex items-center justify-between">
-              <TypographyH4 as="h3">Ingredienser</TypographyH4>
+              <TypographyH4 render={(props) => <h3 {...props} />}>
+                Ingredienser
+              </TypographyH4>
               <Button
                 variant="secondary"
                 onClick={handleAllIngredientsToGramClick}

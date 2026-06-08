@@ -3,7 +3,7 @@ import {
   type DefaultDocumentNodeResolver,
 } from "sanity/structure";
 import { Iframe, type IframeOptions } from "sanity-plugin-iframe-pane";
-import { EyeOpenIcon } from "@radix-ui/react-icons";
+import { Eye } from "lucide-react";
 import { apiVersion, draftModeRoute } from "../env";
 import { resolveDocumentProductionUrl } from "../lib/resolveProductionUrl";
 import { recipeType } from "../schemaTypes/recipe/recipeType";
@@ -46,7 +46,7 @@ export const defaultDocumentNode: DefaultDocumentNodeResolver = (
         S.view.form().icon(DocumentIcon),
         S.view
           .component(Iframe)
-          .icon(EyeOpenIcon)
+          .icon(Eye)
           .options(createIframeOptions(S.context))
           .title("Preview"),
         S.view

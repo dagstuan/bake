@@ -1,7 +1,4 @@
-import {
-  ExclamationTriangleIcon,
-  InfoCircledIcon,
-} from "@radix-ui/react-icons";
+import { Info, TriangleAlert } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
 import { PortableText } from "./PortableText";
 import { isPortableTextAlert } from "./types";
@@ -26,9 +23,9 @@ export const PortableTextAlert = (props: PortableTextAlertProps) => {
   return (
     <Alert variant={variant} className="not-first:mt-4 not-last:mb-4">
       {variant === "default" ? (
-        <InfoCircledIcon />
+        <Info className="h-4 w-4" />
       ) : (
-        <ExclamationTriangleIcon />
+        <TriangleAlert className="h-4 w-4" />
       )}
       <AlertTitle>{title}</AlertTitle>
       <AlertDescription>

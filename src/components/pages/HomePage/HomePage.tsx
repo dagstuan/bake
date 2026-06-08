@@ -1,7 +1,7 @@
 import { TypographyH1 } from "@/components/Typography/TypographyH1";
 import { TypographyH2 } from "@/components/Typography/TypographyH2";
 import { TypographyLink } from "@/components/Typography/TypographyLink";
-import { ArrowRightIcon } from "@radix-ui/react-icons";
+import { ArrowRight } from "lucide-react";
 import { HomePageQueryResult } from "../../../../sanity.types";
 import { HomePageRecipes } from "./HomePageRecipes";
 import { ViewTransition } from "react";
@@ -39,7 +39,7 @@ export const HomePage = (props: HomePageProps) => {
               type="internal"
               className="flex items-center gap-1 self-end"
             >
-              Se alle oppskrifter <ArrowRightIcon />
+              Se alle oppskrifter <ArrowRight className="h-4 w-4" />
             </TypographyLink>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import { ScissorsIcon } from "@radix-ui/react-icons";
+import { Scissors } from "lucide-react";
 import { Box, Button, Flex } from "@sanity/ui";
 import { ObjectItem, ObjectItemProps, ReferenceValue } from "sanity";
 
@@ -16,7 +16,7 @@ export const IngredientItemComponent = (
       <Button
         fontSize={[1, 1, 2]}
         padding={[1, 1, 2]}
-        icon={ScissorsIcon}
+        icon={Scissors}
         mode="ghost"
         onClick={handleCut}
         text="Cut"

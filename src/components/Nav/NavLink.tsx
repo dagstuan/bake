@@ -15,8 +15,12 @@ export const NavLink = ({ href, children }: NavLinkProps) => {
   const active = pathname.startsWith(href);
 
   return (
-    <Button asChild variant={active ? "default" : "outline"}>
-      <Link href={href}>{children}</Link>
+    <Button
+      variant={active ? "default" : "outline"}
+      render={<Link href={href} />}
+      nativeButton={false}
+    >
+      {children}
     </Button>
   );
 };
