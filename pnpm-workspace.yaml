@@ -2,3 +2,34 @@ allowBuilds:
   esbuild: false
   sharp: false
   unrs-resolver: false
+peerDependencyRules:
+  allowAny:
+    - react
+    - react-dom
+overrides:
+  "@types/react": 19.2.17
+  "@types/react-dom": 19.2.3
+  framer-motion: 12.7.4
+  motion-dom: 12.7.4
+minimumReleaseAgeExclude:
+  - "@oxlint/binding-android-arm-eabi@1.69.0"
+  - "@oxlint/binding-android-arm64@1.69.0"
+  - "@oxlint/binding-darwin-arm64@1.69.0"
+  - "@oxlint/binding-darwin-x64@1.69.0"
+  - "@oxlint/binding-freebsd-x64@1.69.0"
+  - "@oxlint/binding-linux-arm-gnueabihf@1.69.0"
+  - "@oxlint/binding-linux-arm-musleabihf@1.69.0"
+  - "@oxlint/binding-linux-arm64-gnu@1.69.0"
+  - "@oxlint/binding-linux-arm64-musl@1.69.0"
+  - "@oxlint/binding-linux-ppc64-gnu@1.69.0"
+  - "@oxlint/binding-linux-riscv64-gnu@1.69.0"
+  - "@oxlint/binding-linux-riscv64-musl@1.69.0"
+  - "@oxlint/binding-linux-s390x-gnu@1.69.0"
+  - "@oxlint/binding-linux-x64-gnu@1.69.0"
+  - "@oxlint/binding-linux-x64-musl@1.69.0"
+  - "@oxlint/binding-openharmony-arm64@1.69.0"
+  - "@oxlint/binding-win32-arm64-msvc@1.69.0"
+  - "@oxlint/binding-win32-ia32-msvc@1.69.0"
+  - "@oxlint/binding-win32-x64-msvc@1.69.0"
+  - oxlint@1.69.0
+  - sanity-plugin-documents-pane@4.0.0
