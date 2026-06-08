@@ -5,7 +5,7 @@ import {
   scalableRecipeNumberTypeName,
 } from "@/sanity/schemaTypes/recipe/constants";
 import { formatAmount } from "@/utils/recipeUtils";
-import { InfoCircledIcon } from "@radix-ui/react-icons";
+import { Info } from "lucide-react";
 import { ComponentProps } from "react";
 import { useStore } from "zustand";
 import { useShallow } from "zustand/react/shallow";
@@ -72,7 +72,7 @@ export const RecipeText = ({ recipe }: RecipeTextProps) => {
 
       {parseFloat(scaleFactor.toFixed(2)) !== 100 && (
         <Alert className="my-4">
-          <InfoCircledIcon />
+          <Info className="h-4 w-4" />
           <AlertTitle>Skalert oppskrift</AlertTitle>
           <AlertDescription>
             Du har skalert denne oppskriften{" "}

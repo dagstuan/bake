@@ -1,8 +1,6 @@
-import {
-  EnvelopeClosedIcon,
-  GitHubLogoIcon,
-  InstagramLogoIcon,
-} from "@radix-ui/react-icons";
+import { Mail } from "lucide-react";
+import { GitHubIcon } from "../icons/GitHubIcon";
+import { InstagramIcon } from "../icons/InstagramIcon";
 import Link from "next/link";
 
 export const Footer = () => {
@@ -20,21 +18,21 @@ export const Footer = () => {
               href="mailto:d.stuan@gmail.com"
               className="text-secondary-foreground hover:text-primary"
             >
-              <EnvelopeClosedIcon className="h-5 w-5" />
+              <Mail className="h-5 w-5" />
               <span className="sr-only">Email</span>
             </Link>
             <Link
               href="https://www.instagram.com/dagstuan"
               className="text-secondary-foreground hover:text-primary"
             >
-              <InstagramLogoIcon className="h-5 w-5" />
+              <InstagramIcon className="h-5 w-5" />
               <span className="sr-only">Instagram</span>
             </Link>
             <Link
               href="https://github.com/dagstuan"
               className="text-secondary-foreground hover:text-primary"
             >
-              <GitHubLogoIcon className="h-5 w-5" />
+              <GitHubIcon className="h-5 w-5" />
               <span className="sr-only">GitHub</span>
             </Link>
           </div>

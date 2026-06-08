@@ -1,16 +1,17 @@
 import { ComponentPropsWithoutRef, ReactNode, useId } from "react";
 import { Highlight } from "./Highlight";
 import { cn } from "@/lib/utils";
-import { Root as LabelPrimitiveRoot } from "@radix-ui/react-label";
-import {
-  Root as CheckboxPrimitiveRoot,
-  Indicator as CheckboxPrimitiveIndicator,
-} from "@radix-ui/react-checkbox";
-import { CheckIcon } from "@radix-ui/react-icons";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 
-type HighlightWithCheckboxProps = ComponentPropsWithoutRef<
-  typeof CheckboxPrimitiveRoot
+type CheckedState = boolean | "indeterminate";
+
+type HighlightWithCheckboxProps = Omit<
+  ComponentPropsWithoutRef<typeof Checkbox>,
+  "checked" | "onCheckedChange"
 > & {
+  checked?: CheckedState;
+  onCheckedChange?: (checked: CheckedState) => void;
   children: ReactNode;
 };
 
@@ -29,29 +30,26 @@ export const HighlightWithCheckbox = (props: HighlightWithCheckboxProps) => {
       )}
     >
       <span className="inline-flex items-center justify-center gap-1">
-        <LabelPrimitiveRoot
+        <Label
+          id={`${checkboxId}-label`}
           htmlFor={checkboxId}
-          className="mr-[calc(-14px_-_0.25rem_-_0.25rem)] pr-[calc(14px_+_0.25rem_+_0.25rem)] pl-1 hover:cursor-pointer"
+          className="mr-[calc(-14px-0.25rem-0.25rem)] pr-[calc(14px+0.25rem+0.25rem)] pl-1 hover:cursor-pointer"
         >
           {children}
-        </LabelPrimitiveRoot>
-        <CheckboxPrimitiveRoot
+        </Label>
+        <Checkbox
           {...rest}
           id={checkboxId}
           checked={checked}
           onCheckedChange={onCheckedChange}
           className={
-            "peer border-accent-foreground flex h-[14px] w-[14px] shrink-0 items-center justify-center rounded-[2px] border bg-transparent shadow-xs focus-visible:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:border-transparent data-[state=checked]:shadow-none"
+            "border-accent-foreground h-3.5 w-3.5 rounded-[2px] bg-transparent shadow-xs data-checked:border-transparent data-checked:shadow-none data-indeterminate:border-transparent data-indeterminate:shadow-none"
           }
-        >
-          <CheckboxPrimitiveIndicator
-            className={cn(
-              "flex h-[14px] w-[14px] items-center justify-center text-current",
-            )}
-          >
-            <CheckIcon className="h-[14px] w-[14px]" />
-          </CheckboxPrimitiveIndicator>
-        </CheckboxPrimitiveRoot>
+          nativeButton
+          render={
+            <button type="button" aria-labelledby={`${checkboxId}-label`} />
+          }
+        />
       </span>
     </Highlight>
   );

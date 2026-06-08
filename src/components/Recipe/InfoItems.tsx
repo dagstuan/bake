@@ -1,6 +1,5 @@
 import { formatAmount } from "@/utils/recipeUtils";
-import { ClockIcon } from "@radix-ui/react-icons";
-import { Weight } from "lucide-react";
+import { Clock3, Weight } from "lucide-react";
 import { useStore } from "zustand";
 import { useShallow } from "zustand/react/shallow";
 import { Duration } from "../../../sanity.types";
@@ -52,7 +51,7 @@ export const InfoItems = ({ activeTime, totalTime }: InfoItemsProps) => {
 
       {totalTime && (
         <InfoItem
-          icon={<ClockIcon />}
+          icon={<Clock3 size="1rem" />}
           label="Total tid"
           value={formatDurationType(totalTime)}
           info="Total tidsbruk fra du starter til retten er ferdig."

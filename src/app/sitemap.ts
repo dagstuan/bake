@@ -8,6 +8,8 @@ import { siteUrl } from "./shared-metadata";
 import { sanityFetch } from "@/sanity/lib/live";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  "use cache";
+
   const [{ data: recipes }, { data: home }, { data: about }] =
     await Promise.all([
       sanityFetch({ query: recipesSitemapQuery, stega: false }),

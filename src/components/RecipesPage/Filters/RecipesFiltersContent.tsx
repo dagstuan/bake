@@ -1,6 +1,6 @@
 "use client";
 
-import { Cross2Icon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
+import { Search, X } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { use, useState, FocusEvent, useRef, useLayoutEffect } from "react";
 import { useDebouncedCallback } from "use-debounce";
@@ -70,7 +70,7 @@ export const RecipesFiltersContent = (props: RecipesFiltersContentProps) => {
 
     return () => {
       if (input) {
-        input.value = "";
+        input.value = queryFromUrl ?? "";
       }
     };
   }, []);
@@ -87,7 +87,7 @@ export const RecipesFiltersContent = (props: RecipesFiltersContentProps) => {
     <div className="flex w-full flex-col items-center gap-4 sm:gap-6">
       <div className="mx-auto w-full max-w-3xl">
         <div className="relative">
-          <MagnifyingGlassIcon className="absolute top-1/2 left-3 -translate-y-1/2 transform text-gray-500" />
+          <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-gray-500" />
           <Input
             type="text"
             placeholder="Søk..."
@@ -107,7 +107,7 @@ export const RecipesFiltersContent = (props: RecipesFiltersContentProps) => {
               className="absolute top-1/2 right-3 -translate-y-1/2 transform text-gray-400 hover:text-gray-600"
               aria-label="Clear search"
             >
-              <Cross2Icon />
+              <X className="h-4 w-4" />
             </button>
           )}
         </div>

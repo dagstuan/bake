@@ -3,11 +3,11 @@ import {
   DialogDescription,
   DialogOverlay,
   DialogPortal,
+  DialogPopup,
   DialogTitle,
 } from "../ui/dialog";
-import { Content as DialogPrimitiveContent } from "@radix-ui/react-dialog";
 import { VisuallyHidden } from "../ui/visuallyHidden";
-import { Cross2Icon } from "@radix-ui/react-icons";
+import { X } from "lucide-react";
 
 interface ImageDialogContentProps {
   children: React.ReactNode;
@@ -21,17 +21,17 @@ export const ImageDialogContent = (props: ImageDialogContentProps) => {
   return (
     <DialogPortal>
       <DialogOverlay>
-        <DialogPrimitiveContent className="relative w-full shadow-xl md:max-w-[80vw]">
+        <DialogPopup className="relative w-full border-none bg-transparent p-0 shadow-xl md:max-w-[80vw]">
           <VisuallyHidden>
             <DialogTitle>{title}</DialogTitle>
             <DialogDescription>{description}</DialogDescription>
           </VisuallyHidden>
           {children}
-          <DialogClose className="bg-background ring-offset-background focus:ring-ring data-[state=open]:bg-accent data-[state=open]:text-foreground absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none">
-            <Cross2Icon className="h-6 w-6" />
+          <DialogClose className="bg-background ring-offset-background focus:ring-ring absolute top-4 right-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none">
+            <X className="h-6 w-6" />
             <span className="sr-only">Close</span>
           </DialogClose>
-        </DialogPrimitiveContent>
+        </DialogPopup>
       </DialogOverlay>
     </DialogPortal>
   );

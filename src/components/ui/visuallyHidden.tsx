@@ -1,3 +1,12 @@
-import { Root as VisuallyHiddenPrimitiveRoot } from "@radix-ui/react-visually-hidden";
+import type { HTMLAttributes } from "react";
 
-export const VisuallyHidden = VisuallyHiddenPrimitiveRoot;
+import { cn } from "@/lib/utils";
+
+export const VisuallyHidden = ({
+  className,
+  ...props
+}: HTMLAttributes<HTMLDivElement>) => (
+  <div className={cn("sr-only", className)} {...props} />
+);
+
+VisuallyHidden.displayName = "VisuallyHidden";
