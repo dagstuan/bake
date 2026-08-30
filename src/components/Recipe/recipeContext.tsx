@@ -5,6 +5,8 @@ import { RecipeQueryResult } from "../../../sanity.types";
 import { calcInitialState } from "./store/initialState";
 import { createRecipeStore } from "./store/recipeStore";
 import React from "react";
+import type { StegaAware } from "@/sanity/lib/live";
+import { stegaClean } from "next-sanity";
 
 type RecipeStore = ReturnType<typeof createRecipeStore>;
 
@@ -12,7 +14,7 @@ const RecipeStoreContext = createContext<(() => RecipeStore) | null>(null);
 
 export interface RecipeContextProviderProps {
   children: React.ReactNode;
-  recipe: NonNullable<RecipeQueryResult>;
+  recipe: StegaAware<NonNullable<RecipeQueryResult>>;
 }
 
 export const RecipeContextProvider = ({
@@ -23,7 +25,7 @@ export const RecipeContextProvider = ({
 
   const getRecipeStore = () => {
     recipeStore.current ??= createRecipeStore(
-      calcInitialState(recipe),
+      calcInitialState(stegaClean(recipe)),
       `recipe-${recipe._id}`,
       recipe._rev,
     );

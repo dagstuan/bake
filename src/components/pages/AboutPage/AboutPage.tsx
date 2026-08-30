@@ -1,9 +1,10 @@
 import { TypographyH1 } from "@/components/Typography/TypographyH1";
 import { AboutQueryResult } from "../../../../sanity.types";
 import { PortableText } from "@/components/PortableText/PortableText";
+import type { StegaAware } from "@/sanity/lib/live";
 
 interface AboutPageProps {
-  data: AboutQueryResult;
+  data: StegaAware<AboutQueryResult>;
 }
 
 export const AboutPage = (props: AboutPageProps) => {

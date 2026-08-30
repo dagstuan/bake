@@ -1,4 +1,4 @@
-import { ComposeIcon } from "@sanity/icons";
+import { ComposeIcon } from "@sanity/icons/Compose";
 import { User } from "lucide-react";
 import { defineField, defineType } from "sanity";
 import { aboutTypeName, blockContentTypeName } from "../constants";

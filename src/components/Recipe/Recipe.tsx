@@ -3,9 +3,10 @@ import { RecipeContent } from "./RecipeContent";
 import { notFound } from "next/navigation";
 import { RecipeContextProvider } from "./recipeContext";
 import { ViewTransition } from "react";
+import type { StegaAware } from "@/sanity/lib/live";
 
 interface RecipeProps {
-  recipe: RecipeQueryResult;
+  recipe: StegaAware<RecipeQueryResult>;
   slug: string;
 }
 

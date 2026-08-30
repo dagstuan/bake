@@ -16,9 +16,11 @@ import { WakeLockToggle } from "../WakeLockToggle";
 import { RecipeEditor } from "../Editor/RecipeEditor";
 import { Switch } from "../../ui/switch";
 import { Label } from "../../ui/label";
+import type { StegaAware } from "@/sanity/lib/live";
+import { stegaClean } from "next-sanity";
 
 interface RecipeSidebarProps {
-  recipe: NonNullable<RecipeQueryResult>;
+  recipe: StegaAware<NonNullable<RecipeQueryResult>>;
 }
 
 export const RecipeSidebar = ({ recipe }: RecipeSidebarProps) => {
@@ -58,7 +60,7 @@ export const RecipeSidebar = ({ recipe }: RecipeSidebarProps) => {
   );
 
   const handleReset = () => {
-    reset(calcInitialState(recipe));
+    reset(calcInitialState(stegaClean(recipe)));
   };
 
   const ingredientsGramToggleId = useId();
@@ -82,7 +84,10 @@ export const RecipeSidebar = ({ recipe }: RecipeSidebarProps) => {
           <WakeLockToggle />
         </div>
 
-        <InfoItems activeTime={activeTime} totalTime={totalTime} />
+          <InfoItems
+            activeTime={activeTime ? stegaClean(activeTime) : null}
+            totalTime={totalTime ? stegaClean(totalTime) : null}
+          />
       </Card>
 
       <Card className="flex flex-col gap-2 rounded-lg p-4">

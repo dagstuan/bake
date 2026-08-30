@@ -1,5 +1,6 @@
 import { useCallback } from "react";
-import { Stack, Text, TextInput, useToast } from "@sanity/ui";
+import { Stack, Text, TextInput } from "@sanity/ui";
+import { useToast } from "@sanity/ui/toast";
 import {
   PatchEvent,
   StringInputProps,

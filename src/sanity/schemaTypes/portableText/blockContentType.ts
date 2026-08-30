@@ -1,5 +1,5 @@
 import { defineType, defineArrayMember, defineField } from "sanity";
-import { ImageIcon } from "@sanity/icons";
+import { ImageIcon } from "@sanity/icons/Image";
 import { alertType } from "../alertType";
 import { baseBlockStyles } from "./baseBlockStyles";
 import { baseBlockLists } from "./baseBlockLists";

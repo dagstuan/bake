@@ -2,7 +2,7 @@ import { defineField, defineType, type Reference } from "sanity";
 import { recipeTypeName } from "./recipe/constants";
 import { hasField } from "../utils";
 import { aboutTypeName, homeTypeName, linkTypeName } from "./constants";
-import { LinkIcon } from "@sanity/icons";
+import { LinkIcon } from "@sanity/icons/Link";
 
 export const linkTypeFieldName = "linkType";
 

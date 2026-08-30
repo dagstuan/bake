@@ -3,11 +3,12 @@ import { TypographyH2 } from "@/components/Typography/TypographyH2";
 import { TypographyLink } from "@/components/Typography/TypographyLink";
 import { ArrowRight } from "lucide-react";
 import { HomePageQueryResult } from "../../../../sanity.types";
+import type { StegaAware } from "@/sanity/lib/live";
 import { HomePageRecipes } from "./HomePageRecipes";
 import { ViewTransition } from "react";
 
 interface HomePageProps {
-  data: HomePageQueryResult;
+  data: StegaAware<HomePageQueryResult>;
 }
 
 export const HomePage = (props: HomePageProps) => {

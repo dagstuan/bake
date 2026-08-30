@@ -1,4 +1,3 @@
-import { isTypedObject } from "sanity";
 import { AboutQueryResult } from "../../../sanity.types";
 import {
   alertTypeName,
@@ -7,6 +6,9 @@ import {
   recipeCardTypeName,
 } from "@/sanity/schemaTypes/constants";
 import { Get } from "@sanity/codegen";
+
+const isTypedObject = (obj: unknown): obj is { _type: string } =>
+  typeof obj === "object" && obj !== null && "_type" in obj;
 
 type QueriedAbout = NonNullable<Get<AboutQueryResult, "body">>;
 

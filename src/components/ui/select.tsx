@@ -8,10 +8,7 @@ import { cn } from "@/lib/utils";
 import { Check, ChevronDown, ChevronUp } from "lucide-react";
 import type { ComponentProps, ReactNode } from "react";
 
-type SelectProps<Value> = Omit<
-  SelectRootProps<Value, false>,
-  "onValueChange"
-> & {
+type SelectProps<Value> = Omit<SelectRootProps<Value>, "onValueChange"> & {
   onValueChange?: (
     value: Value,
     eventDetails: SelectRootChangeEventDetails,

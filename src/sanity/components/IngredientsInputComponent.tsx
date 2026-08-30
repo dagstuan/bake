@@ -1,4 +1,4 @@
-import { AddIcon } from "@sanity/icons";
+import { AddIcon } from "@sanity/icons/Add";
 import { Button, Flex, Text, Stack, TextInput } from "@sanity/ui";
 import {
   isNonNullable,

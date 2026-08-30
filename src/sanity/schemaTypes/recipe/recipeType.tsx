@@ -9,7 +9,8 @@ import {
 import { IngredientItemComponent } from "@/sanity/components/IngredientItemComponent";
 import { IngredientsInputComponent } from "@/sanity/components/IngredientsInputComponent";
 import { isDefined } from "@/utils/tsUtils";
-import { ComposeIcon, SearchIcon } from "@sanity/icons";
+import { ComposeIcon } from "@sanity/icons/Compose";
+import { SearchIcon } from "@sanity/icons/Search";
 import { ChefHat } from "lucide-react";
 import { Recipe, RecipeIngredientReference_2 } from "../../../../sanity.types";
 import { baseBlockLists } from "../portableText/baseBlockLists";

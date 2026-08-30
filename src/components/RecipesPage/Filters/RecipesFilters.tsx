@@ -5,7 +5,11 @@ import { RecipesFiltersContent } from "./RecipesFiltersContent";
 export const RecipesFilters = async () => {
   "use cache";
 
-  const { data: categories } = await sanityFetch({ query: allCategoriesQuery });
+  const { data: categories } = await sanityFetch({
+    query: allCategoriesQuery,
+    perspective: "published",
+    stega: false,
+  });
 
   return <RecipesFiltersContent categories={categories} />;
 };

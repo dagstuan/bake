@@ -5,16 +5,22 @@ import {
 } from "@/sanity/lib/queries";
 import { MetadataRoute } from "next";
 import { siteUrl } from "./shared-metadata";
-import { sanityFetch } from "@/sanity/lib/live";
+import { sanityFetchStaticParams } from "@/sanity/lib/live";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   "use cache";
 
   const [{ data: recipes }, { data: home }, { data: about }] =
     await Promise.all([
-      sanityFetch({ query: recipesSitemapQuery, stega: false }),
-      sanityFetch({ query: homeSitemapQuery, stega: false }),
-      sanityFetch({ query: aboutSitemapQuery, stega: false }),
+      sanityFetchStaticParams({
+        query: recipesSitemapQuery,
+      }),
+      sanityFetchStaticParams({
+        query: homeSitemapQuery,
+      }),
+      sanityFetchStaticParams({
+        query: aboutSitemapQuery,
+      }),
     ]);
 
   const mappedRecipes = recipes

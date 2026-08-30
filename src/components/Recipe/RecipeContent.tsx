@@ -2,9 +2,10 @@ import { RecipeQueryResult } from "../../../sanity.types";
 import { RecipeHeader } from "./Header/RecipeHeader";
 import { RecipeSidebar } from "./Sidebar/RecipeSidebar";
 import { RecipeText } from "./RecipeText";
+import type { StegaAware } from "@/sanity/lib/live";
 
 interface RecipeContentProps {
-  recipe: NonNullable<RecipeQueryResult>;
+  recipe: StegaAware<NonNullable<RecipeQueryResult>>;
   slug: string;
 }
 

@@ -8,12 +8,13 @@ import {
   type ComponentProps,
   type HTMLAttributes,
   type ReactNode,
+  type RefObject,
 } from "react";
 
 type AnchorElement = HTMLElement | null;
 
 const PopoverAnchorContext =
-  createContext<React.MutableRefObject<AnchorElement> | null>(null);
+  createContext<RefObject<AnchorElement> | null>(null);
 
 function usePopoverAnchorRef() {
   const anchorRef = use(PopoverAnchorContext);

@@ -7,14 +7,16 @@ import { JsonLd } from "@/components/JsonLd/JsonLd";
 import { formatDurationISO } from "@/utils/recipeUtils";
 import { RecipeQueryResult } from "../../../../sanity.types";
 import { creator, siteUrl } from "@/app/shared-metadata";
+import type { StegaAware } from "@/sanity/lib/live";
+import { stegaClean } from "next-sanity";
 
 interface RecipePageProps {
-  params: { slug: string };
-  data: RecipeQueryResult | null;
+  slug: string;
+  data: StegaAware<RecipeQueryResult>;
 }
 
 const extractIngredients = (
-  recipe: NonNullable<RecipeQueryResult>,
+  recipe: StegaAware<NonNullable<RecipeQueryResult>>,
 ): string[] => {
   const ingredients: string[] = [];
 
@@ -70,7 +72,7 @@ const extractIngredients = (
 };
 
 export const RecipePage = (props: RecipePageProps) => {
-  const { params, data: recipe } = props;
+  const { slug, data: recipe } = props;
 
   if (!recipe) {
     return notFound();
@@ -83,7 +85,7 @@ export const RecipePage = (props: RecipePageProps) => {
     "@type": "Recipe",
     name: recipe.seo?.metaTitle ?? recipe.title ?? "",
     description: recipe.seo?.metaDescription ?? "",
-    url: `${siteUrl}/oppskrifter/${params.slug}`,
+    url: `${siteUrl}/oppskrifter/${slug}`,
     datePublished: recipe._createdAt,
     author: {
       "@type": "Person",
@@ -94,10 +96,10 @@ export const RecipePage = (props: RecipePageProps) => {
       name: creator,
     },
     prepTime: recipe.activeTime
-      ? formatDurationISO(recipe.activeTime)
+      ? formatDurationISO(stegaClean(recipe.activeTime))
       : undefined,
     cookTime: recipe.totalTime
-      ? formatDurationISO(recipe.totalTime)
+      ? formatDurationISO(stegaClean(recipe.totalTime))
       : undefined,
     recipeCategory:
       recipe.categories?.map((category) => category.title).join(", ") ?? "",
@@ -116,7 +118,7 @@ export const RecipePage = (props: RecipePageProps) => {
 
   return (
     <>
-      <Recipe recipe={recipe} slug={params.slug} />
+      <Recipe recipe={recipe} slug={slug} />
       <JsonLd jsonLd={jsonLd} />
     </>
   );

@@ -8,9 +8,10 @@ import { Card } from "../ui/card";
 import { RecipesGridImage } from "./RecipesGridImage";
 import { ViewTransition } from "react";
 import { Get } from "@sanity/codegen";
+import type { StegaAware } from "@/sanity/lib/live";
 
 interface RecipesGridElementProps {
-  recipe: Get<RecipesListQueryResult, number>;
+  recipe: StegaAware<Get<RecipesListQueryResult, number>>;
   priority?: boolean;
   "data-sanity"?: string;
   className?: string;
@@ -24,7 +25,7 @@ export const RecipesGridElement = ({
 }: RecipesGridElementProps) => {
   const { slug, title, mainImage, totalTime } = recipe;
 
-  const duration = formatDurationShort(totalTime);
+  const duration = totalTime ? formatDurationShort(stegaClean(totalTime)) : null;
 
   return (
     <Link

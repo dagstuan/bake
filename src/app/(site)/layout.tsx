@@ -1,7 +1,11 @@
 import { Footer } from "@/components/Footer/Footer";
 import { JsonLd } from "@/components/JsonLd/JsonLd";
 import { Nav } from "@/components/Nav/Nav";
-import { sanityFetch, SanityLive } from "@/sanity/lib/live";
+import {
+  getDynamicFetchOptions,
+  sanityFetchMetadata,
+  SanityLive,
+} from "@/sanity/lib/live";
 import { homeSeoQuery } from "@/sanity/lib/queries";
 import { urlForImage } from "@/sanity/lib/utils";
 import type { Metadata } from "next";
@@ -36,11 +40,11 @@ const inter = Inter({
 });
 
 export async function generateMetadata(): Promise<Metadata> {
-  "use cache";
+  const { perspective } = await getDynamicFetchOptions();
 
-  const { data: homeSeo } = await sanityFetch({
+  const { data: homeSeo } = await sanityFetchMetadata({
     query: homeSeoQuery,
-    stega: false,
+    perspective,
   });
 
   const metaDescription = homeSeo?.seo?.metaDescription ?? "";
@@ -123,11 +127,11 @@ const searchAction = {
 } satisfies SearchAction & { "query-input": string };
 
 async function RootJsonLd() {
-  "use cache";
+  const { perspective } = await getDynamicFetchOptions();
 
-  const { data: homeSeo } = await sanityFetch({
+  const { data: homeSeo } = await sanityFetchMetadata({
     query: homeSeoQuery,
-    stega: false,
+    perspective,
   });
 
   const jsonLd: WithContext<WebSite> = {
@@ -175,7 +179,7 @@ export default async function RootLayout({
         </Suspense>
         <Analytics />
         <Suspense>
-          <SanityLive />
+          <SanityLive includeDrafts={draftModeEnabled} />
         </Suspense>
         {draftModeEnabled && (
           <>

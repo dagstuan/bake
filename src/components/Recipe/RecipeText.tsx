@@ -10,6 +10,7 @@ import { ComponentProps } from "react";
 import { useStore } from "zustand";
 import { useShallow } from "zustand/react/shallow";
 import { RecipeQueryResult } from "../../../sanity.types";
+import type { StegaAware } from "@/sanity/lib/live";
 import { PortableText } from "../PortableText/PortableText";
 import { TypographyH2 } from "../Typography/TypographyH2";
 import { TypographyLink } from "../Typography/TypographyLink";
@@ -51,7 +52,7 @@ const block: ComponentProps<typeof PortableText>["block"] = {
 };
 
 interface RecipeTextProps {
-  recipe: NonNullable<RecipeQueryResult>;
+  recipe: StegaAware<NonNullable<RecipeQueryResult>>;
 }
 
 export const RecipeText = ({ recipe }: RecipeTextProps) => {

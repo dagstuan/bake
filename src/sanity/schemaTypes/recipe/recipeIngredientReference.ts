@@ -1,5 +1,5 @@
 import { RecipeIngredientReferenceInlineBlockComponent } from "@/sanity/components/RecipeIngredientReferenceInlineBlockComponent";
-import { TagIcon } from "@sanity/icons";
+import { TagIcon } from "@sanity/icons/Tag";
 import { defineField, defineType, isReference } from "sanity";
 import {
   ingredientGroupTypeName,

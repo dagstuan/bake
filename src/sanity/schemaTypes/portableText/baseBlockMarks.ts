@@ -1,4 +1,4 @@
-import { CodeBlockIcon } from "@sanity/icons";
+import { CodeBlockIcon } from "@sanity/icons/CodeBlock";
 import { BlockDecoratorDefinition, BlockMarksDefinition } from "sanity";
 import { HighlightDecorator } from "../decorators/highlight";
 import { linkTypeName } from "../constants";

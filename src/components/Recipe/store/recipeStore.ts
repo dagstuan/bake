@@ -198,7 +198,7 @@ export const createRecipeStore = (
             ) {
               get().onIngredientUnitChange(
                 ingredient.id,
-                original as IngredientUnit,
+                original,
               );
             }
           });

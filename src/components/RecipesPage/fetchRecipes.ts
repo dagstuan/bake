@@ -23,6 +23,8 @@ export const fetchRecipes = async (
       lastCreatedAt,
       amount,
     },
+    perspective: "published",
+    stega: false,
   });
 
   return recipes;

@@ -2,7 +2,7 @@
 
 import { Search, X } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { use, useState, FocusEvent, useRef, useLayoutEffect } from "react";
+import { use, useState, FocusEvent } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { AllCategoriesQueryResult } from "../../../../sanity.types";
 import { Button } from "../../ui/button";
@@ -43,7 +43,15 @@ export const RecipesFiltersContent = (props: RecipesFiltersContentProps) => {
     });
   };
 
+  const queryFromUrl = searchParams.get(searchQueryParam) ?? "";
+  const [inputValue, setInputValue] = useState(queryFromUrl);
+  const [previousQueryFromUrl, setPreviousQueryFromUrl] =
+    useState(queryFromUrl);
+  const [lastSubmittedQuery, setLastSubmittedQuery] = useState(queryFromUrl);
+
   const handleSearch = useDebouncedCallback((term: string) => {
+    setLastSubmittedQuery(term);
+
     const params = new URLSearchParams(searchParams);
     if (term) {
       params.set(searchQueryParam, term);
@@ -56,24 +64,19 @@ export const RecipesFiltersContent = (props: RecipesFiltersContentProps) => {
     });
   }, 300);
 
-  const queryFromUrl = searchParams.get(searchQueryParam)?.toString();
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [inputValue, setInputValue] = useState(queryFromUrl);
+  if (queryFromUrl !== previousQueryFromUrl) {
+    setPreviousQueryFromUrl(queryFromUrl);
+
+    if (queryFromUrl !== lastSubmittedQuery) {
+      setLastSubmittedQuery(queryFromUrl);
+      setInputValue(queryFromUrl);
+    }
+  }
 
   const handleInputChange = (newValue: string) => {
     setInputValue(newValue);
     handleSearch(newValue);
   };
-
-  useLayoutEffect(() => {
-    const input = inputRef.current;
-
-    return () => {
-      if (input) {
-        input.value = queryFromUrl ?? "";
-      }
-    };
-  }, []);
 
   const handleInputFocus = (event: FocusEvent<HTMLInputElement>) => {
     if (window.matchMedia("(max-width: 40rem)").matches) {
@@ -97,7 +100,6 @@ export const RecipesFiltersContent = (props: RecipesFiltersContentProps) => {
             }}
             onFocus={handleInputFocus}
             value={inputValue}
-            ref={inputRef}
           />
           {inputValue && (
             <button

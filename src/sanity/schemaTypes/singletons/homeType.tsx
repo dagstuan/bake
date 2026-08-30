@@ -1,4 +1,5 @@
-import { ComposeIcon, SearchIcon } from "@sanity/icons";
+import { ComposeIcon } from "@sanity/icons/Compose";
+import { SearchIcon } from "@sanity/icons/Search";
 import { House } from "lucide-react";
 import { defineArrayMember, defineField, defineType } from "sanity";
 import { homeTypeName } from "../constants";

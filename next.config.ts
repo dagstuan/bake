@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 import nextBundleAnalyzer from "@next/bundle-analyzer";
+import { sanity } from "next-sanity/live/cache-life";
 
 const nextConfig: NextConfig = {
   images: {
@@ -16,9 +17,9 @@ const nextConfig: NextConfig = {
   },
   reactCompiler: true,
   cacheComponents: true,
+  cacheLife: { default: sanity },
   experimental: {
     turbopackFileSystemCacheForDev: true,
-    viewTransition: true,
   },
   // eslint-disable-next-line @typescript-eslint/require-await
   async headers() {

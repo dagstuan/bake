@@ -5,6 +5,7 @@ import { TransitionContextProvider } from "./TransitionContext";
 import { RecipesFiltersSkeleton } from "./Filters/RecipesFiltersSkeleton";
 import { RecipesFilters } from "./Filters/RecipesFilters";
 import { RecipesPageSearchParams } from "./types";
+import { Skeleton } from "../ui/skeleton";
 
 export interface RecipesGridWrapperProps {
   searchParams: Promise<RecipesPageSearchParams>;
@@ -21,11 +22,23 @@ export const RecipesPage = ({ searchParams }: RecipesGridWrapperProps) => {
             <RecipesFilters />
           </Suspense>
 
-          <ViewTransition>
-            <RecipesPageGrid searchParams={searchParams} />
-          </ViewTransition>
+          <Suspense fallback={<RecipesPageGridSkeleton />}>
+            <ViewTransition>
+              <RecipesPageGrid searchParams={searchParams} />
+            </ViewTransition>
+          </Suspense>
         </div>
       </main>
     </TransitionContextProvider>
+  );
+};
+
+const RecipesPageGridSkeleton = () => {
+  return (
+    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {Array.from({ length: 6 }, (_, index) => (
+        <Skeleton key={index} className="aspect-4/5 w-full" />
+      ))}
+    </div>
   );
 };

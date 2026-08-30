@@ -1,5 +1,4 @@
-import { NextStudio } from "next-sanity/studio";
-import config from "../../../../../sanity.config";
+import { Studio } from "../Studio";
 
 export const maxDuration = 60;
 
@@ -20,5 +19,5 @@ export const generateStaticParams = () => {
 };
 
 export default function StudioPage() {
-  return <NextStudio config={config} />;
+  return <Studio />;
 }

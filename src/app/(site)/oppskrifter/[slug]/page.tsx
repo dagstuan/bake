@@ -6,8 +6,16 @@ import {
   siteUrl,
   twitterMetadata,
 } from "../../../shared-metadata";
-import { sanityFetch } from "@/sanity/lib/live";
+import {
+  getDynamicFetchOptions,
+  sanityFetch,
+  sanityFetchMetadata,
+  sanityFetchStaticParams,
+  type DynamicFetchOptions,
+} from "@/sanity/lib/live";
 import { RecipePage } from "@/components/pages/RecipePage/RecipePage";
+import { draftMode } from "next/headers";
+import { Suspense } from "react";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -16,12 +24,8 @@ interface Props {
 export async function generateStaticParams(): Promise<
   Awaited<Props["params"]>[]
 > {
-  "use cache";
-
-  const { data: recipes } = await sanityFetch({
+  const { data: recipes } = await sanityFetchStaticParams({
     query: allRecipesSlugQuery,
-    perspective: "published",
-    stega: false,
   });
 
   return recipes
@@ -33,13 +37,14 @@ export async function generateStaticParams(): Promise<
 }
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
-  "use cache";
-
-  const params = await props.params;
-  const { data: recipe } = await sanityFetch({
+  const [params, { perspective }] = await Promise.all([
+    props.params,
+    getDynamicFetchOptions(),
+  ]);
+  const { data: recipe } = await sanityFetchMetadata({
     query: recipeQuery,
     params,
-    stega: false,
+    perspective,
   });
 
   if (recipe) {
@@ -96,10 +101,56 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 }
 
 export default async function Page(props: Props) {
+  const { isEnabled: isDraftMode } = await draftMode();
+
+  if (isDraftMode) {
+    return (
+      <Suspense>
+        <DynamicRecipePage params={props.params} />
+      </Suspense>
+    );
+  }
+
+  const { slug } = await props.params;
+
+  return (
+    <CachedRecipePage
+      slug={slug}
+      perspective="published"
+      stega={false}
+    />
+  );
+}
+
+async function DynamicRecipePage({ params }: Pick<Props, "params">) {
+  const [{ slug }, { perspective, stega }] = await Promise.all([
+    params,
+    getDynamicFetchOptions(),
+  ]);
+
+  return (
+    <CachedRecipePage slug={slug} perspective={perspective} stega={stega} />
+  );
+}
+
+async function CachedRecipePage({
+  slug,
+  perspective,
+  stega,
+}: { slug: string } & DynamicFetchOptions) {
   "use cache";
 
-  const params = await props.params;
-  const initial = await sanityFetch({ query: recipeQuery, params });
+  const initial = await sanityFetch({
+    query: recipeQuery,
+    params: { slug },
+    perspective,
+    stega,
+  });
 
-  return <RecipePage data={initial.data} params={params} />;
+  return (
+    <RecipePage
+      data={initial.data}
+      slug={slug}
+    />
+  );
 }

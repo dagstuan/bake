@@ -5,11 +5,12 @@ import { OptimisticSortOrder } from "@/components/OptimisticSortOrder/Optimistic
 import { createPath } from "@/utils/pathUtils";
 import { createDataAttribute } from "next-sanity";
 import { Get } from "@sanity/codegen";
+import type { StegaAware } from "@/sanity/lib/live";
 
 interface HomePageRecipesProps {
   documentId: string | undefined;
   documentType: string | undefined;
-  recipes: Get<HomePageQueryResult, "recipes"> | undefined;
+  recipes: StegaAware<Get<HomePageQueryResult, "recipes">> | undefined;
 }
 
 export const HomePageRecipes = (props: HomePageRecipesProps) => {

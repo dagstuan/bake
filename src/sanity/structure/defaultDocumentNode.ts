@@ -7,7 +7,7 @@ import { Eye } from "lucide-react";
 import { apiVersion, draftModeRoute } from "../env";
 import { resolveDocumentProductionUrl } from "../lib/resolveProductionUrl";
 import { recipeType } from "../schemaTypes/recipe/recipeType";
-import { DocumentIcon } from "@sanity/icons";
+import { DocumentIcon } from "@sanity/icons/Document";
 import { aboutType } from "../schemaTypes/singletons/aboutType";
 import { homeType } from "../schemaTypes/singletons/homeType";
 import { ingredientType } from "../schemaTypes/ingredientType";
