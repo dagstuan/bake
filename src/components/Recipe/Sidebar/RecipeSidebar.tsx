@@ -84,10 +84,10 @@ export const RecipeSidebar = ({ recipe }: RecipeSidebarProps) => {
           <WakeLockToggle />
         </div>
 
-          <InfoItems
-            activeTime={activeTime ? stegaClean(activeTime) : null}
-            totalTime={totalTime ? stegaClean(totalTime) : null}
-          />
+        <InfoItems
+          activeTime={activeTime ? stegaClean(activeTime) : null}
+          totalTime={totalTime ? stegaClean(totalTime) : null}
+        />
       </Card>
 
       <Card className="flex flex-col gap-2 rounded-lg p-4">

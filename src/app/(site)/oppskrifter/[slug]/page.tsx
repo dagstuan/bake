@@ -17,6 +17,10 @@ import { RecipePage } from "@/components/pages/RecipePage/RecipePage";
 import { draftMode } from "next/headers";
 import { Suspense } from "react";
 
+// Block navigation until the recipe is rendered so the view transition from
+// the recipe grid swaps both pages in one update.
+export const instant = false;
+
 interface Props {
   params: Promise<{ slug: string }>;
 }
@@ -113,13 +117,7 @@ export default async function Page(props: Props) {
 
   const { slug } = await props.params;
 
-  return (
-    <CachedRecipePage
-      slug={slug}
-      perspective="published"
-      stega={false}
-    />
-  );
+  return <CachedRecipePage slug={slug} perspective="published" stega={false} />;
 }
 
 async function DynamicRecipePage({ params }: Pick<Props, "params">) {
@@ -147,10 +145,5 @@ async function CachedRecipePage({
     stega,
   });
 
-  return (
-    <RecipePage
-      data={initial.data}
-      slug={slug}
-    />
-  );
+  return <RecipePage data={initial.data} slug={slug} />;
 }

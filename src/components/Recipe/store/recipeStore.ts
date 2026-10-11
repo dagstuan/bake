@@ -196,10 +196,7 @@ export const createRecipeStore = (
               ingredient.unit === "g" &&
               original !== "g"
             ) {
-              get().onIngredientUnitChange(
-                ingredient.id,
-                original,
-              );
+              get().onIngredientUnitChange(ingredient.id, original);
             }
           });
         },

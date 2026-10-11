@@ -5,8 +5,13 @@ import type { BaseUIEvent } from "@base-ui/react/types";
 import { cn } from "@/lib/utils";
 import { Search, X } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState, KeyboardEvent, useRef, useTransition } from "react";
+import {
+  useState,
+  KeyboardEvent,
+  MouseEvent,
+  useRef,
+  useTransition,
+} from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { Input } from "../ui/input";
 import { RecipesListQueryResult } from "../../../sanity.types";
@@ -42,8 +47,8 @@ const isDefined = <T,>(value: T | undefined | null): value is T =>
   value !== undefined && value !== null;
 
 export const NavSearch = () => {
-  const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
+  const viewAllRef = useRef<HTMLAnchorElement>(null);
   const [inputValue, setInputValue] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [searchResults, setSearchResults] =
@@ -115,34 +120,18 @@ export const NavSearch = () => {
     inputRef.current?.blur();
   };
 
-  const getItemHref = (item: SearchItem) =>
-    item.type === "view-all"
-      ? `/oppskrifter?query=${encodeURIComponent(item.query)}`
-      : `/oppskrifter/${item.recipe.slug}`;
-
-  const navigateToItem = (item: SearchItem) => {
+  const handleItemClick = (e: BaseUIEvent<MouseEvent<HTMLElement>>) => {
+    e.preventBaseUIHandler();
     blurInput();
-    router.push(getItemHref(item));
-    handleClear();
+    // Clearing unmounts the clicked Link. Doing it in a transition lets the
+    // dropdown close together with the navigation, so the Link's prefetch is
+    // still used when the navigation renders.
+    startTransition(handleClear);
   };
 
   const viewAllHref = `/oppskrifter?query=${encodeURIComponent(inputValue)}`;
 
-  const handleViewAll = () => {
-    navigateToItem({
-      type: "view-all",
-      query: inputValue,
-    });
-  };
-
   const handleKeyDown = (e: BaseUIEvent<KeyboardEvent<HTMLInputElement>>) => {
-    if (e.key === "Enter" && highlightedItem) {
-      e.preventDefault();
-      e.preventBaseUIHandler();
-      navigateToItem(highlightedItem);
-      return;
-    }
-
     if (
       e.key === "Enter" &&
       highlightedItem === undefined &&
@@ -150,7 +139,8 @@ export const NavSearch = () => {
     ) {
       e.preventDefault();
       e.preventBaseUIHandler();
-      handleViewAll();
+      // Navigate through the Link so its prefetch is used.
+      viewAllRef.current?.click();
     }
   };
 
@@ -243,14 +233,12 @@ export const NavSearch = () => {
                     <AutocompletePrimitive.Item
                       key="view-all"
                       value={item}
-                      onClick={(e) => {
-                        e.preventBaseUIHandler();
-                        blurInput();
-                        handleClear();
-                      }}
-                      render={<Link href={viewAllHref} prefetch />}
+                      onClick={handleItemClick}
+                      render={
+                        <Link ref={viewAllRef} href={viewAllHref} prefetch />
+                      }
                       nativeButton={false}
-                      className="data-highlighted:bg-accent bg-background flex cursor-default items-center justify-center border-t p-3 text-center text-sm font-medium outline-hidden select-none"
+                      className="data-highlighted:bg-accent bg-background flex cursor-pointer items-center justify-center border-t p-3 text-center text-sm font-medium outline-hidden select-none"
                     >
                       Se alle resultater for &quot;{item.query}&quot;
                     </AutocompletePrimitive.Item>
@@ -272,14 +260,10 @@ export const NavSearch = () => {
                   <AutocompletePrimitive.Item
                     key={recipe._id}
                     value={item}
-                    onClick={(e) => {
-                      e.preventBaseUIHandler();
-                      blurInput();
-                      handleClear();
-                    }}
+                    onClick={handleItemClick}
                     render={<Link href={recipeHref} prefetch />}
                     nativeButton={false}
-                    className="hover:bg-accent bg-background data-highlighted:bg-accent flex cursor-default items-center gap-3 border-b p-3 text-left outline-hidden transition-colors last:border-b-0"
+                    className="hover:bg-accent bg-background data-highlighted:bg-accent flex cursor-pointer items-center gap-3 border-b p-3 text-left outline-hidden transition-colors last:border-b-0"
                   >
                     {imageUrl && (
                       <Image

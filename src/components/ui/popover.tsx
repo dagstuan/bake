@@ -13,8 +13,9 @@ import {
 
 type AnchorElement = HTMLElement | null;
 
-const PopoverAnchorContext =
-  createContext<RefObject<AnchorElement> | null>(null);
+const PopoverAnchorContext = createContext<RefObject<AnchorElement> | null>(
+  null,
+);
 
 function usePopoverAnchorRef() {
   const anchorRef = use(PopoverAnchorContext);

@@ -25,7 +25,9 @@ export const RecipesGridElement = ({
 }: RecipesGridElementProps) => {
   const { slug, title, mainImage, totalTime } = recipe;
 
-  const duration = totalTime ? formatDurationShort(stegaClean(totalTime)) : null;
+  const duration = totalTime
+    ? formatDurationShort(stegaClean(totalTime))
+    : null;
 
   return (
     <Link

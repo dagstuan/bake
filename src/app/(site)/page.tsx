@@ -31,7 +31,11 @@ async function DynamicHome() {
 async function CachedHome({ perspective, stega }: DynamicFetchOptions) {
   "use cache";
 
-  const initial = await sanityFetch({ query: homePageQuery, perspective, stega });
+  const initial = await sanityFetch({
+    query: homePageQuery,
+    perspective,
+    stega,
+  });
 
   return <HomePage data={initial.data} />;
 }
