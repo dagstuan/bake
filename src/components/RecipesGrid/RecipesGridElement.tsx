@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import { formatDurationShort } from "@/utils/durationUtils";
 import { Clock3 } from "lucide-react";
@@ -6,9 +8,10 @@ import Link from "next/link";
 import { RecipesListQueryResult } from "../../../sanity.types";
 import { Card } from "../ui/card";
 import { RecipesGridImage } from "./RecipesGridImage";
-import { ViewTransition } from "react";
+import { useRef, ViewTransition } from "react";
 import { Get } from "@sanity/codegen";
 import type { StegaAware } from "@/sanity/lib/live";
+import { cacheRecipeImage } from "./recipeImageCache";
 
 interface RecipesGridElementProps {
   recipe: StegaAware<Get<RecipesListQueryResult, number>>;
@@ -24,6 +27,7 @@ export const RecipesGridElement = ({
   className,
 }: RecipesGridElementProps) => {
   const { slug, title, mainImage, totalTime } = recipe;
+  const imageRef = useRef<HTMLImageElement>(null);
 
   const duration = totalTime
     ? formatDurationShort(stegaClean(totalTime))
@@ -34,13 +38,23 @@ export const RecipesGridElement = ({
       data-sanity={dataSanity}
       href={`/oppskrifter/${slug}`}
       className={cn("flex flex-col justify-between", className)}
+      onNavigate={() => {
+        const imageSrc = imageRef.current?.currentSrc;
+        if (slug && imageSrc) {
+          cacheRecipeImage(stegaClean(slug), imageSrc);
+        }
+      }}
     >
       <Card className="flex h-full flex-col border-none bg-transparent transition-shadow hover:shadow-md">
         <ViewTransition
           default="recipe-main-image"
           name={`recipe-image-${slug}`}
         >
-          <RecipesGridImage image={mainImage} priority={priority} />
+          <RecipesGridImage
+            ref={imageRef}
+            image={mainImage}
+            priority={priority}
+          />
         </ViewTransition>
         <div className="flex h-full items-center justify-between gap-4 p-4">
           <h2 className="text-card-foreground text-xl font-semibold">

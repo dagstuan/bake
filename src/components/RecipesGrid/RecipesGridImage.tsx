@@ -6,6 +6,7 @@ import { urlForImage } from "@/sanity/lib/utils";
 import { getImageDimensionsForAspectRatio } from "@/utils/imageUtils";
 import { stegaClean } from "next-sanity";
 import { Get } from "@sanity/codegen";
+import { Ref } from "react";
 
 const gridImageWidth = 360;
 const gridImageHeight = 202;
@@ -14,14 +15,17 @@ const aspectRatio = gridImageWidth / gridImageHeight;
 interface RecipesGridImageProps {
   image: Get<RecipesListQueryResult, number, "mainImage">;
   priority: boolean;
+  ref?: Ref<HTMLImageElement>;
 }
 
 export const RecipesGridImage = ({
   image,
   priority,
+  ref,
 }: RecipesGridImageProps) => {
   return image ? (
     <Image
+      ref={ref}
       width={gridImageWidth}
       height={gridImageHeight}
       src={

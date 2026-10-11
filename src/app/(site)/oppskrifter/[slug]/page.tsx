@@ -14,12 +14,8 @@ import {
   type DynamicFetchOptions,
 } from "@/sanity/lib/live";
 import { RecipePage } from "@/components/pages/RecipePage/RecipePage";
-import { draftMode } from "next/headers";
+import { RecipePageSkeleton } from "@/components/pages/RecipePage/RecipePageSkeleton";
 import { Suspense } from "react";
-
-// Block navigation until the recipe is rendered so the view transition from
-// the recipe grid swaps both pages in one update.
-export const instant = false;
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -105,38 +101,27 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 }
 
 export default async function Page(props: Props) {
-  const { isEnabled: isDraftMode } = await draftMode();
-
-  if (isDraftMode) {
-    return (
-      <Suspense>
-        <DynamicRecipePage params={props.params} />
-      </Suspense>
-    );
-  }
-
-  const { slug } = await props.params;
-
-  return <CachedRecipePage slug={slug} perspective="published" stega={false} />;
-}
-
-async function DynamicRecipePage({ params }: Pick<Props, "params">) {
-  const [{ slug }, { perspective, stega }] = await Promise.all([
-    params,
-    getDynamicFetchOptions(),
-  ]);
+  const { perspective, stega } = await getDynamicFetchOptions();
 
   return (
-    <CachedRecipePage slug={slug} perspective={perspective} stega={stega} />
+    <Suspense fallback={<RecipePageSkeleton />}>
+      <RecipePageContent
+        params={props.params}
+        perspective={perspective}
+        stega={stega}
+      />
+    </Suspense>
   );
 }
 
-async function CachedRecipePage({
-  slug,
-  perspective,
-  stega,
-}: { slug: string } & DynamicFetchOptions) {
+async function RecipePageContent(
+  props: { params: Props["params"] } & DynamicFetchOptions,
+) {
   "use cache";
+
+  const { perspective, stega } = props;
+
+  const { slug } = await props.params;
 
   const initial = await sanityFetch({
     query: recipeQuery,
